@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class CardMyCouponCell: UICollectionViewCell {
+public class EDTSCardMyCouponCell: UICollectionViewCell {
     
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var containerBackground: UIView!
@@ -22,7 +22,7 @@ public class CardMyCouponCell: UICollectionViewCell {
         }
     }
     
-    private var ribbonView: RibbonView?
+    private var ribbonView: EDTSRibbon?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -85,13 +85,13 @@ public class CardMyCouponCell: UICollectionViewCell {
     private func ribbonNewUser() {
         ribbonView?.removeFromSuperview()
         
-        let newRibbonView = RibbonView()
+        let newRibbonView = EDTSRibbon()
         
         newRibbonView.ribbonText = "Pengguna Baru"
-        newRibbonView.triangleColor = UIColor.orange50 ?? .orange
-        newRibbonView.containerStartColor = UIColor.yellow30 ?? .yellow
-        newRibbonView.containerEndColor = UIColor.orange30 ?? .orange
-        newRibbonView.textColor = UIColor.white ?? .systemYellow
+        newRibbonView.triangleColor = EDTSColor.orange50
+        newRibbonView.containerStartColor = EDTSColor.yellow30
+        newRibbonView.containerEndColor = EDTSColor.orange30
+        newRibbonView.textColor = EDTSColor.white
         newRibbonView.gravity = .end
 
         newRibbonView.anchorToView(
@@ -107,13 +107,13 @@ public class CardMyCouponCell: UICollectionViewCell {
     private func ribbonCoupon() {
         ribbonView?.removeFromSuperview()
         
-        let newRibbonView = RibbonView()
+        let newRibbonView = EDTSRibbon()
         
         newRibbonView.ribbonText = "i-Kupon"
-        newRibbonView.triangleColor = UIColor.blue70 ?? .blue
-        newRibbonView.containerStartColor = UIColor.blue50 ?? .blue
-        newRibbonView.containerEndColor = UIColor.blue50 ?? .blue
-        newRibbonView.textColor = UIColor.white ?? .systemYellow
+        newRibbonView.triangleColor = EDTSColor.blue70
+        newRibbonView.containerStartColor = EDTSColor.blue50
+        newRibbonView.containerEndColor = EDTSColor.blue50
+        newRibbonView.textColor = EDTSColor.white
         newRibbonView.gravity = .end
 
         newRibbonView.anchorToView(

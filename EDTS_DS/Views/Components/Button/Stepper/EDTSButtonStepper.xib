@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSStepperButton" customModule="EDTS_DS" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSButtonStepper" customModule="EDTS_DS" customModuleProvider="target">
             <connections>
                 <outlet property="btnMinus" destination="Hrt-52-UE7" id="O1q-pu-A9G"/>
                 <outlet property="btnPlus" destination="DgB-YE-10s" id="Cun-JY-YCf"/>

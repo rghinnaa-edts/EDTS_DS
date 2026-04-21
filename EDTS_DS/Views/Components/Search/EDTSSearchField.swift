@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class SearchBar: UISearchBar {
+public class EDTSSearchField: UISearchBar {
     
     private var searchText: String?
     private var animationTimer: Timer?
@@ -57,7 +57,7 @@ public class SearchBar: UISearchBar {
             
             let searchIconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
             searchIconView.contentMode = .scaleAspectFit
-            searchIconView.tintColor = UIColor.grey60
+            searchIconView.tintColor = EDTSColor.grey60
             searchIconView.image = UIImage(named: "search")?.withRenderingMode(.alwaysTemplate)
 
             let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 24, height: textField.frame.height))
@@ -77,7 +77,7 @@ public class SearchBar: UISearchBar {
                 
                 clearButton?.setImage(resizedImage, for: .normal)
                 
-                clearButton?.tintColor = UIColor.grey60
+                clearButton?.tintColor = EDTSColor.grey60
             }
             
             textField.leftView = containerView
@@ -85,12 +85,12 @@ public class SearchBar: UISearchBar {
             
             textField.layer.borderWidth = 1
             textField.layer.cornerRadius = 8
-            textField.layer.borderColor = UIColor.grey30?.cgColor
+            textField.layer.borderColor = EDTSColor.grey30.cgColor
             
             textField.clipsToBounds = true
             textField.backgroundColor = fieldBackgroundColor
             
-            textField.font = Font.B3.Small.font
+//            textField.font = Font.B3.Small.font
         }
     
     }
@@ -240,16 +240,16 @@ public class SearchBar: UISearchBar {
     
 }
 
-extension SearchBar: UISearchBarDelegate {
+extension EDTSSearchField: UISearchBarDelegate {
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if let textField = getSearchTextField() {
-            textField.layer.borderColor = UIColor.blue10?.cgColor
+            textField.layer.borderColor = EDTSColor.blue10.cgColor
         }
     }
     
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         if let textField = getSearchTextField() {
-            textField.layer.borderColor = UIColor.grey30?.cgColor
+            textField.layer.borderColor = EDTSColor.grey30.cgColor
         }
     }
     
@@ -263,7 +263,7 @@ extension SearchBar: UISearchBarDelegate {
         searchBar.text = ""
         
         if let textField = getSearchTextField() {
-            textField.layer.borderColor = UIColor.grey30?.cgColor
+            textField.layer.borderColor = EDTSColor.grey30.cgColor
         }
     }
 }

@@ -7,12 +7,12 @@
 
 import UIKit
 
-public class CardSelectionList: UIView {
+public class EDTSCardSelectionList: UIView {
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     
-    public weak var delegate: CardSelectionDelegate?
+    public weak var delegate: EDTSCardSelectionDelegate?
     
     public var data: [CardSelectionModel] = [] {
         didSet {
@@ -112,21 +112,21 @@ public class CardSelectionList: UIView {
     }
     
     private var selectedIndex: Int? = 0
-    private var cardTitleColor = UIColor.grey70
-    private var cardTitleActiveColor = UIColor.blueDefault
-    private var cardDescColor = UIColor.grey50
-    private var cardDescActiveColor = UIColor.grey50
-    private var cardBackgroundColor = UIColor.white
-    private var cardBackgroundActiveColor = UIColor.white
-    private var cardBorderColor = UIColor.grey20
-    private var cardBorderActiveColor = UIColor.blueDefault
+    private var cardTitleColor: UIColor? = EDTSColor.grey70
+    private var cardTitleActiveColor: UIColor? = EDTSColor.blueDefault
+    private var cardDescColor: UIColor? = EDTSColor.grey50
+    private var cardDescActiveColor: UIColor? = EDTSColor.grey50
+    private var cardBackgroundColor: UIColor? = EDTSColor.white
+    private var cardBackgroundActiveColor: UIColor? = EDTSColor.white
+    private var cardBorderColor: UIColor? = EDTSColor.grey20
+    private var cardBorderActiveColor: UIColor? = EDTSColor.blueDefault
     private var cardBorderWidth: CGFloat? = 0.0
     private var cardCornerRadius: CGFloat? = 0.0
     private var cardShadowOpacity: Float? = 0.0
     private var cardShadowOffset: CGSize? = CGSize(width: 0, height: 0)
     private var cardShadowRadius: CGFloat? = 0.0
-    private var cardShadowColor = UIColor.grey50
-    private var cardShadowActiveColor = UIColor.grey50
+    private var cardShadowColor: UIColor? = EDTSColor.grey50
+    private var cardShadowActiveColor: UIColor? = EDTSColor.grey50
     private var isUserTapped = false
     
     public override init(frame: CGRect) {
@@ -168,7 +168,7 @@ public class CardSelectionList: UIView {
         flowLayout.sectionInset = UIEdgeInsets(top: .zero, left: 16, bottom: .zero, right: 16)
 
         collectionView.collectionViewLayout = flowLayout
-        collectionView.register(CardSelectionCell.self, forCellWithReuseIdentifier: "CardSelectionCell")
+        collectionView.register(EDTSCardSelectionCell.self, forCellWithReuseIdentifier: "EDTSCardSelectionCell")
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
@@ -178,7 +178,7 @@ public class CardSelectionList: UIView {
         collectionView.clipsToBounds = false
     }
     
-    private func configureCell(_ cell: CardSelectionCell) {
+    private func configureCell(_ cell: EDTSCardSelectionCell) {
         cell.cardTitleColor = cardTitleColor
         cell.cardTitleActiveColor = cardTitleActiveColor
         cell.cardDescColor = cardDescColor
@@ -208,18 +208,18 @@ public class CardSelectionList: UIView {
 }
 
 @MainActor
-public protocol CardSelectionDelegate: AnyObject {
+public protocol EDTSCardSelectionDelegate: AnyObject {
     func didSelectCardSelection(at index: Int)
 }
 
-extension CardSelectionList: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension EDTSCardSelectionList: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return data.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardSelectionCell", for: indexPath) as! CardSelectionCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EDTSCardSelectionCell", for: indexPath) as! EDTSCardSelectionCell
         
         let item = data[indexPath.row]
             

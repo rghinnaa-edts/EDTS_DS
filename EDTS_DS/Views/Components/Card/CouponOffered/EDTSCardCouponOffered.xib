@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -9,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardCouponOffered" customModule="KlikIDM_DS" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSCardCouponOffered" customModule="EDTS_DS" customModuleProvider="target">
             <connections>
                 <outlet property="badgeCoupon" destination="KVc-6e-4Vx" id="8q4-n2-FC4"/>
                 <outlet property="badgeCouponCode" destination="ELX-Qr-Xx9" id="fDD-CR-fvA"/>
@@ -51,7 +52,7 @@
                                 <constraint firstAttribute="height" constant="60" id="mnL-7P-9DF"/>
                             </constraints>
                         </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W56-Xb-CAZ" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W56-Xb-CAZ" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="80" y="12" width="0.0" height="20"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
@@ -59,7 +60,7 @@
                                 <constraint firstAttribute="width" id="W5W-1L-bzw"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="40" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="KVc-6e-4Vx" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="40" placeholderIntrinsicHeight="20" translatesAutoresizingMaskIntoConstraints="NO" id="KVc-6e-4Vx" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="84" y="12" width="40" height="20"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
@@ -72,7 +73,7 @@
                             <color key="textColor" name="70Grey"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zCI-iw-sMO" customClass="DashedLineView" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zCI-iw-sMO" customClass="DashedLineView" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="8" y="146" width="311" height="1"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
@@ -84,7 +85,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fgk-LL-E4o" customClass="KlikIDM_DSButton" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fgk-LL-E4o" customClass="EDTSButton" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="248.66666666666666" y="159" width="66.333333333333343" height="28"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="28" id="1es-2k-XLo"/>
@@ -124,7 +125,7 @@
                                 <action selector="btnExchange:" destination="-1" eventType="touchUpInside" id="Vni-s2-186"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="ELX-Qr-Xx9" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="ELX-Qr-Xx9" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="12" y="165" width="50" height="16"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
@@ -186,7 +187,7 @@
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
                         </view>
-                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="WLb-JH-eUu" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="WLb-JH-eUu" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="12" y="84" width="50" height="14"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -199,7 +200,7 @@
                             <color key="textColor" name="60Grey"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="uIy-eh-JdN" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="uIy-eh-JdN" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="12" y="102" width="50" height="14"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -212,7 +213,7 @@
                             <color key="textColor" name="60Grey"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="Fx7-9e-8O5" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="14" translatesAutoresizingMaskIntoConstraints="NO" id="Fx7-9e-8O5" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="12" y="120" width="50" height="14"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -228,7 +229,7 @@
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cR5-Eb-3CG" userLabel="ViewSkeleton">
                             <rect key="frame" x="0.0" y="0.0" width="327" height="146"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pjZ-uK-5qL" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pjZ-uK-5qL" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="12" y="12" width="60" height="60"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -236,7 +237,7 @@
                                         <constraint firstAttribute="height" constant="60" id="e2g-zk-Hwy"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J4r-bM-BI2" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J4r-bM-BI2" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="80" y="12" width="47" height="20"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -244,14 +245,14 @@
                                         <constraint firstAttribute="height" constant="20" id="Ooc-q8-MVB"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vyo-he-muV" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vyo-he-muV" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="80" y="40" width="235" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="14" id="PCt-R3-Qoo"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XV8-uE-trN" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XV8-uE-trN" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="80" y="58" width="102" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -259,7 +260,7 @@
                                         <constraint firstAttribute="height" constant="14" id="wcs-gC-HbS"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y09-rr-47J" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y09-rr-47J" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="12" y="84" width="109" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -267,7 +268,7 @@
                                         <constraint firstAttribute="width" constant="109" id="pcC-To-oY4"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rvl-N5-Xui" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rvl-N5-Xui" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="270" y="84" width="45" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -275,7 +276,7 @@
                                         <constraint firstAttribute="width" constant="45" id="axM-2D-EHF"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9zG-Mh-MfB" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9zG-Mh-MfB" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="12" y="102" width="58" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -283,7 +284,7 @@
                                         <constraint firstAttribute="height" constant="14" id="iR5-Th-HmX"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LWn-NI-7Rh" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LWn-NI-7Rh" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="259" y="102" width="56" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -291,7 +292,7 @@
                                         <constraint firstAttribute="width" constant="56" id="JwC-lZ-3tR"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WTl-to-zYb" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WTl-to-zYb" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="259" y="120" width="56" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -301,7 +302,7 @@
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="mxj-hi-voU"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mpw-iE-ijI" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mpw-iE-ijI" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="12" y="120" width="89" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -339,7 +340,7 @@
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f9u-JV-boJ" userLabel="ViewSkeletonBottom">
                             <rect key="frame" x="0.0" y="147" width="327" height="42"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="85z-2e-tZC" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="85z-2e-tZC" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="12" y="18" width="140" height="16"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -360,7 +361,7 @@
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJe-VA-PQA" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sJe-VA-PQA" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="171" y="18" width="34" height="16"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -368,7 +369,7 @@
                                         <constraint firstAttribute="width" constant="34" id="ZH6-tQ-qII"/>
                                     </constraints>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOn-PI-nS7" customClass="Skeleton" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOn-PI-nS7" customClass="EDTSSkeleton" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="247" y="12" width="68" height="28"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>

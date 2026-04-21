@@ -5,7 +5,7 @@
 //  Created by Rizka Ghinna Auliya on 10/05/25.
 //
 
-public struct TabDefaultModel: TabDefaultModelProtocol {
+public struct EDTSTabDefaultModel: EDTSTabDefaultModelProtocol {
     public var id: String
     public var title: String
     

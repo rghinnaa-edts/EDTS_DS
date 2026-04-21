@@ -7,12 +7,12 @@
 
 import UIKit
 
-public class CardCouponOfferedCell: UICollectionViewCell {
+public class EDTSCardCouponOfferedCell: UICollectionViewCell {
     
     //MARK: - Outlets
     
     @IBOutlet var containerView: UIView!
-    @IBOutlet public weak var cardCouponOffered: CardCouponOffered!
+    @IBOutlet public weak var cardCouponOffered: EDTSCardCouponOffered!
     
     
     //MARK: - Inspectables
@@ -23,7 +23,7 @@ public class CardCouponOfferedCell: UICollectionViewCell {
         }
     }
     
-    @IBInspectable public var bgColor: UIColor? = nil {
+    @IBInspectable public var bgColor: UIColor = EDTSColor.white {
         didSet {
             cardCouponOffered.bgColor = bgColor
         }
@@ -53,13 +53,13 @@ public class CardCouponOfferedCell: UICollectionViewCell {
         }
     }
     
-    @IBInspectable public var shadowColor: UIColor? = UIColor.black {
+    @IBInspectable public var shadowColor: UIColor = UIColor.black {
         didSet {
             cardCouponOffered.shadowColor = shadowColor
         }
     }
     
-    @IBInspectable public var shadowActiveColor: UIColor? = UIColor.black {
+    @IBInspectable public var shadowActiveColor: UIColor = UIColor.black {
         didSet {
             cardCouponOffered.shadowActiveColor = shadowActiveColor
         }
@@ -110,10 +110,10 @@ public class CardCouponOfferedCell: UICollectionViewCell {
         
         if data.periode <= "1" {
             cardCouponOffered.periode = "59 Menit Lagi"
-            cardCouponOffered.periodeTextColor = UIColor.red30
+            cardCouponOffered.periodeTextColor = EDTSColor.red30
         } else {
             cardCouponOffered.periode = data.periode
-            cardCouponOffered.periodeTextColor = UIColor.grey60
+            cardCouponOffered.periodeTextColor = EDTSColor.grey60
         }
     }
     
@@ -143,7 +143,7 @@ public protocol CardCouponOfferedCellDelegate: AnyObject {
     func didSelectButtonExchange(at index: Int, isCanExchange: Bool, isExchanged: Bool)
 }
 
-extension CardCouponOfferedCell: CardCouponOfferedDelegate {
+extension EDTSCardCouponOfferedCell: EDTSCardCouponOfferedDelegate {
     public func didSelectButtonDetail() {
         delegate?.didSelectButtonDetail(at: index)
     }

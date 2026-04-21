@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class EDTSIconButton: UIButton {
+public class EDTSButtonIcon: UIButton {
     // MARK: - Inspectables
     @IBInspectable public var btnType: String?{
         didSet {

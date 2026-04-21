@@ -7,10 +7,10 @@
 
 import UIKit
 
-public class CardSelectionCell: UICollectionViewCell {
+public class EDTSCardSelectionCell: UICollectionViewCell {
     
     @IBOutlet var containerView: UIView!
-    @IBOutlet var cardSelection: CardSelection!
+    @IBOutlet var cardSelection: EDTSCardSelection!
     
     public var cardTitleColor: UIColor? {
         didSet {
@@ -175,9 +175,9 @@ public class CardSelectionCell: UICollectionViewCell {
             cardSelection.cardBorderColor = isSelectedState ? cardBorderActiveColor : cardBorderColor
             cardSelection.cardBorderWidth = 1
         } else {
-            cardSelection.cardTitleColor = UIColor.disabled
-            cardSelection.cardDescColor = UIColor.disabled
-            cardSelection.cardBorderColor = UIColor.grey20
+            cardSelection.cardTitleColor = EDTSColor.disabled
+            cardSelection.cardDescColor = EDTSColor.disabled
+            cardSelection.cardBorderColor = EDTSColor.grey20
             cardSelection.cardBorderWidth = 0.5
         }
         

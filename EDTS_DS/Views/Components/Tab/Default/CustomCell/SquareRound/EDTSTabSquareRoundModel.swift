@@ -5,7 +5,7 @@
 //  Created by Rizka Ghinna Auliya on 10/05/25.
 //
 
-public struct TabSquareRoundModel: TabDefaultModelProtocol {
+public struct EDTSTabSquareRoundModel: EDTSTabDefaultModelProtocol {
     public var id: String
     public var title: String
     var isEnable: Bool

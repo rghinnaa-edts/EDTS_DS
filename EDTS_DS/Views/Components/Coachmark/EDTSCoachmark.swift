@@ -30,7 +30,7 @@ public enum CoachmarkArrowPosition {
 }
 
 @IBDesignable
-public class KlikIDM_DSCoachmark: UIView {
+public class EDTSCoachmark: UIView {
     
     @IBOutlet weak var vLabelContainer: UIStackView!
     @IBOutlet var lblTitle: UILabel!
@@ -422,7 +422,7 @@ public class KlikIDM_DSCoachmark: UIView {
         }
     }
     
-    private func setupButton(_ button: KlikIDM_DSButton, label: String?, type: BtnType, hidden: Bool) {
+    private func setupButton(_ button: EDTSButton, label: String?, type: BtnType, hidden: Bool) {
         button.isHidden = hidden
         button.label = label
         button.btnType = type.rawValue

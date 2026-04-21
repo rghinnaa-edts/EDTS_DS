@@ -7,10 +7,10 @@
 
 import UIKit
 
-public class TabChipCell: UICollectionViewCell {
+public class EDTSTabChipCell: UICollectionViewCell {
     
     @IBOutlet var containerView: UIView!
-    @IBOutlet weak var chip: KlikIDM_DSChip!
+    @IBOutlet weak var chip: EDTSChip!
     
     public var imageTint: UIColor? =  nil {
         didSet {
@@ -84,7 +84,7 @@ public class TabChipCell: UICollectionViewCell {
         }
     }
     
-    public var tabBorderActiveColor: UIColor? = UIColor.blue30 {
+    public var tabBorderActiveColor: UIColor? = EDTSColor.blue30 {
         didSet {
             updateState()
         }
@@ -171,13 +171,13 @@ public class TabChipCell: UICollectionViewCell {
         setupNib()
     }
     
-    public func loadData(_ data: TabDefaultModel) {
+    public func loadData(_ data: EDTSTabDefaultModel) {
         chip.label = data.title
     }
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        guard let nib = bundle.loadNibNamed("TabChipCell", owner: self, options: nil),
+        guard let nib = bundle.loadNibNamed("EDTSTabChipCell", owner: self, options: nil),
               let view = nib.first as? UIView else {
             print("Failed to load TabChipCell nib")
             return
@@ -206,12 +206,12 @@ public class TabChipCell: UICollectionViewCell {
     }
 }
 
-extension TabChipCell: TabDefaultCellProtocol {
-    public func loadData(item: TabDefaultModelProtocol) {
-        if let data = item as? TabDefaultModel {
+extension EDTSTabChipCell: EDTSTabDefaultCellProtocol {
+    public func loadData(item: EDTSTabDefaultModelProtocol) {
+        if let data = item as? EDTSTabDefaultModel {
             loadData(data)
         } else {
-            let data = TabDefaultModel(
+            let data = EDTSTabDefaultModel(
                 id: item.id,
                 title: ""
             )

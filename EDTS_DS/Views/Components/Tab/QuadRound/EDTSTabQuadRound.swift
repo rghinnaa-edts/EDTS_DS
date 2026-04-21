@@ -7,7 +7,8 @@
 
 import UIKit
 
-@IBDesignable public class TabQuadRound: UIView {
+@IBDesignable
+public class EDTSTabQuadRound: UIView {
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -52,9 +53,9 @@ import UIKit
         set { tabBdgLblActiveColor = newValue }
     }
     
-    public weak var delegate: TabQuadRoundDelegate?
+    public weak var delegate: EDTSTabQuadRoundDelegate?
     
-    public var data: [TabQuadRoundModel] = [] {
+    public var data: [EDTSTabQuadRoundModel] = [] {
         didSet {
             collectionView.reloadData()
             updateScrollSettings()
@@ -71,14 +72,14 @@ import UIKit
     private var currentlySelectedId: String? = nil
     private var currentlySelectedIndex: Int? = 0
     
-    private var tabBgColor = UIColor.blue20
-    private var tabBgActiveColor = UIColor.white
-    private var tabLblColor = UIColor.grey50
-    private var tabLblActiveColor = UIColor.blue50
-    private var tabBdgColor = UIColor.grey50
-    private var tabBdgActiveColor = UIColor.blue50
-    private var tabBdgLblColor = UIColor.white
-    private var tabBdgLblActiveColor = UIColor.white
+    private var tabBgColor: UIColor? = EDTSColor.blue20
+    private var tabBgActiveColor: UIColor? = EDTSColor.white
+    private var tabLblColor: UIColor? = EDTSColor.grey50
+    private var tabLblActiveColor: UIColor? = EDTSColor.blue50
+    private var tabBdgColor: UIColor? = EDTSColor.grey50
+    private var tabBdgActiveColor: UIColor? = EDTSColor.blue50
+    private var tabBdgLblColor: UIColor? = EDTSColor.white
+    private var tabBdgLblActiveColor: UIColor? = EDTSColor.white
 
     private enum Constants {
         static let selectedWidth: CGFloat = 150
@@ -132,11 +133,11 @@ import UIKit
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
 
         collectionView.collectionViewLayout = flowLayout
-        collectionView.backgroundColor = UIColor.blue50
+        collectionView.backgroundColor = EDTSColor.blue50
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceHorizontal = true
-        collectionView.register(TabQuadRoundCell.self, forCellWithReuseIdentifier: "TabQuadRoundCell")
+        collectionView.register(EDTSTabQuadRoundCell.self, forCellWithReuseIdentifier: "EDTSTabQuadRoundCell")
         collectionView.delegate = self
         collectionView.dataSource = self
 
@@ -172,13 +173,13 @@ import UIKit
     private func updateCell(selectedIndex: Int) {
         for i in 0..<data.count {
             let indexPath = IndexPath(item: i, section: 0)
-            guard let cell = collectionView.cellForItem(at: indexPath) as? TabQuadRoundCell else { continue }
+            guard let cell = collectionView.cellForItem(at: indexPath) as? EDTSTabQuadRoundCell else { continue }
             
             configureCellState(cell, at: i, selectedIndex: selectedIndex)
         }
     }
     
-    private func configureCellState(_ cell: TabQuadRoundCell, at index: Int, selectedIndex: Int) {
+    private func configureCellState(_ cell: EDTSTabQuadRoundCell, at index: Int, selectedIndex: Int) {
         if shouldUseEqualWidth() {
             cell.shouldUseEqualWidth = true
         }
@@ -280,7 +281,7 @@ import UIKit
     }
 }
 
-public struct TabQuadRoundModel {
+public struct EDTSTabQuadRoundModel {
     var id: String
     var title: String
     var badge: Int
@@ -293,18 +294,18 @@ public struct TabQuadRoundModel {
 }
 
 @MainActor
-public protocol TabQuadRoundDelegate: AnyObject {
+public protocol EDTSTabQuadRoundDelegate: AnyObject {
     func didSelectTabQuadRound(at index: Int, withId id: String)
 }
 
-extension TabQuadRound: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension EDTSTabQuadRound: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return data.count
     }
 
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TabQuadRoundCell", for: indexPath) as! TabQuadRoundCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EDTSTabQuadRoundCell", for: indexPath) as! EDTSTabQuadRoundCell
         
         configureCell(cell, at: indexPath)
         
@@ -327,7 +328,7 @@ extension TabQuadRound: UICollectionViewDelegate, UICollectionViewDataSource, UI
         delegate?.didSelectTabQuadRound(at: indexPath.item, withId: selectedData.id)
     }
     
-    private func configureCell(_ cell: TabQuadRoundCell, at indexPath: IndexPath) {
+    private func configureCell(_ cell: EDTSTabQuadRoundCell, at indexPath: IndexPath) {
         cell.tabBackgroundColor = tabBgColor
         cell.tabBackgroundActiveColor = tabBgActiveColor
         cell.tabTextColor = tabLblColor

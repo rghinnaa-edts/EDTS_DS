@@ -71,11 +71,11 @@ class LiquidGlassBackgroundView: UIView {
     private func setupGradientStroke(){
         var colors: [CGColor] = []
 
-        colors.append(UIColor.white?.withAlphaComponent(2.0).cgColor ?? UIColor.clear.cgColor)
+        colors.append(EDTSColor.white.withAlphaComponent(2.0).cgColor)
         for i in 0..<60 {
             colors.append(UIColor.clear.cgColor)
         }
-        colors.append(UIColor.white?.withAlphaComponent(2.0).cgColor ?? UIColor.clear.cgColor)
+        colors.append(EDTSColor.white.withAlphaComponent(2.0).cgColor)
         
         gradientBorder.colors = colors
         gradientBorder.startPoint = CGPoint(x: 0, y: 0.5)
@@ -86,7 +86,7 @@ class LiquidGlassBackgroundView: UIView {
         borderMask.path = UIBezierPath(roundedRect: blurView.bounds, cornerRadius: blurView.layer.cornerRadius).cgPath
         borderMask.lineWidth = 2
         borderMask.fillColor = UIColor.clear.cgColor
-        borderMask.strokeColor = UIColor.white?.cgColor
+        borderMask.strokeColor = EDTSColor.white.cgColor
         
         gradientBorder.mask = borderMask
         blurView.layer.addSublayer(gradientBorder)

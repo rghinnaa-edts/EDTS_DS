@@ -7,10 +7,10 @@
 
 import UIKit
 
-public class TabSkeleton: UICollectionViewCell {
+public class EDTSTabSkeleton: UICollectionViewCell {
     
     private var containerView = UIView()
-    private var skeletonView = Skeleton()
+    private var skeletonView = EDTSSkeleton()
     
     private var containerWidthConstraint: NSLayoutConstraint?
     private var containerHeightConstraint: NSLayoutConstraint?

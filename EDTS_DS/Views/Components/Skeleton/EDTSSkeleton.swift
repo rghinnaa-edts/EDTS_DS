@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class Skeleton: UIView {
+public class EDTSSkeleton: UIView {
     private let gradientLayer = CAGradientLayer()
     private let shimmerAnimation: CABasicAnimation
     
@@ -43,9 +43,9 @@ public class Skeleton: UIView {
     
     private func setupGradient() {
         gradientLayer.colors = [
-            UIColor.grey20?.cgColor ?? UIColor.gray.cgColor,
-            UIColor.grey30?.cgColor ?? UIColor.gray.cgColor,
-            UIColor.grey20?.cgColor ?? UIColor.gray.cgColor
+            EDTSColor.grey20.cgColor,
+            EDTSColor.grey30.cgColor,
+            EDTSColor.grey20.cgColor
         ]
         gradientLayer.locations = [0.0, 0.5, 1.0]
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)

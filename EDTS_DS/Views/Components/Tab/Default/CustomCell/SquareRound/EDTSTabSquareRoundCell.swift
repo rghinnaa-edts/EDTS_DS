@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class TabSquareRoundCell: UICollectionViewCell {
+public class EDTSTabSquareRoundCell: UICollectionViewCell {
     
     @IBOutlet var containerView: UIView!
     @IBOutlet var vChip: UIView!
@@ -34,7 +34,7 @@ public class TabSquareRoundCell: UICollectionViewCell {
     
     private func setupChipPromo() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("TabSquareRoundCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSTabSquareRoundCell", owner: self, options: nil),
            let view = nib.first as? UIView {
             containerView = view
             addSubview(containerView)
@@ -69,7 +69,7 @@ public class TabSquareRoundCell: UICollectionViewCell {
         }
     }
     
-    func loadData(data: TabSquareRoundModel) {
+    func loadData(data: EDTSTabSquareRoundModel) {
         lblTitle.text = data.title
         
         setupBackground(isEnable: isEnable)

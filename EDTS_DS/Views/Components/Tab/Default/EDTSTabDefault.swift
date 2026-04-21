@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class TabDefault: UIView {
+public class EDTSTabDefault: UIView {
     
     
     //MARK: - Outlets
@@ -142,7 +142,7 @@ public class TabDefault: UIView {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        guard let views = bundle.loadNibNamed("TabDefault", owner: self, options: nil),
+        guard let views = bundle.loadNibNamed("EDTSTabDefault", owner: self, options: nil),
               let tab = views.first as? UIView else {
             assertionFailure("Failed to load TabDefault XIB from bundle: \(bundle)")
             return
@@ -330,7 +330,7 @@ public class TabDefault: UIView {
 
 //MARK: - Collection View
 
-extension TabDefault: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension EDTSTabDefault: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     public func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
@@ -367,7 +367,7 @@ extension TabDefault: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         guard indexPath.item != previousSelectedIndex else { return }
         
         let isMovingRight = indexPath.item > previousSelectedIndex
-        let isUsingTabDefaultCell = collectionView.cellForItem(at: indexPath) is TabDefaultCell
+        let isUsingTabDefaultCell = collectionView.cellForItem(at: indexPath) is EDTSTabDefaultCell
         
         if isUsingTabDefaultCell {
             if let cellOld = collectionView.cellForItem(at: IndexPath(item: previousSelectedIndex, section: 0)) as? EDTSTabDefaultCell {

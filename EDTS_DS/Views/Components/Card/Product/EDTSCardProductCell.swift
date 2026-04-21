@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class CardProductCell: UICollectionViewCell {
+public class EDTSCardProductCell: UICollectionViewCell {
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var containerBackgroundView: UIView!
@@ -18,16 +18,16 @@ public class CardProductCell: UICollectionViewCell {
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var vDiscount: UIView!
-    @IBOutlet weak var badgeDiscount: Badge!
+    @IBOutlet weak var badgeDiscount: EDTSBadge!
     @IBOutlet weak var lblRealPrice: UILabel!
-    @IBOutlet weak var badgePromo2: Badge!
-    @IBOutlet weak var badgePromo3: Badge!
+    @IBOutlet weak var badgePromo2: EDTSBadge!
+    @IBOutlet weak var badgePromo3: EDTSBadge!
     @IBOutlet weak var vPointStamp: UIView!
     @IBOutlet weak var ivPoint: UIImageView!
     @IBOutlet weak var lblPoint: UILabel!
     @IBOutlet weak var ivStamp: UIImageView!
     @IBOutlet weak var lblStamp: UILabel!
-    @IBOutlet weak var btnStepper: ButtonStepper!
+    @IBOutlet weak var btnStepper: EDTSButtonStepper!
     
     public var badgeGiftColor: UIColor? {
         didSet {
@@ -75,8 +75,8 @@ public class CardProductCell: UICollectionViewCell {
         realPriceConstraint.isActive = true
         realPriceConstraint.constant = (data.discount == 0) ? 0 : 14
         
-        badgeDiscount.bgColor = UIColor.red10
-        badgeDiscount.labelColor = UIColor.red30
+        badgeDiscount.bgColor = EDTSColor.red10
+        badgeDiscount.labelColor = EDTSColor.red30
         badgeDiscount.label = "\(data.discount)%"
         
         badgePromo2Constraint = badgePromo2.heightAnchor.constraint(equalToConstant: 14)
@@ -141,18 +141,18 @@ public class CardProductCell: UICollectionViewCell {
         containerView.backgroundColor = UIColor.red
         containerView.layer.cornerRadius = 8
         containerView.layer.borderWidth = 1
-        containerView.layer.borderColor = UIColor.grey30?.cgColor
+        containerView.layer.borderColor = EDTSColor.grey30.cgColor
     }
     
     private func setupBadgePromo2() {
-        badgePromo2.bgColor = UIColor.red10
-        badgePromo2.labelColor = UIColor.red30
+        badgePromo2.bgColor = EDTSColor.red10
+        badgePromo2.labelColor = EDTSColor.red30
         badgePromo2.label = "Banyak Lebih Hemat"
     }
     
     private func setupBadgePromo3() {
-        badgePromo3.bgColor = UIColor.warningWeak
-        badgePromo3.labelColor = UIColor.warningStrong
+        badgePromo3.bgColor = EDTSColor.warningWeak
+        badgePromo3.labelColor = EDTSColor.warningStrong
         badgePromo3.label = "Paket Bundling"
     }
     
@@ -218,7 +218,7 @@ public struct CardProductModel {
 
 }
 
-extension CardProductCell: ButtonStepperDelegate {
+extension EDTSCardProductCell: EDTSButtonStepperDelegate {
     public func didSelectButtonCollapsible(show isShow: Bool) {
         productQty = 1
         delegate?.didSelectButtonCollapsible(show: isShow)

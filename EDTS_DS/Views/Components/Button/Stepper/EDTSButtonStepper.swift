@@ -20,7 +20,7 @@ public enum StepperType: String {
 }
 
 @IBDesignable
-public class EDTSStepperButton: UIView {
+public class EDTSButtonStepper: UIView {
     
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var containerBackground: UIView!
@@ -141,7 +141,7 @@ public class EDTSStepperButton: UIView {
         }
     }
   
-    public weak var delegate: ButtonStepperDelegate?
+    public weak var delegate: EDTSButtonStepperDelegate?
         
     private var quantity: Int = 0
     private var qtyMultipe: Int = 1
@@ -298,112 +298,112 @@ public class EDTSStepperButton: UIView {
     
     private func updateTextQuantityColor() {
         if isDisabled {
-            btnTextQtyColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.white : UIColor.grey30
+            btnTextQtyColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.grey30
         } else if let custom = textQuantityColor {
             btnTextQtyColor = custom
         } else {
-            btnTextQtyColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.white : UIColor.grey70
+            btnTextQtyColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.grey70
         }
         lblQty.textColor = btnTextQtyColor
     }
     
     private func updateBackgroundColor() {
         if isDisabled {
-            btnBackground = stepperVariant == StepperVariant.blue.rawValue ? UIColor.disabled : UIColor.white
+            btnBackground = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.disabled : EDTSColor.white
         } else if let custom = bgColor {
             btnBackground = custom
         } else {
-            btnBackground = stepperVariant == StepperVariant.blue.rawValue ? UIColor.blue50 : UIColor.white
+            btnBackground = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.blue50 : EDTSColor.white
         }
         containerBackground.backgroundColor = btnBackground
     }
     
     private func updateMinusBackgroundColor() {
         if isDisabled {
-            minusBgColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.disabled : UIColor.white
+            minusBgColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.disabled : EDTSColor.white
         } else if let custom = btnMinusBackgroundColor {
             minusBgColor = custom
         } else {
-            minusBgColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.blue50 : UIColor.white
+            minusBgColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.blue50 : EDTSColor.white
         }
         btnMinus.backgroundColor = minusBgColor
     }
     
     private func updateMinusColor() {
         if isDisabled {
-            minusColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.white : UIColor.disabled
+            minusColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.disabled
         } else if let custom = btnMinusColor {
             minusColor = custom
         } else if textQuantity == 0 {
-            minusColor = UIColor.disabled
+            minusColor = EDTSColor.disabled
         } else {
-            minusColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.white : UIColor.grey60
+            minusColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.grey60
         }
         btnMinus.tintColor = minusColor
     }
     
     private func updatePlusBackgroundColor() {
         if isDisabled {
-            plusBgColor = UIColor.disabled
+            plusBgColor = EDTSColor.disabled
         } else if let custom = btnPlusBackgroundColor {
             plusBgColor = custom
         } else {
-            plusBgColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.white : UIColor.blue50
+            plusBgColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.blue50
         }
         btnPlus.backgroundColor = plusBgColor
     }
     
     private func updatePlusColor() {
         if isDisabled {
-            plusColor = UIColor.white
+            plusColor = EDTSColor.white
         } else if let custom = btnPlusColor {
             plusColor = custom
         } else {
-            plusColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.blue50 : UIColor.white
+            plusColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.blue50 : EDTSColor.white
         }
         btnPlus.tintColor = plusColor
     }
     
     private func updateIconBackgroundColor() {
         if isDisabled {
-            singleBgColor = UIColor.disabled
+            singleBgColor = EDTSColor.disabled
         } else if let custom = btnIconBackgroundColor {
             singleBgColor = custom
         } else {
-            singleBgColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.blue50 : UIColor.white
+            singleBgColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.blue50 : EDTSColor.white
         }
         btnSingle.backgroundColor = singleBgColor
     }
     
     private func updateIconColor() {
         if isDisabled {
-            iconColor = UIColor.white
+            iconColor = EDTSColor.white
         } else if let custom = btnIconColor {
             iconColor = custom
         } else {
-            iconColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.white : UIColor.blue50
+            iconColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.blue50
         }
         ivIcon.tintColor = iconColor
     }
     
     private func updateNumberBackgroundColor() {
         if isDisabled {
-            singleBgColor = UIColor.disabled
+            singleBgColor = EDTSColor.disabled
         } else if let custom = btnNumberBackgroundColor {
             singleBgColor = custom
         } else {
-            singleBgColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.blue50 : UIColor.white
+            singleBgColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.blue50 : EDTSColor.white
         }
         btnSingle.backgroundColor = singleBgColor
     }
     
     private func updateNumberColor() {
         if isDisabled {
-            numberColor = .white
+            numberColor = EDTSColor.white
         } else if let custom = btnNumberColor {
             numberColor = custom
         } else {
-            numberColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.white : UIColor.blue50
+            numberColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.blue50
         }
         lblNumber.textColor = numberColor
     }
@@ -427,10 +427,10 @@ public class EDTSStepperButton: UIView {
         if let custom = borderColor {
             btnBorderColor = custom
         } else {
-            btnBorderColor = stepperVariant == StepperVariant.blue.rawValue ? UIColor.blue50 : UIColor.grey30
-            btnBorderColor = (stepperType == StepperType.icon.rawValue || stepperType == StepperType.number.rawValue) ? UIColor.blue50 : btnBorderColor
+            btnBorderColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.blue50 : EDTSColor.grey30
+            btnBorderColor = (stepperType == StepperType.icon.rawValue || stepperType == StepperType.number.rawValue) ? EDTSColor.blue50 : btnBorderColor
             if stepperType == StepperType.collapsible.rawValue && stepperVariant == StepperVariant.white.rawValue {
-                btnSingle.layer.borderColor = UIColor.blue50?.cgColor
+                btnSingle.layer.borderColor = EDTSColor.blue50.cgColor
             }
         }
         btnSingle.layer.borderColor = btnBorderColor?.cgColor
@@ -532,7 +532,7 @@ public class EDTSStepperButton: UIView {
 //MARK: - Delegate
 
 @MainActor
-public protocol ButtonStepperDelegate: AnyObject {
+public protocol EDTSButtonStepperDelegate: AnyObject {
     func didSelectButtonCollapsible(show isShow: Bool)
     func didSelectButtonMinus(qty quantity: Int)
     func didSelectButtonPlus(qty quantity: Int)

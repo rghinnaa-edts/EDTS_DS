@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -9,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardProductCell" customModule="KlikIDM_DS" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSCardProductCell" customModule="EDTS_DS" customModuleProvider="target">
             <connections>
                 <outlet property="badgeDiscount" destination="7if-H8-piz" id="z1l-Ry-dhA"/>
                 <outlet property="badgeGift" destination="IYa-Py-g4h" id="GDR-cc-kSy"/>
@@ -46,7 +47,7 @@
                                 <constraint firstAttribute="width" secondItem="rVE-6h-60W" secondAttribute="height" multiplier="1:1" id="nuf-qR-2n1"/>
                             </constraints>
                         </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gRu-fw-Hw3" customClass="ButtonStepper" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gRu-fw-Hw3" customClass="EDTSButtonStepper" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="214" y="8" width="80" height="32"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
@@ -102,7 +103,7 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Na-0z-Smt">
                             <rect key="frame" x="8" y="370" width="286" height="14"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7if-H8-piz" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7if-H8-piz" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="30" height="14"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
@@ -126,7 +127,7 @@
                                 <constraint firstItem="DSP-uW-pbl" firstAttribute="leading" secondItem="7if-H8-piz" secondAttribute="trailing" constant="4" id="rkC-WK-aRQ"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stl-rd-8WD" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="stl-rd-8WD" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="8" y="388" width="107" height="16"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
@@ -134,7 +135,7 @@
                                 <constraint firstAttribute="width" constant="107" id="pQK-Fy-yS6"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f2V-hk-Y90" customClass="Badge" customModule="KlikIDM_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f2V-hk-Y90" customClass="EDTSBadge" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="8" y="408" width="81" height="16"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>

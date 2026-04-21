@@ -8,13 +8,13 @@
 import UIKit
 
 @IBDesignable
-public class CardMyCoupon: UIView {
+public class EDTSCardMyCoupon: UIView {
     // MARK: - Outlets
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var ivLeadingIcon: UIImageView!
     @IBOutlet weak var ivLeadingIconBG: UIView!
     @IBOutlet weak var lblTitle: UILabel!
-    @IBOutlet weak var cvBadge: Badge!
+    @IBOutlet weak var cvBadge: EDTSBadge!
     @IBOutlet weak var lblDesc: UILabel!
     @IBOutlet weak var ivTrailingIcon: UIImageView!
     
@@ -94,7 +94,7 @@ public class CardMyCoupon: UIView {
     }
     
     // MARK: - Public Variable
-    public weak var delegate: CardMyCouponDelegate?
+    public weak var delegate: EDTSCardMyCouponDelegate?
     
     // MARK: - Private Variable
     private let gradientLayer = CAGradientLayer()
@@ -217,16 +217,16 @@ public class CardMyCoupon: UIView {
     }
     
     private func setupBadge(){
-        cvBadge.labelColor = UIColor.white
-        cvBadge.bgColor = UIColor.red30
+        cvBadge.labelColor = EDTSColor.white
+        cvBadge.bgColor = EDTSColor.red30
         cvBadge.cornerRadius = cvBadge.bounds.height / 2
-        cvBadge.borderColor = UIColor.white
+        cvBadge.borderColor = EDTSColor.white
         cvBadge.borderWidth = 1
     }
     
     private func setupDefaultState(){
         titleColor = UIColor.white
-        descColor = UIColor.grey30
+        descColor = EDTSColor.grey30
         iconLeading = UIImage(named: "ic-my-coupon")
         setupLeadingIconBG(UIColor.white)
         iconTrailing = UIImage(named: "ic-chevron-right")
@@ -235,7 +235,7 @@ public class CardMyCoupon: UIView {
         setupBadge()
     }
     
-    public func configureBadge(_ instance: (Badge) -> Void) {
+    public func configureBadge(_ instance: (EDTSBadge) -> Void) {
         guard cvBadge != nil else { return }
         cvBadge.isHidden = false
         instance(cvBadge)
@@ -291,6 +291,6 @@ public class CardMyCoupon: UIView {
 
 
 @MainActor
-public protocol CardMyCouponDelegate: AnyObject {
-    func didSelectCard(_ card: CardMyCoupon)
+public protocol EDTSCardMyCouponDelegate: AnyObject {
+    func didSelectCard(_ card: EDTSCardMyCoupon)
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class Badge: UIView {
+public class EDTSBadge: UIView {
     
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var containerBackgroundView: UIView!
@@ -150,7 +150,7 @@ public class Badge: UIView {
     
     private var textFontWeight: String = "regular"
     private var textFontSize: CGFloat = 10.0
-    private var skeletonView: Skeleton?
+    private var skeletonView: EDTSSkeleton?
     
     
     //MARK: - Initializers
@@ -238,7 +238,7 @@ public class Badge: UIView {
     private func createSkeletonUI() {
         skeletonView?.removeFromSuperview()
         
-        let skeleton = Skeleton()
+        let skeleton = EDTSSkeleton()
         skeleton.translatesAutoresizingMaskIntoConstraints = false
         containerBackgroundView.addSubview(skeleton)
         

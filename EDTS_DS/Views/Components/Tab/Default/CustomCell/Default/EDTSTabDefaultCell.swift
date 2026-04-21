@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class TabDefaultCell: UICollectionViewCell {
+public class EDTSTabDefaultCell: UICollectionViewCell {
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var lblTab: UILabel!
@@ -23,25 +23,25 @@ public class TabDefaultCell: UICollectionViewCell {
         }
     }
     
-    public var tabIndicatorColor: UIColor? = UIColor.blue50 {
+    public var tabIndicatorColor: UIColor? = EDTSColor.blue50 {
         didSet {
             vIndicator.backgroundColor = tabIndicatorColor
         }
     }
     
-    public var tabTextColor: UIColor? = UIColor.blue50 {
+    public var tabTextColor: UIColor? = EDTSColor.blue50 {
         didSet {
             setupTextColor()
         }
     }
     
-    public var tabTextActiveColor: UIColor? = UIColor.blue50 {
+    public var tabTextActiveColor: UIColor? = EDTSColor.blue50 {
         didSet {
             setupTextColor()
         }
     }
     
-    public var tabBackgroundColor: UIColor? = UIColor.white {
+    public var tabBackgroundColor: UIColor? = EDTSColor.white {
         didSet {
             containerView.backgroundColor = tabBackgroundColor
         }
@@ -73,7 +73,7 @@ public class TabDefaultCell: UICollectionViewCell {
     
     private func setupTab() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("TabDefaultCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSTabDefaultCell", owner: self, options: nil),
            let view = nib.first as? UIView {
             containerView = view
             addSubview(containerView)
@@ -119,17 +119,17 @@ public class TabDefaultCell: UICollectionViewCell {
         }
     }
     
-    func loadData(_ data: TabDefaultModel) {
+    func loadData(_ data: EDTSTabDefaultModel) {
         lblTab.text = data.title
     }
 }
 
-extension TabDefaultCell: TabDefaultCellProtocol {
-    public func loadData(item: TabDefaultModelProtocol) {
-        if let data = item as? TabDefaultModel {
+extension EDTSTabDefaultCell: EDTSTabDefaultCellProtocol {
+    public func loadData(item: EDTSTabDefaultModelProtocol) {
+        if let data = item as? EDTSTabDefaultModel {
             loadData(data)
         } else {
-            let data = TabDefaultModel(
+            let data = EDTSTabDefaultModel(
                 id: item.id,
                 title: ""
             )

@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class RibbonView: UIView {
+public class EDTSRibbon: UIView {
     
     public enum Gravity {
         case start
@@ -22,13 +22,13 @@ public class RibbonView: UIView {
         case defaultV
     }
     
-    @IBInspectable public var triangleColor: UIColor = UIColor.blue50 ?? UIColor.blue {
+    @IBInspectable public var triangleColor: UIColor = EDTSColor.blue50 {
         didSet {
             setNeedsDisplay()
         }
     }
     
-    @IBInspectable public var containerColor: UIColor = UIColor.blue30 ?? UIColor.blue {
+    @IBInspectable public var containerColor: UIColor = EDTSColor.blue30 {
         didSet {
             setNeedsDisplay()
         }
@@ -46,7 +46,7 @@ public class RibbonView: UIView {
         }
     }
     
-    @IBInspectable public var textColor: UIColor = .white ?? UIColor.blue {
+    @IBInspectable public var textColor: UIColor = EDTSColor.white {
         didSet {
             label.textColor = textColor
         }
@@ -166,7 +166,7 @@ public class RibbonView: UIView {
         }
         
         let shadow = NSShadow()
-        shadow.shadowColor = UIColor.black?.withAlphaComponent(0.15)
+        shadow.shadowColor = EDTSColor.black.withAlphaComponent(0.15)
         shadow.shadowOffset = CGSize(width: 0, height: 2)
         shadow.shadowBlurRadius = 6
         
@@ -288,7 +288,7 @@ extension UIBezierPath {
         context?.setShadow(
             offset: shadow.shadowOffset,
             blur: shadow.shadowBlurRadius,
-            color: shadowColor?.cgColor
+            color: shadowColor.cgColor
         )
         
         fill()

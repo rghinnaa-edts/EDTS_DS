@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class TabQuadRoundCell: UICollectionViewCell {
+public class EDTSTabQuadRoundCell: UICollectionViewCell {
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var vTab: UIView!
@@ -109,7 +109,7 @@ public class TabQuadRoundCell: UICollectionViewCell {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        guard let nib = bundle.loadNibNamed("TabQuadRoundCell", owner: self, options: nil),
+        guard let nib = bundle.loadNibNamed("EDTSTabQuadRoundCell", owner: self, options: nil),
               let view = nib.first as? UIView else {
             print("Failed to load TabQuadRoundCell nib")
             return
@@ -128,7 +128,7 @@ public class TabQuadRoundCell: UICollectionViewCell {
         self.contentView.clipsToBounds = false
     }
     
-    public func loadData(data: TabQuadRoundModel) {
+    public func loadData(data: EDTSTabQuadRoundModel) {
         lblTab.text = data.title
         lblBadge.text = "\(data.badge)"
         badgeTab.isHidden = data.badge <= 0
@@ -319,7 +319,7 @@ public class TabQuadRoundCell: UICollectionViewCell {
         setUnselectedColors()
         vTab.backgroundColor = tabBackgroundColor
         vTabBackground.backgroundColor = tabBackgroundColor
-        vShadow.backgroundColor = .blue20
+        vShadow.backgroundColor = EDTSColor.blue20
         
         setupCornerMask(for: vTab, corners: [])
         setupCornerMask(for: vShadow, corners: [])
@@ -346,7 +346,7 @@ public class TabQuadRoundCell: UICollectionViewCell {
     }
     
     private func applyShadow() {
-        vShadow.layer.shadowColor = UIColor.black?.cgColor
+        vShadow.layer.shadowColor = EDTSColor.black.cgColor
         vShadow.layer.shadowOpacity = Constants.shadowOpacity
         vShadow.layer.shadowOffset = .zero
         vShadow.layer.shadowRadius = Constants.shadowRadius
@@ -362,8 +362,8 @@ public class TabQuadRoundCell: UICollectionViewCell {
         shadowLayer.maskedCorners = corners
         shadowLayer.zPosition = -1
         
-        let shadowColor = UIColor.black?.withAlphaComponent(CGFloat(Constants.innerShadowOpacity)).cgColor
-        shadowLayer.colors = [UIColor.clear.cgColor, shadowColor ?? UIColor.systemBlue]
+        let shadowColor = EDTSColor.black.withAlphaComponent(CGFloat(Constants.innerShadowOpacity)).cgColor
+        shadowLayer.colors = [UIColor.clear.cgColor, shadowColor]
         shadowLayer.locations = [0.85, 1.0]
         
         vTab.layer.addSublayer(shadowLayer)

@@ -2,7 +2,7 @@
 //  ExtensionView.swift
 //  KlikIDM_DS
 //
-//  Created by Rizka Ghinna Auliya on 06/08/25.
+//  Created by Rizka Ghinna Auliya on 16/04/26.
 //
 
 import UIKit
@@ -106,7 +106,7 @@ extension UIView {
 
         let ripple = CAShapeLayer()
         ripple.opacity = 0
-        ripple.fillColor = UIColor.grey30?.withAlphaComponent(0.12).cgColor
+        ripple.fillColor = EDTSColor.grey30.withAlphaComponent(0.12).cgColor
         
         let maskLayer = CAShapeLayer()
         maskLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: radius).cgPath
@@ -180,7 +180,7 @@ extension UIView {
     }
 
     func showIconRipple(size: CGFloat = 32,
-                    color: UIColor? = UIColor.grey30?.withAlphaComponent(0.22)) {
+                    color: UIColor? = EDTSColor.grey30.withAlphaComponent(0.22)) {
 
         guard iconRippleLayer == nil else { return }
         guard superview != nil else { return }

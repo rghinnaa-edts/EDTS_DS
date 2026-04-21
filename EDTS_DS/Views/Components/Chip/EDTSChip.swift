@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class KlikIDM_DSChip: UIView {
+public class EDTSChip: UIView {
     // MARK: - Outlets
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var hStackContainer: UIStackView!
@@ -287,7 +287,7 @@ public class KlikIDM_DSChip: UIView {
     }
     
     // MARK: - Public Variable
-    public weak var delegate: ChipDelegate?
+    public weak var delegate: EDTSChipDelegate?
     
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -415,12 +415,12 @@ public class KlikIDM_DSChip: UIView {
         let changes = {
             switch newState {
             case .inactive:
-                self.ivLeadingIcon.tintColor = self.iconTintLeading ?? .blue50
+                self.ivLeadingIcon.tintColor = self.iconTintLeading ?? EDTSColor.blue50
                 self.ivLeadingIconBG.backgroundColor = self.iconBGColorLeading ?? .white
-                self.lblTitle.textColor = self.labelColor ?? .blue50
-                self.ivTrailingIcon.tintColor = self.iconTintTrailing ?? .blue50
+                self.lblTitle.textColor = self.labelColor ?? EDTSColor.blue50
+                self.ivTrailingIcon.tintColor = self.iconTintTrailing ?? EDTSColor.blue50
                 self.ivTrailingIconBG.backgroundColor = self.iconBGColorTrailing ?? .white
-                self.containerView.backgroundColor = self.bgColor ?? .grey20
+                self.containerView.backgroundColor = self.bgColor ?? EDTSColor.grey20
                 self.containerView.layer.borderColor = self.borderColor?.cgColor ?? UIColor.clear.cgColor
                 self.containerView.layer.shadowOpacity = self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero
                 self.containerView.layer.shadowRadius = self.shadowRadius != CGFloat.zero ? self.shadowRadius : CGFloat.zero
@@ -428,12 +428,12 @@ public class KlikIDM_DSChip: UIView {
                 self.containerView.layer.shadowColor = self.shadowColor?.cgColor ?? UIColor.clear.cgColor
                 
             case .active:
-                self.ivLeadingIcon.tintColor = self.iconTintLeadingActive ?? (self.iconTintLeading ?? UIColor.blue50)
+                self.ivLeadingIcon.tintColor = self.iconTintLeadingActive ?? (self.iconTintLeading ?? EDTSColor.blue50)
                 self.ivLeadingIconBG.backgroundColor = self.iconBGColorLeadingActive ?? (self.iconBGColorLeading ?? UIColor.white)
-                self.lblTitle.textColor = self.labelColorActive ?? (self.labelColor ?? UIColor.white)
-                self.ivTrailingIcon.tintColor = self.iconTintTrailingActive ?? (self.iconTintTrailing ?? UIColor.blue50)
+                self.lblTitle.textColor = self.labelColorActive ?? (self.labelColor ?? EDTSColor.white)
+                self.ivTrailingIcon.tintColor = self.iconTintTrailingActive ?? (self.iconTintTrailing ?? EDTSColor.blue50)
                 self.ivTrailingIconBG.backgroundColor = self.iconBGColorTrailingActive ?? (self.iconBGColorTrailing ?? UIColor.white)
-                self.containerView.backgroundColor = self.bgColorActive ?? (self.bgColor ?? UIColor.blue50)
+                self.containerView.backgroundColor = self.bgColorActive ?? (self.bgColor ?? EDTSColor.blue50)
                 self.containerView.layer.borderColor = self.borderColorActive?.cgColor ?? (self.borderColor?.cgColor ?? UIColor.clear.cgColor)
                 self.containerView.layer.shadowOpacity = self.shadowOpacityActive != Float.zero ? self.shadowOpacityActive : (self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero)
                 self.containerView.layer.shadowRadius = self.shadowRadiusActive != CGFloat.zero ? self.shadowRadiusActive : (self.shadowRadius != CGFloat.zero ? self.shadowRadius : CGFloat.zero)
@@ -511,10 +511,10 @@ public class KlikIDM_DSChip: UIView {
 }
 
 @MainActor
-public protocol ChipDelegate: AnyObject {
-    func didSelectChip(_ chip: KlikIDM_DSChip)
-    func didSelectChipIconLeading(_ chip: KlikIDM_DSChip)
-    func didSelectChipIconTrailing(_ chip: KlikIDM_DSChip)
+public protocol EDTSChipDelegate: AnyObject {
+    func didSelectChip(_ chip: EDTSChip)
+    func didSelectChipIconLeading(_ chip: EDTSChip)
+    func didSelectChipIconTrailing(_ chip: EDTSChip)
 }
 
 public enum ChipState: String {

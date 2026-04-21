@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="KlikIDM_DSCoachmark" customModule="KlikIDM_DS" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSCoachmark" customModule="EDTS_DS" customModuleProvider="target">
             <connections>
                 <outlet property="btnNext" destination="WGR-B5-qYp" id="mG5-BI-gEz"/>
                 <outlet property="btnSkip" destination="Eyr-f7-XtR" id="VOk-i4-xc5"/>
@@ -45,7 +45,7 @@
                         </label>
                     </subviews>
                 </stackView>
-                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGR-B5-qYp" customClass="KlikIDM_DSButton" customModule="KlikIDM_DS" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGR-B5-qYp" customClass="EDTSButton" customModule="EDTS_DS" customModuleProvider="target">
                     <rect key="frame" x="244" y="89" width="100" height="34.333333333333343"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="100" id="eJP-qt-1g4"/>
@@ -56,7 +56,7 @@
                         <action selector="nextButtonTapped:" destination="-1" eventType="touchUpInside" id="fYe-Sd-D6Q"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eyr-f7-XtR" customClass="KlikIDM_DSButton" customModule="KlikIDM_DS" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eyr-f7-XtR" customClass="EDTSButton" customModule="EDTS_DS" customModuleProvider="target">
                     <rect key="frame" x="136" y="89" width="100" height="34.333333333333343"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="100" id="kRJ-77-K5P"/>

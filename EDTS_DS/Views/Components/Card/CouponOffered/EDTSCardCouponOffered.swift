@@ -14,7 +14,7 @@ public enum FairGeneralType: String {
 }
 
 @IBDesignable
-public class CardCouponOffered: UIView {
+public class EDTSCardCouponOffered: UIView {
     
     //MARK: - Outlets
     
@@ -26,14 +26,14 @@ public class CardCouponOffered: UIView {
     @IBOutlet weak var lblService: UILabel!
     @IBOutlet weak var lblPeriode: UILabel!
     @IBOutlet weak var lblInfo: UILabel!
-    @IBOutlet weak var badgeFairGeneral: Badge!
-    @IBOutlet weak var badgeCoupon: Badge!
-    @IBOutlet weak var badgeCouponCode: Badge!
-    @IBOutlet weak var badgeMinimumTransaction: Badge!
-    @IBOutlet weak var badgeService: Badge!
-    @IBOutlet weak var badgePeriode: Badge!
+    @IBOutlet weak var badgeFairGeneral: EDTSBadge!
+    @IBOutlet weak var badgeCoupon: EDTSBadge!
+    @IBOutlet weak var badgeCouponCode: EDTSBadge!
+    @IBOutlet weak var badgeMinimumTransaction: EDTSBadge!
+    @IBOutlet weak var badgeService: EDTSBadge!
+    @IBOutlet weak var badgePeriode: EDTSBadge!
     @IBOutlet weak var btnDetail: UIButton!
-    @IBOutlet weak var btnExchange: KlikIDM_DSButton!
+    @IBOutlet weak var btnExchange: EDTSButton!
     @IBOutlet weak var vInformation: UIView!
     @IBOutlet weak var vDivider: UIView!
     @IBOutlet weak var vSkeletonTop: UIView!
@@ -77,7 +77,7 @@ public class CardCouponOffered: UIView {
         }
     }
     
-    @IBInspectable public var periodeTextColor: UIColor? = UIColor.grey40 {
+    @IBInspectable public var periodeTextColor: UIColor? = EDTSColor.grey40 {
         didSet {
             lblPeriode.textColor = periodeTextColor
         }
@@ -113,7 +113,7 @@ public class CardCouponOffered: UIView {
         }
     }
     
-    @IBInspectable public var bgColor: UIColor? = nil {
+    @IBInspectable public var bgColor: UIColor = EDTSColor.white {
         didSet {
             cardBgColor = bgColor
         }
@@ -145,13 +145,13 @@ public class CardCouponOffered: UIView {
         }
     }
     
-    @IBInspectable public var shadowColor: UIColor? = UIColor.black {
+    @IBInspectable public var shadowColor: UIColor = EDTSColor.black {
         didSet {
             cardShadowColor = shadowColor
         }
     }
     
-    @IBInspectable public var shadowActiveColor: UIColor? = UIColor.black {
+    @IBInspectable public var shadowActiveColor: UIColor = EDTSColor.black {
         didSet {
             cardShadowActiveColor = shadowActiveColor
         }
@@ -193,7 +193,7 @@ public class CardCouponOffered: UIView {
     }
     
     //MARK: - Public Variables
-    public weak var delegate: CardCouponOfferedDelegate?
+    public weak var delegate: EDTSCardCouponOfferedDelegate?
     
     //MARK: - Private Variables
     
@@ -201,9 +201,9 @@ public class CardCouponOffered: UIView {
     private var cardShadowOpacity: Float = 0.0
     private var cardShadowOffset = CGSize.zero
     private var cardShadowRadius = 0.0
-    private var cardShadowColor = UIColor.black
-    private var cardShadowActiveColor = UIColor.black
-    private var ribbonView: RibbonView?
+    private var cardShadowColor = EDTSColor.black
+    private var cardShadowActiveColor = EDTSColor.black
+    private var ribbonView: EDTSRibbon?
     
     
     //MARK: - Initializers
@@ -275,7 +275,7 @@ public class CardCouponOffered: UIView {
             containerView = view
             addSubview(containerView)
             containerView.frame = bounds
-            containerView.backgroundColor = .grey10
+            containerView.backgroundColor = EDTSColor.grey10
             containerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
             
             setupUI()
@@ -313,7 +313,7 @@ public class CardCouponOffered: UIView {
         )
         
         containerView.backgroundColor = .clear
-        containerView.layer.shadowColor = shadowColor?.cgColor ?? UIColor.black?.cgColor
+        containerView.layer.shadowColor = shadowColor.cgColor
         containerView.layer.shadowOpacity = shadowOpacity
         containerView.layer.shadowOffset = shadowOffset
         containerView.layer.shadowRadius = shadowRadius
@@ -323,22 +323,22 @@ public class CardCouponOffered: UIView {
     
     private func setupBadgeGeneralFair() {
         badgeFairGeneral.label = FairGeneralType.general.rawValue
-        badgeFairGeneral.labelColor = UIColor.white
-        badgeFairGeneral.bgColor = UIColor.green50
+        badgeFairGeneral.labelColor = EDTSColor.white
+        badgeFairGeneral.bgColor = EDTSColor.green50
         badgeFairGeneral.cornerRadius = 4
     }
     
     private func setupBadgeExclusiveFair() {
         badgeFairGeneral.label = FairGeneralType.exclusive.rawValue
-        badgeFairGeneral.labelColor = UIColor.white
-        badgeFairGeneral.bgColor = UIColor.yellow50
+        badgeFairGeneral.labelColor = EDTSColor.white
+        badgeFairGeneral.bgColor = EDTSColor.yellow50
         badgeFairGeneral.cornerRadius = 4
     }
     
     private func setupBadgeCoupon() {
         badgeCoupon.label = "i-Kupon"
-        badgeCoupon.bgColor = UIColor.blue20
-        badgeCoupon.labelColor = UIColor.blue50
+        badgeCoupon.bgColor = EDTSColor.blue20
+        badgeCoupon.labelColor = EDTSColor.blue50
         badgeCoupon.cornerRadius = 4
         badgeCoupon.labelFont = UIFont.systemFont(ofSize: 10, weight: .semibold)
     }
@@ -357,38 +357,38 @@ public class CardCouponOffered: UIView {
         let codeRange = (fullText as NSString).range(of: code)
         attributedString.addAttribute(.font, value: semiboldFont, range: codeRange)
         
-        attributedString.addAttribute(.foregroundColor, value: UIColor.grey50 ?? UIColor.gray, range: NSRange(location: 0, length: fullText.count))
+        attributedString.addAttribute(.foregroundColor, value: EDTSColor.grey50, range: NSRange(location: 0, length: fullText.count))
         
         badgeCouponCode.labelAttributed = attributedString
-        badgeCouponCode.bgColor = UIColor.grey20
-        badgeCouponCode.labelColor = UIColor.grey50
+        badgeCouponCode.bgColor = EDTSColor.grey20
+        badgeCouponCode.labelColor = EDTSColor.grey50
         badgeCouponCode.cornerRadius = 4
     }
     
     private func setupBadgeMinimumTransaction() {
         badgeMinimumTransaction.label = "Minimum Transaksi"
         badgeMinimumTransaction.bgColor = UIColor.clear
-        badgeMinimumTransaction.labelColor = UIColor.grey40
+        badgeMinimumTransaction.labelColor = EDTSColor.grey40
         badgeMinimumTransaction.icon = UIImage(named: "ic-bag")
-        badgeMinimumTransaction.iconTint = UIColor.grey40
+        badgeMinimumTransaction.iconTint = EDTSColor.grey40
         badgeMinimumTransaction.paddingLeading = 0
     }
     
     private func setupBadgeService() {
         badgeService.label = "Service"
         badgeService.bgColor = UIColor.clear
-        badgeService.labelColor = UIColor.grey40
+        badgeService.labelColor = EDTSColor.grey40
         badgeService.icon = UIImage(named: "ic-cart")
-        badgeService.iconTint = UIColor.grey40
+        badgeService.iconTint = EDTSColor.grey40
         badgeService.paddingLeading = 0
     }
     
     private func setupBadgePeriode() {
         badgePeriode.label = "Periode"
         badgePeriode.bgColor = UIColor.clear
-        badgePeriode.labelColor = UIColor.grey40
+        badgePeriode.labelColor = EDTSColor.grey40
         badgePeriode.icon = UIImage(named: "ic-clock")
-        badgePeriode.iconTint = UIColor.grey40
+        badgePeriode.iconTint = EDTSColor.grey40
         badgePeriode.paddingLeading = 0
     }
     
@@ -459,8 +459,8 @@ public class CardCouponOffered: UIView {
             btnExchange.label = "Tukar"
             btnExchange.fontSize = 12
             btnExchange.fontWeight = "semibold"
-            btnExchange.bgColorStart = UIColor.leadingSkyblue
-            btnExchange.bgColorEnd = UIColor.trailingSkyblue
+            btnExchange.bgColorStart = EDTSColor.skyblueLeading
+            btnExchange.bgColorEnd = EDTSColor.skyblueTrailing
             btnExchange.bgColorOrientation = "horizontal"
         }
     }
@@ -495,13 +495,13 @@ public class CardCouponOffered: UIView {
     private func setupRibbon() {
         ribbonView?.removeFromSuperview()
         
-        let newRibbonView = RibbonView()
+        let newRibbonView = EDTSRibbon()
         
         newRibbonView.ribbonText = "Pengguna Baru"
-        newRibbonView.triangleColor = UIColor.orange50 ?? .orange
-        newRibbonView.containerStartColor = UIColor.yellow30 ?? .yellow
-        newRibbonView.containerEndColor = UIColor.orange30 ?? .orange
-        newRibbonView.textColor = UIColor.white ?? .systemYellow
+        newRibbonView.triangleColor = EDTSColor.orange50
+        newRibbonView.containerStartColor = EDTSColor.yellow30
+        newRibbonView.containerEndColor = EDTSColor.orange30
+        newRibbonView.textColor = EDTSColor.white
         newRibbonView.gravity = .end
 
         newRibbonView.anchorToView(
@@ -571,7 +571,7 @@ public class CardCouponOffered: UIView {
         let label = UILabel()
         label.text = text
         label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.textColor = UIColor.blue50
+        label.textColor = EDTSColor.blue50
         
         stackView.addArrangedSubview(label)
         
@@ -602,7 +602,7 @@ public class CardCouponOffered: UIView {
 }
 
 @MainActor
-public protocol CardCouponOfferedDelegate: AnyObject {
+public protocol EDTSCardCouponOfferedDelegate: AnyObject {
     func didSelectButtonDetail()
     func didSelectButtonExchange(isCanExchange: Bool, isExchanged: Bool)
 }
