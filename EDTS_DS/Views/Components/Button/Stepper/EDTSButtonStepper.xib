@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSStepperButton" customModule="EDTS_DS" customModuleProvider="target">
+            <connections>
+                <outlet property="btnMinus" destination="Hrt-52-UE7" id="O1q-pu-A9G"/>
+                <outlet property="btnPlus" destination="DgB-YE-10s" id="Cun-JY-YCf"/>
+                <outlet property="btnSingle" destination="gCd-rB-U7e" id="V08-Dp-hHU"/>
+                <outlet property="containerBackground" destination="SvR-bU-Dei" id="6gV-Hy-UvF"/>
+                <outlet property="containerView" destination="C6V-aP-Kes" id="rjx-GT-fMi"/>
+                <outlet property="ivIcon" destination="ERD-A6-icg" id="IgL-N7-aSF"/>
+                <outlet property="lblNumber" destination="o5O-Lc-Pgp" id="MaH-yK-BeK"/>
+                <outlet property="lblQty" destination="fVk-Bf-pJi" id="1CK-ho-fZN"/>
+                <outlet property="vStepper" destination="coy-Co-J1U" id="oON-3O-ymZ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="C6V-aP-Kes">
+            <rect key="frame" x="0.0" y="0.0" width="114" height="97"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SvR-bU-Dei">
+                    <rect key="frame" x="0.0" y="0.0" width="114" height="63"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="coy-Co-J1U">
+                    <rect key="frame" x="4" y="4" width="106" height="55"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hrt-52-UE7">
+                            <rect key="frame" x="0.0" y="15.666666666666668" width="24" height="24.000000000000004"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="24" id="CGZ-eT-Ti0"/>
+                                <constraint firstAttribute="height" constant="24" id="OGK-F1-lr1"/>
+                            </constraints>
+                            <color key="tintColor" name="60Grey"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="minus" catalog="system" imagePadding="0.0">
+                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="9" weight="bold"/>
+                            </buttonConfiguration>
+                            <connections>
+                                <action selector="btnMinus:" destination="-1" eventType="touchUpInside" id="Jf6-P5-oX7"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fVk-Bf-pJi">
+                            <rect key="frame" x="24" y="19" width="58" height="17"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DgB-YE-10s">
+                            <rect key="frame" x="82" y="15.666666666666668" width="24" height="24.000000000000004"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="24" id="66V-wn-ABe"/>
+                                <constraint firstAttribute="height" constant="24" id="WM5-3e-fpi"/>
+                            </constraints>
+                            <color key="tintColor" name="50Blue"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="plus" catalog="system" imagePadding="0.0">
+                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="9" weight="bold"/>
+                            </buttonConfiguration>
+                            <connections>
+                                <action selector="btnPlus:" destination="-1" eventType="touchUpInside" id="VP2-bp-aZO"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gCd-rB-U7e">
+                    <rect key="frame" x="51" y="0.0" width="63" height="63"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plus" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ERD-A6-icg">
+                            <rect key="frame" x="6" y="7.9999999999999964" width="51" height="47.333333333333329"/>
+                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="medium"/>
+                        </imageView>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o5O-Lc-Pgp">
+                            <rect key="frame" x="27" y="23" width="9.3333333333333357" height="17"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="50Blue"/>
+                    <constraints>
+                        <constraint firstItem="ERD-A6-icg" firstAttribute="top" secondItem="gCd-rB-U7e" secondAttribute="top" constant="6" id="3dj-yh-3oc"/>
+                        <constraint firstAttribute="bottom" secondItem="ERD-A6-icg" secondAttribute="bottom" constant="6" id="BMg-aK-iHD"/>
+                        <constraint firstItem="o5O-Lc-Pgp" firstAttribute="centerX" secondItem="gCd-rB-U7e" secondAttribute="centerX" id="HRC-Aj-Zej"/>
+                        <constraint firstItem="o5O-Lc-Pgp" firstAttribute="centerY" secondItem="gCd-rB-U7e" secondAttribute="centerY" id="Jni-n9-WpR"/>
+                        <constraint firstAttribute="trailing" secondItem="ERD-A6-icg" secondAttribute="trailing" constant="6" id="P46-Rt-syz"/>
+                        <constraint firstAttribute="width" secondItem="gCd-rB-U7e" secondAttribute="height" multiplier="1:1" id="cMl-pl-aE4"/>
+                        <constraint firstItem="ERD-A6-icg" firstAttribute="leading" secondItem="gCd-rB-U7e" secondAttribute="leading" constant="6" id="ey7-dB-BYH"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="XCq-uq-FWz"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="coy-Co-J1U" firstAttribute="leading" secondItem="C6V-aP-Kes" secondAttribute="leading" constant="4" id="9ro-VF-nmW"/>
+                <constraint firstItem="XCq-uq-FWz" firstAttribute="bottom" secondItem="gCd-rB-U7e" secondAttribute="bottom" id="CCB-Rh-gfg"/>
+                <constraint firstAttribute="trailing" secondItem="gCd-rB-U7e" secondAttribute="trailing" id="EDH-At-uZo"/>
+                <constraint firstItem="XCq-uq-FWz" firstAttribute="bottom" secondItem="SvR-bU-Dei" secondAttribute="bottom" id="OF4-ZU-bvg"/>
+                <constraint firstAttribute="trailing" secondItem="coy-Co-J1U" secondAttribute="trailing" constant="4" id="THG-hb-NGK"/>
+                <constraint firstItem="SvR-bU-Dei" firstAttribute="leading" secondItem="XCq-uq-FWz" secondAttribute="leading" id="VsX-hQ-4nf"/>
+                <constraint firstItem="gCd-rB-U7e" firstAttribute="top" secondItem="C6V-aP-Kes" secondAttribute="top" id="hNo-Qp-ErQ"/>
+                <constraint firstItem="SvR-bU-Dei" firstAttribute="top" secondItem="C6V-aP-Kes" secondAttribute="top" id="odT-Yl-Z9s"/>
+                <constraint firstItem="coy-Co-J1U" firstAttribute="top" secondItem="C6V-aP-Kes" secondAttribute="top" constant="4" id="qwt-zw-L5y"/>
+                <constraint firstAttribute="trailing" secondItem="SvR-bU-Dei" secondAttribute="trailing" id="x1C-nr-ih2"/>
+                <constraint firstItem="XCq-uq-FWz" firstAttribute="bottom" secondItem="coy-Co-J1U" secondAttribute="bottom" constant="4" id="znx-BP-9ai"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-21.374045801526716" y="-9.5070422535211279"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="minus" catalog="system" width="128" height="26"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
+        <namedColor name="50Blue">
+            <color red="0.066666666666666666" green="0.47058823529411764" blue="0.83137254901960789" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="60Grey">
+            <color red="0.2627450980392157" green="0.27843137254901962" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
