@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnBoardingCell" customModule="EDTS_DS" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="mjL-Dl-bXX" customClass="EDTSOnBoardingCell" customModule="EDTS_DS" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="649"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7ht-PS-0TX">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="589.66666666666663"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="7ht-PS-0TX" secondAttribute="height" multiplier="2:3" id="bsb-Fp-XSH"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="YSu-45-pz9"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="YSu-45-pz9" firstAttribute="trailing" secondItem="7ht-PS-0TX" secondAttribute="trailing" id="9Od-Ph-kj8"/>
+                <constraint firstItem="7ht-PS-0TX" firstAttribute="top" secondItem="mjL-Dl-bXX" secondAttribute="top" id="QHn-B7-vae"/>
+                <constraint firstItem="7ht-PS-0TX" firstAttribute="leading" secondItem="YSu-45-pz9" secondAttribute="leading" id="uJS-LU-NUq"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="ivSlide" destination="7ht-PS-0TX" id="u1O-9c-Qen"/>
+            </connections>
+            <point key="canvasLocation" x="51.145038167938928" y="198.23943661971833"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
