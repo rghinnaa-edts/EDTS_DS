@@ -87,7 +87,7 @@ open class EDTSColor {
     
     public class var grey80: UIColor {
         switch theme {
-        case .klikIDM: return KlikIDMColor.grey70 // KlikIDM darkest grey
+        case .klikIDM: return KlikIDMColor.grey70
         case .poinku:  return PoinkuColor.grey80
         }
     }
@@ -132,14 +132,14 @@ open class EDTSColor {
     public class var blue60: UIColor {
         switch theme {
         case .klikIDM: return KlikIDMColor.blue60
-        case .poinku:  return PoinkuColor.blue50 // Poinku darkest blue
+        case .poinku:  return PoinkuColor.blue50
         }
     }
     
     public class var blue70: UIColor {
         switch theme {
         case .klikIDM: return KlikIDMColor.blue70
-        case .poinku:  return PoinkuColor.blue50 // Poinku darkest blue
+        case .poinku:  return PoinkuColor.blue50
         }
     }
     

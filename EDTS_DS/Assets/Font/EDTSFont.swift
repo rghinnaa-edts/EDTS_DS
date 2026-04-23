@@ -19,7 +19,7 @@ public enum FontWeight: String {
     case black = "black"
 }
 
-struct Font {
+struct EDTSFont {
     struct FontStyle {
         let font: UIFont
         let lineHeight: CGFloat

@@ -39,7 +39,7 @@ public class EDTSCardProductCell: UICollectionViewCell {
         return productQty
     }
     
-    public weak var delegate: CardProductCellDelegate?
+    public weak var delegate: EDTSCardProductCellDelegate?
     
     private var productQty = 0
     
@@ -168,7 +168,7 @@ public class EDTSCardProductCell: UICollectionViewCell {
 }
 
 @MainActor
-public protocol CardProductCellDelegate: AnyObject {
+public protocol EDTSCardProductCellDelegate: AnyObject {
     func didSelectButtonCollapsible(show isShow: Bool)
 }
 
