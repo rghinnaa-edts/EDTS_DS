@@ -21,7 +21,6 @@ public enum StepperType: String {
 
 @IBDesignable
 public class EDTSButtonStepper: UIView {
-    
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var containerBackground: UIView!
     @IBOutlet weak var btnMinus: UIButton!
@@ -202,7 +201,7 @@ public class EDTSButtonStepper: UIView {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("ButtonStepper", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSButtonStepper", owner: self, options: nil),
            let view = nib.first as? UIView {
             
             containerView = view

@@ -102,7 +102,7 @@ public class EDTSTabQuadRound: UIView {
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
         
-        guard let nib = bundle.loadNibNamed("TabQuadRound", owner: self, options: nil),
+        guard let nib = bundle.loadNibNamed("EDTSTabQuadRound", owner: self, options: nil),
               let tab = nib.first as? UIView else {
             print("Failed to load TabQuadRound XIB from bundle: \(bundle)")
             return

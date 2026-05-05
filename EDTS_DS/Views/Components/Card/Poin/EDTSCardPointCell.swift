@@ -101,7 +101,7 @@ public class EDTSCardPointCell: UICollectionViewCell {
 
     private func setupPoinCard() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("EDTSPointCardCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCardPointCell", owner: self, options: nil),
            let view = nib.first as? UIView {
             poinCard = view
             poinCard.frame = bounds

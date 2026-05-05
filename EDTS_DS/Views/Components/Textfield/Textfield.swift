@@ -163,7 +163,7 @@ public class Textfield: UIView {
     }
     
     @objc private func textFieldDidBeginEditing() {
-        vTextfield.layer.borderColor = UIColor.blue30.cgColor
+        vTextfield.layer.borderColor = EDTSColor.blue30.cgColor
         vTextfield.layer.borderWidth = 1
         vTextfield.layer.cornerRadius = 4
     }
@@ -198,21 +198,21 @@ public class Textfield: UIView {
     private func setupUI() {
         vTextfield.layer.borderWidth = 1
         vTextfield.layer.cornerRadius = 4
-        vTextfield.layer.borderColor = UIColor.grey30.cgColor
+        vTextfield.layer.borderColor = EDTSColor.grey30.cgColor
         
-        labelText.font = Font.H3.font
-        labelText.textColor = UIColor.grey60
+        labelText.font = EDTSFont.H3.font
+        labelText.textColor = EDTSColor.grey60
         
-        labelRequired.font = Font.H3.font
-        labelRequired.textColor = UIColor.red30
+        labelRequired.font = EDTSFont.H3.font
+        labelRequired.textColor = EDTSColor.red30
         labelRequired.text = "*"
         
-        textfield.font = Font.B2.Small.font
-        textfield.textColor = UIColor.grey80
+        textfield.font = EDTSFont.B2.Regular.font
+        textfield.textColor = EDTSColor.grey80
         textfield.borderStyle = .none
         
         iconLeading.image = iconLeading.image?.withRenderingMode(.alwaysTemplate)
-        iconLeading.tintColor = UIColor.grey60
+        iconLeading.tintColor = EDTSColor.grey60
         if iconStart == nil {
             setIconWidth(icon: iconLeading, to: 0)
             iconLeading.isHidden = true
@@ -222,7 +222,7 @@ public class Textfield: UIView {
         }
         
         iconTrailing.image = iconTrailing.image?.withRenderingMode(.alwaysTemplate)
-        iconTrailing.tintColor = UIColor.grey60
+        iconTrailing.tintColor = EDTSColor.grey60
         if iconEnd == nil {
             setIconWidth(icon: iconTrailing, to: 0)
             iconTrailing.isHidden = true
@@ -231,12 +231,12 @@ public class Textfield: UIView {
             iconTrailing.isHidden = false
         }
         
-        support.font = Font.B4.Small.font
-        support.textColor = UIColor.grey60
+        support.font = EDTSFont.B4.Regular.font
+        support.textColor = EDTSColor.grey60
         support.isHidden = true
         
-        counter.font = Font.B4.Small.font
-        counter.textColor = UIColor.grey60
+        counter.font = EDTSFont.B4.Regular.font
+        counter.textColor = EDTSColor.grey60
         counter.isHidden = true
     }
     
@@ -248,11 +248,11 @@ public class Textfield: UIView {
     
     private func updateBorderColor() {
         if errorMessage != nil {
-            vTextfield.layer.borderColor = UIColor.errorStrong.cgColor
+            vTextfield.layer.borderColor = EDTSColor.errorStrong.cgColor
         } else if vTextfield.isFirstResponder {
-            vTextfield.layer.borderColor = UIColor.blue30.cgColor
+            vTextfield.layer.borderColor = EDTSColor.blue30.cgColor
         } else {
-            vTextfield.layer.borderColor = UIColor.grey30.cgColor
+            vTextfield.layer.borderColor = EDTSColor.grey30.cgColor
         }
     }
     

@@ -29,7 +29,7 @@ public class EDTSStepPageNav: UIView {
             setupUI()
         }
     }
-    public var currentStep = 0 {
+    public var currentStep: Int = 0 {
         didSet {
             setupUI()
         }

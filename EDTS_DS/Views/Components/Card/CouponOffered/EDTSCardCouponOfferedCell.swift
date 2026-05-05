@@ -73,7 +73,7 @@ public class EDTSCardCouponOfferedCell: UICollectionViewCell {
     
     //MARK: - Public Variables
     
-    public weak var delegate: CardCouponOfferedCellDelegate?
+    public weak var delegate: EDTSCardCouponOfferedCellDelegate?
     public var index: Int = 0
     
     //MARK: - Initializers
@@ -125,7 +125,7 @@ public class EDTSCardCouponOfferedCell: UICollectionViewCell {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("CardCouponOfferedCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCardCouponOfferedCell", owner: self, options: nil),
            let view = nib.first as? UIView {
             containerView = view
             containerView.frame = bounds
@@ -138,7 +138,7 @@ public class EDTSCardCouponOfferedCell: UICollectionViewCell {
 //MARK: - Delegate
 
 @MainActor
-public protocol CardCouponOfferedCellDelegate: AnyObject {
+public protocol EDTSCardCouponOfferedCellDelegate: AnyObject {
     func didSelectButtonDetail(at index: Int)
     func didSelectButtonExchange(at index: Int, isCanExchange: Bool, isExchanged: Bool)
 }

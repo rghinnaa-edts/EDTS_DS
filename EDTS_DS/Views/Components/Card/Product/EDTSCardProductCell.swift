@@ -117,7 +117,7 @@ public class EDTSCardProductCell: UICollectionViewCell {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("CardProductCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCardProductCell", owner: self, options: nil),
            let view = nib.first as? UIView {
             containerView = view
             containerView.frame = bounds

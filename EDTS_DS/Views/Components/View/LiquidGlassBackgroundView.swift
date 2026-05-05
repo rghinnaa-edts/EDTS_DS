@@ -72,9 +72,7 @@ class LiquidGlassBackgroundView: UIView {
         var colors: [CGColor] = []
 
         colors.append(EDTSColor.white.withAlphaComponent(2.0).cgColor)
-        for i in 0..<60 {
-            colors.append(UIColor.clear.cgColor)
-        }
+        colors += Array(repeating: UIColor.clear.cgColor, count: 60)
         colors.append(EDTSColor.white.withAlphaComponent(2.0).cgColor)
         
         gradientBorder.colors = colors

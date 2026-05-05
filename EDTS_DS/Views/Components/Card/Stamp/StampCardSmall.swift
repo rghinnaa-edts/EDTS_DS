@@ -97,16 +97,16 @@ public class StampCardSmall: UICollectionViewCell {
         
         stampCard.backgroundColor = .white
         stampCard.layer.borderWidth = 1
-        stampCard.layer.borderColor = UIColor.blue30.cgColor
+        stampCard.layer.borderColor = EDTSColor.blue30.cgColor
         
-        lblStampCard.textColor = UIColor.grey70
-        lblStampCard.font = Font.B3.Small.font
+        lblStampCard.textColor = EDTSColor.grey70
+        lblStampCard.font = EDTSFont.B3.Regular.font
         
         btnExchange.titleLabel?.text = "Tukar Stamp"
-        btnExchange.backgroundColor = UIColor.blue30
+        btnExchange.backgroundColor = EDTSColor.blue30
         btnExchange.layer.cornerRadius = 4
         btnExchange.titleLabel?.textColor = .white
-        btnExchange.titleLabel?.font = Font.Button.Small.font
+        btnExchange.titleLabel?.font = EDTSFont.Button.Small.font
         
         lblStampCard.text = "Diskon Rp2.000 Lifebuoy Red Fresh"
 //        ivStampCard.image = UIImage(named: "product-image")
@@ -125,21 +125,21 @@ public class StampCardSmall: UICollectionViewCell {
         ivQuantity.image = ivQuantity.image?.withRenderingMode(.alwaysTemplate)
         
         ivQuantity.tintColor = if quantity < 10 && quantity > 0 {
-            UIColor.warningStrong
+            EDTSColor.warningStrong
         } else {
-            UIColor.errorStrong
+            EDTSColor.errorStrong
         }
         
         vQuantity.backgroundColor = if quantity < 10 && quantity > 0 {
-            UIColor.warningWeak
+            EDTSColor.warningWeak
         } else {
-            UIColor.errorWeak
+            EDTSColor.errorWeak
         }
         
         lblQuantity.textColor = if quantity < 10 && quantity > 0 {
-            UIColor.warningStrong
+            EDTSColor.warningStrong
         } else {
-            UIColor.errorStrong
+            EDTSColor.errorStrong
         }
         
         lblQuantity.text = if quantity < 10 && quantity > 0 {
@@ -147,27 +147,27 @@ public class StampCardSmall: UICollectionViewCell {
         } else {
             "Kuota Habis"
         }
-        lblQuantity.font = Font.B4.Small.font
+        lblQuantity.font = EDTSFont.B4.Regular.font
     }
     
     private func UIStamp() {
-        vStamp.backgroundColor = UIColor.highlightWeak
+        vStamp.backgroundColor = EDTSColor.secondaryWeak
         vStamp.layer.cornerRadius = 8
         vStamp.layer.borderWidth = 1
-        vStamp.layer.borderColor = UIColor.warningStrong.cgColor
+        vStamp.layer.borderColor = EDTSColor.warningStrong.cgColor
         
-        lblStamp.textColor = UIColor.warningStrong
-        lblStamp.font = Font.B4.Small.font
+        lblStamp.textColor = EDTSColor.warningStrong
+        lblStamp.font = EDTSFont.B4.Regular.font
         lblStamp.text = "24 Stamp"
     }
     
     private func UIRibbonHotProduct() {
-        let ribbonView = RibbonView()
+        let ribbonView = EDTSRibbon()
         ribbonView.ribbonText = "Hot Product!"
-        ribbonView.triangleColor = UIColor.red50
-        ribbonView.containerStartColor = UIColor.red20
-        ribbonView.containerEndColor = UIColor.red50
-        ribbonView.textColor = .white
+        ribbonView.triangleColor = EDTSColor.red50
+        ribbonView.containerStartColor = EDTSColor.red20
+        ribbonView.containerEndColor = EDTSColor.red50
+        ribbonView.textColor = EDTSColor.white
         ribbonView.gravity = .start
 
         ribbonView.anchorToView(
@@ -177,12 +177,12 @@ public class StampCardSmall: UICollectionViewCell {
     }
     
     private func UIRibbonNew() {
-        let ribbonView = RibbonView()
+        let ribbonView = EDTSRibbon()
         ribbonView.ribbonText = "Baru!"
-        ribbonView.triangleColor = UIColor.orange30
-        ribbonView.containerStartColor = UIColor.yellow30
-        ribbonView.containerEndColor = UIColor.orange30
-        ribbonView.textColor = .white
+        ribbonView.triangleColor = EDTSColor.orange30
+        ribbonView.containerStartColor = EDTSColor.yellow30
+        ribbonView.containerEndColor = EDTSColor.orange30
+        ribbonView.textColor = EDTSColor.white
         ribbonView.gravity = .end
 
         ribbonView.anchorToView(

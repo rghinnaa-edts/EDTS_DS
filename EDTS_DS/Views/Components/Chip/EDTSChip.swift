@@ -326,7 +326,7 @@ public class EDTSChip: UIView {
     // MARK: - Setup & Styling
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("KlikIDM_DSChip", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSChip", owner: self, options: nil),
            let view = nib.first as? UIView {
             
             containerView = view

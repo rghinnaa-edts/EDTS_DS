@@ -189,7 +189,7 @@ public class EDTSBadge: UIView {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("Badge", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSBadge", owner: self, options: nil),
            let view = nib.first as? UIView {
             
             containerView = view

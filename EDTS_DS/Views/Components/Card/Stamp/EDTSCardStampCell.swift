@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class CardStampCell: UICollectionViewCell {
+public class EDTSCardStampCell: UICollectionViewCell {
     
     @IBOutlet var stampCard: UIView!
     @IBOutlet var ivStampCard: UIImageView!
@@ -98,7 +98,7 @@ public class CardStampCell: UICollectionViewCell {
 
     private func setupStampCard() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("StampCard", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCardStampCell", owner: self, options: nil),
            let view = nib.first as? UIView {
             stampCard = view
             stampCard.frame = bounds

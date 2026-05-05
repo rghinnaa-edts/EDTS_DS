@@ -19,10 +19,10 @@ public class EDTSPageControl: UIPageControl {
         }
     }
     
-    public var activeColor: UIColor = .blue {
+    public var activeColor: UIColor = UIColor.blue {
         didSet { updateDotAppearance() }
     }
-    public var inactiveColor: UIColor = .lightGray {
+    public var inactiveColor: UIColor = UIColor.lightGray {
         didSet { updateDotAppearance() }
     }
     public var activeDotSize: CGFloat = 8 {
@@ -170,7 +170,6 @@ extension EDTSPageControl {
     public func updateScrollProgress(scrollView: UIScrollView) {
         let pageWidth = scrollView.frame.width
         let offsetX = scrollView.contentOffset.x
-        let totalWidth = scrollView.contentSize.width
         let numberOfRealPages = numberOfPages
         
         let rawProgress = offsetX / pageWidth
@@ -189,4 +188,5 @@ extension EDTSPageControl {
         
         self.scrollProgress = adjustedProgress
     }
+    
 }

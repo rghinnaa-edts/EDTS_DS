@@ -38,7 +38,7 @@ public class EDTSCardMyCouponCell: UICollectionViewCell {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("CardMyCouponCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCardMyCouponCell", owner: self, options: nil),
            let view = nib.first as? UIView {
             containerView = view
             containerView.frame = bounds

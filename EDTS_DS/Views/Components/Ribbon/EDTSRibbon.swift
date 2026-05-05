@@ -88,7 +88,7 @@ public class EDTSRibbon: UIView {
     private let label: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = Font.B3.Medium.font
+        label.font = EDTSFont.B3.Medium.font
         return label
     }()
     

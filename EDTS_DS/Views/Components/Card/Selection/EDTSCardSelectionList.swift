@@ -150,7 +150,7 @@ public class EDTSCardSelectionList: UIView {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("CardSelectionList", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCardSelectionList", owner: self, options: nil),
            let view = nib.first as? UIView {
             containerView = view
             containerView.frame = bounds

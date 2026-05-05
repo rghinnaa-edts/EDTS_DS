@@ -22,11 +22,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="Xrs-ZJ-KaX">
-            <rect key="frame" x="0.0" y="0.0" width="393" height="757"/>
+            <rect key="frame" x="0.0" y="0.0" width="357" height="757"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="iZP-Ld-zZf">
-                    <rect key="frame" x="0.0" y="0.0" width="393" height="589.66666666666663"/>
+                    <rect key="frame" x="0.0" y="0.0" width="357" height="535.66666666666663"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="iZP-Ld-zZf" secondAttribute="height" multiplier="2:3" id="jwh-ij-L47"/>
@@ -39,22 +39,22 @@
                     </collectionViewFlowLayout>
                 </collectionView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DPO-uU-Zsv">
-                    <rect key="frame" x="0.0" y="548.33333333333337" width="393" height="174.66666666666663"/>
+                    <rect key="frame" x="0.0" y="548.33333333333337" width="357" height="174.66666666666663"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gao-cC-nzZ">
-                            <rect key="frame" x="16" y="48" width="361" height="20.333333333333329"/>
+                            <rect key="frame" x="16" y="48" width="325" height="20.333333333333329"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWW-xk-lt6">
-                            <rect key="frame" x="16" y="80.333333333333258" width="361" height="20.333333333333329"/>
+                            <rect key="frame" x="16" y="80.333333333333258" width="325" height="20.333333333333329"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="EzN-sf-6ei" customClass="CustomPageControl" customModule="EDTS_DS" customModuleProvider="target">
-                            <rect key="frame" x="16" y="124.66666666666663" width="361" height="26"/>
+                        <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="EzN-sf-6ei" customClass="EDTSPageControl" customModule="EDTS_DS" customModuleProvider="target">
+                            <rect key="frame" x="16" y="124.66666666666663" width="325" height="26"/>
                             <color key="pageIndicatorTintColor" name="Grey-30"/>
                             <color key="currentPageIndicatorTintColor" name="AccentColor"/>
                         </pageControl>
@@ -78,14 +78,14 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="DPO-uU-Zsv" firstAttribute="bottom" secondItem="z8l-3D-Mjp" secondAttribute="bottom" id="2rf-pR-4Rs"/>
-                <constraint firstItem="DPO-uU-Zsv" firstAttribute="trailing" secondItem="z8l-3D-Mjp" secondAttribute="trailing" id="G8m-bi-jzX"/>
                 <constraint firstItem="DPO-uU-Zsv" firstAttribute="leading" secondItem="z8l-3D-Mjp" secondAttribute="leading" id="PJ0-U2-7wj"/>
                 <constraint firstItem="z8l-3D-Mjp" firstAttribute="trailing" secondItem="iZP-Ld-zZf" secondAttribute="trailing" id="VKm-xm-Inv"/>
+                <constraint firstItem="z8l-3D-Mjp" firstAttribute="trailing" secondItem="DPO-uU-Zsv" secondAttribute="trailing" id="jat-ma-7vF"/>
                 <constraint firstItem="iZP-Ld-zZf" firstAttribute="leading" secondItem="z8l-3D-Mjp" secondAttribute="leading" id="uoZ-gz-gJQ"/>
                 <constraint firstItem="iZP-Ld-zZf" firstAttribute="top" secondItem="Xrs-ZJ-KaX" secondAttribute="top" id="y3Q-cp-fAe"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-19.083969465648853" y="362.32394366197184"/>
+            <point key="canvasLocation" x="-46.564885496183201" y="362.32394366197184"/>
         </view>
     </objects>
     <resources>

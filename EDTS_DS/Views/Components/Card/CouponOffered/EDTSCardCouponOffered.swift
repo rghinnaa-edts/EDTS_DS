@@ -241,13 +241,13 @@ public class EDTSCardCouponOffered: UIView {
     //MARK: - Public Functions
     
     public func calculateHeight(forWidth width: CGFloat) -> CGFloat {
-        let targetSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
-        
-        let size = containerView.systemLayoutSizeFitting(
-            targetSize,
-            withHorizontalFittingPriority: .required,
-            verticalFittingPriority: .fittingSizeLevel
-        )
+//        let targetSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
+//        
+//        let size = containerView.systemLayoutSizeFitting(
+//            targetSize,
+//            withHorizontalFittingPriority: .required,
+//            verticalFittingPriority: .fittingSizeLevel
+//        )
         
         return 200
     }
@@ -269,7 +269,7 @@ public class EDTSCardCouponOffered: UIView {
     
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("CardCouponOffered", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCardCouponOffered", owner: self, options: nil),
            let view = nib.first as? UIView {
             
             containerView = view

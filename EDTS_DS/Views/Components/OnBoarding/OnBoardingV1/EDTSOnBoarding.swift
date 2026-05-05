@@ -140,7 +140,9 @@ public class EDTSOnBoarding: UIView {
         
         let gradientLayer = CAGradientLayer()
         
-        gradientLayer.frame = vContentContainer.bounds
+        DispatchQueue.main.async {
+            gradientLayer.frame = self.vContentContainer.bounds
+        }
         
         gradientLayer.colors = [
             UIColor.white.cgColor,
@@ -152,7 +154,7 @@ public class EDTSOnBoarding: UIView {
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.0)
         
-        vContentContainer.backgroundColor = .clear
+        vContentContainer.backgroundColor = UIColor.clear
         vContentContainer.layer.insertSublayer(gradientLayer, at: 0)
     }
     
@@ -171,7 +173,7 @@ public class EDTSOnBoarding: UIView {
         }
     }
     
-    private func setupDescData(_ onBoardingSlide: OnBoardingSlide) {
+    private func setupDescData(_ onBoardingSlide: EDTSOnBoardingSlide) {
         guard !wrapSlides.isEmpty else { return }
         
         lblTitle.text = onBoardingSlide.title

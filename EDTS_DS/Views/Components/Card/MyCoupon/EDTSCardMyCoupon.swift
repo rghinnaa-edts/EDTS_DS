@@ -122,7 +122,7 @@ public class EDTSCardMyCoupon: UIView {
     // MARK: - Setup & Styling
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("CardMyCoupon", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCardMyCoupon", owner: self, options: nil),
            let view = nib.first as? UIView {
             
             containerView = view
