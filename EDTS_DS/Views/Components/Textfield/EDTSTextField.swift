@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class Textfield: UIView {
+public class EDTSTextField: UIView {
     
     @IBOutlet var containerView: UIView!
     @IBOutlet var vTextfield: UIView!
