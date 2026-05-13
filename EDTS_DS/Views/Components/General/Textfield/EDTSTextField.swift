@@ -27,9 +27,16 @@ public class EDTSTextField: UIView {
     @IBOutlet weak var lblSupport: UILabel!
     @IBOutlet weak var lblCounter: UILabel!
 
+    @IBOutlet weak var tfLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tfTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tfTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tfBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lblTitleBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var ivLeadingWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var ivLeadingHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var vTextFieldLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var ivTrailingWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var ivTrailingHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var vTextFieldTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblSupportHeightConstraint: NSLayoutConstraint!
     
@@ -57,6 +64,7 @@ public class EDTSTextField: UIView {
     @IBInspectable public var isStateDisabled: Bool = false {
         didSet {
             state = EDTSTextFieldState.disabled.rawValue
+            tfValue.isEnabled = false
             setupState()
         }
     }
@@ -91,6 +99,30 @@ public class EDTSTextField: UIView {
         }
     }
     
+    @IBInspectable public var labelfontName: String = "" {
+        didSet {
+            setupLabelFont()
+        }
+    }
+    
+    @IBInspectable public var labelFontSize: CGFloat = CGFloat.zero {
+        didSet {
+            setupLabelFont()
+        }
+    }
+    
+    @IBInspectable public var labelFontWeight: String? {
+        didSet {
+            setupLabelFont()
+        }
+    }
+    
+    @IBInspectable public var isLabelHide: Bool = false {
+        didSet {
+            setupLabelVisibility()
+        }
+    }
+    
     @IBInspectable public var placeholder: String? {
         didSet {
             tfValue.placeholder = placeholder
@@ -121,6 +153,24 @@ public class EDTSTextField: UIView {
         }
     }
     
+    @IBInspectable public var placeholderFontName: String = "" {
+        didSet {
+            setupPlaceholderFont()
+        }
+    }
+    
+    @IBInspectable public var placeholderFontSize: CGFloat = CGFloat.zero {
+        didSet {
+            setupPlaceholderFont()
+        }
+    }
+    
+    @IBInspectable public var placeholderFontWeight: String? {
+        didSet {
+            setupPlaceholderFont()
+        }
+    }
+    
     @IBInspectable public var value: String? {
         didSet {
             tfValue.text = value
@@ -148,6 +198,24 @@ public class EDTSTextField: UIView {
     @IBInspectable public var valueDisabledColor: UIColor? {
         didSet {
             tfValueDisabledColor = valueDisabledColor
+        }
+    }
+    
+    @IBInspectable public var valueFontName: String = "" {
+        didSet {
+            setupValueFont()
+        }
+    }
+    
+    @IBInspectable public var valueFontSize: CGFloat = CGFloat.zero {
+        didSet {
+            setupValueFont()
+        }
+    }
+    
+    @IBInspectable public var valueFontWeight: String? {
+        didSet {
+            setupValueFont()
         }
     }
     
@@ -313,6 +381,24 @@ public class EDTSTextField: UIView {
         }
     }
     
+    @IBInspectable public var supportMessagefontName: String = "" {
+        didSet {
+            setupSupportTextFont()
+        }
+    }
+    
+    @IBInspectable public var supportMessageFontSize: CGFloat = CGFloat.zero {
+        didSet {
+            setupSupportTextFont()
+        }
+    }
+    
+    @IBInspectable public var supportMessageFontWeight: String? {
+        didSet {
+            setupSupportTextFont()
+        }
+    }
+    
     @IBInspectable public var counterMax: Int = -1 {
         didSet {
             setupCounterText()
@@ -341,6 +427,24 @@ public class EDTSTextField: UIView {
     @IBInspectable public var counterDisabledColor: UIColor? {
         didSet {
             tfCounterDisabledColor = counterDisabledColor
+        }
+    }
+    
+    @IBInspectable public var counterfontName: String = "" {
+        didSet {
+            setupCounterTextFont()
+        }
+    }
+    
+    @IBInspectable public var counterFontSize: CGFloat = CGFloat.zero {
+        didSet {
+            setupCounterTextFont()
+        }
+    }
+    
+    @IBInspectable public var counterFontWeight: String? {
+        didSet {
+            setupCounterTextFont()
         }
     }
     
@@ -374,6 +478,50 @@ public class EDTSTextField: UIView {
         }
     }
     
+    @IBInspectable public var isDisabled: Bool = false {
+        didSet {
+            tfValue.isEnabled = !isDisabled
+        }
+    }
+    
+    @IBInspectable public var padding: CGFloat = 4.0 {
+        didSet {
+            tfPaddingLeading = padding
+            tfPaddingTrailing = padding
+            tfPaddingTop = padding
+            tfPaddingBottom = padding
+            setupPadding()
+        }
+    }
+    
+    @IBInspectable public var paddingLeading: CGFloat = 12.0 {
+        didSet {
+            tfPaddingLeading = paddingLeading
+            setupPadding()
+        }
+    }
+    
+    @IBInspectable public var paddingTrailing: CGFloat = 12.0 {
+        didSet {
+            tfPaddingTrailing = paddingTrailing
+            setupPadding()
+        }
+    }
+    
+    @IBInspectable public var paddingTop: CGFloat = 12.0 {
+        didSet {
+            tfPaddingTop = paddingTop
+            setupPadding()
+        }
+    }
+    
+    @IBInspectable public var paddingBottom: CGFloat = 12.0 {
+        didSet {
+            tfPaddingBottom = paddingBottom
+            setupPadding()
+        }
+    }
+    
     @IBInspectable public var keyboardType: UIKeyboardType = .alphabet {
         didSet {
             tfValue.keyboardType = keyboardType
@@ -385,6 +533,8 @@ public class EDTSTextField: UIView {
             tfValue.returnKeyType = returnKeyType
         }
     }
+    
+    public var onTextChanged: ((String) -> Void)?
     
     private var state: String = EDTSTextFieldState.default.rawValue {
         didSet {
@@ -447,7 +597,34 @@ public class EDTSTextField: UIView {
     private var tfCounterFocusColor: UIColor? = EDTSColor.grey50
     private var tfCounterErrorColor: UIColor? = EDTSColor.errorStrong
     private var tfCounterDisabledColor: UIColor? = EDTSColor.grey50
+    
+    private var tfPaddingLeading: CGFloat = 12.0
+    private var tfPaddingTop: CGFloat = 12.0
+    private var tfPaddingTrailing: CGFloat = 12.0
+    private var tfPaddingBottom: CGFloat = 12.0
+    
+    // MARK: Public Func
+    
+    public var currentTextFieldState: EDTSTextFieldState {
+        return currentState
+    }
 
+    public var text: String? {
+        return tfValue.text
+    }
+    
+    // MARK: - First Responder
+
+    @discardableResult
+    override public func becomeFirstResponder() -> Bool {
+        return tfValue.becomeFirstResponder()
+    }
+
+    @discardableResult
+    override public func resignFirstResponder() -> Bool {
+        return tfValue.resignFirstResponder()
+    }
+    
     // MARK: - Intrinsic Size
 
     override public var intrinsicContentSize: CGSize {
@@ -498,22 +675,18 @@ public class EDTSTextField: UIView {
         setupSupportText()
         setupCounterText()
         setupRequired()
-    }
-
-    private func setupActions() {
-        tfValue.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
-        tfValue.addTarget(self, action: #selector(textFieldDidBeginEditing), for: .editingDidBegin)
-        tfValue.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+        setupPadding()
     }
 
     private func setupTextField() {
         tfValue.font = EDTSFont.B2.Regular.font
         tfValue.borderStyle = .none
+        tfValue.isEnabled = true
         vTextField.layer.cornerRadius = cornerRadius
     }
 
     private func setupState() {
-        setupTitleColor()
+        setupLabelColor()
         setupPlaceholderColor()
         setupValueColor()
         setupIconLeadingColor()
@@ -537,7 +710,19 @@ public class EDTSTextField: UIView {
     
     // MARK: - Text
     
-    private func setupTitleColor() {
+    private func setupLabelFont() {
+        let size = labelFontSize
+        let weight = setupFontWeight(from: labelFontWeight ?? "semibold")
+        
+        if !labelfontName.isEmpty {
+            lblTitle.font = UIFont(name: labelfontName, size: size)
+            ?? UIFont.systemFont(ofSize: size, weight: weight)
+        } else {
+            lblTitle.font = UIFont.systemFont(ofSize: size, weight: weight)
+        }
+    }
+    
+    private func setupLabelColor() {
         lblTitle.font = EDTSFont.H3.font
         lblTitle.textColor = themed(
             default: tfLabelColor,
@@ -545,9 +730,43 @@ public class EDTSTextField: UIView {
             error: tfLabelErrorColor,
             disabled: tfLabelDisabledColor
         )
+        
+        setupLabelVisibility()
+    }
+    
+    private func setupLabelVisibility() {
+        if isLabelHide {
+            lblTitle.text = ""
+            lblRequired.text = ""
+        }
+        lblTitleBottomConstraint?.constant = !isLabelHide ? 8 : 0
+        
+        layoutIfNeeded()
+        invalidateIntrinsicContentSize()
     }
 
     // MARK: - Placeholder
+    
+    private func setupPlaceholderFont() {
+        let placeholderSize = placeholderFontSize
+        let placeholderWeight = setupFontWeight(from: placeholderFontWeight ?? "light")
+        
+        let placeholderFont: UIFont
+        if !placeholderFontName.isEmpty {
+            placeholderFont = UIFont(name: placeholderFontName, size: placeholderSize)
+                           ?? UIFont.systemFont(ofSize: placeholderSize, weight: placeholderWeight)
+        } else {
+            placeholderFont = UIFont.systemFont(ofSize: placeholderSize, weight: placeholderWeight)
+        }
+        
+        tfValue.attributedPlaceholder = NSAttributedString(
+            string: tfValue.placeholder ?? "",
+            attributes: [
+                .font: placeholderFont,
+                .foregroundColor: UIColor.placeholderText
+            ]
+        )
+    }
 
     private func setupPlaceholderColor() {
         let color = themed(
@@ -565,6 +784,18 @@ public class EDTSTextField: UIView {
 
     // MARK: - Value
 
+    private func setupValueFont() {
+        let valueSize = valueFontSize
+        let valueWeight = setupFontWeight(from: valueFontWeight ?? "light")
+        
+        if !valueFontName.isEmpty {
+            tfValue.font = UIFont(name: valueFontName, size: valueSize)
+                        ?? UIFont.systemFont(ofSize: valueSize, weight: valueWeight)
+        } else {
+            tfValue.font = UIFont.systemFont(ofSize: valueSize, weight: valueWeight)
+        }
+    }
+    
     private func setupValueColor() {
         tfValue.textColor = themed(
             default: tfValueColor,
@@ -603,6 +834,7 @@ public class EDTSTextField: UIView {
         ivLeading.isHidden = !hasIcon
         
         ivLeadingWidthConstraint?.constant = hasIcon ? 24 : 0
+        ivLeadingHeightConstraint?.constant = hasIcon ? 24 : 0
         vTextFieldLeadingConstraint?.constant = hasIcon ? 8 : 0
         
         layoutIfNeeded()
@@ -618,6 +850,7 @@ public class EDTSTextField: UIView {
         ivTrailing.isHidden = !hasIcon
         
         ivTrailingWidthConstraint?.constant = hasIcon ? 24 : 0
+        ivTrailingHeightConstraint?.constant = hasIcon ? 24 : 0
         vTextFieldTrailingConstraint?.constant = hasIcon ? 8 : 0
         
         layoutIfNeeded()
@@ -656,6 +889,18 @@ public class EDTSTextField: UIView {
         lblSupport.textColor = EDTSColor.grey60
         setupSupportTextVisibility()
     }
+    
+    private func setupSupportTextFont() {
+        let size = supportMessageFontSize
+        let weight = setupFontWeight(from: supportMessageFontWeight ?? "light")
+        
+        if !supportMessagefontName.isEmpty {
+            lblSupport.font = UIFont(name: supportMessagefontName, size: size)
+            ?? UIFont.systemFont(ofSize: size, weight: weight)
+        } else {
+            lblSupport.font = UIFont.systemFont(ofSize: size, weight: weight)
+        }
+    }
 
     private func setupSupportTextColor() {
         lblSupport.textColor = themed(
@@ -693,6 +938,18 @@ public class EDTSTextField: UIView {
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
     }
+    
+    private func setupCounterTextFont() {
+        let size = counterFontSize
+        let weight = setupFontWeight(from: counterFontWeight ?? "light")
+        
+        if !counterfontName.isEmpty {
+            lblCounter.font = UIFont(name: counterfontName, size: size)
+            ?? UIFont.systemFont(ofSize: size, weight: weight)
+        } else {
+            lblCounter.font = UIFont.systemFont(ofSize: size, weight: weight)
+        }
+    }
 
     private func setupCounterTextColor() {
         lblCounter.textColor = themed(
@@ -718,6 +975,7 @@ public class EDTSTextField: UIView {
         lblRequired.font = EDTSFont.H3.font
         lblRequired.textColor = EDTSColor.red30
         lblRequired.isHidden = !isRequired
+        lblRequired.text = "*"
     }
 
     // MARK: - Password Toggle
@@ -757,20 +1015,23 @@ public class EDTSTextField: UIView {
         let bundle = Bundle(for: type(of: self))
         ivTrailing.image = UIImage(named: iconName, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }
-
-    // MARK: - First Responder
-
-    @discardableResult
-    override public func becomeFirstResponder() -> Bool {
-        return tfValue.becomeFirstResponder()
-    }
-
-    @discardableResult
-    override public func resignFirstResponder() -> Bool {
-        return tfValue.resignFirstResponder()
+    
+    // MARK: - Setup Padding
+    
+    private func setupPadding() {
+        tfLeadingConstraint?.constant = tfPaddingLeading
+        tfTrailingConstraint?.constant = tfPaddingTrailing
+        tfTopConstraint?.constant = tfPaddingTop
+        tfBottomConstraint?.constant = tfPaddingBottom
     }
 
     //MARK: Action
+    
+    private func setupActions() {
+        tfValue.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        tfValue.addTarget(self, action: #selector(textFieldDidBeginEditing), for: .editingDidBegin)
+        tfValue.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+    }
     
     @objc private func textFieldDidChange() {
         if counterMax != -1 {
@@ -780,16 +1041,19 @@ public class EDTSTextField: UIView {
             }
         }
         
+        onTextChanged?(tfValue.text ?? "")
         updateCounterText()
         NotificationCenter.default.post(name: UITextField.textDidChangeNotification, object: tfValue)
     }
     
     @objc private func textFieldDidBeginEditing() {
+        isStateFocus = true
         state = EDTSTextFieldState.focus.rawValue
         setupState()
     }
     
     @objc private func textFieldDidEndEditing() {
+        isStateDefault = true
         state = EDTSTextFieldState.default.rawValue
         setupState()
     }
