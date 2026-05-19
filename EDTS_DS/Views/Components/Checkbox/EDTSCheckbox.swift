@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-public class Checkbox: UIView {
+public class EDTSCheckbox: UIView {
     // MARK: - Outlets
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var vStackContainer: UIStackView!
@@ -218,19 +218,19 @@ public class Checkbox: UIView {
     }
     
     // MARK: - Public Variable
-    public weak var delegate: CheckboxDelegate?
+    public weak var delegate: EDTSCheckboxDelegate?
     
     // MARK: - Private Variable
-    private var resolvedCheckboxState: CheckboxState {
+    private var resolvedCheckboxState: EDTSCheckboxState {
         guard let type = checkboxState else { return .rest }
         let normalized = type.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        return CheckboxState(rawValue: normalized) ?? .rest
+        return EDTSCheckboxState(rawValue: normalized) ?? .rest
     }
     
-    private var resolvedCheckboxType: CheckboxType {
+    private var resolvedCheckboxType: EDTSCheckboxType {
         guard let type = checkboxType else { return .checked }
         let normalized = type.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        return CheckboxType(rawValue: normalized) ?? .checked
+        return EDTSCheckboxType(rawValue: normalized) ?? .checked
     }
     
     // MARK: - Initializers
@@ -267,7 +267,7 @@ public class Checkbox: UIView {
     // MARK: - Setup & Styling
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("Checkbox", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCheckbox", owner: self, options: nil),
            let view = nib.first as? UIView {
             
             containerView = view
@@ -489,16 +489,16 @@ public class Checkbox: UIView {
 }
 
 @MainActor
-public protocol CheckboxDelegate: AnyObject {
-    func didSelectCheckbox(_ checkbox: Checkbox)
+public protocol EDTSCheckboxDelegate: AnyObject {
+    func didSelectCheckbox(_ checkbox: EDTSCheckbox)
 }
 
-public enum CheckboxState: String {
+public enum EDTSCheckboxState: String {
     case rest = "rest"
     case disabled = "disabled"
 }
 
-public enum CheckboxType: String {
+public enum EDTSCheckboxType: String {
     case checked = "checked"
     case indeterminated = "indeterminated"
 }
