@@ -924,7 +924,6 @@ public class EDTSTextField: UIView {
 
     private func setupCounterText() {
         lblCounter.font = EDTSFont.B4.Regular.font
-        lblCounter.textColor = EDTSColor.grey60
 
         let hasCounter = counterMax != -1 && !isCounterHide
         lblCounter.isHidden = !hasCounter
