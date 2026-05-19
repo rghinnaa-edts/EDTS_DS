@@ -1,4 +1,4 @@
-# Checkbox
+# EDTSCheckbox
 
 | Feature / Variation | Preview |
 | ------------------- | ------- |
@@ -13,7 +13,7 @@
 
 ## Overview
 
-`Checkbox` is a customizable checkbox component featuring a box indicator with a checkmark or indeterminate icon, title, and description text. It supports two states (`rest`, `disabled`), two types (`checked`, `indeterminated`), full active/inactive styling, and ripple feedback on tap.
+`EDTSCheckbox` is a customizable checkbox component featuring a box indicator with a checkmark or indeterminate icon, title, and description text. It supports two states (`rest`, `disabled`), two types (`checked`, `indeterminated`), full active/inactive styling, and ripple feedback on tap.
 
 ---
 
@@ -22,7 +22,7 @@
 ### Swift (Programmatic)
 
 ```swift
-let checkbox = Checkbox(frame: .zero)
+let checkbox = EDTSCheckbox(frame: .zero)
 view.addSubview(checkbox)
 
 checkbox.title = "Accept terms and conditions"
@@ -36,8 +36,8 @@ checkbox.delegate = self
 ### Implement Delegate
 
 ```swift
-extension ViewController: CheckboxDelegate {
-    func didSelectCheckbox(_ checkbox: Checkbox) {
+extension ViewController: EDTSCheckboxDelegate {
+    func didSelectCheckbox(_ checkbox: EDTSCheckbox) {
         checkbox.isActive.toggle()
     }
 }
@@ -47,7 +47,7 @@ extension ViewController: CheckboxDelegate {
 
 ```swift
 // Add UIView from Interface Builder
-// Set Custom Class to Checkbox in Identity Inspector
+// Set Custom Class to EDTSCheckbox in Identity Inspector
 ```
 
 ---
@@ -161,8 +161,8 @@ extension ViewController: CheckboxDelegate {
 
 ```swift
 @MainActor
-public protocol CheckboxDelegate: AnyObject {
-    func didSelectCheckbox(_ checkbox: Checkbox)
+public protocol EDTSCheckboxDelegate: AnyObject {
+    func didSelectCheckbox(_ checkbox: EDTSCheckbox)
 }
 ```
 
@@ -183,7 +183,7 @@ public protocol CheckboxDelegate: AnyObject {
 ### `CheckboxState`
 
 ```swift
-public enum CheckboxState: String {
+public enum EDTSCheckboxState: String {
     case rest = "rest"
     case disabled = "disabled"
 }
@@ -192,7 +192,7 @@ public enum CheckboxState: String {
 ### `CheckboxType`
 
 ```swift
-public enum CheckboxType: String {
+public enum EDTSCheckboxType: String {
     case checked = "checked"
     case indeterminated = "indeterminated"
 }
