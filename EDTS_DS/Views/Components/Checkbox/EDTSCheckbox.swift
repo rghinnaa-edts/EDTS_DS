@@ -282,8 +282,6 @@ public class EDTSCheckbox: UIView {
         setupTitleFont()
         setupDescFont()
         setupDefaultStyle()
-        
-        ivIconContainerView.layer.cornerRadius = 4
     }
     
     private func setupDefaultStyle(){
@@ -297,6 +295,8 @@ public class EDTSCheckbox: UIView {
         paddingLeading = 2
         labelSpacing = 4
         spacing = 8
+        ivIconContainerView.layer.cornerRadius = 4
+        
         invalidateIntrinsicContentSize()
     }
     
