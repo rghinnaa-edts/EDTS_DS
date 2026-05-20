@@ -66,13 +66,13 @@ public class EDTSRadioButton: UIView {
         }
     }
     
-    @IBInspectable public var titleColor: UIColor?{
+    @IBInspectable public var titleColorActive: UIColor?{
         didSet{
             setupRadioButtonState()
         }
     }
     
-    @IBInspectable public var titleColorActive: UIColor?{
+    @IBInspectable public var titleColorInactive: UIColor?{
         didSet{
             setupRadioButtonState()
         }
@@ -110,21 +110,14 @@ public class EDTSRadioButton: UIView {
         }
     }
     
-    @IBInspectable public var descColor: UIColor?{
-        didSet{
-            setupRadioButtonState()
-        }
-    }
-    
     @IBInspectable public var descColorActive: UIColor?{
         didSet{
             setupRadioButtonState()
         }
     }
     
-    @IBInspectable public var iconInactive: UIImage?{
+    @IBInspectable public var descColorInactive: UIColor?{
         didSet{
-            setupIcon()
             setupRadioButtonState()
         }
     }
@@ -135,27 +128,34 @@ public class EDTSRadioButton: UIView {
         }
     }
     
-    @IBInspectable public var iconTintInactive: UIColor?{
+    @IBInspectable public var iconInactive: UIImage?{
+        didSet{
+            setupIcon()
+            setupRadioButtonState()
+        }
+    }
+    
+    @IBInspectable public var iconTintColorActive: UIColor?{
         didSet{
             setupRadioButtonState()
             setupIcon()
         }
     }
     
-    @IBInspectable public var iconTintActive: UIColor?{
+    @IBInspectable public var iconTintColorInactive: UIColor?{
         didSet{
             setupRadioButtonState()
             setupIcon()
-        }
-    }
-    
-    @IBInspectable public var iconBgColor: UIColor?{
-        didSet{
-            setupRadioButtonState()
         }
     }
     
     @IBInspectable public var iconBgColorActive: UIColor?{
+        didSet{
+            setupRadioButtonState()
+        }
+    }
+    
+    @IBInspectable public var iconBgColorInactive: UIColor?{
         didSet{
             setupRadioButtonState()
         }
@@ -173,19 +173,19 @@ public class EDTSRadioButton: UIView {
         }
     }
     
-    @IBInspectable public var iconBorderWidth: CGFloat = CGFloat.zero {
+    @IBInspectable public var borderWidth: CGFloat = CGFloat.zero {
         didSet{
-            bulletContainerView.layer.borderWidth = iconBorderWidth
+            bulletContainerView.layer.borderWidth = borderWidth
         }
     }
     
-    @IBInspectable public var iconBorderColor: UIColor?{
+    @IBInspectable public var borderColorActive: UIColor?{
         didSet{
             setupRadioButtonState()
         }
     }
     
-    @IBInspectable public var iconBorderColorActive: UIColor?{
+    @IBInspectable public var borderColorInactive: UIColor?{
         didSet{
             setupRadioButtonState()
         }
@@ -249,12 +249,6 @@ public class EDTSRadioButton: UIView {
         setupNib()
     }
     
-    override public func layoutSubviews() {
-        super.layoutSubviews()
-        bulletContainerView.applyCircular()
-        bulletView.applyCircular()
-    }
-    
     public override var intrinsicContentSize: CGSize {
         guard let stack = hStackContainer else {
             return super.intrinsicContentSize
@@ -299,13 +293,16 @@ public class EDTSRadioButton: UIView {
         titleFontWeight = "Medium"
         descFontSize = 12
         descFontWeight = "Regular"
-        iconBorderWidth = 1
+        borderWidth = 1
         title = "Title radio button"
         desc = "Body text goes here"
         iconPadding = 0
         paddingLeading = 2
         labelSpacing = 4
         spacing = 8
+        bulletContainerView.applyCircular()
+        bulletView.applyCircular()
+        
         invalidateIntrinsicContentSize()
     }
     
@@ -425,20 +422,20 @@ public class EDTSRadioButton: UIView {
         let changes = {
             switch self.isActive {
             case false:
-                self.lblTitle.textColor = self.titleColor ?? EDTSColor.grey60
-                self.lblBody.textColor = self.descColor ?? EDTSColor.grey50
-                self.bulletContainerView.backgroundColor = self.iconBgColor ?? EDTSColor.white
-                self.bulletView.backgroundColor = self.iconTintInactive ?? EDTSColor.white
-                self.ivIcon.tintColor = self.iconTintInactive ?? (self.iconInactive == nil ? EDTSColor.white : EDTSColor.blue50)
-                self.bulletContainerView.layer.borderColor = self.iconBorderColor?.cgColor ?? EDTSColor.grey30.cgColor
+                self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey60
+                self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey50
+                self.bulletContainerView.backgroundColor = self.iconBgColorInactive ?? EDTSColor.white
+                self.bulletView.backgroundColor = self.iconTintColorInactive ?? EDTSColor.white
+                self.ivIcon.tintColor = self.iconTintColorInactive ?? (self.iconInactive == nil ? EDTSColor.white : EDTSColor.blue50)
+                self.bulletContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
                 
             case true:
                 self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey60
                 self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey50
                 self.bulletContainerView.backgroundColor = self.iconBgColorActive ?? EDTSColor.blue50
-                self.bulletView.backgroundColor = self.iconTintActive ?? EDTSColor.white
-                self.ivIcon.tintColor = self.iconTintActive ?? EDTSColor.white
-                self.bulletContainerView.layer.borderColor = self.iconBorderColorActive?.cgColor ?? UIColor.clear.cgColor
+                self.bulletView.backgroundColor = self.iconTintColorActive ?? EDTSColor.white
+                self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
+                self.bulletContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? UIColor.clear.cgColor
             }
         }
         

@@ -81,7 +81,7 @@ radioGroup.selectedIndex = 0
 **Customize Radio Button Appearance Inside Group:**
 ```swift
 radioGroup.configureRadioButton { radioButton in
-    radioButton.titleColor = .black
+    radioButton.titleColorInactive = .black
     radioButton.titleColorActive = .blue
     radioButton.iconBgColorActive = .blue
 }
@@ -130,7 +130,7 @@ radioGroup.displayMode = .spanGrid(2)  // 2-column grid
 | ------------- | ---- | ------- | ----------- |
 | `title` | `String?` | `"Title radio button"` | Title text |
 | `titleAttributed` | `NSAttributedString?` | `nil` | Attributed title text (overrides `title`) |
-| `titleColor` | `UIColor?` | `EDTSColor.grey60` | Title color when inactive |
+| `titleColorInactive` | `UIColor?` | `EDTSColor.grey60` | Title color when inactive |
 | `titleColorActive` | `UIColor?` | `EDTSColor.grey60` | Title color when active |
 | `titleFontName` | `String` | `System font` | Custom font name for title (falls back to system font if not found) |
 | `titleFontSize` | `CGFloat` | `14.0` | Font size for title |
@@ -142,7 +142,7 @@ radioGroup.displayMode = .spanGrid(2)  // 2-column grid
 | ------------- | ---- | ------- | ----------- |
 | `desc` | `String?` | `"Body text goes here"` | Description text |
 | `descAttributed` | `NSAttributedString?` | `nil` | Attributed description text (overrides `desc`) |
-| `descColor` | `UIColor?` | `EDTSColor.grey50` | Description color when inactive |
+| `descColorInactive` | `UIColor?` | `EDTSColor.grey50` | Description color when inactive |
 | `descColorActive` | `UIColor?` | `EDTSColor.grey50` | Description color when active |
 | `descFontName` | `String` | `System font` | Custom font name for description (falls back to system font if not found) |
 | `descFontSize` | `CGFloat` | `12.0` | Font size for description |
@@ -154,9 +154,9 @@ radioGroup.displayMode = .spanGrid(2)  // 2-column grid
 | ------------- | ---- | ------- | ----------- |
 | `iconInactive` | `UIImage?` | `nil` | Custom icon image for inactive state |
 | `iconActive` | `UIImage?` | `nil` | Custom icon image for active state |
-| `iconTintInactive` | `UIColor?` | `EDTSColor.white` | Icon tint color when inactive |
-| `iconTintActive` | `UIColor?` | `EDTSColor.white` | Icon tint color when active |
-| `iconBgColor` | `UIColor?` | `EDTSColor.white` | Icon container background color when inactive |
+| `iconTintColorInactive` | `UIColor?` | `EDTSColor.white` | Icon tint color when inactive |
+| `iconTintColorActive` | `UIColor?` | `EDTSColor.white` | Icon tint color when active |
+| `iconBgColorInactive` | `UIColor?` | `EDTSColor.white` | Icon container background color when inactive |
 | `iconBgColorActive` | `UIColor?` | `EDTSColor.blue50` | Icon container background color when active |
 | `iconPadding` | `CGFloat` | `0.0` | Padding inside the icon container |
 
@@ -164,9 +164,9 @@ radioGroup.displayMode = .spanGrid(2)  // 2-column grid
 
 | Property Name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| `iconBorderWidth` | `CGFloat` | `1.0` | Border width of the bullet container |
-| `iconBorderColor` | `UIColor?` | `EDTSColor.grey30` | Border color when inactive |
-| `iconBorderColorActive` | `UIColor?` | `UIColor.clear` | Border color when active |
+| `borderWidth` | `CGFloat` | `1.0` | Border width of the bullet container |
+| `borderColorInactive` | `UIColor?` | `EDTSColor.grey30` | Border color when inactive |
+| `borderColorActive` | `UIColor?` | `UIColor.clear` | Border color when active |
 
 ### Padding Properties
 
