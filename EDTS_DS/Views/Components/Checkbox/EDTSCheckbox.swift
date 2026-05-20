@@ -69,13 +69,13 @@ public class EDTSCheckbox: UIView {
         }
     }
     
-    @IBInspectable public var titleColor: UIColor?{
+    @IBInspectable public var titleColorActive: UIColor?{
         didSet{
             setupCheckboxState()
         }
     }
     
-    @IBInspectable public var titleColorActive: UIColor?{
+    @IBInspectable public var titleColorInactive: UIColor?{
         didSet{
             setupCheckboxState()
         }
@@ -113,13 +113,13 @@ public class EDTSCheckbox: UIView {
         }
     }
     
-    @IBInspectable public var descColor: UIColor?{
+    @IBInspectable public var descColorActive: UIColor?{
         didSet{
             setupCheckboxState()
         }
     }
     
-    @IBInspectable public var descColorActive: UIColor?{
+    @IBInspectable public var descColorInactive: UIColor?{
         didSet{
             setupCheckboxState()
         }
@@ -131,27 +131,27 @@ public class EDTSCheckbox: UIView {
         }
     }
     
-    @IBInspectable public var iconTint: UIColor?{
+    @IBInspectable public var iconTintColorActive: UIColor?{
         didSet{
             icon = icon?.withRenderingMode(.alwaysTemplate)
             setupCheckboxState()
         }
     }
     
-    @IBInspectable public var iconTintActive: UIColor?{
+    @IBInspectable public var iconTintColorInactive: UIColor?{
         didSet{
             icon = icon?.withRenderingMode(.alwaysTemplate)
-            setupCheckboxState()
-        }
-    }
-    
-    @IBInspectable public var boxBgColor: UIColor?{
-        didSet{
             setupCheckboxState()
         }
     }
     
     @IBInspectable public var boxBgColorActive: UIColor?{
+        didSet{
+            setupCheckboxState()
+        }
+    }
+    
+    @IBInspectable public var boxBgColorInactive: UIColor?{
         didSet{
             setupCheckboxState()
         }
@@ -169,19 +169,19 @@ public class EDTSCheckbox: UIView {
         }
     }
     
-    @IBInspectable public var boxBorderWidth: CGFloat = CGFloat.zero {
+    @IBInspectable public var borderWidth: CGFloat = CGFloat.zero {
         didSet{
-            ivIconContainerView.layer.borderWidth = boxBorderWidth
+            ivIconContainerView.layer.borderWidth = borderWidth
         }
     }
     
-    @IBInspectable public var boxBorderColor: UIColor?{
+    @IBInspectable public var borderColorActive: UIColor?{
         didSet{
             setupCheckboxState()
         }
     }
     
-    @IBInspectable public var boxBorderColorActive: UIColor?{
+    @IBInspectable public var borderColorInactive: UIColor?{
         didSet{
             setupCheckboxState()
         }
@@ -244,11 +244,6 @@ public class EDTSCheckbox: UIView {
         setupNib()
     }
     
-    override public func layoutSubviews() {
-        super.layoutSubviews()
-        ivIconContainerView.layer.cornerRadius = 4
-    }
-    
     public override var intrinsicContentSize: CGSize {
         guard let stack = hStackContainer else {
             return super.intrinsicContentSize
@@ -287,6 +282,8 @@ public class EDTSCheckbox: UIView {
         setupTitleFont()
         setupDescFont()
         setupDefaultStyle()
+        
+        ivIconContainerView.layer.cornerRadius = 4
     }
     
     private func setupDefaultStyle(){
@@ -294,7 +291,7 @@ public class EDTSCheckbox: UIView {
         titleFontWeight = "Medium"
         descFontSize = 12
         descFontWeight = "Regular"
-        boxBorderWidth = 1
+        borderWidth = 1
         title = "Title checkboxes"
         desc = "Body text goes here"
         paddingLeading = 2
@@ -381,7 +378,7 @@ public class EDTSCheckbox: UIView {
             switch resolvedCheckboxType {
             case .checked:
                 let bundle = Bundle(for: type(of: self))
-                ivIcon.image = UIImage(named: "ic-checkmark", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+                ivIcon.image = UIImage(named: "ic-check", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
             case .indeterminated:
                 let bundle = Bundle(for: type(of: self))
                 ivIcon.image = UIImage(named: "ic-minus", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
@@ -394,19 +391,19 @@ public class EDTSCheckbox: UIView {
     private func setupCheckboxDisabled() {
         switch self.isActive {
         case false:
-            self.lblTitle.textColor = self.titleColor ?? EDTSColor.grey40
-            self.lblBody.textColor = self.descColor ??  EDTSColor.grey30
-            self.ivIconContainerView.backgroundColor = self.boxBgColor ?? EDTSColor.grey20
-            self.ivIcon.tintColor = self.iconTint ?? EDTSColor.grey20
-            self.ivIconContainerView.layer.borderColor = self.boxBorderColor?.cgColor ?? EDTSColor.grey30.cgColor
+            self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey40
+            self.lblBody.textColor = self.descColorInactive ??  EDTSColor.grey30
+            self.ivIconContainerView.backgroundColor = self.boxBgColorInactive ?? EDTSColor.grey20
+            self.ivIcon.tintColor = self.iconTintColorInactive ?? EDTSColor.grey20
+            self.ivIconContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
 
             
         case true:
             self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey40
             self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey30
             self.ivIconContainerView.backgroundColor = self.boxBgColorActive ?? EDTSColor.grey20
-            self.ivIcon.tintColor = self.iconTintActive ?? EDTSColor.grey40
-            self.ivIconContainerView.layer.borderColor = self.boxBorderColorActive?.cgColor ?? EDTSColor.grey40.cgColor
+            self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.grey40
+            self.ivIconContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? EDTSColor.grey40.cgColor
         }
     }
     
@@ -416,18 +413,18 @@ public class EDTSCheckbox: UIView {
         let changes = {
             switch self.isActive {
             case false:
-                self.lblTitle.textColor = self.titleColor ?? EDTSColor.grey60
-                self.lblBody.textColor = self.descColor ?? EDTSColor.grey50
-                self.ivIconContainerView.backgroundColor = self.boxBgColor ?? EDTSColor.white
-                self.ivIcon.tintColor = self.iconTint ?? EDTSColor.white
-                self.ivIconContainerView.layer.borderColor = self.boxBorderColor?.cgColor ?? EDTSColor.grey30.cgColor
+                self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey60
+                self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey50
+                self.ivIconContainerView.backgroundColor = self.boxBgColorInactive ?? EDTSColor.white
+                self.ivIcon.tintColor = self.iconTintColorInactive ?? EDTSColor.white
+                self.ivIconContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
                 
             case true:
                 self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey60
                 self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey50
                 self.ivIconContainerView.backgroundColor = self.boxBgColorActive ?? EDTSColor.blue50
-                self.ivIcon.tintColor = self.iconTintActive ?? EDTSColor.white
-                self.ivIconContainerView.layer.borderColor = self.boxBorderColorActive?.cgColor ?? UIColor.clear.cgColor
+                self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
+                self.ivIconContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? UIColor.clear.cgColor
             }
         }
         

@@ -1,5 +1,13 @@
 # EDTSCheckbox
 
+## Overview
+
+`EDTSCheckbox` is a customizable checkbox component featuring a box indicator with a checkmark or indeterminate icon, title, and description text. It supports two states (`rest`, `disabled`), two types (`checked`, `indeterminated`), full active/inactive styling, and ripple feedback on tap.
+
+---
+
+## Preview
+
 | Feature / Variation | Preview |
 | ------------------- | ------- |
 | **Rest — Inactive (Checked)** | ![Checkbox Rest Inactive Checked](https://placeholder.url/) |
@@ -8,12 +16,6 @@
 | **Disabled — Inactive** | ![Checkbox Disabled Inactive](https://placeholder.url/) |
 | **Disabled — Active (Checked)** | ![Checkbox Disabled Active](https://placeholder.url/) |
 | **Disabled — Active (Indeterminate)** | ![Checkbox Disabled Active](https://placeholder.url/) |
-
----
-
-## Overview
-
-`EDTSCheckbox` is a customizable checkbox component featuring a box indicator with a checkmark or indeterminate icon, title, and description text. It supports two states (`rest`, `disabled`), two types (`checked`, `indeterminated`), full active/inactive styling, and ripple feedback on tap.
 
 ---
 
@@ -90,7 +92,7 @@ extension ViewController: EDTSCheckboxDelegate {
 | ------------- | ---- | ------- | ----------- |
 | `title` | `String?` | `"Title checkboxes"` | Title text |
 | `titleAttributed` | `NSAttributedString?` | `nil` | Attributed title text (overrides `title`) |
-| `titleColor` | `UIColor?` | `EDTSColor.grey60` | Title color when inactive |
+| `titleColorInactive` | `UIColor?` | `EDTSColor.grey60` | Title color when inactive |
 | `titleColorActive` | `UIColor?` | `EDTSColor.grey60` | Title color when active |
 | `titleFontName` | `String` | `System font` | Custom font name for title (falls back to system font if not found) |
 | `titleFontSize` | `CGFloat` | `14.0` | Font size for title |
@@ -102,7 +104,7 @@ extension ViewController: EDTSCheckboxDelegate {
 | ------------- | ---- | ------- | ----------- |
 | `desc` | `String?` | `"Body text goes here"` | Description text |
 | `descAttributed` | `NSAttributedString?` | `nil` | Attributed description text (overrides `desc`) |
-| `descColor` | `UIColor?` | `EDTSColor.grey50` | Description color when inactive |
+| `descColorInactive` | `UIColor?` | `EDTSColor.grey50` | Description color when inactive |
 | `descColorActive` | `UIColor?` | `EDTSColor.grey50` | Description color when active |
 | `descFontName` | `String` | `System font` | Custom font name for description (falls back to system font if not found) |
 | `descFontSize` | `CGFloat` | `12.0` | Font size for description |
@@ -113,18 +115,18 @@ extension ViewController: EDTSCheckboxDelegate {
 | Property Name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
 | `icon` | `UIImage?` | `nil` | Custom icon image (overrides the type-based checkmark/minus icon when set) |
-| `iconTint` | `UIColor?` | `EDTSColor.white` | Icon tint color when inactive |
-| `iconTintActive` | `UIColor?` | `EDTSColor.white` | Icon tint color when active |
+| `iconTintColorInactive` | `UIColor?` | `EDTSColor.white` | Icon tint color when inactive |
+| `iconTintColorActive` | `UIColor?` | `EDTSColor.white` | Icon tint color when active |
 
 ### Box Properties
 
 | Property Name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| `boxBgColor` | `UIColor?` | `EDTSColor.white` | Box background color when inactive |
+| `boxBgColorInactive` | `UIColor?` | `EDTSColor.white` | Box background color when inactive |
 | `boxBgColorActive` | `UIColor?` | `EDTSColor.blue50` | Box background color when active |
-| `boxBorderWidth` | `CGFloat` | `1.0` | Border width of the box container |
-| `boxBorderColor` | `UIColor?` | `EDTSColor.grey30` | Box border color when inactive |
-| `boxBorderColorActive` | `UIColor?` | `UIColor.clear` | Box border color when active |
+| `borderWidth` | `CGFloat` | `1.0` | Border width of the box container |
+| `borderColorInactive` | `UIColor?` | `EDTSColor.grey30` | Box border color when inactive |
+| `borderColorActive` | `UIColor?` | `UIColor.clear` | Box border color when active |
 
 ### Padding Properties
 
@@ -168,16 +170,6 @@ public protocol EDTSCheckboxDelegate: AnyObject {
 
 ---
 
-## Animation Details
-
-| Animation Type | Duration | Easing | Description |
-| -------------- | -------- | ------ | ----------- |
-| Icon fade in | `150ms` | `EaseInOut` | Fades the icon from 50% to full opacity on activation |
-| Color transition | `100ms` | `EaseInOut` | Animates box background, border, title, and description color changes on state toggle |
-| Ripple Effect | `400ms` | `EaseOut` | Circular ripple effect expanding behind the box container on press |
-
----
-
 ## Enums Reference
 
 ### `CheckboxState`
@@ -200,8 +192,20 @@ public enum EDTSCheckboxType: String {
 
 ---
 
+## Animation Details
+
+| Animation Type | Duration | Easing | Description |
+| -------------- | -------- | ------ | ----------- |
+| Icon fade in | `150ms` | `EaseInOut` | Fades the icon from 50% to full opacity on activation |
+| Color transition | `100ms` | `EaseInOut` | Animates box background, border, title, and description color changes on state toggle |
+| Ripple Effect | `400ms` | `EaseOut` | Circular ripple effect expanding behind the box container on press |
+
+---
+
 ## Notes
 
-- When `icon` is set, it replaces the type-based icon (`ic-checkmark` or `ic-minus`) for all states
+- When `icon` is set, it replaces the type-based icon (`ic-check` or `ic-minus`) for all states
 - Setting `checkboxType` has no effect when a custom `icon` is provided — the custom icon always takes precedence
 - The `disabled` state automatically disables user interaction on the box container
+
+*For further customization, you can ask UX Engineer or inherit `EDTSCheckbox` and override its methods, or add additional functionality as required.*
