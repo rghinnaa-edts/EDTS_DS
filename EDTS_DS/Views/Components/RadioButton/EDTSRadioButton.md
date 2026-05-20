@@ -278,3 +278,5 @@ public enum ItemDisplayMode {
 - `EDTSRadioGroup` manages `selectedIndex` and active state automatically; manually setting `isActive` on individual cells inside a group is not recommended
 - Setting `data` clears `dataAttributed` and vice versa — only one data source is active
 - `configureRadioButton(_:)` can be used to customize every radio button instance rendered inside `EDTSRadioGroup`
+
+*For further customization, you can ask UX Engineer or inherit `EDTSRadioButton` and override its methods, or add additional functionality as required.*
