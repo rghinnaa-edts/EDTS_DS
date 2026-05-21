@@ -143,7 +143,7 @@ public class EDTSCardPointCell: UICollectionViewCell {
         btnExchange.titleLabel?.font = EDTSFont.Button.Small.font
         
         lblPoinCard.text = "Diskon Rp5.000 1 Pcs Kellogg’s Frosted Flakes 300gr"
-//        ivPoinCard.image = UIImage(named: "product-image")
+//        ivPoinCard.image = UIImage(named: "img_product")
     }
     
     private func UICoupon() {

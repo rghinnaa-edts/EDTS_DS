@@ -28,7 +28,7 @@
             <rect key="frame" x="0.0" y="0.0" width="150" height="258"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="product-image" translatesAutoresizingMaskIntoConstraints="NO" id="Ci6-Kw-8MZ">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_product" translatesAutoresizingMaskIntoConstraints="NO" id="Ci6-Kw-8MZ">
                     <rect key="frame" x="14" y="0.0" width="122" height="120"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="120" id="Iaa-aV-J17"/>
@@ -133,7 +133,7 @@
     </objects>
     <resources>
         <image name="exclamation" width="48" height="48"/>
-        <image name="product-image" width="360" height="360"/>
+        <image name="img_product" width="360" height="360"/>
         <image name="store-01" width="48" height="48"/>
         <namedColor name="Orange-10">
             <color red="0.93333333333333335" green="0.7803921568627451" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

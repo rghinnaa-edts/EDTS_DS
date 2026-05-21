@@ -17,6 +17,8 @@ public enum EDTSTextFieldState: String {
 @IBDesignable
 public class EDTSTextField: UIView {
     
+    // MARK: - Outlets
+    
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var vTextField: UIView!
     @IBOutlet weak var ivLeading: UIImageView!
@@ -39,6 +41,8 @@ public class EDTSTextField: UIView {
     @IBOutlet weak var ivTrailingHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var vTextFieldTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblSupportHeightConstraint: NSLayoutConstraint!
+    
+    // MARK: - Inspectable
     
     @IBInspectable public var isStateDefault: Bool = false {
         didSet {
@@ -71,7 +75,17 @@ public class EDTSTextField: UIView {
     
     @IBInspectable public var label: String? {
         didSet {
+            lblTitle.attributedText = nil
             lblTitle.text = label
+            
+            setupLabelVisibility()
+        }
+    }
+    
+    public var labelAttributed: NSAttributedString? {
+        didSet {
+            lblTitle.text = nil
+            lblTitle.attributedText = labelAttributed
         }
     }
     
@@ -114,12 +128,6 @@ public class EDTSTextField: UIView {
     @IBInspectable public var labelFontWeight: String? {
         didSet {
             setupLabelFont()
-        }
-    }
-    
-    @IBInspectable public var isLabelHide: Bool = false {
-        didSet {
-            setupLabelVisibility()
         }
     }
     
@@ -225,27 +233,27 @@ public class EDTSTextField: UIView {
         }
     }
     
-    @IBInspectable public var iconLeadingColor: UIColor? {
+    @IBInspectable public var iconTintColorLeading: UIColor? {
         didSet {
-            tfIconLeadingColor = iconLeadingColor
+            tfIconLeadingColor = iconTintColorLeading
         }
     }
     
-    @IBInspectable public var iconLeadingFocusColor: UIColor? {
+    @IBInspectable public var iconFocusTintColorLeading: UIColor? {
         didSet {
-            tfIconLeadingFocusColor = iconLeadingFocusColor
+            tfIconLeadingFocusColor = iconFocusTintColorLeading
         }
     }
     
-    @IBInspectable public var iconLeadingErrorColor: UIColor? {
+    @IBInspectable public var iconErrorTintColorLeading: UIColor? {
         didSet {
-            tfIconLeadingErrorColor = iconLeadingErrorColor
+            tfIconLeadingErrorColor = iconErrorTintColorLeading
         }
     }
     
-    @IBInspectable public var iconLeadingDisabledColor: UIColor? {
+    @IBInspectable public var iconDisabledTintColorLeading: UIColor? {
         didSet {
-            tfIconLeadingDisabledColor = iconLeadingDisabledColor
+            tfIconLeadingDisabledColor = iconDisabledTintColorLeading
         }
     }
     
@@ -255,27 +263,27 @@ public class EDTSTextField: UIView {
         }
     }
     
-    @IBInspectable public var iconTrailingColor: UIColor? {
+    @IBInspectable public var iconTintColorTrailing: UIColor? {
         didSet {
-            tfIconTrailingColor = iconTrailingColor
+            tfIconTrailingColor = iconTintColorTrailing
         }
     }
     
-    @IBInspectable public var iconTrailingFocusColor: UIColor? {
+    @IBInspectable public var iconFocusTintColorTrailing: UIColor? {
         didSet {
-            tfIconTrailingFocusColor = iconTrailingFocusColor
+            tfIconTrailingFocusColor = iconFocusTintColorTrailing
         }
     }
     
-    @IBInspectable public var iconTrailingErrorColor: UIColor? {
+    @IBInspectable public var iconErrorTintColorTrailing: UIColor? {
         didSet {
-            tfIconTrailingErrorColor = iconTrailingErrorColor
+            tfIconTrailingErrorColor = iconErrorTintColorTrailing
         }
     }
     
-    @IBInspectable public var iconTrailingDisabledColor: UIColor? {
+    @IBInspectable public var iconDisabledTintColorTrailing: UIColor? {
         didSet {
-            tfIconTrailingDisabledColor = iconTrailingDisabledColor
+            tfIconTrailingDisabledColor = iconDisabledTintColorTrailing
         }
     }
     
@@ -305,7 +313,7 @@ public class EDTSTextField: UIView {
     
     @IBInspectable public var borderWidth: CGFloat = 1.0 {
         didSet {
-            tfBorderColor = borderColor
+            tfBorderWidth = borderWidth
         }
     }
     
@@ -381,7 +389,7 @@ public class EDTSTextField: UIView {
         }
     }
     
-    @IBInspectable public var supportMessagefontName: String = "" {
+    @IBInspectable public var supportMessageFontName: String = "" {
         didSet {
             setupSupportTextFont()
         }
@@ -454,12 +462,6 @@ public class EDTSTextField: UIView {
         }
     }
     
-    @IBInspectable public var cornerRadius: CGFloat = 4.0 {
-        didSet {
-            vTextField.layer.cornerRadius = cornerRadius
-        }
-    }
-    
     @IBInspectable public var isRequired: Bool = false {
         didSet {
             lblRequired.isHidden = !isRequired
@@ -478,9 +480,9 @@ public class EDTSTextField: UIView {
         }
     }
     
-    @IBInspectable public var isDisabled: Bool = false {
+    @IBInspectable public var isEditable: Bool = false {
         didSet {
-            tfValue.isEnabled = !isDisabled
+            tfValue.isEnabled = !isEditable
         }
     }
     
@@ -522,6 +524,12 @@ public class EDTSTextField: UIView {
         }
     }
     
+    @IBInspectable public var cornerRadius: CGFloat = 4.0 {
+        didSet {
+            vTextField.layer.cornerRadius = cornerRadius
+        }
+    }
+    
     @IBInspectable public var keyboardType: UIKeyboardType = .alphabet {
         didSet {
             tfValue.keyboardType = keyboardType
@@ -534,7 +542,11 @@ public class EDTSTextField: UIView {
         }
     }
     
+    // MARK: - Public Variable
+    
     public var onTextChanged: ((String) -> Void)?
+    
+    // MARK: - Private Variable
     
     private var state: String = EDTSTextFieldState.default.rawValue {
         didSet {
@@ -651,17 +663,16 @@ public class EDTSTextField: UIView {
 
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        guard let nib = bundle.loadNibNamed("EDTSTextField", owner: self, options: nil),
-              let view = nib.first as? UIView else {
-            print("Failed to load TextField XIB")
-            return
+        if let nib = bundle.loadNibNamed("EDTSTextField", owner: self, options: nil),
+           let view = nib.first as? UIView {
+            
+            containerView = view
+            addSubview(containerView)
+            containerView.frame = bounds
+            containerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+            
+            setupUI()
         }
-
-        containerView = view
-        addSubview(containerView)
-        containerView.frame = bounds
-        containerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        setupUI()
     }
 
     // MARK: - Setup
@@ -735,9 +746,12 @@ public class EDTSTextField: UIView {
     }
     
     private func setupLabelVisibility() {
+        let isLabelHide = label == nil || label == ""
         if isLabelHide {
             lblTitle.text = ""
             lblRequired.text = ""
+        } else {
+            lblRequired.text = isRequired ? "*" : ""
         }
         lblTitleBottomConstraint?.constant = !isLabelHide ? 8 : 0
         
@@ -859,12 +873,20 @@ public class EDTSTextField: UIView {
     // MARK: - Background & Border
 
     private func setupBackgroundColor() {
-        vTextField.backgroundColor = themed(
+        let color = themed(
             default: tfBackgroundColor,
             focus: tfBackgroundFocusColor,
             error: tfBackgroundErrorColor,
             disabled: tfBackgroundDisabledColor
         )
+        
+        let animation = CABasicAnimation(keyPath: "bgColor")
+        animation.fromValue = vTextField.backgroundColor
+        animation.toValue = color
+        animation.duration = 0.25
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        vTextField.layer.add(animation, forKey: "bgColor")
+        vTextField.backgroundColor = color
     }
 
     private func setupBorderColor() {
@@ -874,12 +896,20 @@ public class EDTSTextField: UIView {
             error: tfBorderErrorWidth,
             disabled: tfBorderDisabledWidth
         )
-        vTextField.layer.borderColor = themed(
+        let color = themed(
             default: tfBorderColor,
             focus: tfBorderFocusColor,
             error: tfBorderErrorColor,
             disabled: tfBorderDisabledColor
         )?.cgColor
+        
+        let animation = CABasicAnimation(keyPath: "borderColor")
+        animation.fromValue = vTextField.layer.presentation()?.borderColor
+        animation.toValue = color
+        animation.duration = 0.25
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        vTextField.layer.add(animation, forKey: "borderColor")
+        vTextField.layer.borderColor = color
     }
 
     // MARK: - Support Label
@@ -894,8 +924,8 @@ public class EDTSTextField: UIView {
         let size = supportMessageFontSize
         let weight = setupFontWeight(from: supportMessageFontWeight ?? "light")
         
-        if !supportMessagefontName.isEmpty {
-            lblSupport.font = UIFont(name: supportMessagefontName, size: size)
+        if !supportMessageFontName.isEmpty {
+            lblSupport.font = UIFont(name: supportMessageFontName, size: size)
             ?? UIFont.systemFont(ofSize: size, weight: weight)
         } else {
             lblSupport.font = UIFont.systemFont(ofSize: size, weight: weight)
@@ -930,7 +960,7 @@ public class EDTSTextField: UIView {
         lblCounter.text = hasCounter ? "\(tfValue.text?.count ?? 0)/\(counterMax)" : ""
 
         if hasCounter {
-            if supportMessage == nil { lblSupport.text = "placeholder" }
+            if supportMessage == nil { lblSupport.text = "ic_placeholder" }
             lblSupportHeightConstraint?.isActive = false
         }
 
@@ -975,6 +1005,8 @@ public class EDTSTextField: UIView {
         lblRequired.textColor = EDTSColor.red30
         lblRequired.isHidden = !isRequired
         lblRequired.text = "*"
+        
+        setupLabelVisibility()
     }
 
     // MARK: - Password Toggle
@@ -1010,7 +1042,7 @@ public class EDTSTextField: UIView {
     }
 
     private func updatePasswordIcon() {
-        let iconName = tfValue.isSecureTextEntry ? "ic_eye_hide" : "ic_eye_show"
+        let iconName = tfValue.isSecureTextEntry ? "ic_visibility_off" : "ic_visibility_on"
         let bundle = Bundle(for: type(of: self))
         ivTrailing.image = UIImage(named: iconName, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }

@@ -109,7 +109,7 @@ public class StampCardSmall: UICollectionViewCell {
         btnExchange.titleLabel?.font = EDTSFont.Button.Small.font
         
         lblStampCard.text = "Diskon Rp2.000 Lifebuoy Red Fresh"
-//        ivStampCard.image = UIImage(named: "product-image")
+//        ivStampCard.image = UIImage(named: "img_product")
     }
     
     private func UIQuantity() {
