@@ -189,8 +189,8 @@ Each visual property has four variants — one per state. The component automati
 
 | Animation Type | Duration | Easing | Description |
 | -------------- | -------- | ------ | ----------- |
-| Border Transition | `250ms` | `EaseInOut` | Animates border textfield color on state change |
-| Color transition | `250ms` | `EaseInOut` | Animates background textfield color on state change  |
+| Border Color Transition | `250ms` | `EaseInOut` | Animates border textfield color on state change |
+| Background Color transition | `250ms` | `EaseInOut` | Animates background textfield color on state change  |
 
 ---
 
