@@ -92,24 +92,28 @@ public class EDTSTextField: UIView {
     @IBInspectable public var labelColor: UIColor? {
         didSet {
             tfLabelColor = labelColor
+            setupLabelColor()
         }
     }
     
     @IBInspectable public var labelFocusColor: UIColor? {
         didSet {
             tfLabelFocusColor = labelFocusColor
+            setupLabelColor()
         }
     }
     
     @IBInspectable public var labelErrorColor: UIColor? {
         didSet {
             tfLabelErrorColor = labelErrorColor
+            setupLabelColor()
         }
     }
     
     @IBInspectable public var labelDisabledColor: UIColor? {
         didSet {
             tfLabelDisabledColor = labelDisabledColor
+            setupLabelColor()
         }
     }
     
@@ -140,24 +144,28 @@ public class EDTSTextField: UIView {
     @IBInspectable public var placeholderColor: UIColor? {
         didSet {
             tfPlaceholderColor = placeholderColor
+            setupPlaceholderColor()
         }
     }
     
     @IBInspectable public var placeholderFocusColor: UIColor? {
         didSet {
             tfPlaceholderFocusColor = placeholderFocusColor
+            setupPlaceholderColor()
         }
     }
     
     @IBInspectable public var placeholderErrorColor: UIColor? {
         didSet {
             tfPlaceholderErrorColor = placeholderErrorColor
+            setupPlaceholderColor()
         }
     }
     
     @IBInspectable public var placeholderDisabledColor: UIColor? {
         didSet {
             tfPlaceholderDisabledColor = placeholderDisabledColor
+            setupPlaceholderColor()
         }
     }
     
@@ -188,24 +196,28 @@ public class EDTSTextField: UIView {
     @IBInspectable public var valueColor: UIColor? {
         didSet {
             tfValueColor = valueColor
+            setupValueColor()
         }
     }
     
     @IBInspectable public var valueFocusColor: UIColor? {
         didSet {
             tfValueFocusColor = valueFocusColor
+            setupValueColor()
         }
     }
     
     @IBInspectable public var valueErrorColor: UIColor? {
         didSet {
             tfValueErrorColor = valueErrorColor
+            setupValueColor()
         }
     }
     
     @IBInspectable public var valueDisabledColor: UIColor? {
         didSet {
             tfValueDisabledColor = valueDisabledColor
+            setupValueColor()
         }
     }
     
@@ -236,24 +248,28 @@ public class EDTSTextField: UIView {
     @IBInspectable public var iconTintColorLeading: UIColor? {
         didSet {
             tfIconLeadingColor = iconTintColorLeading
+            setupIconLeadingColor()
         }
     }
     
     @IBInspectable public var iconFocusTintColorLeading: UIColor? {
         didSet {
             tfIconLeadingFocusColor = iconFocusTintColorLeading
+            setupIconLeadingColor()
         }
     }
     
     @IBInspectable public var iconErrorTintColorLeading: UIColor? {
         didSet {
             tfIconLeadingErrorColor = iconErrorTintColorLeading
+            setupIconLeadingColor()
         }
     }
     
     @IBInspectable public var iconDisabledTintColorLeading: UIColor? {
         didSet {
             tfIconLeadingDisabledColor = iconDisabledTintColorLeading
+            setupIconLeadingColor()
         }
     }
     
@@ -266,96 +282,112 @@ public class EDTSTextField: UIView {
     @IBInspectable public var iconTintColorTrailing: UIColor? {
         didSet {
             tfIconTrailingColor = iconTintColorTrailing
+            setupIconTrailingColor()
         }
     }
     
     @IBInspectable public var iconFocusTintColorTrailing: UIColor? {
         didSet {
             tfIconTrailingFocusColor = iconFocusTintColorTrailing
+            setupIconTrailingColor()
         }
     }
     
     @IBInspectable public var iconErrorTintColorTrailing: UIColor? {
         didSet {
             tfIconTrailingErrorColor = iconErrorTintColorTrailing
+            setupIconTrailingColor()
         }
     }
     
     @IBInspectable public var iconDisabledTintColorTrailing: UIColor? {
         didSet {
             tfIconTrailingDisabledColor = iconDisabledTintColorTrailing
+            setupIconTrailingColor()
         }
     }
     
     @IBInspectable public var bgColor: UIColor? {
         didSet {
             tfBackgroundColor = bgColor
+            setupBackgroundColor()
         }
     }
     
     @IBInspectable public var bgFocusColor: UIColor? {
         didSet {
             tfBackgroundFocusColor = bgFocusColor
+            setupBackgroundColor()
         }
     }
     
     @IBInspectable public var bgErrorColor: UIColor? {
         didSet {
             tfBackgroundErrorColor = bgErrorColor
+            setupBackgroundColor()
         }
     }
     
     @IBInspectable public var bgDisabledColor: UIColor? {
         didSet {
             tfBackgroundDisabledColor = bgDisabledColor
+            setupBackgroundColor()
         }
     }
     
     @IBInspectable public var borderWidth: CGFloat = 1.0 {
         didSet {
             tfBorderWidth = borderWidth
+            setupBorderWidth()
         }
     }
     
     @IBInspectable public var borderFocusWidth: CGFloat = 1.0 {
         didSet {
             tfBorderFocusWidth = borderFocusWidth
+            setupBorderWidth()
         }
     }
     
     @IBInspectable public var borderErrorWidth: CGFloat = 1.0 {
         didSet {
             tfBorderErrorWidth = borderErrorWidth
+            setupBorderWidth()
         }
     }
     
     @IBInspectable public var borderDisabledWidth: CGFloat = 1.0 {
         didSet {
             tfBorderDisabledWidth = borderDisabledWidth
+            setupBorderWidth()
         }
     }
     
     @IBInspectable public var borderColor: UIColor? {
         didSet {
             tfBorderColor = borderColor
+            setupBorderColor()
         }
     }
     
     @IBInspectable public var borderFocusColor: UIColor? {
         didSet {
             tfBorderFocusColor = borderFocusColor
+            setupBorderColor()
         }
     }
     
     @IBInspectable public var borderErrorColor: UIColor? {
         didSet {
             tfBorderErrorColor = borderErrorColor
+            setupBorderColor()
         }
     }
     
     @IBInspectable public var borderDisabledColor: UIColor? {
         didSet {
             tfBorderDisabledColor = borderDisabledColor
+            setupBorderColor()
         }
     }
     
@@ -368,24 +400,28 @@ public class EDTSTextField: UIView {
     @IBInspectable public var supportMessageColor: UIColor? {
         didSet {
             tfSupportColor = supportMessageColor
+            setupSupportTextColor()
         }
     }
     
     @IBInspectable public var supportMessageFocusColor: UIColor? {
         didSet {
             tfSupportFocusColor = supportMessageFocusColor
+            setupSupportTextColor()
         }
     }
     
     @IBInspectable public var supportMessageErrorColor: UIColor? {
         didSet {
             tfSupportErrorColor = supportMessageErrorColor
+            setupSupportTextColor()
         }
     }
     
     @IBInspectable public var supportMessageDisabledColor: UIColor? {
         didSet {
             tfSupportDisabledColor = supportMessageDisabledColor
+            setupSupportTextColor()
         }
     }
     
@@ -417,24 +453,28 @@ public class EDTSTextField: UIView {
     @IBInspectable public var counterColor: UIColor? {
         didSet {
             tfCounterColor = counterColor
+            setupCounterTextColor()
         }
     }
     
     @IBInspectable public var counterFocusColor: UIColor? {
         didSet {
             tfCounterFocusColor = counterFocusColor
+            setupCounterTextColor()
         }
     }
     
     @IBInspectable public var counterErrorColor: UIColor? {
         didSet {
             tfCounterErrorColor = counterErrorColor
+            setupCounterTextColor()
         }
     }
     
     @IBInspectable public var counterDisabledColor: UIColor? {
         didSet {
             tfCounterDisabledColor = counterDisabledColor
+            setupCounterTextColor()
         }
     }
     
@@ -464,7 +504,7 @@ public class EDTSTextField: UIView {
     
     @IBInspectable public var isRequired: Bool = false {
         didSet {
-            lblRequired.isHidden = !isRequired
+            setupRequired()
         }
     }
     
@@ -703,6 +743,7 @@ public class EDTSTextField: UIView {
         setupIconLeadingColor()
         setupIconTrailingColor()
         setupBackgroundColor()
+        setupBorderWidth()
         setupBorderColor()
         setupSupportTextColor()
         setupCounterTextColor()
@@ -888,14 +929,17 @@ public class EDTSTextField: UIView {
         vTextField.layer.add(animation, forKey: "bgColor")
         vTextField.backgroundColor = color
     }
-
-    private func setupBorderColor() {
+    
+    private func setupBorderWidth() {
         vTextField.layer.borderWidth = themed(
             default: tfBorderWidth,
             focus: tfBorderFocusWidth,
             error: tfBorderErrorWidth,
             disabled: tfBorderDisabledWidth
         )
+    }
+
+    private func setupBorderColor() {
         let color = themed(
             default: tfBorderColor,
             focus: tfBorderFocusColor,
@@ -916,7 +960,6 @@ public class EDTSTextField: UIView {
 
     private func setupSupportText() {
         lblSupport.font = EDTSFont.B4.Regular.font
-        lblSupport.textColor = EDTSColor.grey60
         setupSupportTextVisibility()
     }
     
