@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_eye_hide.png",
+      "filename" : "ic_visibility_on_2x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "ic_visibility_on_3x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "ic_visibility_on_4x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
