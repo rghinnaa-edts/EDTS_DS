@@ -508,6 +508,18 @@ public class EDTSTextField: UIView {
         }
     }
     
+    @IBInspectable public var isIconLeadingClickable: Bool = false {
+        didSet {
+            ivLeading.isUserInteractionEnabled = isIconLeadingClickable
+        }
+    }
+
+    @IBInspectable public var isIconTrailingClickable: Bool = false {
+        didSet {
+            ivTrailing.isUserInteractionEnabled = isIconTrailingClickable
+        }
+    }
+    
     @IBInspectable public var isPassword: Bool = false {
         didSet {
             setupPasswordToggle()
@@ -517,6 +529,12 @@ public class EDTSTextField: UIView {
     @IBInspectable public var isPasswordToggleHide: Bool = false {
         didSet {
             setupPasswordToggle()
+        }
+    }
+    
+    @IBInspectable public var isClearable: Bool = false {
+        didSet {
+            setupClearButton()
         }
     }
     
@@ -587,6 +605,8 @@ public class EDTSTextField: UIView {
     public var onTextChanged: ((String) -> Void)?
     
     // MARK: - Private Variable
+    
+    private weak var delegate: EDTSTextFieldDelegate?
     
     private var state: String = EDTSTextFieldState.default.rawValue {
         didSet {
@@ -723,6 +743,7 @@ public class EDTSTextField: UIView {
         setupState()
         setupIconLeading()
         setupIconTrailing()
+        setupClearButton()
         setupSupportText()
         setupCounterText()
         setupRequired()
@@ -887,6 +908,7 @@ public class EDTSTextField: UIView {
 
         let hasIcon = iconLeading != nil
         ivLeading.isHidden = !hasIcon
+        ivLeading.isUserInteractionEnabled = isIconLeadingClickable
         
         ivLeadingWidthConstraint?.constant = hasIcon ? 24 : 0
         ivLeadingHeightConstraint?.constant = hasIcon ? 24 : 0
@@ -903,6 +925,7 @@ public class EDTSTextField: UIView {
 
         let hasIcon = iconTrailing != nil
         ivTrailing.isHidden = !hasIcon
+        ivTrailing.isUserInteractionEnabled = isIconTrailingClickable
         
         ivTrailingWidthConstraint?.constant = hasIcon ? 24 : 0
         ivTrailingHeightConstraint?.constant = hasIcon ? 24 : 0
@@ -1090,6 +1113,26 @@ public class EDTSTextField: UIView {
         ivTrailing.image = UIImage(named: iconName, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }
     
+    // MARK: - Clear Button
+
+    private func setupClearButton() {
+        guard isClearable else { return }
+
+        let hasText = !(tfValue.text?.isEmpty ?? true)
+        let bundle = Bundle(for: type(of: self))
+        ivTrailing.image = UIImage(named: "ic_error", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        ivTrailing.tintColor = EDTSColor.grey50
+        ivTrailing.isHidden = false
+        ivTrailingWidthConstraint?.constant = 24
+        ivTrailingHeightConstraint?.constant = 24
+        vTextFieldTrailingConstraint?.constant = 8
+        layoutIfNeeded()
+
+        UIView.animate(withDuration: 0.2) {
+            self.ivTrailing.alpha = hasText ? 1 : 0
+        }
+    }
+    
     // MARK: - Setup Padding
     
     private func setupPadding() {
@@ -1105,6 +1148,22 @@ public class EDTSTextField: UIView {
         tfValue.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         tfValue.addTarget(self, action: #selector(textFieldDidBeginEditing), for: .editingDidBegin)
         tfValue.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+        
+        ivLeading.isUserInteractionEnabled = true
+        let leadingPress = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(onLongPressLeadingIcon(_:))
+        )
+        leadingPress.minimumPressDuration = 0
+        ivLeading.addGestureRecognizer(leadingPress)
+        
+        ivTrailing.isUserInteractionEnabled = true
+        let trailingPress = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(onLongPressTrailingIcon(_:))
+        )
+        trailingPress.minimumPressDuration = 0
+        ivTrailing.addGestureRecognizer(trailingPress)
     }
     
     @objc private func textFieldDidChange() {
@@ -1114,7 +1173,8 @@ public class EDTSTextField: UIView {
                 tfValue.text = String(currentText.prefix(counterMax))
             }
         }
-        
+
+        if isClearable { setupClearButton() }
         onTextChanged?(tfValue.text ?? "")
         updateCounterText()
         NotificationCenter.default.post(name: UITextField.textDidChangeNotification, object: tfValue)
@@ -1144,4 +1204,54 @@ public class EDTSTextField: UIView {
         updatePasswordIcon()
         ivTrailing.tintColor = EDTSColor.grey50
     }
+    
+    @objc private func onLongPressLeadingIcon(_ gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            ivLeading.showIconRipple(size: ivLeading.bounds.width + 8, color: EDTSColor.grey30.withAlphaComponent(0.40))
+            
+        case .ended:
+            delegate?.didSelectTextFieldIconLeading(self)
+            ivLeading.hideIconRipple()
+            
+        case .cancelled, .failed:
+            ivLeading.hideIconRipple()
+            
+        default:
+            break
+        }
+    }
+    
+    @objc private func onLongPressTrailingIcon(_ gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            ivTrailing.showIconRipple(size: ivTrailing.bounds.width + 8, color: EDTSColor.grey30.withAlphaComponent(0.40))
+            
+        case .ended:
+            if isClearable {
+                tfValue.text = ""
+                onTextChanged?("")
+                updateCounterText()
+                setupClearButton()
+                NotificationCenter.default.post(name: UITextField.textDidChangeNotification, object: tfValue)
+            } else {
+                delegate?.didSelectTextFieldIconTrailing(self)
+            }
+            ivTrailing.hideIconRipple()
+            
+        case .cancelled, .failed:
+            ivTrailing.hideIconRipple()
+            
+        default:
+            break
+        }
+    }
+}
+
+// MARK: Delegate
+
+@MainActor
+public protocol EDTSTextFieldDelegate: AnyObject {
+    func didSelectTextFieldIconLeading(_ textField: EDTSTextField)
+    func didSelectTextFieldIconTrailing(_ textField: EDTSTextField)
 }

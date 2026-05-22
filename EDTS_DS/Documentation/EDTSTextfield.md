@@ -1,14 +1,16 @@
 # EDTSTextField
 The `EDTSTextField` component is a fully customizable UIKit text field with built-in support for multiple states, icons, character counter, support messages, password toggle, and per-state theming.
-
+ 
 ## Features
 - Four built-in states: `default`, `focus`, `error`, `disabled`
 - Per-state color theming for label, placeholder, value, icons, background, border, support message, and counter
-- Leading and trailing icon support
+- Leading and trailing icon support with tap/long-press gesture handling
 - Built-in password toggle with show/hide icon
 - Character counter with max limit enforcement
 - Required field indicator (`*`)
 - Support/helper message below the field
+- Clearable mode with animated clear button
+- Delegate callbacks for icon interactions
 - Fully `IBDesignable` & `IBInspectable` — configurable in Interface Builder
 - Configurable keyboard type and return key type
 - Intrinsic content size support
@@ -62,6 +64,36 @@ textField.isPassword = true          // enables secure entry + eye toggle
 // textField.isPasswordToggleHide = true  // hides the eye button
 ```
 
+### Clearable Field
+```swift
+let textField = EDTSTextField(frame: .zero)
+textField.label = "Search"
+textField.placeholder = "Type to search..."
+textField.isClearable = true  // shows animated clear (✕) button when text is present
+```
+
+### Clickable Icons with Delegate
+```swift
+class MyVC: UIViewController, EDTSTextFieldDelegate {
+    let textField = EDTSTextField(frame: .zero)
+ 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        textField.iconLeading = UIImage(systemName: "magnifyingglass")
+        textField.isIconLeadingClickable = true
+        textField.setDelegate(self)
+    }
+ 
+    func didSelectTextFieldIconLeading(_ textField: EDTSTextField) {
+        print("Leading icon tapped")
+    }
+ 
+    func didSelectTextFieldIconTrailing(_ textField: EDTSTextField) {
+        print("Trailing icon tapped")
+    }
+}
+```
+
 ### Triggering Error State
 ```swift
 // Set error state manually
@@ -111,11 +143,15 @@ public enum EDTSTextFieldState: String {
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `iconLeading` | `UIImage` | `nil` | Icon displayed on the left side of the field |
-| `iconTrailing` | `UIImage` | `nil` | Icon on the right; hidden when `isPassword` is true |
+| `iconLeading` | `UIImage?` | `nil` | Icon displayed on the left side of the field |
+| `iconTrailing` | `UIImage?` | `nil` | Icon on the right; hidden when `isPassword` is `true` |
+| `isIconLeadingClickable` | `Bool` | `false` | Enables user interaction on the leading icon |
+| `isIconTrailingClickable` | `Bool` | `false` | Enables user interaction on the trailing icon |
 | `isPassword` | `Bool` | `false` | Enables secure text entry with eye toggle button |
 | `isPasswordToggleHide` | `Bool` | `false` | Hides the eye button when in password mode |
-| `isDisabled` | `Bool` | `false` | Disables text input |
+| `isClearable` | `Bool` | `false` | Shows an animated clear (✕) button when the field has text; overrides `iconTrailing` |
+| `isEditable` | `Bool` | `false` | When `true`, disables text input (field becomes read-only) |
+| `isStateDisabled` | `Bool` | `false` | Sets the field to `disabled` state and disables text input |
 | `keyboardType` | `UIKeyboardType` | `.alphabet` | Keyboard type for the input |
 | `returnKeyType` | `UIReturnKeyType` | `.done` | Return key label on the keyboard |
 
@@ -192,6 +228,23 @@ Each visual property has four variants — one per state. The component automati
 | Border Color Transition | `250ms` | `EaseInOut` | Animates border textfield color on state change |
 | Background Color transition | `250ms` | `EaseInOut` | Animates background textfield color on state change  |
 
+---
+
+## Delegate
+ 
+Conform to `EDTSTextFieldDelegate` to receive icon tap callbacks. Both methods are required.
+ 
+```swift
+@MainActor
+public protocol EDTSTextFieldDelegate: AnyObject {
+    func didSelectTextFieldIconLeading(_ textField: EDTSTextField)
+    func didSelectTextFieldIconTrailing(_ textField: EDTSTextField)
+}
+```
+ 
+> Icon interactions use a long-press gesture with `minimumPressDuration = 0`, so they respond on touch-down and fire the delegate callback on release.  
+> The trailing icon callback is **not** fired when `isClearable = true` — in that case, the field clears instead.
+ 
 ---
 
 *For further customization, you can ask UX Engineer or inherit `EDTSTextField` and override its methods, or add additional functionality as required.*
