@@ -1,6 +1,6 @@
 # EDTSCheckbox
 
-`EDTSCheckbox` is a customizable checkbox component featuring a box indicator with a checkmark or indeterminate icon, title, and description text. It supports two states (`rest`, `disabled`), two types (`checked`, `indeterminated`), full active/inactive styling, and ripple feedback on tap.
+`EDTSCheckbox` is a customizable checkbox component featuring a box indicator with a checkmark or indeterminate icon, title, and description text. It supports two states (`default`, `disabled`), two types (`checked`, `indeterminated`), full active/inactive styling, and ripple feedback on tap.
 
 ---
 
@@ -8,9 +8,9 @@
 
 | Feature / Variation | Preview |
 | ------------------- | ------- |
-| **Rest — Inactive (Checked)** | ![Checkbox Rest Inactive Checked](https://placeholder.url/) |
-| **Rest — Active (Checked)** | ![Checkbox Rest Active Checked](https://placeholder.url/) |
-| **Rest — Active (Indeterminate)** | ![Checkbox Rest Active Indeterminate](https://placeholder.url/) |
+| **Default — Inactive (Checked)** | ![Checkbox Default Inactive Checked](https://placeholder.url/) |
+| **Default — Active (Checked)** | ![Checkbox Default Active Checked](https://placeholder.url/) |
+| **Default — Active (Indeterminate)** | ![Checkbox Default Active Indeterminate](https://placeholder.url/) |
 | **Disabled — Inactive** | ![Checkbox Disabled Inactive](https://placeholder.url/) |
 | **Disabled — Active (Checked)** | ![Checkbox Disabled Active](https://placeholder.url/) |
 | **Disabled — Active (Indeterminate)** | ![Checkbox Disabled Active](https://placeholder.url/) |
@@ -27,7 +27,7 @@ view.addSubview(checkbox)
 
 checkbox.title = "Accept terms and conditions"
 checkbox.desc = "By checking this you agree to our terms"
-checkbox.checkboxState = "rest"
+checkbox.checkboxState = "default"
 checkbox.checkboxType = "checked"
 checkbox.isActive = false
 checkbox.delegate = self
@@ -56,7 +56,7 @@ extension ViewController: EDTSCheckboxDelegate {
 
 | State Name | Value | Description |
 | ---------- | ----- | ----------- |
-| `Rest` | `"rest"` | Default interactive state |
+| `Default` | `"default"` | Default interactive state |
 | `Disabled` | `"disabled"` | Non-interactive state |
 
 ---
@@ -78,7 +78,7 @@ extension ViewController: EDTSCheckboxDelegate {
 
 | Property Name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| `checkboxState` | `String?` | `"rest"` | Checkbox state (`rest`, `disabled`) |
+| `checkboxState` | `String?` | `"default"` | Checkbox state (`default`, `disabled`) |
 | `checkboxType` | `String?` | `"checked"` | Checkbox type (`checked`, `indeterminated`) |
 | `isActive` | `Bool` | `false` | Controls active/inactive selection state |
 | `spacing` | `CGFloat` | `8.0` | Spacing between box and text stack |
@@ -139,7 +139,7 @@ extension ViewController: EDTSCheckboxDelegate {
 
 ## State-Specific Styling
 
-### Rest State
+### Default State
 
 | Sub-state | Title Color | Desc Color | Box BG | Icon Tint | Box Border |
 | --------- | ----------- | ---------- | ------ | --------- | ---------- |
@@ -174,7 +174,7 @@ public protocol EDTSCheckboxDelegate: AnyObject {
 
 ```swift
 public enum EDTSCheckboxState: String {
-    case rest = "rest"
+    case default = "default"
     case disabled = "disabled"
 }
 ```
@@ -195,7 +195,7 @@ public enum EDTSCheckboxType: String {
 | Animation Type | Duration | Easing | Description |
 | -------------- | -------- | ------ | ----------- |
 | Icon fade in | `150ms` | `EaseInOut` | Fades the icon from 50% to full opacity on activation |
-| Color transition | `100ms` | `EaseInOut` | Animates box background, border, title, and description color changes on state toggle |
+| Color transition | `250ms` | `EaseInOut` | Animates box background, border, title, and description color changes on state toggle |
 | Ripple Effect | `400ms` | `EaseOut` | Circular ripple effect expanding behind the box container on press |
 
 ---
