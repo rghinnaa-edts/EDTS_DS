@@ -1118,6 +1118,8 @@ public class EDTSTextField: UIView {
     private func setupClearButton() {
         guard isClearable else { return }
 
+        ivTrailing.isUserInteractionEnabled = true
+
         let hasText = !(tfValue.text?.isEmpty ?? true)
         let bundle = Bundle(for: type(of: self))
         ivTrailing.image = UIImage(named: "ic_error", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
