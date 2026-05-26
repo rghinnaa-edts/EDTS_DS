@@ -4,7 +4,7 @@ The `EDTSTextField` component is a fully customizable UIKit text field with buil
 ## Features
 - Four built-in states: `default`, `focus`, `error`, `disabled`
 - Per-state color theming for label, placeholder, value, icons, background, border, support message, and counter
-- Leading and trailing icon support with tap/long-press gesture handling
+- Leading and trailing icon support
 - Built-in password toggle with show/hide icon
 - Character counter with max limit enforcement
 - Required field indicator (`*`)
