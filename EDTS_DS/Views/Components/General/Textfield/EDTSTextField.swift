@@ -606,7 +606,7 @@ public class EDTSTextField: UIView {
     
     // MARK: - Private Variable
     
-    private weak var delegate: EDTSTextFieldDelegate?
+    public weak var delegate: EDTSTextFieldDelegate?
     
     private var state: String = EDTSTextFieldState.default.rawValue {
         didSet {
