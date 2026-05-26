@@ -139,6 +139,15 @@ public enum EDTSTextFieldState: String {
 | `counterMax` | `Int` | `-1` | Enables character counter; `-1` = disabled |
 | `isCounterHide` | `Bool` | `false` | Hides counter even when `counterMax` is set |
 
+### Initial State
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `isStateDefault` | `Bool` | `false` | Sets the field to `default` state and enable text input |
+| `isStateFocus` | `Bool` | `false` | Sets the field to `focus` state and enable text input |
+| `isStateError` | `Bool` | `false` | Sets the field to `error` state and enable text input |
+| `isStateDisabled` | `Bool` | `false` | Sets the field to `disabled` state and disable text input |
+
 ### Icons & Interaction
 
 | Parameter | Type | Default | Description |
@@ -151,7 +160,6 @@ public enum EDTSTextFieldState: String {
 | `isPasswordToggleHide` | `Bool` | `false` | Hides the eye button when in password mode |
 | `isClearable` | `Bool` | `false` | Shows an animated clear (✕) button when the field has text; overrides `iconTrailing` |
 | `isEditable` | `Bool` | `false` | When `true`, disables text input (field becomes read-only) |
-| `isStateDisabled` | `Bool` | `false` | Sets the field to `disabled` state and disables text input |
 | `keyboardType` | `UIKeyboardType` | `.alphabet` | Keyboard type for the input |
 | `returnKeyType` | `UIReturnKeyType` | `.done` | Return key label on the keyboard |
 
