@@ -7,18 +7,6 @@
 
 import UIKit
 
-public enum FontWeight: String {
-    case ultralight = "ultralight"
-    case thin = "thin"
-    case light = "light"
-    case regular = "regular"
-    case medium = "medium"
-    case semibold = "semibold"
-    case bold = "bold"
-    case heavy = "heavy"
-    case black = "black"
-}
-
 public struct EDTSFont {
     
     public struct FontStyle {
@@ -112,5 +100,39 @@ public struct EDTSFont {
         public static let Big = BaseFont.semibold(size: 14, lineHeight: 24)
         public static let Medium = BaseFont.semibold(size: 14, lineHeight: 16)
         public static let Small = BaseFont.semibold(size: 12, lineHeight: 16)
+    }
+}
+
+// MARK: - Font Weight
+
+public enum FontWeight: String {
+    case ultralight = "ultralight"
+    case thin = "thin"
+    case light = "light"
+    case regular = "regular"
+    case medium = "medium"
+    case semibold = "semibold"
+    case bold = "bold"
+    case heavy = "heavy"
+    case black = "black"
+}
+
+public func setupFontWeight(from value: String) -> UIFont.Weight {
+    let normalized = value
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+        .lowercased()
+    
+    let weight = FontWeight(rawValue: normalized) ?? .regular
+    
+    switch weight {
+    case .ultralight: return .ultraLight
+    case .thin:       return .thin
+    case .light:      return .light
+    case .regular:    return .regular
+    case .medium:     return .medium
+    case .semibold:   return .semibold
+    case .bold:       return .bold
+    case .heavy:      return .heavy
+    case .black:      return .black
     }
 }
