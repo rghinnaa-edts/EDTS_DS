@@ -1,7 +1,5 @@
 # EDTSCheckbox
 
-## Overview
-
 `EDTSCheckbox` is a customizable checkbox component featuring a box indicator with a checkmark or indeterminate icon, title, and description text. It supports two states (`rest`, `disabled`), two types (`checked`, `indeterminated`), full active/inactive styling, and ripple feedback on tap.
 
 ---

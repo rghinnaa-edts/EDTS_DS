@@ -7,6 +7,16 @@
 
 import UIKit
 
+public enum EDTSCheckboxState: String {
+    case `default` = "default"
+    case disabled = "disabled"
+}
+
+public enum EDTSCheckboxType: String {
+    case checked = "checked"
+    case indeterminated = "indeterminated"
+}
+
 @IBDesignable
 public class EDTSCheckbox: UIView {
     // MARK: - Outlets
@@ -222,9 +232,9 @@ public class EDTSCheckbox: UIView {
     
     // MARK: - Private Variable
     private var resolvedCheckboxState: EDTSCheckboxState {
-        guard let type = checkboxState else { return .rest }
+        guard let type = checkboxState else { return .default }
         let normalized = type.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        return EDTSCheckboxState(rawValue: normalized) ?? .rest
+        return EDTSCheckboxState(rawValue: normalized) ?? .default
     }
     
     private var resolvedCheckboxType: EDTSCheckboxType {
@@ -285,10 +295,8 @@ public class EDTSCheckbox: UIView {
     }
     
     private func setupDefaultStyle(){
-        titleFontSize = 14
-        titleFontWeight = "Medium"
-        descFontSize = 12
-        descFontWeight = "Regular"
+        lblTitle.font = EDTSFont.B2.Medium.font
+        lblBody.font = EDTSFont.B3.Regular.font
         borderWidth = 1
         title = "Title checkboxes"
         desc = "Body text goes here"
@@ -366,8 +374,8 @@ public class EDTSCheckbox: UIView {
         ivIconContainerView.isUserInteractionEnabled = resolvedCheckboxState != .disabled
         
         switch resolvedCheckboxState {
-        case .rest:
-            animateRestCheckbox(isActive)
+        case .default:
+            animateDefaultCheckbox(isActive)
         case .disabled:
             setupCheckboxDisabled()
         }
@@ -378,10 +386,10 @@ public class EDTSCheckbox: UIView {
             switch resolvedCheckboxType {
             case .checked:
                 let bundle = Bundle(for: type(of: self))
-                ivIcon.image = UIImage(named: "ic-check", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+                ivIcon.image = UIImage(named: "ic_check", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
             case .indeterminated:
                 let bundle = Bundle(for: type(of: self))
-                ivIcon.image = UIImage(named: "ic-minus", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+                ivIcon.image = UIImage(named: "ic_minus", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
             }
         }else{
             ivIcon.image = icon?.withRenderingMode(.alwaysTemplate)
@@ -391,24 +399,24 @@ public class EDTSCheckbox: UIView {
     private func setupCheckboxDisabled() {
         switch self.isActive {
         case false:
-            self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey40
-            self.lblBody.textColor = self.descColorInactive ??  EDTSColor.grey30
-            self.ivIconContainerView.backgroundColor = self.boxBgColorInactive ?? EDTSColor.grey20
-            self.ivIcon.tintColor = self.iconTintColorInactive ?? EDTSColor.grey20
-            self.ivIconContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
+            self.lblTitle.textColor = EDTSColor.grey40
+            self.lblBody.textColor = EDTSColor.grey30
+            self.ivIconContainerView.backgroundColor = EDTSColor.grey20
+            self.ivIcon.tintColor = EDTSColor.grey20
+            self.ivIconContainerView.layer.borderColor = EDTSColor.grey30.cgColor
 
             
         case true:
-            self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey40
-            self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey30
-            self.ivIconContainerView.backgroundColor = self.boxBgColorActive ?? EDTSColor.grey20
-            self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.grey40
-            self.ivIconContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? EDTSColor.grey40.cgColor
+            self.lblTitle.textColor = EDTSColor.grey40
+            self.lblBody.textColor = EDTSColor.grey30
+            self.ivIconContainerView.backgroundColor = EDTSColor.grey20
+            self.ivIcon.tintColor = EDTSColor.grey40
+            self.ivIconContainerView.layer.borderColor = EDTSColor.grey40.cgColor
         }
     }
     
     // MARK: - Animation
-    private func animateRestCheckbox(_ isActive: Bool = false, animated: Bool = true) {
+    private func animateDefaultCheckbox(_ isActive: Bool = false, animated: Bool = true) {
         self.ivIcon.isHidden = ivIcon.image == nil
         let changes = {
             switch self.isActive {
@@ -443,7 +451,7 @@ public class EDTSCheckbox: UIView {
             )
 
             UIView.animate(
-                withDuration: 0.1,
+                withDuration: 0.25,
                 delay: 0,
                 options: [.curveEaseInOut],
                 animations: changes,
@@ -488,14 +496,4 @@ public class EDTSCheckbox: UIView {
 @MainActor
 public protocol EDTSCheckboxDelegate: AnyObject {
     func didSelectCheckbox(_ checkbox: EDTSCheckbox)
-}
-
-public enum EDTSCheckboxState: String {
-    case rest = "rest"
-    case disabled = "disabled"
-}
-
-public enum EDTSCheckboxType: String {
-    case checked = "checked"
-    case indeterminated = "indeterminated"
 }
