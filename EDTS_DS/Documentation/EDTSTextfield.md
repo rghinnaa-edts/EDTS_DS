@@ -81,7 +81,7 @@ class MyVC: UIViewController, EDTSTextFieldDelegate {
         super.viewDidLoad()
         textField.iconLeading = UIImage(systemName: "magnifyingglass")
         textField.isIconLeadingClickable = true
-        textField.setDelegate(self)
+        textField.delegate = self
     }
  
     func didSelectTextFieldIconLeading(_ textField: EDTSTextField) {
