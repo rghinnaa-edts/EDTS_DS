@@ -307,7 +307,7 @@ public class EDTSSignifier: UIView {
         invalidateIntrinsicContentSize()
     }
     
-    public func show(to view: UIView) {
+    public func showSignifier(to view: UIView) {
         self.targetView = view
 
         translatesAutoresizingMaskIntoConstraints = false
