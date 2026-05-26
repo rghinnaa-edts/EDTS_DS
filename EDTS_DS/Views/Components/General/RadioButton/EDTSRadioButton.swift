@@ -7,6 +7,11 @@
 
 import UIKit
 
+public enum EDTSRadioButtonState: String {
+    case `default` = "default"
+    case disabled = "disabled"
+}
+
 @IBDesignable
 public class EDTSRadioButton: UIView {
     // MARK: - Outlets
@@ -233,9 +238,9 @@ public class EDTSRadioButton: UIView {
     
     // MARK: - Private Variable
     private var resolvedRadioButtonState: EDTSRadioButtonState {
-        guard let type = radioBtnState else { return .rest }
+        guard let type = radioBtnState else { return .`default` }
         let normalized = type.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        return EDTSRadioButtonState(rawValue: normalized) ?? .rest
+        return EDTSRadioButtonState(rawValue: normalized) ?? .`default`
     }
     
     // MARK: - Initializers
@@ -289,10 +294,8 @@ public class EDTSRadioButton: UIView {
     }
     
     private func setupDefaultStyle(){
-        titleFontSize = 14
-        titleFontWeight = "Medium"
-        descFontSize = 12
-        descFontWeight = "Regular"
+        lblTitle.font = EDTSFont.B2.Medium.font
+        lblTitle.font = EDTSFont.B3.Regular.font
         borderWidth = 1
         title = "Title radio button"
         desc = "Body text goes here"
@@ -388,8 +391,8 @@ public class EDTSRadioButton: UIView {
         bulletContainerView.isUserInteractionEnabled = resolvedRadioButtonState != .disabled
         
         switch resolvedRadioButtonState {
-        case .rest:
-            animateRestRadioButton(isActive)
+        case .`default`:
+            animateDefaultRadioButton(isActive)
         case .disabled:
             setupRadioButtonDisabled()
         }
@@ -417,7 +420,7 @@ public class EDTSRadioButton: UIView {
     }
     
     // MARK: - Animation
-    private func animateRestRadioButton(_ isActive: Bool = false, animated: Bool = true) {
+    private func animateDefaultRadioButton(_ isActive: Bool = false, animated: Bool = true) {
         self.bulletView.isHidden = ivIcon.image != nil
         let changes = {
             switch self.isActive {
@@ -465,7 +468,7 @@ public class EDTSRadioButton: UIView {
             )
             
             UIView.animate(
-                withDuration: 0.1,
+                withDuration: 0.25,
                 delay: 0,
                 options: [.curveEaseInOut],
                 animations: changes,
@@ -493,14 +496,14 @@ public class EDTSRadioButton: UIView {
     @objc private func onLongPressBulletContainerView(_ gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
-            bulletContainerView.showCircleRipple(size: bulletContainerView.bounds.width + 16, color: EDTSColor.black.withAlphaComponent(0.12))
+            bulletContainerView.showRippleCircular(size: bulletContainerView.bounds.width + 16, color: EDTSColor.black.withAlphaComponent(0.12))
             
         case .ended:
             delegate?.didSelectRadioButton(self)
-            bulletContainerView.hideCircleRipple()
+            bulletContainerView.hideRippleCircular()
             
         case .cancelled, .failed:
-            bulletContainerView.hideCircleRipple()
+            bulletContainerView.hideRippleCircular()
             
         default:
             break
@@ -511,9 +514,4 @@ public class EDTSRadioButton: UIView {
 @MainActor
 public protocol EDTSRadioButtonDelegate: AnyObject {
     func didSelectRadioButton(_ radioButton: EDTSRadioButton)
-}
-
-public enum EDTSRadioButtonState: String {
-    case rest = "rest"
-    case disabled = "disabled"
 }

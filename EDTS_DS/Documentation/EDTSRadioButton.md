@@ -1,7 +1,5 @@
 # EDTSRadioButton
 
-## Overview
-
 `EDTSRadioButton` is a customizable single radio button component featuring a bullet indicator (or custom icon), title, and description text with full active/inactive state styling support. `EDTSRadioGroup` is a collection-based container that manages a list of `EDTSRadioButton` items with support for vertical, horizontal, and grid layout modes, handling selection state automatically.
 
 ---
@@ -10,8 +8,8 @@
 
 | Feature / Variation | Preview | 
 | ------------------- | ------- |
-| **RadioButton — Rest (Inactive)** | ![RadioButton Rest Inactive](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1777342874/radio_button_rest_Inactive_q80akz.png) |
-| **RadioButton — Rest (Active)** | ![RadioButton Rest Active](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1777342874/radio_button_rest_active_nsqncr.png) |
+| **RadioButton — Default (Inactive)** | ![RadioButton Default Inactive](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1777342874/radio_button_rest_Inactive_q80akz.png) |
+| **RadioButton — Default (Active)** | ![RadioButton Default Active](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1777342874/radio_button_rest_active_nsqncr.png) |
 | **RadioButton — Disabled (Inactive)** | ![RadioButton Disabled Inactive](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1777342874/radio_button_disabled_Inactive_yjv6gt.png) |
 | **RadioButton — Disabled (Active)** | ![RadioButton Disabled Active](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1777342874/radio_button_disabled_active_k1koev.png) |
 | **RadioGroup — Vertical** | ![RadioGroup Vertical](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1777343370/radio_group_vertical_pfgwax.gif) |
@@ -38,7 +36,7 @@ view.addSubview(radioButton)
 radioButton.title = "Option A"
 radioButton.desc = "This is the description for option A"
 
-radioButton.radioBtnState = "rest"
+radioButton.radioBtnState = "default"
 radioButton.isActive = false
 
 radioButton.delegate = self
@@ -93,7 +91,7 @@ radioGroup.configureRadioButton { radioButton in
 
 | State Name | Value | Description |
 | ---------- | ----- | ----------- |
-| `Rest` | `"rest"` | Default idle state |
+| `Default` | `"default"` | Default idle state |
 | `Disabled` | `"disabled"` | Non-interactive state |
 
 ---
@@ -119,7 +117,7 @@ radioGroup.displayMode = .spanGrid(2)  // 2-column grid
 
 | Property Name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| `radioBtnState` | `String?` | `"rest"` | Button state |
+| `radioBtnState` | `String?` | `"default"` | Button state |
 | `isActive` | `Bool` | `false` | Controls active/inactive selection state |
 | `spacing` | `CGFloat` | `8.0` | Spacing between bullet/icon and text stack |
 | `labelSpacing` | `CGFloat` | `4.0` | Spacing between title and description labels |
@@ -181,7 +179,7 @@ radioGroup.displayMode = .spanGrid(2)  // 2-column grid
 
 ## RadioButton — State-Specific Styling
 
-### Rest State
+### Default State
 
 | Sub-state | Title Color | Desc Color | Background | Icon Tint | Border |
 | --------- | ----------- | ---------- | ---------- | ---------------- | ------ |
@@ -249,7 +247,7 @@ Used by standalone `EDTSRadioButton`. When used inside `EDTSRadioGroup`, delegat
 | -------------- | -------- | ------ | ----------- |
 | Bullet fade in | `150ms` | `EaseInOut` | Fades the inner bullet from 50% to full opacity on activation |
 | Bullet scale in | `200ms` | `EaseInOut` | Scales the inner bullet from 50% to 100% size on activation |
-| Color transition | `100ms` | `EaseInOut` | Animates bullet, title, and description color changes on state toggle |
+| Color transition | `250ms` | `EaseInOut` | Animates bullet, title, and description color changes on state toggle |
 | Ripple Effect | `400ms` | `EaseOut` | Circular ripple effect expanding behind the box container on press |
 
 ---

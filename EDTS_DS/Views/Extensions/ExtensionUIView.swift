@@ -77,7 +77,7 @@ extension UIView {
     // MARK: - Ripple Animation
     private struct RippleKeys {
         static var rippleLayer: UInt8 = 0
-        static var circleRippleLayer: UInt8 = 0
+        static var circularRippleLayer: UInt8 = 0
         static var rippleStartTime: UInt8 = 0
     }
     
@@ -176,28 +176,28 @@ extension UIView {
         }
     }
     
-    private var activeCircleRippleLayers: [CAShapeLayer] {
-        get { objc_getAssociatedObject(self, &RippleKeys.circleRippleLayer) as? [CAShapeLayer] ?? [] }
-        set { objc_setAssociatedObject(self, &RippleKeys.circleRippleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    private var activeCircularRippleLayers: [CAShapeLayer] {
+        get { objc_getAssociatedObject(self, &RippleKeys.circularRippleLayer) as? [CAShapeLayer] ?? [] }
+        set { objc_setAssociatedObject(self, &RippleKeys.circularRippleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    func showCircleRipple(size: CGFloat = 32,
+    func showRippleCircular(size: CGFloat = 32,
                           color: UIColor? = EDTSColor.grey30.withAlphaComponent(0.22)) {
         
         guard let container = superview else { return }
         
-        let circle = CAShapeLayer()
+        let circular = CAShapeLayer()
         let center = CGPoint(x: frame.midX, y: frame.midY)
         let startRect = CGRect(x: frame.midX - 1, y: frame.midY - 1, width: 2, height: 2)
         let endRect = CGRect(x: frame.midX - size/2, y: frame.midY - size/2, width: size, height: size)
         
-        circle.path = UIBezierPath(ovalIn: startRect).cgPath
-        circle.fillColor = color?.cgColor
-        circle.opacity = 0
-        circle.setValue(Date(), forKey: "rippleStartTime")
+        circular.path = UIBezierPath(ovalIn: startRect).cgPath
+        circular.fillColor = color?.cgColor
+        circular.opacity = 0
+        circular.setValue(Date(), forKey: "rippleStartTime")
         
-        container.layer.insertSublayer(circle, below: layer)
-        activeCircleRippleLayers.append(circle)
+        container.layer.insertSublayer(circular, below: layer)
+        activeCircularRippleLayers.append(circular)
         
         let expandAnimation = CABasicAnimation(keyPath: "path")
         expandAnimation.fromValue = UIBezierPath(ovalIn: startRect).cgPath
@@ -221,28 +221,28 @@ extension UIView {
         group.fillMode = .forwards
         group.isRemovedOnCompletion = false
         
-        circle.add(group, forKey: "circleRippleExpand")
+        circular.add(group, forKey: "circularRippleExpand")
     }
     
-    func hideCircleRipple() {
-        let layersToHide = activeCircleRippleLayers
-        activeCircleRippleLayers = []
+    func hideRippleCircular() {
+        let layersToHide = activeCircularRippleLayers
+        activeCircularRippleLayers = []
         
-        for circle in layersToHide {
-            let startTime = circle.value(forKey: "rippleStartTime") as? Date ?? Date()
+        for circular in layersToHide {
+            let startTime = circular.value(forKey: "rippleStartTime") as? Date ?? Date()
             let elapsed = Date().timeIntervalSince(startTime)
             
             let remaining = max(0, 0.40 - elapsed)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + remaining) {
-                if let presentation = circle.presentation() {
-                    circle.path = presentation.path
-                    circle.opacity = presentation.opacity
+                if let presentation = circular.presentation() {
+                    circular.path = presentation.path
+                    circular.opacity = presentation.opacity
                 }
-                circle.removeAllAnimations()
+                circular.removeAllAnimations()
                 
                 let fadeOut = CABasicAnimation(keyPath: "opacity")
-                fadeOut.fromValue = circle.opacity
+                fadeOut.fromValue = circular.opacity
                 fadeOut.toValue = 0
                 fadeOut.duration = 0.22
                 fadeOut.timingFunction = CAMediaTimingFunction(name: .easeOut)
@@ -251,9 +251,9 @@ extension UIView {
                 
                 CATransaction.begin()
                 CATransaction.setCompletionBlock {
-                    circle.removeFromSuperlayer()
+                    circular.removeFromSuperlayer()
                 }
-                circle.add(fadeOut, forKey: "fadeOut")
+                circular.add(fadeOut, forKey: "fadeOut")
                 CATransaction.commit()
             }
         }
