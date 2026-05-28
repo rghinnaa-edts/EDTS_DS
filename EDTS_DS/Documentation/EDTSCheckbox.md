@@ -196,7 +196,7 @@ public enum EDTSCheckboxType: String {
 | -------------- | -------- | ------ | ----------- |
 | Icon fade in | `150ms` | `EaseInOut` | Fades the icon from 50% to full opacity on activation |
 | Color transition | `250ms` | `EaseInOut` | Animates box background, border, title, and description color changes on state toggle |
-| Ripple Effect | `400ms` | `EaseOut` | Circular ripple effect expanding behind the box container on press |
+| `Ripple Effect` | `400ms expand + 220ms fade out` | `EaseOut` | Circular ripple effect expanding behind the icon container on press |
 
 ---
 
