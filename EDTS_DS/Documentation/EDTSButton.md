@@ -193,7 +193,7 @@ button.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
 | -------------- | -------- | ------------ | ----------- |
 | `Scale Down` | `100ms` | `EaseInOut` | Scales button to 95% on touch down |
 | `Scale Up` | `100ms` | `EaseInOut` | Returns button to original size on touch up/cancel |
-| `Ripple Effect` | `400ms` | `EaseOut` | Full ripple animation on button tap (unless a gradient background (bgColorStart / bgColorEnd) is set) |
+| `Ripple Effect` | `400ms expand + 220ms fade out` | `EaseOut` | Full ripple animation on button tap (unless a gradient background (bgColorStart / bgColorEnd) is set) |
 
 ## Property Resolution Behavior
 
