@@ -153,7 +153,7 @@ public class EDTSTabChipCell: UICollectionViewCell {
     public var isSelectedState: Bool = false {
         didSet {
             updateAppearance()
-            chip.isChipActive = isSelectedState
+            chip.isActive = isSelectedState
         }
     }
     
