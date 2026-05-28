@@ -97,7 +97,7 @@ public struct EDTSFont {
     }
     
     public struct Button {
-        public static let Big = BaseFont.semibold(size: 14, lineHeight: 24)
+        public static let Large = BaseFont.semibold(size: 14, lineHeight: 24)
         public static let Medium = BaseFont.semibold(size: 14, lineHeight: 16)
         public static let Small = BaseFont.semibold(size: 12, lineHeight: 16)
     }
