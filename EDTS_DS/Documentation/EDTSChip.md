@@ -143,7 +143,7 @@ public protocol ChipDelegate: AnyObject {
 | Animation Type | Duration | Interpolator | Description |
 | -------------- | -------- | ------------ | ----------- |
 | `Color Transition` | `250ms` | `EaseInOut` | Animates colors, borders, and backgrounds when toggling between active/inactive |
-| `Ripple Effect` | `400ms expand + 220ms fade out` | `EaseOut` | Supports two ripple variants: full-component ripple from touch point on chip tap, and circular icon-only ripple rendered behind the icon |
+| `Ripple Effect` | `400ms expand + 220ms fade out` | `EaseOut` | Supports two ripple variants: full-component ripple from touch point on chip tap, and circular ripple effect expanding behind the icon container on press |
 
 ### Animation Behavior
 
