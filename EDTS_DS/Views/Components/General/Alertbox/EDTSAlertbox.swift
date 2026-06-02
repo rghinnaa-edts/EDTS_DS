@@ -30,9 +30,6 @@ public class EDTSAlertbox: UIView {
     @IBOutlet weak var vContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var vContainerLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var vContainerTrailingConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var lblTitleTopConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var ivCloseTopConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var ivCloseLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var ivCloseWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionHeightConstant: NSLayoutConstraint!
@@ -209,8 +206,6 @@ public class EDTSAlertbox: UIView {
             
             vContainerTopConstraint?.constant = 12
             vContainerBottomConstraint?.constant = 12
-//            lblTitleTopConstraint?.constant = 12
-//            ivCloseTopConstraint?.constant = 12
         } else {
             lblTitle.font = EDTSFont.B3.Regular.font
             
@@ -219,8 +214,6 @@ public class EDTSAlertbox: UIView {
             
             vContainerTopConstraint?.constant = 8
             vContainerBottomConstraint?.constant = 8
-//            lblTitleTopConstraint?.constant = 8
-//            ivCloseTopConstraint?.constant = 8
         }
         
         layoutIfNeeded()
