@@ -30,7 +30,10 @@ public class EDTSAlertbox: UIView {
     @IBOutlet weak var vContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var vContainerLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var vContainerTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var ivIconWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var ivIconHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var ivCloseWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var ivCloseHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionHeightConstant: NSLayoutConstraint!
     
@@ -53,6 +56,24 @@ public class EDTSAlertbox: UIView {
         }
     }
     
+    @IBInspectable public var fontName: String = "" {
+        didSet {
+            setupLabelFont()
+        }
+    }
+    
+    @IBInspectable public var fontSize: CGFloat = CGFloat.zero {
+        didSet {
+            setupLabelFont()
+        }
+    }
+    
+    @IBInspectable public var fontWeight: String? {
+        didSet {
+            setupLabelFont()
+        }
+    }
+    
     @IBInspectable public var icon: UIImage? {
         didSet {
             ivIcon.image = icon
@@ -65,6 +86,18 @@ public class EDTSAlertbox: UIView {
             
             ivIcon.image = ivIcon.image?.withRenderingMode(.alwaysTemplate)
             ivIcon.tintColor = iconTintColor
+        }
+    }
+    
+    @IBInspectable public var iconSize: CGFloat = 24.0 {
+        didSet {
+            setupIconSizing()
+        }
+    }
+    
+    @IBInspectable public var iconCloseSize: CGFloat = 16.0 {
+        didSet {
+            setupCloseVisibility()
         }
     }
     
@@ -108,7 +141,13 @@ public class EDTSAlertbox: UIView {
         }
     }
     
-    @IBInspectable public var isButtonHide: Bool = false {
+    @IBInspectable public var isBtnCloseHide: Bool = false {
+        didSet {
+            setupCloseVisibility()
+        }
+    }
+    
+    @IBInspectable public var isBtnHide: Bool = false {
         didSet {
             setupButtonVisibility()
         }
@@ -192,16 +231,21 @@ public class EDTSAlertbox: UIView {
         
         setupTheme()
         setupAlertboxView()
-        setupTextColor()
+        setupLabelColor()
         setupIcon()
         setupIconColor()
         setupBackgroundColor()
         setupBorderColor()
         setupButtonVisibility()
+        
+        layoutIfNeeded()
+        invalidateIntrinsicContentSize()
     }
     
     private func setupTheme() {
-        if EDTSColor.theme == .klikIDM {
+        if fontSize > 0 {
+            setupLabelFont()
+        } else if EDTSColor.theme == .klikIDM {
             lblTitle.font = EDTSFont.P2.Regular.font
             
             vContainerTopConstraint?.constant = 12
@@ -209,7 +253,7 @@ public class EDTSAlertbox: UIView {
         } else {
             lblTitle.font = EDTSFont.B3.Regular.font
             
-            isButtonHide = true
+            isBtnHide = true
             setupButtonVisibility()
             
             vContainerTopConstraint?.constant = 8
@@ -235,9 +279,41 @@ public class EDTSAlertbox: UIView {
     private func setupAlertboxView() {
         vContainer.layer.cornerRadius = alertCornerRadius
         vContainer.layer.borderWidth = alertBorderWidth
+        
+        layoutIfNeeded()
+        invalidateIntrinsicContentSize()
     }
     
-    private func setupTextColor() {
+    private func setupLabelFont() {
+        guard fontSize > 0 else { return }
+        let weight = setupFontWeight(from: fontWeight ?? "regular")
+        
+        if !fontName.isEmpty {
+            lblTitle.font = UIFont(name: fontName, size: fontSize) ?? UIFont.systemFont(ofSize: fontSize, weight: weight)
+        } else {
+            lblTitle.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
+        }
+        
+        layoutIfNeeded()
+        invalidateIntrinsicContentSize()
+    }
+    
+    private func setupFontWeight(from string: String) -> UIFont.Weight {
+        switch string.lowercased() {
+        case "ultraLight": return .ultraLight
+        case "thin":       return .thin
+        case "light":      return .light
+        case "regular":    return .regular
+        case "medium":     return .medium
+        case "semibold":   return .semibold
+        case "bold":       return .bold
+        case "heavy":      return .heavy
+        case "black":      return .black
+        default:           return .regular
+        }
+    }
+    
+    private func setupLabelColor() {
         if EDTSColor.theme == EDTSColorTheme.klikIDM {
             alertTextColor = EDTSColor.grey60
         } else {
@@ -274,6 +350,17 @@ public class EDTSAlertbox: UIView {
         
         let bundle = Bundle(for: type(of: self))
         ivIcon.image = UIImage(named: alertIcon, in: bundle, compatibleWith: nil)
+        
+        layoutIfNeeded()
+        invalidateIntrinsicContentSize()
+    }
+    
+    private func setupIconSizing() {
+        ivIconWidthConstraint?.constant = iconSize
+        ivIconHeightConstraint?.constant = iconSize
+        
+        layoutIfNeeded()
+        invalidateIntrinsicContentSize()
     }
     
     private func setupIconColor() {
@@ -312,15 +399,23 @@ public class EDTSAlertbox: UIView {
         vContainer.layer.borderColor = alertBorderColor?.cgColor
     }
     
+    private func setupCloseVisibility() {
+        ivCloseWidthConstraint?.constant = isBtnCloseHide ? 0 : iconCloseSize
+        ivCloseHeightConstraint?.constant = isBtnCloseHide ? 0 : iconCloseSize
+        
+        layoutIfNeeded()
+        invalidateIntrinsicContentSize()
+    }
+    
     private func setupButtonVisibility() {
-        btnAction.isHidden = isButtonHide
-        btnAction.label = isButtonHide ? "" : btnLabel
+        btnAction.isHidden = isBtnHide
+        btnAction.label = isBtnHide ? "" : btnLabel
         
         let padding: CGFloat = EDTSColor.theme == EDTSColorTheme.klikIDM ? 12 : 8
         
-        vContainerBottomConstraint?.constant = isButtonHide ? padding : 0
-        btnActionTopConstraint?.constant = isButtonHide ? 0 : 8
-        btnActionHeightConstant?.constant = isButtonHide ? 0 : btnAction.intrinsicContentSize.height
+        vContainerBottomConstraint?.constant = isBtnHide ? padding : 0
+        btnActionTopConstraint?.constant = isBtnHide ? 0 : 8
+        btnActionHeightConstant?.constant = isBtnHide ? 0 : btnAction.intrinsicContentSize.height
         
         stackView.setNeedsLayout()
         stackView.layoutIfNeeded()
@@ -328,6 +423,8 @@ public class EDTSAlertbox: UIView {
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
     }
+    
+    // MARK: - Style Ribbon
     
     private func setupRibbonStyle() {
         alertBgColor = themed(
@@ -351,8 +448,9 @@ public class EDTSAlertbox: UIView {
         vContainerTrailingConstraint?.constant = 8
         
         ivCloseWidthConstraint?.constant = 0
+        ivCloseHeightConstraint?.constant = 0
         
-        isButtonHide = true
+        isBtnHide = true
         setupButtonVisibility()
         
         layoutIfNeeded()

@@ -16,8 +16,11 @@
                 <outlet property="btnActionTopConstraint" destination="p9f-Vm-mpZ" id="gik-Sv-dJk"/>
                 <outlet property="containerView" destination="vBg-wM-Ibh" id="gvr-Xy-I2J"/>
                 <outlet property="ivClose" destination="3ww-tB-qJ0" id="I9R-8n-JuP"/>
+                <outlet property="ivCloseHeightConstraint" destination="64m-OE-k5H" id="NVZ-EC-YRQ"/>
                 <outlet property="ivCloseWidthConstraint" destination="JiH-Yx-y7R" id="0Zn-To-FYM"/>
                 <outlet property="ivIcon" destination="Z4Q-8B-Rfi" id="mah-oc-tg3"/>
+                <outlet property="ivIconHeightConstraint" destination="4Fs-iZ-rhb" id="735-r2-fpc"/>
+                <outlet property="ivIconWidthConstraint" destination="2BK-N8-okO" id="EyZ-IP-IUZ"/>
                 <outlet property="lblTitle" destination="PUO-iQ-bk6" id="rTs-ny-mlv"/>
                 <outlet property="stackView" destination="iPR-j5-6gg" id="vfv-rm-bgJ"/>
                 <outlet property="vContainer" destination="RfN-Y9-sYG" id="E7Y-Ll-Lam"/>
