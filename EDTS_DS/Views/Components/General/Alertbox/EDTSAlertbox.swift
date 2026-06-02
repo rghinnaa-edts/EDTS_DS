@@ -24,14 +24,15 @@ public class EDTSAlertbox: UIView {
     @IBOutlet weak var ivClose: UIImageView!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var btnAction: EDTSButton!
+    @IBOutlet weak var stackView: UIStackView!
     
     @IBOutlet weak var vContainerTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var vContainerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var vContainerLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var vContainerTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var lblTitleTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var ivCloseTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var ivCloseLeadingConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var lblTitleTopConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var ivCloseTopConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var ivCloseLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var ivCloseWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionHeightConstant: NSLayoutConstraint!
@@ -208,16 +209,18 @@ public class EDTSAlertbox: UIView {
             
             vContainerTopConstraint?.constant = 12
             vContainerBottomConstraint?.constant = 12
-            lblTitleTopConstraint?.constant = 12
-            ivCloseTopConstraint?.constant = 12
+//            lblTitleTopConstraint?.constant = 12
+//            ivCloseTopConstraint?.constant = 12
         } else {
             lblTitle.font = EDTSFont.B3.Regular.font
             
             isButtonHide = true
+            setupButtonVisibility()
+            
             vContainerTopConstraint?.constant = 8
             vContainerBottomConstraint?.constant = 8
-            lblTitleTopConstraint?.constant = 8
-            ivCloseTopConstraint?.constant = 8
+//            lblTitleTopConstraint?.constant = 8
+//            ivCloseTopConstraint?.constant = 8
         }
         
         layoutIfNeeded()
@@ -320,8 +323,14 @@ public class EDTSAlertbox: UIView {
         btnAction.isHidden = isButtonHide
         btnAction.label = isButtonHide ? "" : btnLabel
         
+        let padding: CGFloat = EDTSColor.theme == EDTSColorTheme.klikIDM ? 12 : 8
+        
+        vContainerBottomConstraint?.constant = isButtonHide ? padding : 0
         btnActionTopConstraint?.constant = isButtonHide ? 0 : 8
         btnActionHeightConstant?.constant = isButtonHide ? 0 : btnAction.intrinsicContentSize.height
+        
+        stackView.setNeedsLayout()
+        stackView.layoutIfNeeded()
         
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
@@ -345,15 +354,10 @@ public class EDTSAlertbox: UIView {
         vContainer.layer.borderWidth = 0
         vContainer.layer.cornerRadius = 0
         
-//        vContainerTopConstraint?.constant = 8
-//        vContainerBottomConstraint?.constant = 8
         vContainerLeadingConstraint?.constant = 8
         vContainerTrailingConstraint?.constant = 8
-//        lblTitleTopConstraint?.constant = 8
-//        ivCloseTopConstraint?.constant = 8
         
         ivCloseWidthConstraint?.constant = 0
-        ivCloseLeadingConstraint?.constant = 0
         
         isButtonHide = true
         setupButtonVisibility()
