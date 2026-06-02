@@ -354,6 +354,7 @@ public class EDTSToast: UIView {
         btnAction.paddingBottom = 0
         btnAction.paddingLeading = 0
         btnAction.paddingTrailing = 0
+        btnAction.rippleColor = UIColor.clear
     }
     
     private func setupDefaultButtonIconStyle() {
@@ -365,6 +366,7 @@ public class EDTSToast: UIView {
         btnIconAction.paddingBottom = 0
         btnIconAction.paddingLeading = 0
         btnIconAction.paddingTrailing = 0
+        btnIconAction.rippleColor = UIColor.clear
     }
     
     public func configureButton(_ instance: (EDTSButton) -> Void) {

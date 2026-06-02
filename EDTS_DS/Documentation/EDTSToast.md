@@ -1,6 +1,6 @@
 # EDTSToast
 
-`EDTSToast` is a customizable notification banner component that supports two states (`info` and `danger`), optional leading icons, action buttons (text or icon), and swipe-to-dismiss gestures. It is managed globally via `EDTSToastManager`, which handles show/dismiss lifecycle, animation, and queueing.
+`EDTSToast` is a customizable notification banner component that supports two states (`info` and `danger`), optional leading icons, action buttons (text or icon), and swipe-to-dismiss gestures. It is managed globally via `EDTSToastManager`, which handles toast presentation, dismissal, animation, and replacement of currently displayed toasts.
 
 ## Preview
 
@@ -93,13 +93,13 @@ EDTSToastManager.toast.dismiss(animated: true)
 | Parameter | Type | Default | Description |
 | --------- | ---- | ------- | ----------- |
 | `rootView` | `UIView` | Required | The parent view to attach the toast to |
-| `duration` | `ToastDuration` | `.long` | How long the toast is visible before auto-dismissing |
+| `duration` | `EDTSToastDuration` | `.long` | How long the toast is visible before auto-dismissing |
 | `horizontalPadding` | `CGFloat` | `16.0` | Leading and trailing margin from the root view edges |
-| `offsetY` | `ToastOffsetDirection` | `.bottom(60.0)` | Vertical anchor and offset from the safe area |
-| `animation` | `ToastAnimation` | `.fade` | Animation style for show/dismiss transitions |
-| `swipeDirection` | `ToastSwipeDirection` | `.horizontal` | Swipe gesture direction for dismissal |
+| `offsetY` | `EDTSToastOffsetDirection` | `.bottom(60.0)` | Vertical anchor and offset from the safe area |
+| `animation` | `EDTSToastAnimation` | `.fade` | Animation style for show/dismiss transitions |
+| `swipeDirection` | `EDTSToastSwipeDirection` | `.horizontal` | Swipe gesture direction for dismissal |
 | `onButtonTap` | `(() -> Void)?` | `nil` | Closure called when the action button is tapped |
-| `configure` | `((Toast) -> Void)?` | `nil` | Closure to configure the toast instance |
+| `configure` | `((EDTSToast) -> Void)?` | `nil` | Closure to configure the toast instance |
 
 ---
 
@@ -166,7 +166,7 @@ EDTSToastManager.toast.dismiss(animated: true)
 
 ## Action Buttons
 
-EDTSToast supports two optional action button types. Only one should be used at a time. Both buttons fire `delegate?.didSelectButton(_:)` and are automatically dismissed by `EDTSToastManager` when tapped.
+EDTSToast supports two optional action button types. Only one should be used at a time. Both buttons fire `delegate?.didSelectButton(_:)`. When using `EDTSToastManager`, the provided `onButtonTap` closure is executed when the button is tapped.
 
 | Text Button | Icon Button |
 | ----- | ---------- |
@@ -268,5 +268,7 @@ public protocol EDTSToastDelegate: AnyObject {
 
 - Calling `EDTSToastManager.toast.show(...)` while a toast is already visible immediately dismisses the current toast (without animation) before showing the new one
 - When `duration` is `.indefinite`, the toast must be dismissed manually via `EDTSToastManager.toast.dismiss()`
+- Only one toast can be displayed at a time
+- Showing a new toast automatically removes the currently displayed toast before presenting the new one
 
 *For further customization, you can ask UX Engineer or inherit `EDTSToast` and override its methods, or add additional functionality as required.*
