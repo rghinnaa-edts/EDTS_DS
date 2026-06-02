@@ -201,8 +201,8 @@ public class EDTSTabChipCell: UICollectionViewCell {
     private func updateState() {
         chip.labelColorActive = titleActiveColor
         chip.labelColor = titleColor
-        chip.bgColorActive = tabBgActiveColor
-        chip.bgColor = tabBgColor
+        chip.bgTintColorActive = tabBgActiveColor
+        chip.bgTintColor = tabBgColor
     }
 }
 
