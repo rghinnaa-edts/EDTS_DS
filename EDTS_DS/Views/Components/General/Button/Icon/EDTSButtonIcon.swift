@@ -28,37 +28,37 @@ public class EDTSButtonIcon: UIButton {
         }
     }
     
-    @IBInspectable public var bgTintColor: UIColor?{
+    @IBInspectable public var bgColor: UIColor?{
         didSet{
             setupButtonType()
         }
     }
     
-    @IBInspectable public var bgFocusTintColor: UIColor?{
+    @IBInspectable public var bgFocusColor: UIColor?{
         didSet{
             setupButtonType()
         }
     }
     
-    @IBInspectable public var bgDisabledTintColor: UIColor?{
+    @IBInspectable public var bgDisabledColor: UIColor?{
         didSet{
             setupButtonType()
         }
     }
     
-    @IBInspectable public var bgTintColorStart: UIColor?{
+    @IBInspectable public var bgColorStart: UIColor?{
         didSet {
             setupBackground()
         }
     }
     
-    @IBInspectable public var bgTintColorEnd: UIColor?{
+    @IBInspectable public var bgColorEnd: UIColor?{
         didSet {
             setupBackground()
         }
     }
     
-    @IBInspectable public var bgTintColorOrientation: String?{
+    @IBInspectable public var bgColorOrientation: String?{
         didSet {
             setupBackground()
         }
@@ -204,7 +204,7 @@ public class EDTSButtonIcon: UIButton {
     private var gradientLayer: CAGradientLayer?
     
     private var tempIconTintColor: UIColor?
-    private var tempBgTintColor: UIColor?
+    private var tempBgColor: UIColor?
     private var tempRippleColor: UIColor?
     private var tempBorderColor: UIColor?
     private var tempBorderWidth: CGFloat = CGFloat.zero
@@ -297,7 +297,7 @@ public class EDTSButtonIcon: UIButton {
     }
     
     private func setupBackground() {
-        if (bgTintColorStart != nil || bgTintColorEnd != nil) {
+        if (bgColorStart != nil || bgColorEnd != nil) {
             if gradientLayer == nil {
                 let gradient = CAGradientLayer()
                 gradient.frame = bounds
@@ -306,11 +306,11 @@ public class EDTSButtonIcon: UIButton {
             }
             
             gradientLayer?.colors = [
-                bgTintColorStart?.cgColor ?? UIColor.clear.cgColor,
-                bgTintColorEnd?.cgColor ?? UIColor.clear.cgColor
+                bgColorStart?.cgColor ?? UIColor.clear.cgColor,
+                bgColorEnd?.cgColor ?? UIColor.clear.cgColor
             ]
             
-            let normalized = bgTintColorOrientation?
+            let normalized = bgColorOrientation?
                 .trimmingCharacters(in: .whitespacesAndNewlines)
                 .lowercased()
             let orientation = Orientation(rawValue: normalized ?? "vertical") ?? .vertical
@@ -330,10 +330,10 @@ public class EDTSButtonIcon: UIButton {
                 gradientLayer?.removeFromSuperlayer()
                 gradientLayer = nil
             }
-            if tempBgTintColor == UIColor.clear {
+            if tempBgColor == UIColor.clear {
                 backgroundColor = .clear
             } else {
-                backgroundColor = tempBgTintColor
+                backgroundColor = tempBgColor
             }
         }
     }
@@ -462,11 +462,11 @@ public class EDTSButtonIcon: UIButton {
         }
         
         if rippleColor == nil {
-            if tempBgTintColor == EDTSColor.white {
+            if tempBgColor == EDTSColor.white {
                 tempRippleColor = tempIconTintColor?.withAlphaComponent(0.12)
-            }else if tempBgTintColor == .clear {
+            }else if tempBgColor == .clear {
                 tempRippleColor = tempIconTintColor?.withAlphaComponent(0.12)
-            }else if tempBgTintColor != EDTSColor.white {
+            }else if tempBgColor != EDTSColor.white {
                 tempRippleColor = EDTSColor.grey70.withAlphaComponent(0.12)
             }
         } else {
@@ -492,21 +492,21 @@ public class EDTSButtonIcon: UIButton {
         switch state {
         case .default:
             tempIconTintColor = iconTintColor ?? EDTSColor.white
-            tempBgTintColor = bgTintColor ?? EDTSColor.blueDefault
+            tempBgColor = bgColor ?? EDTSColor.blueDefault
             tempBorderColor = borderColor ?? EDTSColor.blueDefault
             tempBorderWidth = borderWidth == CGFloat.zero ? 0 : borderWidth
             layer.shadowColor = shadowColor?.cgColor
             
         case .focus:
             tempIconTintColor = iconFocusTintColor ?? EDTSColor.white
-            tempBgTintColor = bgFocusTintColor ?? EDTSColor.blueDefault
+            tempBgColor = bgFocusColor ?? EDTSColor.blueDefault
             tempBorderColor = borderFocusColor ?? EDTSColor.blue30
             tempBorderWidth = borderWidth == CGFloat.zero ? 2 : borderWidth
             layer.shadowColor = shadowFocusColor?.cgColor
             
         case .disabled:
             tempIconTintColor = iconDisabledTintColor ?? EDTSColor.white
-            tempBgTintColor = bgDisabledTintColor ?? EDTSColor.disabled
+            tempBgColor = bgDisabledColor ?? EDTSColor.disabled
             tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == CGFloat.zero ? 0 : borderWidth
             layer.shadowColor = shadowDisabledColor?.cgColor
@@ -523,21 +523,21 @@ public class EDTSButtonIcon: UIButton {
         switch state {
         case .default:
             tempIconTintColor = iconTintColor ?? EDTSColor.blueDefault
-            tempBgTintColor = bgTintColor ?? EDTSColor.white
+            tempBgColor = bgColor ?? EDTSColor.white
             tempBorderColor = borderColor ?? EDTSColor.blueDefault
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
             layer.shadowColor = shadowColor?.cgColor
             
         case .focus:
             tempIconTintColor = iconFocusTintColor ?? EDTSColor.blueDefault
-            tempBgTintColor = bgFocusTintColor ?? EDTSColor.white
+            tempBgColor = bgFocusColor ?? EDTSColor.white
             tempBorderColor = borderFocusColor ?? EDTSColor.blue30
             tempBorderWidth = borderWidth == CGFloat.zero ? 2 : borderWidth
             layer.shadowColor = shadowFocusColor?.cgColor
             
         case .disabled:
             tempIconTintColor = iconDisabledTintColor ?? EDTSColor.disabled
-            tempBgTintColor = bgDisabledTintColor ?? EDTSColor.white
+            tempBgColor = bgDisabledColor ?? EDTSColor.white
             tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
             layer.shadowColor = shadowDisabledColor?.cgColor
@@ -554,21 +554,21 @@ public class EDTSButtonIcon: UIButton {
         switch state {
         case .default:
             tempIconTintColor = iconTintColor ?? EDTSColor.greyText
-            tempBgTintColor = bgTintColor ?? EDTSColor.white
+            tempBgColor = bgColor ?? EDTSColor.white
             tempBorderColor = borderColor ?? EDTSColor.greyDefault
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
             layer.shadowColor = shadowColor?.cgColor
             
         case .focus:
             tempIconTintColor = iconFocusTintColor ?? EDTSColor.greyText
-            tempBgTintColor = bgFocusTintColor ?? EDTSColor.grey20
+            tempBgColor = bgFocusColor ?? EDTSColor.grey20
             tempBorderColor = borderFocusColor ?? EDTSColor.greyPressed
             tempBorderWidth = borderWidth == CGFloat.zero ? 2 : borderWidth
             layer.shadowColor = shadowFocusColor?.cgColor
             
         case .disabled:
             tempIconTintColor = iconDisabledTintColor ?? EDTSColor.disabled
-            tempBgTintColor = bgDisabledTintColor ?? EDTSColor.white
+            tempBgColor = bgDisabledColor ?? EDTSColor.white
             tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
             layer.shadowColor = shadowDisabledColor?.cgColor
@@ -623,7 +623,7 @@ public class EDTSButtonIcon: UIButton {
             tempResolvedButtonState = resolvedButtonState
             setupButtonType()
             animateScaleDown()
-            if (bgTintColorStart == nil && bgTintColorEnd == nil){
+            if (bgColorStart == nil && bgColorEnd == nil){
                 showRipple(from: gesture.location(in: self), cornerRadius: tempCornerRadius, color: tempRippleColor)
             }
         case .ended:
