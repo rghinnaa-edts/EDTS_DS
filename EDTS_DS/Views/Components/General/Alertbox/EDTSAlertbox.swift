@@ -95,15 +95,15 @@ public class EDTSAlertbox: UIView {
         }
     }
     
-    @IBInspectable public var iconCloseSize: CGFloat = 16.0 {
-        didSet {
-            setupCloseVisibility()
-        }
-    }
-    
     @IBInspectable public var btnCloseTintColor: UIColor? {
         didSet {
             ivClose.tintColor = btnCloseTintColor
+        }
+    }
+    
+    @IBInspectable public var btnCloseSize: CGFloat = 16.0 {
+        didSet {
+            setupCloseVisibility()
         }
     }
     
@@ -400,8 +400,8 @@ public class EDTSAlertbox: UIView {
     }
     
     private func setupCloseVisibility() {
-        ivCloseWidthConstraint?.constant = isBtnCloseHide ? 0 : iconCloseSize
-        ivCloseHeightConstraint?.constant = isBtnCloseHide ? 0 : iconCloseSize
+        ivCloseWidthConstraint?.constant = isBtnCloseHide ? 0 : btnCloseSize
+        ivCloseHeightConstraint?.constant = isBtnCloseHide ? 0 : btnCloseSize
         
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
