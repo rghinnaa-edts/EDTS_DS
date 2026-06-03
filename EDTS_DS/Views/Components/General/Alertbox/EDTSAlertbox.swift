@@ -123,7 +123,7 @@ public class EDTSAlertbox: UIView {
     @IBInspectable public var borderWidth: CGFloat = 1.0 {
         didSet {
             alertBorderWidth = borderWidth
-            vContainer.layer.cornerRadius = borderWidth
+            vContainer.layer.borderWidth = borderWidth
         }
     }
     
