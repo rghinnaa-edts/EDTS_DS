@@ -7,7 +7,7 @@
 
 import UIKit
 
-public enum EDTSAlertbox2State: String {
+public enum EDTSAlertboxState: String {
     case `default` = "default"
     case success = "success"
     case error = "error"
@@ -15,8 +15,9 @@ public enum EDTSAlertbox2State: String {
     case info = "info"
 }
 
-//@IBDesignable
-public class EDTSAlertbox2: UIView {
+public class EDTSAlertbox: UIView {
+    
+    // MARK: - Outlets
     
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var vContainer: UIView!
@@ -39,6 +40,8 @@ public class EDTSAlertbox2: UIView {
     @IBOutlet weak var btnActionLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionHeightConstant: NSLayoutConstraint!
+    
+    // MARK: - Inspectables
     
     @IBInspectable public var state: String = EDTSAlertboxState.default.rawValue {
         didSet {
@@ -144,6 +147,58 @@ public class EDTSAlertbox2: UIView {
         }
     }
     
+    @IBInspectable public var paddingTop: CGFloat = -1.0 {
+        didSet {
+            padTop = paddingTop
+            setupPadding()
+        }
+    }
+
+    @IBInspectable public var paddingBottom: CGFloat = -1.0 {
+        didSet {
+            padBottom = paddingBottom
+            setupButtonVisibility()
+        }
+    }
+
+    @IBInspectable public var paddingLeading: CGFloat = -1.0 {
+        didSet {
+            padLeading = paddingLeading
+            setupPadding()
+        }
+    }
+
+    @IBInspectable public var paddingTrailing: CGFloat = -1.0 {
+        didSet {
+            padTrailing = paddingTrailing
+            setupPadding()
+        }
+    }
+    
+    @IBInspectable public var shadowOpacity: Float = 0.0 {
+        didSet {
+            vContainer.layer.shadowOpacity = shadowOpacity
+        }
+    }
+    
+    @IBInspectable public var shadowOffset: CGSize = CGSize.zero {
+        didSet {
+            vContainer.layer.shadowOffset = shadowOffset
+        }
+    }
+    
+    @IBInspectable public var shadowRadius: CGFloat = 0.0 {
+        didSet {
+            vContainer.layer.shadowRadius = shadowRadius
+        }
+    }
+    
+    @IBInspectable public var shadowColor: UIColor? = UIColor.black {
+        didSet {
+            vContainer.layer.shadowColor = shadowColor?.cgColor
+        }
+    }
+    
     @IBInspectable public var isBtnCloseHide: Bool = false {
         didSet {
             setupCloseVisibility()
@@ -162,6 +217,12 @@ public class EDTSAlertbox2: UIView {
         }
     }
     
+    // MARK: - Public Variable
+    
+    public weak var delegate: EDTSAlertboxDelegate?
+    
+    // MARK: - Private Variable
+    
     private var currentState: EDTSAlertboxState {
         EDTSAlertboxState(rawValue: state) ?? .default
     }
@@ -173,6 +234,10 @@ public class EDTSAlertbox2: UIView {
     private var alertBorderColor: UIColor? = EDTSColor.grey30
     private var alertBorderWidth: CGFloat = 1.0
     private var alertCornerRadius: CGFloat = 8.0
+    private var padTop: CGFloat = 0.0
+    private var padBottom: CGFloat = 0.0
+    private var padLeading: CGFloat = 0.0
+    private var padTrailing: CGFloat = 0.0
     
     public func configureButton(_ instance: (EDTSButton) -> Void) {
         guard btnAction != nil else { return }
@@ -207,7 +272,7 @@ public class EDTSAlertbox2: UIView {
 
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("EDTSAlertbox2", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSAlertbox", owner: self, options: nil),
            let view = nib.first as? UIView {
             
             containerView = view
@@ -220,12 +285,7 @@ public class EDTSAlertbox2: UIView {
     }
     
     private func setupUI() {
-        btnLabel = "Button"
-        
-        let bundle = Bundle(for: type(of: self))
-        ivClose.image = UIImage(named: "ic_close", in: bundle, compatibleWith: nil)
-        ivClose.tintColor = EDTSColor.grey50
-        
+        setupCloseButton()
         setupState()
     }
     
@@ -256,15 +316,18 @@ public class EDTSAlertbox2: UIView {
         
         if EDTSColor.theme == .poinku {
             isBtnHide = true
-            
-            ivIconTopConstraint?.constant = 8
-            lblTopConstraint?.constant = 8
-            ivCloseTopConstraint?.constant = 8
+            padTop = 8
+            padLeading = 8
+            padTrailing = 8
+            padBottom = 8
         } else {
-            ivIconTopConstraint?.constant = 12
-            lblTopConstraint?.constant = 12
-            ivCloseTopConstraint?.constant = 12
+            padTop = 12
+            padLeading = 12
+            padTrailing = 12
+            padBottom = 12
         }
+        
+        setupPadding()
         
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
@@ -415,17 +478,38 @@ public class EDTSAlertbox2: UIView {
     
     private func setupButtonVisibility() {
         if isRibbonStyle && !isBtnHide { return }
-        
-        let padding: CGFloat = EDTSColor.theme == EDTSColorTheme.klikIDM ? 12 : 8
+
+        var padding: CGFloat = EDTSColor.theme == EDTSColorTheme.klikIDM ? 4 : 0
+
+        if paddingBottom != -1.0 && isBtnHide {
+            padding = paddingBottom
+        }
 
         btnAction.isHidden = isBtnHide
         btnAction.label = isBtnHide ? "" : btnLabel
-        
+
         btnActionHeightConstant?.constant = isBtnHide ? 0 : btnAction.intrinsicContentSize.height
 
         lblBottomConstraint?.isActive = isBtnHide
-        btnActionBottomConstraint?.constant = isBtnHide ? 0 : padding
+        btnActionBottomConstraint?.constant = isBtnHide ? padding : padBottom
 
+        layoutIfNeeded()
+        invalidateIntrinsicContentSize()
+    }
+    
+    private func setupPadding() {
+        ivIconTopConstraint?.constant = padTop
+        lblTopConstraint?.constant = padTop
+        ivCloseTopConstraint?.constant = padTop
+        ivIconLeadingConstraint?.constant = padLeading
+        ivCloseTrailingConstraint?.constant = padTrailing
+        btnActionLeadingConstraint?.constant = padLeading
+        btnActionTrailingConstraint?.constant = padTrailing
+        
+        if isRibbonStyle {
+            btnActionBottomConstraint?.constant = padBottom
+        }
+        
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
     }
@@ -450,21 +534,68 @@ public class EDTSAlertbox2: UIView {
         vContainer.layer.borderWidth = 0
         vContainer.layer.cornerRadius = 0
         
-        ivIconTopConstraint?.constant = 8
-        ivIconLeadingConstraint?.constant = 8
-        lblTopConstraint?.constant = 8
-        ivCloseTopConstraint?.constant = 8
-        ivCloseTrailingConstraint?.constant = 0
-        btnActionLeadingConstraint?.constant = 8
-        btnActionTrailingConstraint?.constant = 8
-        
         ivCloseWidthConstraint?.constant = 0
         ivCloseHeightConstraint?.constant = 0
         
         isBtnHide = true
         setupButtonVisibility()
         
+        padTop = 8
+        padLeading = 8
+        padBottom = 0
+        padTrailing = 0
+        
+        setupPadding()
+        
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
     }
+    
+    private func setupCloseButton() {
+        let bundle = Bundle(for: type(of: self))
+        ivClose.image = UIImage(named: "ic_close", in: bundle, compatibleWith: nil)
+        ivClose.tintColor = EDTSColor.grey50
+        
+        ivClose.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleCloseTap))
+        ivClose.addGestureRecognizer(tap)
+    }
+    
+    // MARK: - Animation
+    
+    private func dismissWithAnimation() {
+        let heightConstraint = self.heightAnchor.constraint(equalToConstant: self.frame.height)
+            heightConstraint.isActive = true
+            self.layoutIfNeeded()
+        
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0,
+            options: [.curveEaseInOut],
+            animations: {
+                self.alpha = 0
+                self.transform = CGAffineTransform(translationX: 0, y: -8)
+            },
+            completion: { _ in
+                heightConstraint.constant = 0
+            }
+        )
+    }
+    
+    // MARK: - Action
+
+    @objc private func handleCloseTap() {
+        delegate?.didTapCloseAlertbox(self)
+        dismissWithAnimation()
+    }
+    
+    @IBAction func btnAction(_ sender: Any) {
+        delegate?.didTapButtonAlertbox(self)
+    }
+}
+
+@MainActor
+public protocol EDTSAlertboxDelegate: AnyObject {
+    func didTapCloseAlertbox(_ alertbox: EDTSAlertbox)
+    func didTapButtonAlertbox(_ alertbox: EDTSAlertbox)
 }

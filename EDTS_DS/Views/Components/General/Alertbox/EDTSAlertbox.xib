@@ -9,13 +9,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSAlertbox2" customModule="EDTS_DS" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSAlertbox" customModule="EDTS_DS" customModuleProvider="target">
             <connections>
                 <outlet property="btnAction" destination="plq-kW-lYZ" id="eN0-WP-xu1"/>
                 <outlet property="btnActionBottomConstraint" destination="Wru-a9-HIy" id="5p6-Is-7nd"/>
                 <outlet property="btnActionHeightConstant" destination="aS7-Hy-40U" id="bLa-V6-SJG"/>
                 <outlet property="btnActionLeadingConstraint" destination="cfR-VV-Y8V" id="1Xc-Tb-zlR"/>
-                <outlet property="btnActionTopConstraint" destination="G5J-vt-SYD" id="7kp-4h-Swp"/>
                 <outlet property="btnActionTrailingConstraint" destination="te5-bl-tZp" id="KSX-vY-cFg"/>
                 <outlet property="containerView" destination="vBg-wM-Ibh" id="gvr-Xy-I2J"/>
                 <outlet property="ivClose" destination="3ww-tB-qJ0" id="I9R-8n-JuP"/>
@@ -70,6 +69,9 @@
                             </constraints>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            <connections>
+                                <action selector="btnAction:" destination="-1" eventType="touchUpInside" id="4B5-Il-MH1"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -103,7 +105,7 @@
     </objects>
     <resources>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
