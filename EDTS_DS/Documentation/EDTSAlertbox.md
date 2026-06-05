@@ -19,17 +19,17 @@ The `EDTSAlertbox` component is a flexible, context-aware notification banner bu
 
 | State | Preview |
 |---|---|
-| `default` | *(image placeholder)* |
-| `info` | *(image placeholder)* |
-| `success` | *(image placeholder)* |
-| `error` | *(image placeholder)* |
-| `warning` | *(image placeholder)* |
+| `default` | ![Default Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_100/v1780632392/WhatsApp_Image_2026-06-05_at_11.03.53_aoqzio.jpg) |
+| `info` | ![Info Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_100/v1780632393/WhatsApp_Image_2026-06-05_at_11.04.22_mgxitu.jpg) |
+| `success` | ![Success Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_100/v1780632392/WhatsApp_Image_2026-06-05_at_11.04.37_df3yke.jpg) |
+| `error` | ![Error Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_100/v1780632392/WhatsApp_Image_2026-06-05_at_11.04.51_cdnoax.jpg) |
+| `warning` | ![Warning Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_100/v1780632419/WhatsApp_Image_2026-06-05_at_11.05.17_ai8f1c.jpg) |
 
 ### Ribbon Style
 
 | Type | Preview |
 |---|---|
-| `ribbon` | *(image placeholder)* |
+| `ribbon` | ![Ribbon Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_60/v1780640993/Screenshot_2026-06-05_at_13.29.44_pmhntt.png) |
 
 ---
 
