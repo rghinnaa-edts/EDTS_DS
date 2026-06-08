@@ -130,6 +130,7 @@ public class EDTSRadioButton: UIView {
     @IBInspectable public var iconActive: UIImage?{
         didSet{
             setupIcon()
+            setupRadioButtonState()
         }
     }
     
