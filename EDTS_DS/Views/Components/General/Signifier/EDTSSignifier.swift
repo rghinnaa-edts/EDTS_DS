@@ -197,6 +197,22 @@ public class EDTSSignifier: UIView {
         return CGSize(width: finalWidth, height: finalHeight)
     }
     
+    public func showSignifier(to view: UIView) {
+        self.targetView = view
+
+        translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(self)
+        view.bringSubviewToFront(self)
+
+        let top = topAnchor.constraint(equalTo: view.topAnchor, constant: -topOffset)
+        let trailing = trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: trailingOffset)
+
+        topOffsetConstraint = top
+        trailingOffsetConstraint = trailing
+
+        NSLayoutConstraint.activate([top, trailing])
+    }
+    
     // MARK: - Setup & Styling
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
@@ -305,22 +321,6 @@ public class EDTSSignifier: UIView {
         leadingConstraint?.constant = paddingLeading
         trailingConstraint?.constant = paddingTrailing
         invalidateIntrinsicContentSize()
-    }
-    
-    public func showSignifier(to view: UIView) {
-        self.targetView = view
-
-        translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(self)
-        view.bringSubviewToFront(self)
-
-        let top = topAnchor.constraint(equalTo: view.topAnchor, constant: -topOffset)
-        let trailing = trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: trailingOffset)
-
-        topOffsetConstraint = top
-        trailingOffsetConstraint = trailing
-
-        NSLayoutConstraint.activate([top, trailing])
     }
     
     private func updateShowPosition() {

@@ -1,6 +1,6 @@
 # EDTSSignifier
 
-`EDTSSignifier` is a customizable badge/notification indicator component that displays a count label or a dot-style indicator. It supports full styling control including background color, border, shadow, corner radius, label font, and padding. It can be attached to any `UIView` via the `show(to:)` method and supports a skeleton loading state.
+`EDTSSignifier` is a customizable badge/notification indicator component that displays a count label or a dot-style indicator. It supports full styling control including background color, border, shadow, corner radius, label font, and padding. It can be attached to any `UIView` via the `showSignifier(to:)` method and supports a skeleton loading state.
 
 ---
 
@@ -37,7 +37,7 @@ signifier.labelColor = EDTSColor.white
 **Attach to Another View:**
 ```swift
 // Positions the signifier at the top-trailing corner of a target view
-signifier.show(to: targetButton)
+signifier.showSignifier(to: targetButton)
 
 // Customize offset from the anchor point
 signifier.topOffset = 4
@@ -111,19 +111,19 @@ signifier.labelAttributed = attributed
 
 | Property Name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| `topOffset` | `CGFloat` | `0.0` | Vertical offset from the top anchor of the target view when using `show(to:)` |
-| `trailingOffset` | `CGFloat` | `0.0` | Horizontal offset from the trailing anchor of the target view when using `show(to:)` |
+| `topOffset` | `CGFloat` | `0.0` | Vertical offset from the top anchor of the target view when using `showSignifier(to:)` |
+| `trailingOffset` | `CGFloat` | `0.0` | Horizontal offset from the trailing anchor of the target view when using `showSignifier(to:)` |
 
 ---
 
 ## Methods
 
-### `show(to:)`
+### `showSignifier(to:)`
 
 Attaches the signifier to a target view, positioning it at the top-trailing corner with optional offset control.
 
 ```swift
-public func show(to view: UIView)
+public func showSignifier(to view: UIView)
 ```
 
 **Parameters:**
