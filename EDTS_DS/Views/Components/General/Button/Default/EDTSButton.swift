@@ -263,21 +263,13 @@ public class EDTSButton: UIButton {
         layer.cornerRadius = tempCornerRadius
     }
     
-//    override public var intrinsicContentSize: CGSize {
-//        let stackSize = hStackContainer.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-//        return CGSize(
-//            width: stackSize.width + paddingLeading + paddingTrailing,
-//            height: stackSize.height + paddingTop + paddingBottom
-//        )
-//    }
-    
     override public var intrinsicContentSize: CGSize {
-            let stackSize = hStackContainer.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-            return CGSize(
-                width: stackSize.width + tempPaddingLeading + tempPaddingTrailing,
-                height: stackSize.height + tempPaddingTop + tempPaddingBottom
-            )
-        }
+        let stackSize = hStackContainer.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        return CGSize(
+            width: stackSize.width + paddingLeading + paddingTrailing,
+            height: stackSize.height + paddingTop + paddingBottom
+        )
+    }
     
     // MARK: - Setup & Styling
     private func setupUI() {
