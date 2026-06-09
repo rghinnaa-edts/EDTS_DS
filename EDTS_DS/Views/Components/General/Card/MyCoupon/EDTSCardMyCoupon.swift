@@ -21,7 +21,33 @@ public class EDTSCardMyCoupon: UIView {
     // MARK: - Inspectables
     @IBInspectable public var title: String?{
         didSet{
+            lblTitle.attributedText = nil
             lblTitle.text = title
+        }
+    }
+    
+    public var titleAttributed: NSAttributedString? {
+        didSet {
+            lblTitle.text = nil
+            lblTitle.attributedText = titleAttributed
+        }
+    }
+    
+    @IBInspectable public var titleFontName: String = "" {
+        didSet {
+            setupTitleFont()
+        }
+    }
+    
+    @IBInspectable public var titleFontSize: CGFloat = CGFloat.zero {
+        didSet {
+            setupTitleFont()
+        }
+    }
+    
+    @IBInspectable public var titleFontWeight: String = "" {
+        didSet {
+            setupTitleFont()
         }
     }
     
@@ -33,7 +59,33 @@ public class EDTSCardMyCoupon: UIView {
     
     @IBInspectable public var desc: String?{
         didSet{
+            lblDesc.attributedText = nil
             lblDesc.text = desc
+        }
+    }
+    
+    public var descAttributed: NSAttributedString? {
+        didSet {
+            lblDesc.text = nil
+            lblDesc.attributedText = descAttributed
+        }
+    }
+    
+    @IBInspectable public var descFontName: String = "" {
+        didSet {
+            setupDescFont()
+        }
+    }
+    
+    @IBInspectable public var descFontSize: CGFloat = CGFloat.zero {
+        didSet {
+            setupDescFont()
+        }
+    }
+    
+    @IBInspectable public var descFontWeight: String = "" {
+        didSet {
+            setupDescFont()
         }
     }
     
@@ -61,16 +113,16 @@ public class EDTSCardMyCoupon: UIView {
         }
     }
     
-    @IBInspectable public var iconTintLeading: UIColor?{
+    @IBInspectable public var iconTintColorLeading: UIColor?{
         didSet{
             ivLeadingIcon.image = ivLeadingIcon.image?.withRenderingMode(.alwaysTemplate)
-            ivLeadingIcon.tintColor = iconTintLeading
+            ivLeadingIcon.tintColor = iconTintColorLeading
         }
     }
     
-    @IBInspectable public var iconBgTintLeading: UIColor?{
+    @IBInspectable public var iconBgColorLeading: UIColor?{
         didSet {
-            setupLeadingIconBG(iconBgTintLeading)
+            setupLeadingIconBg(iconBgColorLeading)
         }
     }
     
@@ -80,10 +132,10 @@ public class EDTSCardMyCoupon: UIView {
         }
     }
     
-    @IBInspectable public var iconTintTrailing: UIColor?{
+    @IBInspectable public var iconTintColorTrailing: UIColor?{
         didSet{
             ivTrailingIcon.image = ivTrailingIcon.image?.withRenderingMode(.alwaysTemplate)
-            ivTrailingIcon.tintColor = iconTintTrailing
+            ivTrailingIcon.tintColor = iconTintColorTrailing
         }
     }
     
@@ -139,9 +191,55 @@ public class EDTSCardMyCoupon: UIView {
         containerView.layer.cornerRadius = 8
         containerView.clipsToBounds = false
         
+        setupTitleFont()
+        setupDescFont()
         setupDefaultState()
         setupBackground()
         setupPressGesture()
+    }
+    
+    private func setupFontWeight(from value: String) -> UIFont.Weight {
+        let normalized = value
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        
+        let weight = FontWeight(rawValue: normalized) ?? .semibold
+        
+        switch weight {
+        case .ultralight: return .ultraLight
+        case .thin:       return .thin
+        case .light:      return .light
+        case .regular:    return .regular
+        case .medium:     return .medium
+        case .semibold:   return .semibold
+        case .bold:       return .bold
+        case .heavy:      return .heavy
+        case .black:      return .black
+        }
+    }
+    
+    private func setupTitleFont() {
+        let size = titleFontSize
+        let weight = setupFontWeight(from: titleFontWeight)
+        
+        if !titleFontName.isEmpty {
+            lblTitle.font = UIFont(name: titleFontName, size: size)
+            ?? UIFont.systemFont(ofSize: size, weight: weight)
+        } else {
+            lblTitle.font = UIFont.systemFont(ofSize: size, weight: weight)
+        }
+    }
+    
+    private func setupDescFont() {
+        let size = descFontSize
+        let weight = setupFontWeight(from: descFontWeight)
+        
+        if !descFontName.isEmpty {
+            lblDesc.font = UIFont(name: descFontName, size: size)
+            ?? UIFont.systemFont(ofSize: size, weight: weight)
+        } else {
+            lblDesc.font = UIFont.systemFont(ofSize: size, weight: weight)
+        }
     }
     
     private func setupBackground() {
@@ -199,11 +297,11 @@ public class EDTSCardMyCoupon: UIView {
         }
     }
     
-    private func setupLeadingIconBG(_ BGColor : UIColor?){
+    private func setupLeadingIconBg(_ BGColor : UIColor?){
         gradientLayer.type = .radial
         gradientLayer.colors = [
-            BGColor?.withAlphaComponent(0.5).cgColor ?? UIColor.blue.withAlphaComponent(0.5).cgColor,
-            BGColor?.withAlphaComponent(1.0).cgColor ?? UIColor.blue.withAlphaComponent(1.0).cgColor
+            BGColor?.withAlphaComponent(0.5).cgColor ?? EDTSColor.blueDefault.withAlphaComponent(0.5).cgColor,
+            BGColor?.withAlphaComponent(1.0).cgColor ?? EDTSColor.blueDefault.withAlphaComponent(1.0).cgColor
         ]
         
         gradientLayer.startPoint = CGPoint(x: 0, y: 0)
@@ -222,16 +320,20 @@ public class EDTSCardMyCoupon: UIView {
         cvBadge.cornerRadius = cvBadge.bounds.height / 2
         cvBadge.borderColor = EDTSColor.white
         cvBadge.borderWidth = 1
+        cvBadge.label = "0"
     }
     
     private func setupDefaultState(){
-        titleColor = UIColor.white
+        titleColor = EDTSColor.white
+        lblTitle.font = EDTSFont.B2.Semibold.font
+        lblDesc.font = EDTSFont.B3.Regular.font
         descColor = EDTSColor.grey30
-        iconLeading = UIImage(named: "ic-my-coupon")
-        setupLeadingIconBG(UIColor.white)
-        iconTrailing = UIImage(named: "ic-chevron-right")
-        ivTrailingIcon.image = ivTrailingIcon.image?.withRenderingMode(.alwaysTemplate)
-        iconTintTrailing = UIColor.white
+        let bundleLeading = Bundle(for: type(of: self))
+        ivLeadingIcon.image = UIImage(named: "img_coupon", in: bundleLeading, compatibleWith: nil)
+        setupLeadingIconBg(EDTSColor.white)
+        let bundleTrailing = Bundle(for: type(of: self))
+        ivTrailingIcon.image = UIImage(named: "ic_chevron_right", in: bundleTrailing, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        iconTintColorTrailing = EDTSColor.white
         setupBadge()
     }
     
