@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSToast" customModule="EDTS_DS" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomConstraint" destination="7OD-yD-QN2" id="yCF-IK-jD0"/>
+                <outlet property="btnAction" destination="7qE-rY-GYW" id="7B8-7y-CHd"/>
+                <outlet property="btnIconAction" destination="ELZ-sI-GD1" id="4NW-bv-Wdr"/>
+                <outlet property="containerView" destination="iN0-l3-epB" id="Ssw-M5-hIV"/>
+                <outlet property="hStackContainer" destination="4QZ-Ek-yRx" id="RAJ-5a-dCw"/>
+                <outlet property="iconHeightConstraint" destination="vQp-I8-zVi" id="7vR-bR-qif"/>
+                <outlet property="iconWidthConstraint" destination="dPm-PZ-0Vq" id="EFM-DR-Jgh"/>
+                <outlet property="ivImg" destination="y41-GW-DY8" id="95Y-jv-sga"/>
+                <outlet property="leadingConstraint" destination="M8A-sk-R4Z" id="Zbn-8x-wmh"/>
+                <outlet property="topConstraint" destination="sfu-vM-34j" id="rZ6-5N-xBn"/>
+                <outlet property="trailingConstraint" destination="FPp-bv-oNO" id="xVS-sE-BGc"/>
+                <outlet property="tvTitle" destination="sMK-aA-Pjt" id="k9v-yn-m6F"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="328" height="48"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="4QZ-Ek-yRx">
+                    <rect key="frame" x="16" y="16" width="296" height="16"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="751" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="y41-GW-DY8">
+                            <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
+                            <color key="tintColor" name="White"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="y41-GW-DY8" secondAttribute="height" multiplier="1:1" id="IKw-3R-2Hg"/>
+                                <constraint firstAttribute="width" constant="16" id="dPm-PZ-0Vq"/>
+                                <constraint firstAttribute="height" constant="16" id="vQp-I8-zVi"/>
+                            </constraints>
+                        </imageView>
+                        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="bottom" verticalHuggingPriority="249" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="749" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" editable="NO" text="Label is the default for text." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sMK-aA-Pjt">
+                            <rect key="frame" x="24" y="0.0" width="166.33333333333334" height="16"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="textColor" name="White"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7qE-rY-GYW" customClass="EDTSButton" customModule="EDTS_DS" customModuleProvider="target">
+                            <rect key="frame" x="198.33333333333334" y="0.0" width="65.666666666666657" height="16"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="filled" title="Button" buttonSize="mini">
+                                <color key="baseForegroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="baseBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </buttonConfiguration>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="btnTitle" value="Test"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="btnBGColor">
+                                    <color key="value" systemColor="systemRedColor"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="btnBorderWidth">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="btnPaddingTop">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="btnPaddingBottom">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="btnPaddingLeading">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="btnPaddingTrailing">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="btnCornerRadius">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="btnSize" value="Small"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="btnType" value="Primary"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="btnTitleColor">
+                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="string" keyPath="btnTitleFontWeight" value="semibold"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="btnTitleFontSize">
+                                    <real key="value" value="12"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isHasLeadingIcon" value="NO"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isHasTrailingIcon" value="NO"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isHasTitle" value="YES"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="isHasGradientBG" value="NO"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="btnState" value="Rest"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="label" value="Button"/>
+                                <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingTop">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingBottom">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingLeading">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingTrailing">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onButtonTap:" destination="-1" eventType="touchUpInside" id="wGy-1q-hVI"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ELZ-sI-GD1" customClass="EDTSButtonIcon" customModule="EDTS_DS" customModuleProvider="target">
+                            <rect key="frame" x="272" y="1" width="24" height="14"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                    <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingTop">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingBottom">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingLeading">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="paddingTrailing">
+                                    <real key="value" value="0.0"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="image" keyPath="icon" value="ic-chevron-right"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="btnType" value="Primary"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="btnSize" value="Small"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="btnState" value="Rest"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onButtonIconTap:" destination="-1" eventType="touchUpInside" id="DoD-P9-4zR"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" name="60Grey"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="4QZ-Ek-yRx" secondAttribute="bottom" constant="16" id="7OD-yD-QN2"/>
+                <constraint firstAttribute="trailing" secondItem="4QZ-Ek-yRx" secondAttribute="trailing" constant="16" id="FPp-bv-oNO"/>
+                <constraint firstItem="4QZ-Ek-yRx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="M8A-sk-R4Z"/>
+                <constraint firstItem="4QZ-Ek-yRx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="sfu-vM-34j"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="99.236641221374043" y="-122.53521126760565"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic-chevron-right" width="90" height="90"/>
+        <image name="placeholder" width="118.66666412353516" height="118.66666412353516"/>
+        <namedColor name="60Grey">
+            <color red="0.2627450980392157" green="0.27843137254901962" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
