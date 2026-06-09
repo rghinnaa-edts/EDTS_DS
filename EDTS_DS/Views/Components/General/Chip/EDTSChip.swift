@@ -7,6 +7,11 @@
 
 import UIKit
 
+public enum ChipState: String {
+    case inactive = "inactive"
+    case active = "active"
+}
+
 @IBDesignable
 public class EDTSChip: UIView {
     // MARK: - Outlets
@@ -63,28 +68,28 @@ public class EDTSChip: UIView {
     
     @IBInspectable public var labelColor: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var labelColorActive: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var bgColor: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var bgColorActive: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
@@ -95,32 +100,32 @@ public class EDTSChip: UIView {
         }
     }
     
-    @IBInspectable public var iconTintLeading: UIColor?{
+    @IBInspectable public var iconTintColorLeading: UIColor?{
         didSet{
             ivLeadingIcon.image = ivLeadingIcon.image?.withRenderingMode(.alwaysTemplate)
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
-    @IBInspectable public var iconTintLeadingActive: UIColor?{
+    @IBInspectable public var iconTintColorLeadingActive: UIColor?{
         didSet{
             ivLeadingIcon.image = ivLeadingIcon.image?.withRenderingMode(.alwaysTemplate)
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
-    @IBInspectable public var iconBGColorLeading: UIColor?{
+    @IBInspectable public var iconBgColorLeading: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
-    @IBInspectable public var iconBGColorLeadingActive: UIColor?{
+    @IBInspectable public var iconBgColorLeadingActive: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
@@ -131,32 +136,32 @@ public class EDTSChip: UIView {
         }
     }
     
-    @IBInspectable public var iconTintTrailing: UIColor?{
+    @IBInspectable public var iconTintColorTrailing: UIColor?{
         didSet{
             ivTrailingIcon.image = ivTrailingIcon.image?.withRenderingMode(.alwaysTemplate)
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
-    @IBInspectable public var iconTintTrailingActive: UIColor?{
+    @IBInspectable public var iconTintColorTrailingActive: UIColor?{
         didSet{
             ivTrailingIcon.image = ivTrailingIcon.image?.withRenderingMode(.alwaysTemplate)
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
-    @IBInspectable public var iconBGColorTrailing: UIColor?{
+    @IBInspectable public var iconBgColorTrailing: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
-    @IBInspectable public var iconBGColorTrailingActive: UIColor?{
+    @IBInspectable public var iconBgColorTrailingActive: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
@@ -187,70 +192,70 @@ public class EDTSChip: UIView {
     
     @IBInspectable public var borderColor: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var borderColorActive: UIColor?{
         didSet{
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var shadowOpacity: Float = Float.zero {
         didSet {
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var shadowOpacityActive: Float = Float.zero {
         didSet {
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var shadowRadius: CGFloat = CGFloat.zero {
         didSet {
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var shadowRadiusActive: CGFloat = CGFloat.zero {
         didSet {
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var shadowOffset: CGSize = CGSize.zero {
         didSet {
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var shadowOffsetActive: CGSize = CGSize.zero {
         didSet {
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var shadowColor: UIColor? {
         didSet {
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
     
     @IBInspectable public var shadowColorActive: UIColor? {
         didSet {
-            let state: ChipState = isChipActive ? .active : .inactive
+            let state: ChipState = isActive ? .active : .inactive
             animateChip(state, animated: false)
         }
     }
@@ -279,9 +284,9 @@ public class EDTSChip: UIView {
         }
     }
     
-    @IBInspectable public var isChipActive: Bool = false {
+    @IBInspectable public var isActive: Bool = false {
         didSet{
-            let isActive = isChipActive ? ChipState.active : ChipState.inactive
+            let isActive = isActive ? ChipState.active : ChipState.inactive
             animateChip(isActive, animated: true)
         }
     }
@@ -342,9 +347,7 @@ public class EDTSChip: UIView {
         setupIcon()
         setupIconConstraint()
         setupIconGestures()
-        
-        fontSize = 12
-        fontWeight = "Semibold"
+        lblTitle.font = EDTSFont.B3.Semibold.font
         iconSize = 20
         iconSpacing = 4
         paddingTop = 4
@@ -415,11 +418,11 @@ public class EDTSChip: UIView {
         let changes = {
             switch newState {
             case .inactive:
-                self.ivLeadingIcon.tintColor = self.iconTintLeading ?? EDTSColor.blue50
-                self.ivLeadingIconBG.backgroundColor = self.iconBGColorLeading ?? .white
+                self.ivLeadingIcon.tintColor = self.iconTintColorLeading ?? EDTSColor.blue50
+                self.ivLeadingIconBG.backgroundColor = self.iconBgColorLeading ?? EDTSColor.white
                 self.lblTitle.textColor = self.labelColor ?? EDTSColor.blue50
-                self.ivTrailingIcon.tintColor = self.iconTintTrailing ?? EDTSColor.blue50
-                self.ivTrailingIconBG.backgroundColor = self.iconBGColorTrailing ?? .white
+                self.ivTrailingIcon.tintColor = self.iconTintColorTrailing ?? EDTSColor.blue50
+                self.ivTrailingIconBG.backgroundColor = self.iconBgColorTrailing ?? EDTSColor.white
                 self.containerView.backgroundColor = self.bgColor ?? EDTSColor.grey20
                 self.containerView.layer.borderColor = self.borderColor?.cgColor ?? UIColor.clear.cgColor
                 self.containerView.layer.shadowOpacity = self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero
@@ -428,11 +431,11 @@ public class EDTSChip: UIView {
                 self.containerView.layer.shadowColor = self.shadowColor?.cgColor ?? UIColor.clear.cgColor
                 
             case .active:
-                self.ivLeadingIcon.tintColor = self.iconTintLeadingActive ?? (self.iconTintLeading ?? EDTSColor.blue50)
-                self.ivLeadingIconBG.backgroundColor = self.iconBGColorLeadingActive ?? (self.iconBGColorLeading ?? UIColor.white)
+                self.ivLeadingIcon.tintColor = self.iconTintColorLeadingActive ?? (self.iconTintColorLeading ?? EDTSColor.blue50)
+                self.ivLeadingIconBG.backgroundColor = self.iconBgColorLeadingActive ?? (self.iconBgColorLeading ?? EDTSColor.white)
                 self.lblTitle.textColor = self.labelColorActive ?? (self.labelColor ?? EDTSColor.white)
-                self.ivTrailingIcon.tintColor = self.iconTintTrailingActive ?? (self.iconTintTrailing ?? EDTSColor.blue50)
-                self.ivTrailingIconBG.backgroundColor = self.iconBGColorTrailingActive ?? (self.iconBGColorTrailing ?? UIColor.white)
+                self.ivTrailingIcon.tintColor = self.iconTintColorTrailingActive ?? (self.iconTintColorTrailing ?? EDTSColor.blue50)
+                self.ivTrailingIconBG.backgroundColor = self.iconBgColorTrailingActive ?? (self.iconBgColorTrailing ?? EDTSColor.white)
                 self.containerView.backgroundColor = self.bgColorActive ?? (self.bgColor ?? EDTSColor.blue50)
                 self.containerView.layer.borderColor = self.borderColorActive?.cgColor ?? (self.borderColor?.cgColor ?? UIColor.clear.cgColor)
                 self.containerView.layer.shadowOpacity = self.shadowOpacityActive != Float.zero ? self.shadowOpacityActive : (self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero)
@@ -444,7 +447,7 @@ public class EDTSChip: UIView {
         
         if animated {
             UIView.animate(
-                withDuration: 0.1,
+                withDuration: 0.25,
                 delay: 0,
                 options: [.curveEaseInOut],
                 animations: changes,
@@ -478,14 +481,14 @@ public class EDTSChip: UIView {
     @objc private func onLongPressLeadingIcon(_ gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
-            ivLeadingIcon.showIconRipple(size: ivLeadingIcon.bounds.width + 8)
+            ivLeadingIcon.showRippleCircular(size: ivLeadingIcon.bounds.width + 8)
             
         case .ended:
             delegate?.didSelectChipIconLeading(self)
-            ivLeadingIcon.hideIconRipple()
+            ivLeadingIcon.hideRippleCircular()
             
         case .cancelled, .failed:
-            ivLeadingIcon.hideIconRipple()
+            ivLeadingIcon.hideRippleCircular()
             
         default:
             break
@@ -495,14 +498,14 @@ public class EDTSChip: UIView {
     @objc private func onLongPressTrailingIcon(_ gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
-            ivTrailingIcon.showIconRipple(size: ivTrailingIcon.bounds.width + 8)
+            ivTrailingIcon.showRippleCircular(size: ivTrailingIcon.bounds.width + 8)
             
         case .ended:
             delegate?.didSelectChipIconTrailing(self)
-            ivTrailingIcon.hideIconRipple()
+            ivTrailingIcon.hideRippleCircular()
             
         case .cancelled, .failed:
-            ivTrailingIcon.hideIconRipple()
+            ivTrailingIcon.hideRippleCircular()
             
         default:
             break
@@ -515,9 +518,4 @@ public protocol EDTSChipDelegate: AnyObject {
     func didSelectChip(_ chip: EDTSChip)
     func didSelectChipIconLeading(_ chip: EDTSChip)
     func didSelectChipIconTrailing(_ chip: EDTSChip)
-}
-
-public enum ChipState: String {
-    case inactive = "inactive"
-    case active = "active"
 }
