@@ -43,6 +43,8 @@ public class EDTSRadioButton: UIView {
         didSet{
             lblTitle.attributedText = nil
             lblTitle.text = title
+            lblTitle.isHidden = title == nil || title?.isEmpty == true
+            invalidateIntrinsicContentSize()
         }
     }
     
@@ -50,6 +52,8 @@ public class EDTSRadioButton: UIView {
         didSet {
             lblTitle.text = nil
             lblTitle.attributedText = titleAttributed
+            lblTitle.isHidden = titleAttributed == nil || titleAttributed?.string.isEmpty == true
+            invalidateIntrinsicContentSize()
         }
     }
     
@@ -87,6 +91,8 @@ public class EDTSRadioButton: UIView {
         didSet{
             lblBody.attributedText = nil
             lblBody.text = desc
+            lblBody.isHidden = desc == nil || desc?.isEmpty == true
+            invalidateIntrinsicContentSize()
         }
     }
     
@@ -94,6 +100,8 @@ public class EDTSRadioButton: UIView {
         didSet {
             lblBody.text = nil
             lblBody.attributedText = descAttributed
+            lblBody.isHidden = descAttributed == nil || descAttributed?.string.isEmpty == true
+            invalidateIntrinsicContentSize()
         }
     }
     
@@ -296,7 +304,7 @@ public class EDTSRadioButton: UIView {
     
     private func setupDefaultStyle(){
         lblTitle.font = EDTSFont.B2.Medium.font
-        lblTitle.font = EDTSFont.B3.Regular.font
+        lblBody.font = EDTSFont.B3.Regular.font
         borderWidth = 1
         title = "Title radio button"
         desc = "Body text goes here"
