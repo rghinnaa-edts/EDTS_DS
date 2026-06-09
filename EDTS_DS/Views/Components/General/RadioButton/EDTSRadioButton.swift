@@ -307,7 +307,7 @@ public class EDTSRadioButton: UIView {
         lblBody.font = EDTSFont.B3.Regular.font
         borderWidth = 1
         title = "Title radio button"
-        desc = "Body text goes here"
+        desc = ""
         iconPadding = 0
         paddingLeading = 2
         labelSpacing = 4
