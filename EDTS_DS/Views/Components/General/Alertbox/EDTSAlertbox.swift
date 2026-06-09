@@ -51,7 +51,15 @@ public class EDTSAlertbox: UIView {
     
     @IBInspectable public var label: String? {
         didSet {
+            lblTitle.attributedText = nil
             lblTitle.text = label
+        }
+    }
+    
+    @IBInspectable public var labelAttributed: NSAttributedString? {
+        didSet {
+            lblTitle.text = nil
+            lblTitle.attributedText = labelAttributed
         }
     }
     
@@ -369,7 +377,7 @@ public class EDTSAlertbox: UIView {
     
     private func setupFontWeight(from string: String) -> UIFont.Weight {
         switch string.lowercased() {
-        case "ultraLight": return .ultraLight
+        case "ultralight": return .ultraLight
         case "thin":       return .thin
         case "light":      return .light
         case "regular":    return .regular
