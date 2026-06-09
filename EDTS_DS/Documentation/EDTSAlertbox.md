@@ -92,6 +92,7 @@ public enum EDTSAlertboxState: String {
 | Property | Type | Default | Description |
 |---|---|---|---|
 | `label` | `String?` | `nil` | Primary informational message displayed in the banner |
+| `labelAttributed` | `NSAttributedString?` | `nil` | Primary informational message displayed in the banner with attributed text |
 | `btnLabel` | `String?` | `nil` | Text rendered inside the embedded action button |
 | `icon` | `UIImage?` | `nil` | Custom image asset that replaces the default state icon |
 
@@ -172,21 +173,22 @@ Assign `alertBox.delegate` to receive close and action button tap callbacks. Tap
 
 ### poinku
 
-When `EDTSColor.theme == .poinku`, the following overrides apply automatically on state setup:
-
-- `isBtnHide` is forced to `true`
-- Padding is set to `8pt` on all sides
-- Font defaults to `B3.Regular`
+| Property | Default | poinku Override | Notes |
+|---|---|---|---|
+| `isBtnHide` | `false` | `true` | Action button is always hidden; forced on state setup |
+| Padding (all sides) | `12pt` | `8pt` | Applies to top, bottom, leading, and trailing |
+| Font | `B3.Regular` | `B3.Regular` | Same as default; explicitly set on state setup |
 
 ### klikIDM
 
-When `EDTSColor.theme == .klikIDM`, the following overrides apply:
-
-- Label color is always `grey60` regardless of state
-- Font defaults to `P2.Regular`
-- Icon asset for `error` state is `ic_error` (not `ic_attention`)
-- Icon asset for `warning` state is `ic_attention` (not `ic_notice`)
-- Bottom padding for a hidden button is `4pt` (vs. `0pt` on other themes)
+| Property | Default | klikIDM Override | Notes |
+|---|---|---|---|
+| Label color | Varies by state | Always `grey60` | Ignores state color; applies to all five states |
+| Font | `B3.Regular` | `P2.Regular` | Different type scale from other themes |
+| Icon — `error` state | `ic_attention` | `ic_error` | Different icon asset |
+| Icon — `warning` state | `ic_notice` | `ic_attention` | Different icon asset |
+| Bottom padding (button visible) | `0pt` | `0pt` | No difference |
+| Bottom padding (button hidden) | `0pt` | `4pt` | Extra spacing added when action button is not shown |
 
 ---
 
@@ -215,6 +217,20 @@ When `EDTSColor.theme == .klikIDM`, the following overrides apply:
 | `warning` | `ic_notice` | `ic_attention` |
 
 The close button always uses `ic_close` with a default tint of `grey50`.
+
+---
+
+## Animation
+
+Triggered automatically when the user taps the close button.
+
+| Property | Value | Notes |
+|---|---|---|
+| Duration | `0.3s` | Applied to both fade and translate |
+| Curve | `curveEaseInOut` | UIKit easing curve |
+| Alpha | `1.0` → `0.0` | Fade out |
+| Transform | `y: 0` → `y: -8pt` | Slight upward translation |
+| Height | Coll
 
 ---
 
