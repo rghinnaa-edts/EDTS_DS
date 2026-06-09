@@ -247,6 +247,8 @@ public class EDTSAlertbox: UIView {
     private var padLeading: CGFloat = 0.0
     private var padTrailing: CGFloat = 0.0
     
+    // MARK: - Public Function
+    
     public func configureButton(_ instance: (EDTSButton) -> Void) {
         guard btnAction != nil else { return }
         instance(btnAction)
