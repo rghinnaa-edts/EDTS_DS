@@ -626,7 +626,11 @@ public class EDTSButton: UIButton {
                 tempRippleColor = EDTSColor.grey70.withAlphaComponent(0.12)
             }
         } else {
-            tempRippleColor = rippleColor?.withAlphaComponent(0.12)
+            if rippleColor == UIColor.clear{
+                tempRippleColor = rippleColor
+            } else {
+                tempRippleColor = rippleColor?.withAlphaComponent(0.12)
+            }
         }
     }
     

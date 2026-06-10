@@ -197,6 +197,7 @@ public class EDTSSignifier: UIView {
         return CGSize(width: finalWidth, height: finalHeight)
     }
     
+    // MARK: - Public Function
     public func showSignifier(to view: UIView) {
         self.targetView = view
 
