@@ -478,14 +478,14 @@ public class EDTSCheckbox: UIView {
     @objc private func onLongPressBulletContainerView(_ gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
-            ivIconContainerView.showIconRipple(size: ivIconContainerView.bounds.width + 16, color: EDTSColor.black.withAlphaComponent(0.12))
+            ivIconContainerView.showRippleCircular(size: ivIconContainerView.bounds.width + 16, color: EDTSColor.black.withAlphaComponent(0.12))
             
         case .ended:
             delegate?.didSelectCheckbox(self)
-            ivIconContainerView.hideIconRipple()
+            ivIconContainerView.hideRippleCircular()
             
         case .cancelled, .failed:
-            ivIconContainerView.hideIconRipple()
+            ivIconContainerView.hideRippleCircular()
             
         default:
             break

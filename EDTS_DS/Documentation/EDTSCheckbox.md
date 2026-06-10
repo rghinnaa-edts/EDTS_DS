@@ -8,12 +8,12 @@
 
 | Feature / Variation | Preview |
 | ------------------- | ------- |
-| **Default — Inactive (Checked)** | ![Checkbox Default Inactive Checked](https://placeholder.url/) |
-| **Default — Active (Checked)** | ![Checkbox Default Active Checked](https://placeholder.url/) |
-| **Default — Active (Indeterminate)** | ![Checkbox Default Active Indeterminate](https://placeholder.url/) |
-| **Disabled — Inactive** | ![Checkbox Disabled Inactive](https://placeholder.url/) |
-| **Disabled — Active (Checked)** | ![Checkbox Disabled Active](https://placeholder.url/) |
-| **Disabled — Active (Indeterminate)** | ![Checkbox Disabled Active](https://placeholder.url/) |
+| **Default — Inactive (Checked)** | ![Checkbox Default Inactive Checked](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1781077901/checkbox_active_uncheck_ur62qy.gif) |
+| **Default — Active (Checked)** | ![Checkbox Default Active Checked](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1781077899/checkbox_active_checked_arwqrs.png) |
+| **Default — Active (Indeterminate)** | ![Checkbox Default Active Indeterminate](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1781077900/checkbox_active_indeterminated_osnuut.png) |
+| **Disabled — Inactive** | ![Checkbox Disabled Inactive](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1781077898/checkbox_disabled_uncheck_qimqjb.png) |
+| **Disabled — Active (Checked)** | ![Checkbox Disabled Active](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1781077903/checkbox_disabled_checked_qyyuch.png) |
+| **Disabled — Active (Indeterminate)** | ![Checkbox Disabled Active](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1781077902/checkbox_disabled_indeterminated_ywcvbt.png) |
 
 ---
 
