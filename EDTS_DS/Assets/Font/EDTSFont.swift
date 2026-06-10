@@ -75,6 +75,7 @@ public struct EDTSFont {
     }
     
     public struct B3 {
+        public static let Bold = BaseFont.bold(size: 12, lineHeight: 16)
         public static let Semibold = BaseFont.semibold(size: 12, lineHeight: 16)
         public static let Medium = BaseFont.medium(size: 12, lineHeight: 16)
         public static let Regular = BaseFont.regular(size: 12, lineHeight: 16)
@@ -83,7 +84,13 @@ public struct EDTSFont {
     public struct B4 {
         public static let Bold = BaseFont.bold(size: 10, lineHeight: 14)
         public static let Semibold = BaseFont.semibold(size: 10, lineHeight: 14)
+        public static let Medium = BaseFont.medium(size: 10, lineHeight: 14)
         public static let Regular = BaseFont.regular(size: 10, lineHeight: 14)
+    }
+    
+    public struct B5 {
+        public static let Medium = BaseFont.bold(size: 8, lineHeight: 12)
+        public static let Regular = BaseFont.regular(size: 8, lineHeight: 12)
     }
 
     public struct P1 {
@@ -97,7 +104,7 @@ public struct EDTSFont {
     }
     
     public struct Button {
-        public static let Big = BaseFont.semibold(size: 14, lineHeight: 24)
+        public static let Large = BaseFont.semibold(size: 14, lineHeight: 24)
         public static let Medium = BaseFont.semibold(size: 14, lineHeight: 16)
         public static let Small = BaseFont.semibold(size: 12, lineHeight: 16)
     }

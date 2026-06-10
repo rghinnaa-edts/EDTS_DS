@@ -15,7 +15,7 @@ public enum Orientation: String {
 extension UIView {
     // MARK: - Gradient Background
     public func setGradientBackground(_ gradient: [UIColor], orientation: Orientation = .horizontal, cornerRadius: CGFloat = 0, corners: UIRectCorner = .allCorners, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
-
+        
         layer.sublayers?.removeAll { $0 is CAGradientLayer }
         
         layer.borderWidth = 0
@@ -76,8 +76,8 @@ extension UIView {
     
     // MARK: - Ripple Animation
     private struct RippleKeys {
-        static var viewRippleLayer: UInt8 = 0
-        static var iconRippleLayer: UInt8 = 0
+        static var rippleLayer: UInt8 = 0
+        static var circularRippleLayer: UInt8 = 0
         static var rippleStartTime: UInt8 = 0
     }
     
@@ -87,34 +87,36 @@ extension UIView {
     }
     
     private var activeRippleLayers: [CAShapeLayer] {
-        get { objc_getAssociatedObject(self, &RippleKeys.viewRippleLayer) as? [CAShapeLayer] ?? [] }
-        set { objc_setAssociatedObject(self, &RippleKeys.viewRippleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+        get { objc_getAssociatedObject(self, &RippleKeys.rippleLayer) as? [CAShapeLayer] ?? [] }
+        set { objc_setAssociatedObject(self, &RippleKeys.rippleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    func showRipple(from touchPoint: CGPoint, cornerRadius: CGFloat? = nil) {
+    func showRipple(from touchPoint: CGPoint? = nil, cornerRadius: CGFloat? = nil,
+                    color: UIColor? = EDTSColor.grey30.withAlphaComponent(0.12)) {
+        let tempTouchPoint = touchPoint ?? CGPoint(x: bounds.midX, y: bounds.midY)
         rippleStartTime = Date()
         let radius = cornerRadius ?? layer.cornerRadius
-
+        
         let maxRadius = [
             CGPoint(x: bounds.minX, y: bounds.minY),
             CGPoint(x: bounds.maxX, y: bounds.minY),
             CGPoint(x: bounds.minX, y: bounds.maxY),
             CGPoint(x: bounds.maxX, y: bounds.maxY)
         ]
-        .map { hypot(touchPoint.x - $0.x, touchPoint.y - $0.y) }
-        .max() ?? hypot(bounds.width, bounds.height)
-
+            .map { hypot(tempTouchPoint.x - $0.x, tempTouchPoint.y - $0.y) }
+            .max() ?? hypot(bounds.width, bounds.height)
+        
         let ripple = CAShapeLayer()
         ripple.opacity = 0
-        ripple.fillColor = EDTSColor.grey30.withAlphaComponent(0.12).cgColor
+        ripple.fillColor = color?.cgColor
         
         let maskLayer = CAShapeLayer()
         maskLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: radius).cgPath
         ripple.mask = maskLayer
         ripple.frame = bounds
         
-        let startPath = UIBezierPath(arcCenter: touchPoint, radius: 1, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
-        let endPath = UIBezierPath(arcCenter: touchPoint, radius: maxRadius, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
+        let startPath = UIBezierPath(arcCenter: tempTouchPoint, radius: 1, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
+        let endPath = UIBezierPath(arcCenter: tempTouchPoint, radius: maxRadius, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
         ripple.path = startPath
         ripple.setValue(Date(), forKey: "rippleStartTime")
         
@@ -128,7 +130,7 @@ extension UIView {
         expandAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         expandAnimation.fillMode = .forwards
         expandAnimation.isRemovedOnCompletion = false
-
+        
         let fadeIn = CABasicAnimation(keyPath: "opacity")
         fadeIn.fromValue = 0
         fadeIn.toValue = 1
@@ -136,13 +138,13 @@ extension UIView {
         fadeIn.timingFunction = CAMediaTimingFunction(name: .easeOut)
         fadeIn.fillMode = .forwards
         fadeIn.isRemovedOnCompletion = false
-
+        
         let group = CAAnimationGroup()
         group.animations = [expandAnimation, fadeIn]
         group.duration = 0.40
         group.fillMode = .forwards
         group.isRemovedOnCompletion = false
-
+        
         ripple.add(group, forKey: "rippleExpand")
     }
     
@@ -174,71 +176,95 @@ extension UIView {
         }
     }
     
-    private var iconRippleLayer: CAShapeLayer? {
-        get { objc_getAssociatedObject(self, &RippleKeys.iconRippleLayer) as? CAShapeLayer }
-        set { objc_setAssociatedObject(self, &RippleKeys.iconRippleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    private var activeCircularRippleLayers: [CAShapeLayer] {
+        get { objc_getAssociatedObject(self, &RippleKeys.circularRippleLayer) as? [CAShapeLayer] ?? [] }
+        set { objc_setAssociatedObject(self, &RippleKeys.circularRippleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
-
-    func showIconRipple(size: CGFloat = 32,
-                    color: UIColor? = EDTSColor.grey30.withAlphaComponent(0.22)) {
-
-        guard iconRippleLayer == nil else { return }
-        guard superview != nil else { return }
-
-        let container = superview!
-
-        let circle = CAShapeLayer()
-
-        let rect = CGRect(
-            x: frame.midX - size/2,
-            y: frame.midY - size/2,
-            width: size,
-            height: size
-        )
-
-        circle.path = UIBezierPath(ovalIn: rect).cgPath
-        circle.fillColor = color?.cgColor
-        circle.opacity = 0
-
-        container.layer.insertSublayer(circle, below: layer)
-        iconRippleLayer = circle
-
+    
+    func showRippleCircular(size: CGFloat = 32,
+                          color: UIColor? = EDTSColor.grey30.withAlphaComponent(0.22)) {
+        
+        guard let container = superview else { return }
+        
+        let circular = CAShapeLayer()
+        let center = CGPoint(x: frame.midX, y: frame.midY)
+        let startRect = CGRect(x: frame.midX - 1, y: frame.midY - 1, width: 2, height: 2)
+        let endRect = CGRect(x: frame.midX - size/2, y: frame.midY - size/2, width: size, height: size)
+        
+        circular.path = UIBezierPath(ovalIn: startRect).cgPath
+        circular.fillColor = color?.cgColor
+        circular.opacity = 0
+        circular.setValue(Date(), forKey: "rippleStartTime")
+        
+        container.layer.insertSublayer(circular, below: layer)
+        activeCircularRippleLayers.append(circular)
+        
+        let expandAnimation = CABasicAnimation(keyPath: "path")
+        expandAnimation.fromValue = UIBezierPath(ovalIn: startRect).cgPath
+        expandAnimation.toValue = UIBezierPath(ovalIn: endRect).cgPath
+        expandAnimation.duration = 0.40
+        expandAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        expandAnimation.fillMode = .forwards
+        expandAnimation.isRemovedOnCompletion = false
+        
         let fadeIn = CABasicAnimation(keyPath: "opacity")
         fadeIn.fromValue = 0
         fadeIn.toValue = 1
-        fadeIn.duration = 0.1
-        fadeIn.isRemovedOnCompletion = false
+        fadeIn.duration = 0.10
+        fadeIn.timingFunction = CAMediaTimingFunction(name: .easeOut)
         fadeIn.fillMode = .forwards
-
-        circle.add(fadeIn, forKey: "fadeIn")
+        fadeIn.isRemovedOnCompletion = false
+        
+        let group = CAAnimationGroup()
+        group.animations = [expandAnimation, fadeIn]
+        group.duration = 0.40
+        group.fillMode = .forwards
+        group.isRemovedOnCompletion = false
+        
+        circular.add(group, forKey: "circularRippleExpand")
     }
     
-    func hideIconRipple() {
-        guard let circle = iconRippleLayer else { return }
-
-        let fadeOut = CABasicAnimation(keyPath: "opacity")
-        fadeOut.fromValue = 1
-        fadeOut.toValue = 0
-        fadeOut.duration = 0.2
-        fadeOut.isRemovedOnCompletion = false
-        fadeOut.fillMode = .forwards
-
-        CATransaction.begin()
-        CATransaction.setCompletionBlock { [weak self] in
-            circle.removeFromSuperlayer()
-            self?.iconRippleLayer = nil
+    func hideRippleCircular() {
+        let layersToHide = activeCircularRippleLayers
+        activeCircularRippleLayers = []
+        
+        for circular in layersToHide {
+            let startTime = circular.value(forKey: "rippleStartTime") as? Date ?? Date()
+            let elapsed = Date().timeIntervalSince(startTime)
+            
+            let remaining = max(0, 0.40 - elapsed)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + remaining) {
+                if let presentation = circular.presentation() {
+                    circular.path = presentation.path
+                    circular.opacity = presentation.opacity
+                }
+                circular.removeAllAnimations()
+                
+                let fadeOut = CABasicAnimation(keyPath: "opacity")
+                fadeOut.fromValue = circular.opacity
+                fadeOut.toValue = 0
+                fadeOut.duration = 0.22
+                fadeOut.timingFunction = CAMediaTimingFunction(name: .easeOut)
+                fadeOut.fillMode = .forwards
+                fadeOut.isRemovedOnCompletion = false
+                
+                CATransaction.begin()
+                CATransaction.setCompletionBlock {
+                    circular.removeFromSuperlayer()
+                }
+                circular.add(fadeOut, forKey: "fadeOut")
+                CATransaction.commit()
+            }
         }
-
-        circle.add(fadeOut, forKey: "fadeOut")
-        CATransaction.commit()
     }
-
+    
     // MARK: - Grayscale
     private struct GrayscaleKeys {
         static var grayscaleLayer: UInt8 = 0
         static var isApplyingGrayscale: UInt8 = 1
     }
-
+    
     private var grayscaleLayer: CALayer? {
         get {
             return objc_getAssociatedObject(self, &GrayscaleKeys.grayscaleLayer) as? CALayer
@@ -247,7 +273,7 @@ extension UIView {
             objc_setAssociatedObject(self, &GrayscaleKeys.grayscaleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-
+    
     private var isApplyingGrayscale: Bool {
         get {
             return objc_getAssociatedObject(self, &GrayscaleKeys.isApplyingGrayscale) as? Bool ?? false
@@ -256,7 +282,7 @@ extension UIView {
             objc_setAssociatedObject(self, &GrayscaleKeys.isApplyingGrayscale, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-
+    
     public func applyGrayscale(_ isGrayscale: Bool) {
         isApplyingGrayscale = isGrayscale
         
@@ -275,7 +301,7 @@ extension UIView {
             removeGrayscaleEffect()
         }
     }
-
+    
     private func addGrayscaleEffect() {
         removeGrayscaleEffect()
         
@@ -316,7 +342,7 @@ extension UIView {
         layer.addSublayer(imageLayer)
         grayscaleLayer = imageLayer
     }
-
+    
     public func removeGrayscaleEffect() {
         grayscaleLayer?.removeFromSuperlayer()
         grayscaleLayer = nil
