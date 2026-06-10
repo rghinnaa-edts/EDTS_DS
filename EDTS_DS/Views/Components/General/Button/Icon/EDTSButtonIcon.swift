@@ -190,6 +190,12 @@ public class EDTSButtonIcon: UIButton {
         }
     }
     
+    @IBInspectable public var isHasBadge: Bool = false {
+        didSet {
+            initBadgeConstraint()
+        }
+    }
+    
     // MARK: - Private Variable
     private let ivIcon = UIImageView()
     private let defaultValue : CGFloat = -1.0
@@ -216,9 +222,7 @@ public class EDTSButtonIcon: UIButton {
     private var tempPaddingTrailing: CGFloat = -1.0
     private var tempResolvedButtonState: BtnState? = nil
     
-    private let cvBadge = EDTSBadge()
-    private var badgeTopConstraint: NSLayoutConstraint?
-    private var badgeTrailingConstraint: NSLayoutConstraint?
+    private let cvBadge = EDTSSignifier()
     
     private var resolvedButtonSize: BtnSize {
         guard let size = btnSize else { return .large }
@@ -254,7 +258,6 @@ public class EDTSButtonIcon: UIButton {
         gradientLayer?.frame = bounds
         gradientLayer?.cornerRadius = tempCornerRadius
         layer.cornerRadius = tempCornerRadius
-        cvBadge.cornerRadius = cvBadge.bounds.height / 2
     }
     
     override public var intrinsicContentSize: CGSize {
@@ -263,6 +266,12 @@ public class EDTSButtonIcon: UIButton {
             width: iconSize.width + tempPaddingLeading + tempPaddingTrailing,
             height: iconSize.height + tempPaddingTop + tempPaddingBottom
         )
+    }
+    
+    // MARK: - Public Function
+    public func configureBadge(_ instance: (EDTSSignifier) -> Void) {
+        cvBadge.isHidden = false
+        instance(cvBadge)
     }
     
     // MARK: - Setup & Styling
@@ -282,7 +291,6 @@ public class EDTSButtonIcon: UIButton {
         
         initConstraint()
         initIconConstraint()
-        initBadgeConstraint()
         setupIcon()
         setupButtonSize()
         setupButtonType()
@@ -366,20 +374,10 @@ public class EDTSButtonIcon: UIButton {
         ])
     }
     
-    private func initBadgeConstraint() {
-        cvBadge.translatesAutoresizingMaskIntoConstraints = false
-        cvBadge.isUserInteractionEnabled = false
-        addSubview(cvBadge)
-        
-        badgeTopConstraint = cvBadge.topAnchor.constraint(equalTo: ivIcon.topAnchor, constant: -4)
-        badgeTrailingConstraint = cvBadge.trailingAnchor.constraint(equalTo: ivIcon.trailingAnchor, constant: 4)
-        
-        NSLayoutConstraint.activate([
-            badgeTopConstraint!,
-            badgeTrailingConstraint!
-        ])
-        
-        cvBadge.isHidden = true
+    private func initBadgeConstraint(){
+        cvBadge.showSignifier(to: ivIcon)
+        cvBadge.topOffset = 4
+        cvBadge.trailingOffset = 4
     }
     
     private func setupIconConstraint(){
@@ -401,11 +399,6 @@ public class EDTSButtonIcon: UIButton {
         cvBadge.borderColor = EDTSColor.white
         cvBadge.borderWidth = 1
         cvBadge.label = "1"
-    }
-    
-    public func configureBadge(_ instance: (EDTSBadge) -> Void) {
-        cvBadge.isHidden = false
-        instance(cvBadge)
     }
     
     private func setupButtonSize() {
@@ -470,7 +463,11 @@ public class EDTSButtonIcon: UIButton {
                 tempRippleColor = EDTSColor.grey70.withAlphaComponent(0.12)
             }
         } else {
-            tempRippleColor = rippleColor?.withAlphaComponent(0.12)
+            if rippleColor == UIColor.clear{
+                tempRippleColor = rippleColor
+            } else {
+                tempRippleColor = rippleColor?.withAlphaComponent(0.12)
+            }
         }
     }
     

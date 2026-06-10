@@ -1197,9 +1197,9 @@ public class EDTSTextField: UIView {
     @objc private func togglePasswordVisibility() {
         guard isPassword else { return }
 
-        ivTrailing.showIconRipple(color: EDTSColor.grey30.withAlphaComponent(0.40))
+        ivTrailing.showRippleCircular(color: EDTSColor.grey30.withAlphaComponent(0.40))
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            self?.ivTrailing.hideIconRipple()
+            self?.ivTrailing.hideRippleCircular()
         }
 
         tfValue.isSecureTextEntry.toggle()
@@ -1210,14 +1210,14 @@ public class EDTSTextField: UIView {
     @objc private func onLongPressLeadingIcon(_ gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
-            ivLeading.showIconRipple(size: ivLeading.bounds.width + 8, color: EDTSColor.grey30.withAlphaComponent(0.40))
+            ivLeading.showRippleCircular(size: ivLeading.bounds.width + 8, color: EDTSColor.grey30.withAlphaComponent(0.40))
             
         case .ended:
             delegate?.didSelectTextFieldIconLeading(self)
-            ivLeading.hideIconRipple()
+            ivLeading.hideRippleCircular()
             
         case .cancelled, .failed:
-            ivLeading.hideIconRipple()
+            ivLeading.hideRippleCircular()
             
         default:
             break
@@ -1227,7 +1227,7 @@ public class EDTSTextField: UIView {
     @objc private func onLongPressTrailingIcon(_ gesture: UILongPressGestureRecognizer) {
         switch gesture.state {
         case .began:
-            ivTrailing.showIconRipple(size: ivTrailing.bounds.width + 8, color: EDTSColor.grey30.withAlphaComponent(0.40))
+            ivTrailing.showRippleCircular(size: ivTrailing.bounds.width + 8, color: EDTSColor.grey30.withAlphaComponent(0.40))
             
         case .ended:
             if isClearable {
@@ -1239,10 +1239,10 @@ public class EDTSTextField: UIView {
             } else {
                 delegate?.didSelectTextFieldIconTrailing(self)
             }
-            ivTrailing.hideIconRipple()
+            ivTrailing.hideRippleCircular()
             
         case .cancelled, .failed:
-            ivTrailing.hideIconRipple()
+            ivTrailing.hideRippleCircular()
             
         default:
             break

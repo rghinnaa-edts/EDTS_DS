@@ -9,7 +9,9 @@
 | **Primary Button** |![Primary Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971586/primary_rest_button_xqvyeo.gif)|![Primary Default Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971586/primary_rest_button_xqvyeo.gif)|![Primary Disabled Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971586/primary_disabled_button_fy6wab.png)|
 | **Secondary Button** |![Secondary Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971586/secondary_rest_button_klavjp.gif)|![Secondary Default Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971586/secondary_rest_button_klavjp.gif)|![Secondary Disabled Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971586/secondary_disabled_button_zg9kzj.png)|
 | **Tertiary Button** |![Tertiary Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971591/tertiary_rest_button_ymzpkc.gif)|![Tertiary Default Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971591/tertiary_rest_button_ymzpkc.gif)|![Tertiary Disabled Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971587/tertiary_disabled_button_pdxrij.png)|
-| **With Badge** |![Button With Badge](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971587/button_with_badge_fh8asc.gif)| | | |
+| **Default** |![Default Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971587/button_with_badge_fh8asc.gif)| | | |
+| **Gradient Background and With Badge** |![Button With Gradient Background And Badge](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971587/button_with_badge_fh8asc.gif)| | | |
+| **Icon Only** |![Icon Only Button](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1770971587/button_with_badge_fh8asc.gif)| | | |
 
 ## Basic Usage
 
@@ -80,12 +82,12 @@ iconButton.icon = UIImage(systemName: "star.fill")
 
 | Property | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| `bgTintColor` | `UIColor?` | Type/state-dependent | Button background color (ignored if gradient is set) |
-| `bgFocusTintColor` | `UIColor?` | Type/state-dependent | Background color on focus state (ignored if gradient is set) |
-| `bgDisabledTintColor` | `UIColor?` | Type/state-dependent | Background color on disabled state (ignored if gradient is set) |
-| `bgTintColorStart` | `UIColor?` | `nil` | Start color for gradient background |
-| `bgTintColorEnd` | `UIColor?` | `nil` | End color for gradient background |
-| `bgTintColorOrientation` | `String?` | `"vertical"` | Gradient direction: `"horizontal"` or `"vertical"` |
+| `bgColor` | `UIColor?` | Type/state-dependent | Button background color (ignored if gradient is set) |
+| `bgFocusColor` | `UIColor?` | Type/state-dependent | Background color on focus state (ignored if gradient is set) |
+| `bgDisabledColor` | `UIColor?` | Type/state-dependent | Background color on disabled state (ignored if gradient is set) |
+| `bgColorStart` | `UIColor?` | `nil` | Start color for gradient background |
+| `bgColorEnd` | `UIColor?` | `nil` | End color for gradient background |
+| `bgColorOrientation` | `String?` | `"vertical"` | Gradient direction: `"horizontal"` or `"vertical"` |
 | `rippleColor` | `UIColor?` | `nil` | Custom ripple color. Defaults to iconTintColor or grey70 at 12% opacity based on background |
 
 ### Border Properties
@@ -119,9 +121,14 @@ iconButton.icon = UIImage(systemName: "star.fill")
 
 ### Badge Properties
 
-The badge is configured via the `configureBadge(_:)` method. Calling it automatically shows the badge.
+The badge is configured via the `isHasBadge` property and `configureBadge(_:)` method. Set `isHasBadge = true` first to anchor the badge to the icon, then call `configureBadge(_:)` to customize it and make it visible. 
+
+| Property | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+| `isHasBadge` | `Bool` | `false` | Anchors the badge overlay to the icon view. Must be set before calling `configureBadge(_:)` |
 
 ```swift
+iconButton.isHasBadge = true
 iconButton.configureBadge { badge in
     badge.label = "5"
     badge.bgColor = .red
@@ -129,6 +136,12 @@ iconButton.configureBadge { badge in
     badge.borderWidth = 1
 }
 ```
+
+## Public Functions
+
+| Function | Description |
+| -------- | ----------- |
+| `configureBadge(_ instance: (EDTSSignifier) -> Void)` | Shows the badge and exposes the [`EDTSSignifier`](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/EDTSSignifier.md) instance for customization. Call after setting `isHasBadge = true` |
 
 ## Type-Specific Styling
 
@@ -188,12 +201,12 @@ When a type/state combination is applied, the button checks each styling propert
 ```swift
 button.btnType = "primary"    // Preset: bgTintColor=blueDefault, iconTintColor=white
 button.btnState = "default"
-button.bgTintColor = .red         // Custom value overrides preset → uses red
+button.bgColor = .red             // Custom value overrides preset → uses red
 ```
 
 ## Notes
 
-- Gradient background is enabled when `bgTintColorStart` or `bgTintColorEnd` are set; when enabled, `bgTintColor`, `bgFocusTintColor`, and `bgDisabledTintColor` is ignored
+- Gradient background is enabled when `bgColorStart` or `bgColorEnd` are set; when enabled, `bgColor`, `bgFocusColor`, and `bgDisabledColor` are ignored
 - Ripple animation is disabled while gradient mode is active
 - The `disabled` state automatically sets `isUserInteractionEnabled = false`
 

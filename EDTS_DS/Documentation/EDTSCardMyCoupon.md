@@ -78,7 +78,7 @@ extension ViewController: EDTSCardMyCouponDelegate {
 
 ### Badge Properties
 
-The badge is configured via the `configureBadge(_:)` method. Calling it automatically shows the badge.
+The badge is configured via the `configureBadge(_:)` method. Calling it automatically shows the [`EDTSBadge`](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/EDTSBadge.md).
 
 ```swift
 cardMyCoupon.configureBadge { badge in
