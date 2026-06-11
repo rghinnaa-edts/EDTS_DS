@@ -171,6 +171,13 @@ public class EDTSCardMyCoupon: UIView {
         ivLeadingIconBG.clipsToBounds = true
     }
     
+    // MARK: - Public Function
+    public func configureBadge(_ instance: (EDTSBadge) -> Void) {
+        guard cvBadge != nil else { return }
+        cvBadge.isHidden = false
+        instance(cvBadge)
+    }
+    
     // MARK: - Setup & Styling
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
@@ -335,12 +342,6 @@ public class EDTSCardMyCoupon: UIView {
         ivTrailingIcon.image = UIImage(named: "ic_chevron_right", in: bundleTrailing, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
         iconTintColorTrailing = EDTSColor.white
         setupBadge()
-    }
-    
-    public func configureBadge(_ instance: (EDTSBadge) -> Void) {
-        guard cvBadge != nil else { return }
-        cvBadge.isHidden = false
-        instance(cvBadge)
     }
     
     // MARK: - Animation

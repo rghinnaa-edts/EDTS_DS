@@ -12,7 +12,7 @@ public class EDTSButtonIcon: UIButton {
     // MARK: - Inspectables
     @IBInspectable public var btnType: String?{
         didSet {
-            setupButtonType(resolvedButtonState)
+            setupButtonType()
         }
     }
     
@@ -24,13 +24,25 @@ public class EDTSButtonIcon: UIButton {
     
     @IBInspectable public var btnState: String?{
         didSet {
-            setupButtonType(resolvedButtonState)
+            setupButtonType()
         }
     }
     
     @IBInspectable public var bgColor: UIColor?{
         didSet{
-            setupButtonType(resolvedButtonState)
+            setupButtonType()
+        }
+    }
+    
+    @IBInspectable public var bgFocusColor: UIColor?{
+        didSet{
+            setupButtonType()
+        }
+    }
+    
+    @IBInspectable public var bgDisabledColor: UIColor?{
+        didSet{
+            setupButtonType()
         }
     }
     
@@ -52,6 +64,12 @@ public class EDTSButtonIcon: UIButton {
         }
     }
     
+    @IBInspectable public var rippleColor: UIColor?{
+            didSet{
+                setupButtonType()
+            }
+        }
+    
     @IBInspectable public var cornerRadius: CGFloat = -1.0 {
         didSet {
             setupButtonSize()
@@ -64,9 +82,21 @@ public class EDTSButtonIcon: UIButton {
         }
     }
     
-    @IBInspectable public var iconTint: UIColor?{
+    @IBInspectable public var iconTintColor: UIColor?{
         didSet{
-            setupButtonType(resolvedButtonState)
+            setupButtonType()
+        }
+    }
+    
+    @IBInspectable public var iconFocusTintColor: UIColor?{
+        didSet{
+            setupButtonType()
+        }
+    }
+    
+    @IBInspectable public var iconDisabledTintColor: UIColor?{
+        didSet{
+            setupButtonType()
         }
     }
     
@@ -78,13 +108,25 @@ public class EDTSButtonIcon: UIButton {
     
     @IBInspectable public var borderWidth: CGFloat = CGFloat.zero{
         didSet{
-            setupButtonType(resolvedButtonState)
+            setupButtonType()
         }
     }
     
     @IBInspectable public var borderColor: UIColor?{
         didSet{
-            setupButtonType(resolvedButtonState)
+            setupButtonType()
+        }
+    }
+    
+    @IBInspectable public var borderFocusColor: UIColor?{
+        didSet{
+            setupButtonType()
+        }
+    }
+    
+    @IBInspectable public var borderDisabledColor: UIColor?{
+        didSet{
+            setupButtonType()
         }
     }
     
@@ -108,7 +150,19 @@ public class EDTSButtonIcon: UIButton {
     
     @IBInspectable public var shadowColor: UIColor?{
         didSet {
-            layer.shadowColor = shadowColor?.cgColor
+            setupButtonType()
+        }
+    }
+    
+    @IBInspectable public var shadowFocusColor: UIColor?{
+        didSet {
+            setupButtonType()
+        }
+    }
+    
+    @IBInspectable public var shadowDisabledColor: UIColor?{
+        didSet {
+            setupButtonType()
         }
     }
     
@@ -136,6 +190,12 @@ public class EDTSButtonIcon: UIButton {
         }
     }
     
+    @IBInspectable public var isHasBadge: Bool = false {
+        didSet {
+            initBadgeConstraint()
+        }
+    }
+    
     // MARK: - Private Variable
     private let ivIcon = UIImageView()
     private let defaultValue : CGFloat = -1.0
@@ -149,8 +209,9 @@ public class EDTSButtonIcon: UIButton {
     
     private var gradientLayer: CAGradientLayer?
     
-    private var tempIconTint: UIColor?
+    private var tempIconTintColor: UIColor?
     private var tempBgColor: UIColor?
+    private var tempRippleColor: UIColor?
     private var tempBorderColor: UIColor?
     private var tempBorderWidth: CGFloat = CGFloat.zero
     private var tempIconSize: CGFloat = CGFloat.zero
@@ -159,10 +220,9 @@ public class EDTSButtonIcon: UIButton {
     private var tempPaddingBottom: CGFloat = -1.0
     private var tempPaddingLeading: CGFloat = -1.0
     private var tempPaddingTrailing: CGFloat = -1.0
+    private var tempResolvedButtonState: BtnState? = nil
     
-    private let cvBadge = EDTSBadge()
-    private var badgeTopConstraint: NSLayoutConstraint?
-    private var badgeTrailingConstraint: NSLayoutConstraint?
+    private let cvBadge = EDTSSignifier()
     
     private var resolvedButtonSize: BtnSize {
         guard let size = btnSize else { return .large }
@@ -177,9 +237,9 @@ public class EDTSButtonIcon: UIButton {
     }
     
     private var resolvedButtonState: BtnState {
-        guard let state = btnState else { return .rest }
+        guard let state = btnState else { return .`default` }
         let normalized = state.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        return BtnState(rawValue: normalized) ?? .rest
+        return BtnState(rawValue: normalized) ?? .`default`
     }
     
     // MARK: - Initializers
@@ -198,7 +258,6 @@ public class EDTSButtonIcon: UIButton {
         gradientLayer?.frame = bounds
         gradientLayer?.cornerRadius = tempCornerRadius
         layer.cornerRadius = tempCornerRadius
-        cvBadge.cornerRadius = cvBadge.bounds.height / 2
     }
     
     override public var intrinsicContentSize: CGSize {
@@ -207,6 +266,12 @@ public class EDTSButtonIcon: UIButton {
             width: iconSize.width + tempPaddingLeading + tempPaddingTrailing,
             height: iconSize.height + tempPaddingTop + tempPaddingBottom
         )
+    }
+    
+    // MARK: - Public Function
+    public func configureBadge(_ instance: (EDTSSignifier) -> Void) {
+        cvBadge.isHidden = false
+        instance(cvBadge)
     }
     
     // MARK: - Setup & Styling
@@ -218,7 +283,7 @@ public class EDTSButtonIcon: UIButton {
         ivIcon.contentMode = .scaleAspectFit
         ivIcon.setContentHuggingPriority(.required, for: .horizontal)
         ivIcon.image = icon?.withRenderingMode(.alwaysTemplate)
-        ivIcon.tintColor = UIColor.white
+        ivIcon.tintColor = EDTSColor.white
         
         
         addSubview(ivIcon)
@@ -226,17 +291,17 @@ public class EDTSButtonIcon: UIButton {
         
         initConstraint()
         initIconConstraint()
-        initBadgeConstraint()
         setupIcon()
         setupButtonSize()
-        setupButtonType(resolvedButtonState)
+        setupButtonType()
         setupPressGesture()
         setupBadge()
     }
     
     private func setupIcon() {
         ivIcon.isHidden = false
-        ivIcon.image = icon?.withRenderingMode(.alwaysTemplate)
+        let bundle = Bundle(for: type(of: self))
+        ivIcon.image = UIImage(named: "ic_placeholder", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }
     
     private func setupBackground() {
@@ -309,20 +374,10 @@ public class EDTSButtonIcon: UIButton {
         ])
     }
     
-    private func initBadgeConstraint() {
-        cvBadge.translatesAutoresizingMaskIntoConstraints = false
-        cvBadge.isUserInteractionEnabled = false
-        addSubview(cvBadge)
-        
-        badgeTopConstraint = cvBadge.topAnchor.constraint(equalTo: ivIcon.topAnchor, constant: -4)
-        badgeTrailingConstraint = cvBadge.trailingAnchor.constraint(equalTo: ivIcon.trailingAnchor, constant: 4)
-        
-        NSLayoutConstraint.activate([
-            badgeTopConstraint!,
-            badgeTrailingConstraint!
-        ])
-        
-        cvBadge.isHidden = true
+    private func initBadgeConstraint(){
+        cvBadge.showSignifier(to: ivIcon)
+        cvBadge.topOffset = 4
+        cvBadge.trailingOffset = 4
     }
     
     private func setupIconConstraint(){
@@ -344,11 +399,6 @@ public class EDTSButtonIcon: UIButton {
         cvBadge.borderColor = EDTSColor.white
         cvBadge.borderWidth = 1
         cvBadge.label = "1"
-    }
-    
-    public func configureBadge(_ instance: (EDTSBadge) -> Void) {
-        cvBadge.isHidden = false
-        instance(cvBadge)
     }
     
     private func setupButtonSize() {
@@ -385,13 +435,44 @@ public class EDTSButtonIcon: UIButton {
     
     private func setupButtonStyle() {
         setupIcon()
-        ivIcon.tintColor = tempIconTint
-        layer.borderColor = tempBorderColor?.cgColor
+        ivIcon.tintColor = tempIconTintColor
         layer.borderWidth = tempBorderWidth
         setupBackground()
+        
+        switch resolvedButtonType {
+        case .primary:
+            layer.borderColor = tempBorderColor?.cgColor
+        case .secondary, .tertiary:
+            if(iconTintColor != nil){
+                if (borderColor == nil){
+                    layer.borderColor = tempIconTintColor?.cgColor
+                }else{
+                    layer.borderColor = tempBorderColor?.cgColor
+                }
+            }else{
+                layer.borderColor = tempBorderColor?.cgColor
+            }
+        }
+        
+        if rippleColor == nil {
+            if tempBgColor == EDTSColor.white {
+                tempRippleColor = tempIconTintColor?.withAlphaComponent(0.12)
+            }else if tempBgColor == .clear {
+                tempRippleColor = tempIconTintColor?.withAlphaComponent(0.12)
+            }else if tempBgColor != EDTSColor.white {
+                tempRippleColor = EDTSColor.grey70.withAlphaComponent(0.12)
+            }
+        } else {
+            if rippleColor == UIColor.clear{
+                tempRippleColor = rippleColor
+            } else {
+                tempRippleColor = rippleColor?.withAlphaComponent(0.12)
+            }
+        }
     }
     
-    private func setupButtonType(_ state: BtnState) {
+    private func setupButtonType() {
+        let state = tempResolvedButtonState ?? resolvedButtonState
         isUserInteractionEnabled = state != .disabled
         
         switch resolvedButtonType {
@@ -406,29 +487,26 @@ public class EDTSButtonIcon: UIButton {
     
     private func setupButtonPrimary(_ state: BtnState) {
         switch state {
-        case .rest:
-            tempIconTint = iconTint ?? EDTSColor.white
+        case .default:
+            tempIconTintColor = iconTintColor ?? EDTSColor.white
             tempBgColor = bgColor ?? EDTSColor.blueDefault
             tempBorderColor = borderColor ?? EDTSColor.blueDefault
             tempBorderWidth = borderWidth == CGFloat.zero ? 0 : borderWidth
+            layer.shadowColor = shadowColor?.cgColor
             
-        case .pressed:
-            tempIconTint = iconTint ?? EDTSColor.white
-            tempBgColor = bgColor ?? EDTSColor.bluePressed
-            tempBorderColor = borderColor ?? EDTSColor.bluePressed
-            tempBorderWidth = borderWidth == CGFloat.zero ? 0 : borderWidth
-            
-        case .focused:
-            tempIconTint = iconTint ?? EDTSColor.white
-            tempBgColor = bgColor ?? EDTSColor.blueDefault
-            tempBorderColor = borderColor ?? EDTSColor.blue30
+        case .focus:
+            tempIconTintColor = iconFocusTintColor ?? EDTSColor.white
+            tempBgColor = bgFocusColor ?? EDTSColor.blueDefault
+            tempBorderColor = borderFocusColor ?? EDTSColor.blue30
             tempBorderWidth = borderWidth == CGFloat.zero ? 2 : borderWidth
+            layer.shadowColor = shadowFocusColor?.cgColor
             
         case .disabled:
-            tempIconTint = iconTint ?? EDTSColor.white
-            tempBgColor = bgColor ?? EDTSColor.disabled
-            tempBorderColor = borderColor ?? EDTSColor.disabled
+            tempIconTintColor = iconDisabledTintColor ?? EDTSColor.white
+            tempBgColor = bgDisabledColor ?? EDTSColor.disabled
+            tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == CGFloat.zero ? 0 : borderWidth
+            layer.shadowColor = shadowDisabledColor?.cgColor
             isUserInteractionEnabled = false
         
         case .danger:
@@ -440,29 +518,26 @@ public class EDTSButtonIcon: UIButton {
     
     private func setupButtonSecondary(_ state: BtnState) {
         switch state {
-        case .rest:
-            tempIconTint = iconTint ?? EDTSColor.blueDefault
+        case .default:
+            tempIconTintColor = iconTintColor ?? EDTSColor.blueDefault
             tempBgColor = bgColor ?? EDTSColor.white
             tempBorderColor = borderColor ?? EDTSColor.blueDefault
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
+            layer.shadowColor = shadowColor?.cgColor
             
-        case .pressed:
-            tempIconTint = iconTint ?? EDTSColor.bluePressed
-            tempBgColor = bgColor ?? EDTSColor.white
-            tempBorderColor = borderColor ?? EDTSColor.bluePressed
-            tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
-            
-        case .focused:
-            tempIconTint = iconTint ?? EDTSColor.blueDefault
-            tempBgColor = bgColor ?? EDTSColor.white
-            tempBorderColor = borderColor ?? EDTSColor.blue30
+        case .focus:
+            tempIconTintColor = iconFocusTintColor ?? EDTSColor.blueDefault
+            tempBgColor = bgFocusColor ?? EDTSColor.white
+            tempBorderColor = borderFocusColor ?? EDTSColor.blue30
             tempBorderWidth = borderWidth == CGFloat.zero ? 2 : borderWidth
+            layer.shadowColor = shadowFocusColor?.cgColor
             
         case .disabled:
-            tempIconTint = iconTint ?? EDTSColor.disabled
-            tempBgColor = bgColor ?? EDTSColor.white
-            tempBorderColor = borderColor ?? EDTSColor.disabled
+            tempIconTintColor = iconDisabledTintColor ?? EDTSColor.disabled
+            tempBgColor = bgDisabledColor ?? EDTSColor.white
+            tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
+            layer.shadowColor = shadowDisabledColor?.cgColor
             isUserInteractionEnabled = false
         
         case .danger:
@@ -474,29 +549,26 @@ public class EDTSButtonIcon: UIButton {
     
     private func setupButtonTertiary(_ state: BtnState) {
         switch state {
-        case .rest:
-            tempIconTint = iconTint ?? EDTSColor.greyText
+        case .default:
+            tempIconTintColor = iconTintColor ?? EDTSColor.greyText
             tempBgColor = bgColor ?? EDTSColor.white
             tempBorderColor = borderColor ?? EDTSColor.greyDefault
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
+            layer.shadowColor = shadowColor?.cgColor
             
-        case .pressed:
-            tempIconTint = iconTint ?? EDTSColor.greyText
-            tempBgColor = bgColor ?? EDTSColor.grey20
-            tempBorderColor = borderColor ?? EDTSColor.greyPressed
-            tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
-            
-        case .focused:
-            tempIconTint = iconTint ?? EDTSColor.greyText
-            tempBgColor = bgColor ?? EDTSColor.grey20
-            tempBorderColor = borderColor ?? EDTSColor.greyPressed
+        case .focus:
+            tempIconTintColor = iconFocusTintColor ?? EDTSColor.greyText
+            tempBgColor = bgFocusColor ?? EDTSColor.grey20
+            tempBorderColor = borderFocusColor ?? EDTSColor.greyPressed
             tempBorderWidth = borderWidth == CGFloat.zero ? 2 : borderWidth
+            layer.shadowColor = shadowFocusColor?.cgColor
             
         case .disabled:
-            tempIconTint = iconTint ?? EDTSColor.disabled
-            tempBgColor = bgColor ?? EDTSColor.white
-            tempBorderColor = borderColor ?? EDTSColor.disabled
+            tempIconTintColor = iconDisabledTintColor ?? EDTSColor.disabled
+            tempBgColor = bgDisabledColor ?? EDTSColor.white
+            tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
+            layer.shadowColor = shadowDisabledColor?.cgColor
             isUserInteractionEnabled = false
         
         case .danger:
@@ -545,17 +617,20 @@ public class EDTSButtonIcon: UIButton {
         switch gesture.state {
         case .began:
             guard resolvedButtonState != .disabled else { return }
-            setupButtonType(.pressed)
+            tempResolvedButtonState = resolvedButtonState
+            setupButtonType()
             animateScaleDown()
-            if (bgColor != nil && bgColor != .clear && bgColorStart == nil && bgColorEnd == nil){
-                showRipple(from: gesture.location(in: self), cornerRadius: tempCornerRadius)
+            if (bgColorStart == nil && bgColorEnd == nil){
+                showRipple(from: gesture.location(in: self), cornerRadius: tempCornerRadius, color: tempRippleColor)
             }
         case .ended:
             guard resolvedButtonState != .disabled else { return }
-            setupButtonType(resolvedButtonState)
+            setupButtonType()
+            tempResolvedButtonState = nil
             animateScaleUp()
             hideRipple()
         case .cancelled, .failed:
+            tempResolvedButtonState = nil
             animateScaleUp()
             hideRipple()
         default:

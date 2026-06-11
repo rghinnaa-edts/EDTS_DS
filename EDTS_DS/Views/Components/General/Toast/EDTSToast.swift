@@ -219,6 +219,30 @@ public class EDTSToast: UIView {
         containerView.clipsToBounds = false
     }
     
+    // MARK: - Public Function
+    public func configureButton(_ instance: (EDTSButton) -> Void) {
+        guard btnAction != nil else { return }
+        btnAction.isHidden = false
+        instance(btnAction)
+    }
+    
+    public func configureIconButton(_ instance: (EDTSButtonIcon) -> Void) {
+        guard btnIconAction != nil else { return }
+        btnIconAction.isHidden = false
+        instance(btnIconAction)
+    }
+    
+    public func setupDrag(swipeDirection: EDTSToastSwipeDirection, offsetY: EDTSToastOffsetDirection) {
+        dragDirections = swipeDirection.allowedDirections
+        dismissDirection = swipeDirection.dismissDirection(offsetY: offsetY)
+        
+        panRecognizer.map { containerView.removeGestureRecognizer($0) }
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+        pan.cancelsTouchesInView = false
+        containerView.addGestureRecognizer(pan)
+        panRecognizer = pan
+    }
+    
     // MARK: - Setup & Styling
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
@@ -367,29 +391,6 @@ public class EDTSToast: UIView {
         btnIconAction.paddingLeading = 0
         btnIconAction.paddingTrailing = 0
         btnIconAction.rippleColor = UIColor.clear
-    }
-    
-    public func configureButton(_ instance: (EDTSButton) -> Void) {
-        guard btnAction != nil else { return }
-        btnAction.isHidden = false
-        instance(btnAction)
-    }
-    
-    public func configureIconButton(_ instance: (EDTSButtonIcon) -> Void) {
-        guard btnIconAction != nil else { return }
-        btnIconAction.isHidden = false
-        instance(btnIconAction)
-    }
-    
-    public func setupDrag(swipeDirection: EDTSToastSwipeDirection, offsetY: EDTSToastOffsetDirection) {
-        dragDirections = swipeDirection.allowedDirections
-        dismissDirection = swipeDirection.dismissDirection(offsetY: offsetY)
-        
-        panRecognizer.map { containerView.removeGestureRecognizer($0) }
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
-        pan.cancelsTouchesInView = false
-        containerView.addGestureRecognizer(pan)
-        panRecognizer = pan
     }
     
     // MARK: - Action

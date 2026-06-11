@@ -7,6 +7,23 @@
 
 import UIKit
 
+public enum ItemDisplayMode {
+    case vertical
+    case horizontal
+    case spanGrid(Int)
+    
+    var numberOfColumns: Int {
+        switch self {
+        case .vertical:
+            return 1
+        case .horizontal:
+            return 1
+        case .spanGrid(let value):
+            return value
+        }
+    }
+}
+
 @IBDesignable
 public class EDTSRadioGroup: UIView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, EDTSRadioButtonDelegate {
     // MARK: - Outlets
@@ -151,6 +168,14 @@ public class EDTSRadioGroup: UIView, UICollectionViewDataSource, UICollectionVie
         }
     }
     
+    // MARK: - Public Function
+    public func configureRadioButton(_ instance: @escaping (EDTSRadioButton) -> Void) {
+        radioButtonConfigurator = instance
+        collectionView.reloadData()
+        invalidateIntrinsicContentSize()
+        setNeedsLayout()
+    }
+    
     // MARK: - Setup & Styling
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
@@ -240,13 +265,6 @@ public class EDTSRadioGroup: UIView, UICollectionViewDataSource, UICollectionVie
         return CGSize(width: ceil(fittedSize.width), height: ceil(fittedSize.height))
     }
     
-    public func configureRadioButton(_ instance: @escaping (EDTSRadioButton) -> Void) {
-        radioButtonConfigurator = instance
-        collectionView.reloadData()
-        invalidateIntrinsicContentSize()
-        setNeedsLayout()
-    }
-    
     // MARK: - Radio Button Protocol
     public func didSelectRadioButton(_ radioButton: EDTSRadioButton) {
         guard !radioButton.isActive else { return }
@@ -326,23 +344,6 @@ public class EDTSRadioGroup: UIView, UICollectionViewDataSource, UICollectionVie
             let totalSpacing = flowLayout.minimumInteritemSpacing * CGFloat(cols - 1)
             let itemWidth = floor((collectionView.bounds.width - insets.left - insets.right - totalSpacing) / CGFloat(cols))
             return setupCellSize(for: indexPath, width: itemWidth)
-        }
-    }
-}
-
-public enum ItemDisplayMode {
-    case vertical
-    case horizontal
-    case spanGrid(Int)
-    
-    var numberOfColumns: Int {
-        switch self {
-        case .vertical:
-            return 1
-        case .horizontal:
-            return 1
-        case .spanGrid(let value):
-            return value
         }
     }
 }

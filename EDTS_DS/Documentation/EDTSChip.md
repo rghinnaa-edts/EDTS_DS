@@ -6,7 +6,7 @@
 
 | Feature / Variation | Preview |
 | ------------------- | ------- |
-| **Basic Chip** |![Default Chip](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1770101059/chip_default_ajtfv2.gif)|
+| **Basic Chip** |![Default Chip](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1781077809/chip_default_active_nps4ik.gif)|
 | **Chip With Icon** |![Chip With iconLeading, iconTrailing, iconBgColorLeading and iconBgColorTrailing](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1770101059/chip_with_icon_njdzk1.png)|
 
 ## Basic Usage

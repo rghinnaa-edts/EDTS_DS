@@ -171,7 +171,7 @@ EDTSToast supports two optional action button types. Only one should be used at 
 | Text Button | Icon Button |
 | ----- | ---------- |
 | Use this when the button is displayed as text. | Use this when the button is displayed as an icon |
-| Use `configureButton(_:)` to attach a [`KlikIDM_DSButton`](https://github.com/rghinnaa-edts/KlikIDM_DS/blob/main/KlikIDM_DS/Documentation/KlikIDM_DSButton.md):<br><br>`toast.configureButton { btn in`<br>`    btn.label = "Undo"`<br>`}` | Use `configureIconButton(_:)` to attach an [`IconButton`](https://github.com/rghinnaa-edts/KlikIDM_DS/blob/main/KlikIDM_DS/Documentation/IconButton.md):<br><br>`toast.configureIconButton { btn in`<br>`    btn.icon = UIImage(systemName: "xmark")`<br>`}` |
+| Use `configureButton(_:)` to attach a [`EDTSButton`](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/EDTSButton.md):<br><br>`toast.configureButton { btn in`<br>`    btn.label = "Undo"`<br>`}` | Use `configureIconButton(_:)` to attach an [`EDTSButtonIcon`](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/EDTSButtonIcon.md):<br><br>`toast.configureIconButton { btn in`<br>`    btn.icon = UIImage(systemName: "xmark")`<br>`}` |
 
 ---
 
