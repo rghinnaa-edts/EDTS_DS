@@ -129,6 +129,7 @@ public class EDTSDialog: UIView {
         didSet {
             lblSupport.text = nil
             lblSupport.attributedText = supportAttributed
+            lblSupport.isHidden = false
         }
     }
     
@@ -395,9 +396,9 @@ public class EDTSDialog: UIView {
         let weight = setupFontWeight(from: supportFontWeight ?? "regular")
         
         if !supportFontName.isEmpty {
-            lblDesc.font = UIFont(name: supportFontName, size: supportFontSize) ?? UIFont.systemFont(ofSize: supportFontSize, weight: weight)
+            lblSupport.font = UIFont(name: supportFontName, size: supportFontSize) ?? UIFont.systemFont(ofSize: supportFontSize, weight: weight)
         } else {
-            lblDesc.font = UIFont.systemFont(ofSize: supportFontSize, weight: weight)
+            lblSupport.font = UIFont.systemFont(ofSize: supportFontSize, weight: weight)
         }
         
         layoutIfNeeded()
@@ -527,6 +528,7 @@ public class EDTSDialog: UIView {
     }
     
     private func setupDialogImage() {
+        lblTitle.font = EDTSFont.D4.font
         lblTitle.textAlignment = .center
         lblDesc.textAlignment = .center
         lblSupport.textAlignment = .center
@@ -555,11 +557,19 @@ public class EDTSDialog: UIView {
         dismiss()
     }
     
+    @IBAction func btnPrimaryAction(_ sender: Any) {
+        delegate?.didTapButtonPrimaryDialog(self)
+    }
+    
+    @IBAction func btnSecondaryAction(_ sender: Any) {
+        delegate?.didTapButtonSecondaryDialog(self)
+    }
 }
 
 @MainActor
 public protocol EDTSDialogDelegate: AnyObject {
     func didTapCloseDialog(_ dialog: EDTSDialog)
     func didTapButtonPrimaryDialog(_ dialog: EDTSDialog)
+    func didTapButtonSecondaryDialog(_ dialog: EDTSDialog)
 }
 

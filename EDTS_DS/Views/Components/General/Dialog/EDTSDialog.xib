@@ -73,12 +73,18 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            <connections>
+                                <action selector="btnSecondaryAction:" destination="-1" eventType="touchUpInside" id="Lsy-Y3-HN7"/>
+                            </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jvx-1z-JSQ" customClass="EDTSButton" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="16" y="510" width="361" height="35"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            <connections>
+                                <action selector="btnPrimaryAction:" destination="-1" eventType="touchUpInside" id="9NW-mY-pFO"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
