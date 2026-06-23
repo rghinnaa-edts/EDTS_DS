@@ -91,7 +91,7 @@
                             <rect key="frame" x="377" y="-5" width="16" height="16"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="x1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CzA-Fy-CsP">
-                                    <rect key="frame" x="2" y="2" width="12" height="12"/>
+                                    <rect key="frame" x="4" y="2" width="8" height="12"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="8"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -99,8 +99,8 @@
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstItem="CzA-Fy-CsP" firstAttribute="leading" secondItem="6lG-Nb-SyN" secondAttribute="leading" constant="2" id="1q3-Fp-560"/>
-                                <constraint firstAttribute="trailing" secondItem="CzA-Fy-CsP" secondAttribute="trailing" constant="2" id="JNN-4g-CrY"/>
+                                <constraint firstItem="CzA-Fy-CsP" firstAttribute="leading" secondItem="6lG-Nb-SyN" secondAttribute="leading" constant="4" id="1q3-Fp-560"/>
+                                <constraint firstAttribute="trailing" secondItem="CzA-Fy-CsP" secondAttribute="trailing" constant="4" id="JNN-4g-CrY"/>
                                 <constraint firstItem="CzA-Fy-CsP" firstAttribute="top" secondItem="6lG-Nb-SyN" secondAttribute="top" constant="2" id="NtT-ox-9V4"/>
                                 <constraint firstAttribute="bottom" secondItem="CzA-Fy-CsP" secondAttribute="bottom" constant="2" id="QSN-kS-XGq"/>
                                 <constraint firstAttribute="width" constant="16" id="TSA-HC-YMR"/>
