@@ -446,7 +446,7 @@ public class EDTSProgressTracker: UIView {
         setupIndicatorCornerRadius()
         
         setupBadge()
-        calculateValue()
+//        calculateValue()
         setupFont()
         setupBadgeBgColor()
         
@@ -663,10 +663,11 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func calculateValue() {
+        print("calculateValue", value)
         guard maxValue > 0 else { return }
         
         let ratio = value / maxValue
-        
+        let badgeWidth = badgeSize > 0 ? badgeSize : (lblBadge.intrinsicContentSize.width + 8)
         let isAtMaxValue = value > 0 && value.truncatingRemainder(dividingBy: maxValue) == 0
         
         lapCount = isAtMaxValue
@@ -685,7 +686,7 @@ public class EDTSProgressTracker: UIView {
         guard trackWidth > 0 else { return }
         
         let minWidth: CGFloat = isHasIndicator ? 2 + indicatorSize  : 0
-        let maxWidth: CGFloat = isHasIndicator && isHasBadge ? trackWidth - badgeView.frame.width/5 : trackWidth
+        let maxWidth: CGFloat = isHasIndicator && isHasBadge ? trackWidth - badgeWidth + 8 : trackWidth
         
         let fillWidth = cycleRatio == 0
             ? minWidth
@@ -694,8 +695,7 @@ public class EDTSProgressTracker: UIView {
         let shouldResetFill = isAtMaxValue
         
         if shouldResetFill && !wasAtMaxValue {
-            animateFillWidthAtMaxValue(trackWidth: trackWidth)
-            animateFillFadeOut(startingFullAlpha: displayLaps > 1 ? 1 : 0){
+            animateFillWidthAtMaxValue(trackWidth: trackWidth){
                 self.setupBadge()
                 
                 if self.badgeLabelAttributed == nil {
@@ -710,34 +710,36 @@ public class EDTSProgressTracker: UIView {
                 }
                 
                 self.lastDisplayedLaps = displayLaps
+                
+                self.animateFillFadeOut(startingFullAlpha: displayLaps > 1 ? 1 : 0)
             }
 
-            indicatorView.isHidden = true
-            fillWidthConstraint?.constant = minWidth
-            invalidateIntrinsicContentSize()
-            layoutIfNeeded()
+//            fillWidthConstraint?.constant = minWidth
+//            invalidateIntrinsicContentSize()
+//            layoutIfNeeded()
         } else if !shouldResetFill && wasAtMaxValue {
             fillWidthConstraint?.constant = minWidth
             layoutIfNeeded()
             animateFillFadeIn()
-        } else if !shouldResetFill {
+        }
+        else if !shouldResetFill {
             fillView.isHidden = false
-            setupBadge()
-            
-            if lastDisplayedLaps != displayLaps {
-                if displayLaps == 1 {
-                    animateBadgeScaleFromZero()
-                }else{
-                    animateBadgeScaleFromIdentity()
-                }
-                
-                lastDisplayedLaps = displayLaps
-            }
-            
-            if badgeLabelAttributed == nil {
-                lblBadge.text = badgeLabel ?? "x\(displayLaps)"
-                setupBadgeConstraint()
-            }
+//            setupBadge()
+//            
+//            if lastDisplayedLaps != displayLaps {
+//                if displayLaps == 1 {
+//                    animateBadgeScaleFromZero()
+//                }else{
+//                    animateBadgeScaleFromIdentity()
+//                }
+//                
+//                lastDisplayedLaps = displayLaps
+//            }
+//            
+//            if badgeLabelAttributed == nil {
+//                lblBadge.text = badgeLabel ?? "x\(displayLaps)"
+//                setupBadgeConstraint()
+//            }
         }
         
         wasAtMaxValue = shouldResetFill
@@ -824,7 +826,7 @@ public class EDTSProgressTracker: UIView {
     
     private func setupBadgeConstraint() {
         lblBadge.sizeToFit()
-        let textWidth = lblBadge.intrinsicContentSize.width + 4
+        let textWidth = lblBadge.intrinsicContentSize.width + 8
         let textHeight = lblBadge.intrinsicContentSize.height + 4
         
         badgeWidthConstraint?.constant = max(badgeSize, textWidth, textHeight)
@@ -929,6 +931,25 @@ public class EDTSProgressTracker: UIView {
         )
     }
     
+    private func animateIndicatorToZero() {
+        indicatorView.transform = .identity
+        indicatorView.isHidden = false
+        
+        UIView.animate(
+            withDuration: 0.2,
+            delay: 0,
+            options: [.curveEaseInOut],
+            animations: {
+                self.indicatorView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
+            },
+            completion: { _ in
+                self.indicatorView.isHidden = true
+            }
+        )
+        
+        indicatorView.transform = .identity
+    }
+    
     private func animateBadgeScaleFromZero() {
         badgeView.transform = CGAffineTransform(scaleX: 0.0, y: 0.0)
         badgeView.isHidden = false
@@ -964,7 +985,6 @@ public class EDTSProgressTracker: UIView {
         guard !fillView.isHidden else { return }
         fillWidthConstraint?.constant = targetWidth
         invalidateIntrinsicContentSize()
-        indicatorView.isHidden = true
         
         CATransaction.begin()
         CATransaction.setAnimationDuration(0.8)
@@ -976,6 +996,10 @@ public class EDTSProgressTracker: UIView {
             height: fillView.frame.height
         )
         CATransaction.commit()
+        
+        if self.isHasIndicator && !self.fillView.isHidden {
+            self.animateIndicatorToZero()
+        }
         
         UIView.animate(
             withDuration: 0.8,
@@ -995,7 +1019,7 @@ public class EDTSProgressTracker: UIView {
         )
     }
     
-    private func animateFillWidthAtMaxValue(trackWidth: CGFloat) {
+    private func animateFillWidthAtMaxValue(trackWidth: CGFloat, completion: (() -> Void)? = nil) {
         fillWidthConstraint?.constant = trackWidth
         invalidateIntrinsicContentSize()
         
@@ -1010,6 +1034,9 @@ public class EDTSProgressTracker: UIView {
         )
         CATransaction.commit()
         
+        if self.isHasIndicator && !self.fillView.isHidden {
+            self.animateIndicatorToZero()
+        }
         UIView.animate(
             withDuration: 0.8,
             delay: 0,
@@ -1020,6 +1047,7 @@ public class EDTSProgressTracker: UIView {
             completion: { _ in
                 self.fillGradientLayer?.frame = self.fillView.bounds
                 self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
+                completion?()
             }
         )
     }
@@ -1033,7 +1061,7 @@ public class EDTSProgressTracker: UIView {
 
         UIView.animate(
             withDuration: 0.4,
-            delay: 0.2,
+            delay: 0,
             options: [.curveEaseInOut],
             animations: {
                 self.fillView.alpha = 0
