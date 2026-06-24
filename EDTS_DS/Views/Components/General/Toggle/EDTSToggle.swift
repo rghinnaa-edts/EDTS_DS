@@ -114,6 +114,10 @@ public class EDTSToggle: UIView {
         }
     }
     
+    // MARK: - Public Variables
+    
+    public weak var delegate: EDTSToggleDelegate?
+    
     // MARK: - Private Variables
     
     private var animateNextStateChange = false
@@ -250,6 +254,12 @@ public class EDTSToggle: UIView {
     @objc private func handleToggleTap() {
         isOn = !isOn
         updateState(animated: true)
+        
+        delegate?.didTapToggle(active: isOn, self)
     }
- 
+}
+
+@MainActor
+public protocol EDTSToggleDelegate: AnyObject {
+    func didTapToggle(active isActive: Bool, _ alertbox: EDTSToggle)
 }
