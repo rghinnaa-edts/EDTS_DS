@@ -196,19 +196,19 @@ public class EDTSDialog: UIView {
         }
     }
     
-    @IBInspectable public var isBtnCloseHide: Bool = false {
+    @IBInspectable public var isHasBtnClose: Bool = true {
         didSet {
             setupCloseVisibility()
         }
     }
     
-    @IBInspectable public var isBtnPrimaryHide: Bool = false {
+    @IBInspectable public var isHasBtnPrimary: Bool = true {
         didSet {
             setupButtonVisibility()
         }
     }
     
-    @IBInspectable public var isBtnSecondaryHide: Bool = false {
+    @IBInspectable public var isHasBtnSecondary: Bool = true {
         didSet {
             setupButtonVisibility()
         }
@@ -228,6 +228,8 @@ public class EDTSDialog: UIView {
         }
     }
     
+    @IBInspectable public var isDismissOnTapOutside: Bool = false
+    
     // MARK: - Public Variable
     
     public weak var delegate: EDTSDialogDelegate?
@@ -237,9 +239,15 @@ public class EDTSDialog: UIView {
     private var dialogImage: UIImage? = nil
     private var dialogImageSize: CGFloat = 256.0
     private var dialogCornerRadius: CGFloat = 12.0
+    private var ivCloseIsOverlaid: Bool = false
+    
+    private weak var overlayView: UIView?
     private var btnStackView: UIStackView?
+    
     private var btnStackTopConstraint: NSLayoutConstraint?
     private var btnStackBottomConstraint: NSLayoutConstraint?
+    private var ivCloseTopOverlayConstraint: NSLayoutConstraint?
+    private var ivCloseTrailingOverlayConstraint: NSLayoutConstraint?
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
@@ -270,7 +278,13 @@ public class EDTSDialog: UIView {
         overlay.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         overlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         overlay.tag = 9999
- 
+        self.overlayView = overlay
+
+        if isDismissOnTapOutside {
+            let tapOutside = UITapGestureRecognizer(target: self, action: #selector(handleTapOutside))
+            overlay.addGestureRecognizer(tapOutside)
+        }
+
         let dialogWidth = viewController.view.bounds.width - 48
  
         self.frame = CGRect(x: 0, y: 0, width: dialogWidth, height: 0)
@@ -305,7 +319,7 @@ public class EDTSDialog: UIView {
         guard let overlay = self.superview else { return }
         
         if animated {
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: 0.2, delay: 0.2, animations: {
                 overlay.alpha = 0
                 self.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             }) { _ in
@@ -418,14 +432,15 @@ public class EDTSDialog: UIView {
         ivClose.tintColor = EDTSColor.grey50
         
         ivClose.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleCloseTap))
+        let tap = UILongPressGestureRecognizer(target: self, action: #selector(handleClose))
+        tap.minimumPressDuration = 0
         ivClose.addGestureRecognizer(tap)
     }
     
     private func setupCloseVisibility() {
-        ivCloseWidthConstraint?.constant = isBtnCloseHide ? 0 : btnCloseSize
-        ivCloseHeightConstraint?.constant = isBtnCloseHide ? 0 : btnCloseSize
-        
+        ivCloseWidthConstraint?.constant = isHasBtnClose ? btnCloseSize : 0
+        ivCloseHeightConstraint?.constant = isHasBtnClose ? btnCloseSize : 0
+
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
     }
@@ -433,12 +448,12 @@ public class EDTSDialog: UIView {
     private func setupButtonVisibility() {
         guard btnPrimary != nil, btnSecondary != nil else { return }
         
-        btnPrimary.isHidden = isBtnPrimaryHide
-        btnPrimary.alpha = isBtnPrimaryHide ? 0 : 1
+        btnPrimary.isHidden = !isHasBtnPrimary
+        btnPrimary.alpha = isHasBtnPrimary ? 1 : 0
         
-        btnSecondary.isHidden = isBtnSecondaryHide
-        btnSecondary.alpha = isBtnSecondaryHide ? 0 : 1
-        btnStackView?.isHidden = isBtnPrimaryHide && isBtnSecondaryHide
+        btnSecondary.isHidden = !isHasBtnSecondary
+        btnSecondary.alpha = isHasBtnSecondary ? 1 : 0
+        btnStackView?.isHidden = !isHasBtnPrimary && !isHasBtnSecondary
         
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
@@ -534,7 +549,7 @@ public class EDTSDialog: UIView {
         lblSupport.textAlignment = .center
         lblSupport.isHidden = false
         
-        isBtnCloseHide = true
+        isHasBtnClose = false
         isBtnPositionAtTopLabel = true
         
         if image == nil {
@@ -550,26 +565,48 @@ public class EDTSDialog: UIView {
         setupButtonPosition()
     }
     
-    // MARK: Actions
+    // MARK: - Actions
     
-    @objc private func handleCloseTap() {
-        delegate?.didTapCloseDialog(self)
-        dismiss()
+    @objc private func handleClose(_ gesture: UILongPressGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            ivClose.showRippleCircular(color: EDTSColor.grey30.withAlphaComponent(0.40))
+            
+        case .ended:
+            delegate?.didSelectCloseDialog(self)
+            dismiss()
+            ivClose.hideRippleCircular()
+            
+        case .cancelled, .failed:
+            ivClose.hideRippleCircular()
+            
+        default:
+            break
+        }
+    }
+    
+    @objc private func handleTapOutside(_ gesture: UITapGestureRecognizer) {
+        guard let overlay = overlayView else { return }
+        let location = gesture.location(in: overlay)
+        if !self.frame.contains(location) {
+            delegate?.didSelectCloseDialog(self)
+            dismiss()
+        }
     }
     
     @IBAction func btnPrimaryAction(_ sender: Any) {
-        delegate?.didTapButtonPrimaryDialog(self)
+        delegate?.didSelectButtonPrimaryDialog(self)
     }
     
     @IBAction func btnSecondaryAction(_ sender: Any) {
-        delegate?.didTapButtonSecondaryDialog(self)
+        delegate?.didSelectButtonSecondaryDialog(self)
     }
 }
 
 @MainActor
 public protocol EDTSDialogDelegate: AnyObject {
-    func didTapCloseDialog(_ dialog: EDTSDialog)
-    func didTapButtonPrimaryDialog(_ dialog: EDTSDialog)
-    func didTapButtonSecondaryDialog(_ dialog: EDTSDialog)
+    func didSelectCloseDialog(_ dialog: EDTSDialog)
+    func didSelectButtonPrimaryDialog(_ dialog: EDTSDialog)
+    func didSelectButtonSecondaryDialog(_ dialog: EDTSDialog)
 }
 

@@ -41,7 +41,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_close" translatesAutoresizingMaskIntoConstraints="NO" id="Dfp-XJ-FKe">
-                            <rect key="frame" x="361" y="298" width="16" height="16"/>
+                            <rect key="frame" x="361" y="16" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="DMm-kr-rLt"/>
                                 <constraint firstAttribute="height" constant="16" id="Eql-Xd-1nB"/>
@@ -92,8 +92,8 @@
                         <constraint firstItem="Dfp-XJ-FKe" firstAttribute="leading" secondItem="hD9-50-BPp" secondAttribute="trailing" id="3kU-yV-aCs"/>
                         <constraint firstItem="dUq-HL-Ak6" firstAttribute="top" secondItem="hD9-50-BPp" secondAttribute="bottom" constant="16" id="EPk-nc-JH5"/>
                         <constraint firstItem="klv-HF-DRf" firstAttribute="centerX" secondItem="81B-lO-uUw" secondAttribute="centerX" id="GB4-fv-0HA"/>
-                        <constraint firstItem="Dfp-XJ-FKe" firstAttribute="centerY" secondItem="hD9-50-BPp" secondAttribute="centerY" id="Oca-Uz-VyC"/>
                         <constraint firstItem="dUq-HL-Ak6" firstAttribute="leading" secondItem="81B-lO-uUw" secondAttribute="leading" constant="16" id="Vfo-3n-T8d"/>
+                        <constraint firstItem="Dfp-XJ-FKe" firstAttribute="top" secondItem="81B-lO-uUw" secondAttribute="top" constant="16" id="YMz-lQ-SiB"/>
                         <constraint firstAttribute="trailing" secondItem="Dfp-XJ-FKe" secondAttribute="trailing" constant="16" id="Ywm-lI-7LH"/>
                         <constraint firstItem="lrC-vK-Fm4" firstAttribute="leading" secondItem="81B-lO-uUw" secondAttribute="leading" constant="16" id="bzk-hR-fh5"/>
                         <constraint firstAttribute="trailing" secondItem="dUq-HL-Ak6" secondAttribute="trailing" constant="16" id="ebo-eC-3rX"/>

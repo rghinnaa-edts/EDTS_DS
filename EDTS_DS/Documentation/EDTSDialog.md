@@ -5,6 +5,7 @@ The `EDTSDialog` component is a modal dialog/alert view built for UIKit. It supp
 ## Features
 
 - Self-contained modal presentation via `show(in:)` and `dismiss()` — dims the host view controller, centers the dialog, and animates in/out
+- Optional tap-outside-to-dismiss behavior via `isDismissOnTapOutside`
 - Optional header image with configurable size, or a built-in placeholder for showcase dialogs
 - Title, description, and support text labels, each independently configurable via plain or attributed strings, with custom font name/size/weight/alignment and color
 - Two `EDTSButton` slots (primary/secondary) that can be shown, hidden, or stacked vertically/horizontally, each reporting taps back through `EDTSDialogDelegate`
@@ -17,7 +18,12 @@ The `EDTSDialog` component is a modal dialog/alert view built for UIKit. It supp
 
 ## Preview
 
-Add state/layout screenshots here (default, with image header, horizontal buttons, dialog-image showcase mode) once available._
+### Ribbon Style
+
+| Type | Preview |
+|---|---|
+| `default` | ![Default Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,w_100/v1782372942/WhatsApp_GIF_2026-06-25_at_14.27.13_mveimy.gif) |
+| `dialog image` | ![Dialog Image Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,w_100/v1782372942/WhatsApp_GIF_2026-06-25_at_14.28.34_bi31lb.gif |
 
 ---
 
@@ -69,6 +75,15 @@ dialog.configureButtonSecondary { button in
 dialog.show(in: self)
 ```
 
+### Dismiss on Tap Outside
+
+```swift
+dialog.isDismissOnTapOutside = true
+dialog.show(in: self)
+```
+
+When enabled, a tap gesture is attached to the dimming overlay. Tapping anywhere outside the dialog's bounds notifies the delegate via `didSelectCloseDialog(_:)` and triggers an animated `dismiss()`, exactly as if the close icon had been tapped. Default is `false`.
+
 ### Dialog Image Showcase Mode
 
 ```swift
@@ -77,7 +92,7 @@ dialog.title = "Welcome!"
 dialog.show(in: self)
 ```
 
-Enabling `isDialogImage` centers the title/description/support text, hides the close button, moves the button stack directly beneath the title, and — if `image` or `support` weren't explicitly set — falls back to a built-in placeholder graphic and default explanatory copy.
+Enabling `isDialogImage` centers the title/description/support text, switches the title to the `EDTSFont.D4` style, hides the close button, moves the button stack directly beneath the title, and — if `image` or `support` weren't explicitly set — falls back to a built-in placeholder graphic and default explanatory copy.
 
 ### Dismissing
 
@@ -85,7 +100,7 @@ Enabling `isDialogImage` centers the title/description/support text, hides the c
 dialog.dismiss()
 ```
 
-Triggered automatically when the close icon is tapped (also notifies the delegate). Can also be called manually, e.g. from a button's target action.
+Triggered automatically when the close icon is tapped, or when tapping outside the dialog if `isDismissOnTapOutside` is enabled (both notify the delegate first). Can also be called manually, e.g. from a button's target action.
 
 ### Delegate
 
@@ -93,9 +108,9 @@ Triggered automatically when the close icon is tapped (also notifies the delegat
 dialog.delegate = self
 
 extension MyViewController: EDTSDialogDelegate {
-    func didTapCloseDialog(_ dialog: EDTSDialog) { /* ... */ }
-    func didTapButtonPrimaryDialog(_ dialog: EDTSDialog) { /* ... */ }
-    func didTapButtonSecondaryDialog(_ dialog: EDTSDialog) { /* ... */ }
+    func didSelectCloseDialog(_ dialog: EDTSDialog) { /* ... */ }
+    func didSelectButtonPrimaryDialog(_ dialog: EDTSDialog) { /* ... */ }
+    func didSelectButtonSecondaryDialog(_ dialog: EDTSDialog) { /* ... */ }
 }
 ```
 
@@ -116,7 +131,7 @@ extension MyViewController: EDTSDialogDelegate {
 | `descColor` | `UIColor?` | `nil` | Description label text color |
 | `descAlignment` | `NSTextAlignment` | `.left` | Description label text alignment |
 | `support` | `String?` | `nil` | Support/footnote text. Setting this clears `supportAttributed` **and unhides** the support label |
-| `supportAttributed` | `NSAttributedString?` | `nil` | Attributed support text. Setting this clears `support`. Does **not** unhide the support label on its own — see Known Implementation Notes |
+| `supportAttributed` | `NSAttributedString?` | `nil` | Attributed support text. Setting this clears `support` **and unhides** the support label |
 | `supportColor` | `UIColor?` | `nil` | Support label text color |
 | `supportAlignment` | `NSTextAlignment` | `.left` | Support label text alignment |
 | `image` | `UIImage?` | `nil` | Header image shown above the title |
@@ -132,7 +147,7 @@ extension MyViewController: EDTSDialogDelegate {
 | `descFontName` | `String` | `""` | Custom font name for the description. Requires `descFontSize > 0` |
 | `descFontSize` | `CGFloat` | `0` | Description font size in points. `0` keeps the theme default (`EDTSFont.P1.Regular`) |
 | `descFontWeight` | `String?` | `nil` | System font weight when no `descFontName` is set |
-| `supportFontName` | `String` | `""` | Custom font name intended for the support label. Requires `supportFontSize > 0`. See Known Implementation Notes |
+| `supportFontName` | `String` | `""` | Custom font name for the support label. Requires `supportFontSize > 0` |
 | `supportFontSize` | `CGFloat` | `0` | Support font size in points. `0` keeps the theme default (`EDTSFont.P2.Regular`) |
 | `supportFontWeight` | `String?` | `nil` | System font weight when no `supportFontName` is set |
 
@@ -142,14 +157,15 @@ Accepted `*FontWeight` values: `ultraLight`, `thin`, `light`, `regular`, `medium
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| `btnCloseSize` | `CGFloat` | `16.0` | Width/height of the close icon in points. No effect when `isBtnCloseHide` is `true` |
+| `btnCloseSize` | `CGFloat` | `16.0` | Width/height of the close icon in points. No effect when `isHasBtnClose` is `false` |
 | `btnOrientation` | `String` | `Orientation.vertical.rawValue` | Stack axis for the two buttons. `vertical` stacks primary above secondary; `horizontal` places secondary (leading) and primary (trailing) side by side |
 | `cornerRadius` | `CGFloat` | `12.0` | Corner radius of the dialog's container view |
-| `isBtnCloseHide` | `Bool` | `false` | Hides the close icon and collapses its reserved width/height |
-| `isBtnPrimaryHide` | `Bool` | `false` | Hides the primary button (and collapses the stack if both buttons are hidden) |
-| `isBtnSecondaryHide` | `Bool` | `false` | Hides the secondary button (and collapses the stack if both buttons are hidden) |
+| `isHasBtnClose` | `Bool` | `true` | Shows/hides the close icon and collapses its reserved width/height when `false` |
+| `isHasBtnPrimary` | `Bool` | `true` | Shows/hides the primary button (and collapses the stack if both buttons are hidden) |
+| `isHasBtnSecondary` | `Bool` | `true` | Shows/hides the secondary button (and collapses the stack if both buttons are hidden) |
 | `isBtnPositionAtTopLabel` | `Bool` | `false` | Repositions the button stack directly beneath the title/image instead of beneath the support text — see Behavior Details |
 | `isDialogImage` | `Bool` | `false` | Enables the centered "showcase" presentation described above. Only takes effect when set to `true` (setting it back to `false` does not revert the layout) |
+| `isDismissOnTapOutside` | `Bool` | `false` | When `true`, tapping the dimming overlay outside the dialog's bounds dismisses it and notifies the delegate |
 
 ---
 
@@ -164,12 +180,14 @@ Provide direct access to the primary/secondary `EDTSButton` instances to set lab
 ```swift
 public func show(in viewController: UIViewController, animated: Bool = true)
 ```
-Builds a dimmed overlay (`50%` black) sized to `viewController.view.bounds`, sets the dialog's width to the host view's width minus `48pt`, measures the required height via `systemLayoutSizeFitting`, centers the dialog in the overlay, and adds the overlay to the view controller's view. When `animated` is `true`, the overlay fades in and the dialog scales from `0.8x` to `1.0x` over `0.25s` with `curveEaseOut`.
+Builds a dimmed overlay (`50%` black) sized to `viewController.view.bounds`, sets the dialog's width to the host view's width minus `48pt`, measures the required height via `systemLayoutSizeFitting`, centers the dialog in the overlay, and adds the overlay to the view controller's view. If `isDismissOnTapOutside` is `true`, a tap gesture recognizer is attached to the overlay. When `animated` is `true`, the overlay fades in and the dialog scales from `0.8x` to `1.0x` over `0.25s` with `curveEaseOut`.
 
 ```swift
 public func dismiss(animated: Bool = true)
 ```
-Removes the dialog's overlay (its `superview`) from the hierarchy. When `animated` is `true`, the overlay fades out and the dialog scales down to `0.8x` over `0.2s` before being removed; otherwise removal is immediate.
+Removes the dialog's overlay (its `superview`) from the hierarchy. When `animated` is `true`, the dismiss animation now starts after a fixed **`0.2s` delay**, then fades the overlay out and scales the dialog down to `0.8x` over `0.2s` before removing it from the hierarchy. When `animated` is `false`, removal is immediate with no delay.
+
+> **Note:** The `0.2s` delay before the animated dismiss is currently hardcoded inside `dismiss(animated:)` and is not exposed as a parameter. If you need a configurable delay, consider adding a `delay: TimeInterval` parameter to the method signature.
 
 ---
 
@@ -178,19 +196,19 @@ Removes the dialog's overlay (its `superview`) from the hierarchy. When `animate
 ```swift
 @MainActor
 public protocol EDTSDialogDelegate: AnyObject {
-    func didTapCloseDialog(_ dialog: EDTSDialog)
-    func didTapButtonPrimaryDialog(_ dialog: EDTSDialog)
-    func didTapButtonSecondaryDialog(_ dialog: EDTSDialog)
+    func didSelectCloseDialog(_ dialog: EDTSDialog)
+    func didSelectButtonPrimaryDialog(_ dialog: EDTSDialog)
+    func didSelectButtonSecondaryDialog(_ dialog: EDTSDialog)
 }
 ```
 
 Assign `dialog.delegate` to receive callbacks:
 
-- `didTapCloseDialog` is invoked automatically — followed by an animated `dismiss()` — whenever the close icon is tapped.
-- `didTapButtonPrimaryDialog` is invoked whenever `btnPrimary` is tapped, via the internal `btnPrimaryAction(_:)` action.
-- `didTapButtonSecondaryDialog` is invoked whenever `btnSecondary` is tapped, via the internal `btnSecondaryAction(_:)` action.
+- `didSelectCloseDialog` is invoked automatically — followed by an animated `dismiss()` — whenever the close icon is tapped, or whenever the overlay is tapped outside the dialog's bounds with `isDismissOnTapOutside` enabled.
+- `didSelectButtonPrimaryDialog` is invoked whenever `btnPrimary` is tapped, via the internal `btnPrimaryAction(_:)` action.
+- `didSelectButtonSecondaryDialog` is invoked whenever `btnSecondary` is tapped, via the internal `btnSecondaryAction(_:)` action.
 
-Unlike the close icon (wired in code via a tap gesture recognizer), the primary/secondary taps are plain `@IBAction`s — they depend on `btnPrimary` / `btnSecondary`'s *Touch Up Inside* event being connected to `btnPrimaryAction(_:)` / `btnSecondaryAction(_:)` inside `EDTSDialog.xib`. Neither button action calls `dismiss()` automatically — if the dialog should close on tap, call `dismiss()` yourself inside the delegate method (or inside a target added via `configureButtonPrimary` / `configureButtonSecondary`).
+The close icon and tap-outside gesture are wired in code (a long-press-with-zero-duration gesture for the close icon, a tap gesture for the overlay). The primary/secondary taps are plain `@IBAction`s — they depend on `btnPrimary` / `btnSecondary`'s *Touch Up Inside* event being connected to `btnPrimaryAction(_:)` / `btnSecondaryAction(_:)` inside `EDTSDialog.xib`. Neither button action calls `dismiss()` automatically — if the dialog should close on tap, call `dismiss()` yourself inside the delegate method (or inside a target added via `configureButtonPrimary` / `configureButtonSecondary`).
 
 ---
 
@@ -221,20 +239,27 @@ This is the mechanism the showcase mode (`isDialogImage`) uses to move the butto
 ### Dialog Image Showcase Mode
 
 Enabling `isDialogImage` performs a one-time setup pass:
+- Switches `lblTitle`'s font to `EDTSFont.D4`
 - Centers `title`, `desc`, and `support` text alignment
 - Forces `lblSupport` visible
-- Sets `isBtnCloseHide = true` and `isBtnPositionAtTopLabel = true`
+- Sets `isHasBtnClose = false` and `isBtnPositionAtTopLabel = true`
 - If `image` is `nil`, loads a bundled `ic_placeholder` image at `dialogImageSize`
 - If `support` is `nil`, fills in a default explanatory line of placeholder copy
 
+### Tap Outside to Dismiss
+
+When `isDismissOnTapOutside` is `true`, `show(in:)` attaches a `UITapGestureRecognizer` to the dimming overlay. On tap, the gesture handler checks whether the tap location falls outside the dialog's own `frame`; if so, it calls `didSelectCloseDialog(_:)` on the delegate and then `dismiss()`.
+
 ### Show / Dismiss Animation
 
-| Action | Property | Value | Duration | Curve |
-|---|---|---|---|---|
-| Show | Overlay alpha | `0` → `1` | `0.25s` | `curveEaseOut` |
-| Show | Dialog transform | `scale 0.8` → `identity` | `0.25s` | `curveEaseOut` |
-| Dismiss | Overlay alpha | `1` → `0` | `0.2s` | default |
-| Dismiss | Dialog transform | `identity` → `scale 0.8` | `0.2s` | default |
+| Action | Property | Value | Delay | Duration | Curve |
+|---|---|---|---|---|---|
+| Show | Overlay alpha | `0` → `1` | `0s` | `0.25s` | `curveEaseOut` |
+| Show | Dialog transform | `scale 0.8` → `identity` | `0s` | `0.25s` | `curveEaseOut` |
+| Dismiss | Overlay alpha | `1` → `0` | `0.2s` | `0.2s` | default |
+| Dismiss | Dialog transform | `identity` → `scale 0.8` | `0.2s` | `0.2s` | default |
+
+When `dismiss(animated: false)` is called, the overlay is removed immediately with no delay and no animation.
 
 ---
 
