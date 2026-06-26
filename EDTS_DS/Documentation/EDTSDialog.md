@@ -22,8 +22,8 @@ The `EDTSDialog` component is a modal dialog/alert view built for UIKit. It supp
 
 | Type | Preview |
 |---|---|
-| `default` | ![Default Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,w_100/v1782372942/WhatsApp_GIF_2026-06-25_at_14.27.13_mveimy.gif) |
-| `dialog image` | ![Dialog Image Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,w_100/v1782372942/WhatsApp_GIF_2026-06-25_at_14.28.34_bi31lb.gif |
+| `default` | ![Default Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,w_300/v1782372942/WhatsApp_GIF_2026-06-25_at_14.27.13_mveimy.gif) |
+| `dialog image` | ![Dialog Image Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,w_300/v1782372942/WhatsApp_GIF_2026-06-25_at_14.28.34_bi31lb.gif) |
 
 ---
 
