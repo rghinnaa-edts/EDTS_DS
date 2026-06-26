@@ -6,11 +6,12 @@ The `EDTSToggle` component is a lightweight, animated on/off switch built for UI
 
 - Animated on/off states with spring-based indicator transition
 - Configurable track and indicator colors for both `off` and `on` states
-- Optional icon swap between `off` and `on` states
-- Fully adjustable sizing: track width, indicator size, and indicator padding
+- Optional icon swap between `off` and `on` states, with independent tint colors per state
+- Fully adjustable sizing: track width, indicator size, icon size, and indicator padding
 - Configurable drop shadow on the track container
 - `IBDesignable` / `IBInspectable` support for Interface Builder assembly
 - Proper `intrinsicContentSize` tracking for use inside `UIStackView`
+- Optional title / description labels rendered alongside the track
 
 ---
 
@@ -56,6 +57,8 @@ toggle.isActive = true
 ```swift
 toggle.icon = UIImage(named: "ic_moon")
 toggle.iconActive = UIImage(named: "ic_sun")
+toggle.iconTintColor = EDTSColor.white
+toggle.iconActiveTintColor = EDTSColor.white
 toggle.isActive = false
 ```
 
@@ -67,6 +70,15 @@ toggle.indicatorSize = 20
 toggle.indicatorPadding = 3
 ```
 
+> Note: setting `trackWidth` explicitly "locks in" a custom width — afterwards, changing `indicatorSize` will no longer auto-derive the track width. If you only set `indicatorSize` (and never touch `trackWidth`), the track width is automatically computed as `indicatorSize * 2.75`.
+
+### With Title / Description
+
+```swift
+toggle.title = "Dark Mode"
+toggle.desc = "Switch to a darker color theme"
+```
+
 ---
 
 ## Public Interface
@@ -75,6 +87,10 @@ toggle.indicatorPadding = 3
 
 | Property | Type | Default | Description |
 |---|---|---|---|
+| `title` | `String?` | `nil` | Optional title label shown next to the track |
+| `titleAttributed` | `NSAttributedString?` | `nil` | Attributed variant of `title`; setting this clears `title` |
+| `desc` | `String?` | `nil` | Optional description label shown below the title |
+| `descAttributed` | `NSAttributedString?` | `nil` | Attributed variant of `desc`; setting this clears `desc` |
 | `icon` | `UIImage?` | `nil` | Image displayed inside the indicator while the toggle is `off` |
 | `iconActive` | `UIImage?` | `nil` | Image displayed inside the indicator while the toggle is `on` |
 
@@ -91,15 +107,19 @@ toggle.indicatorPadding = 3
 | `trackTintColor` | `UIColor` | `EDTSColor.grey30` | Track background color while `off` |
 | `trackActiveTintColor` | `UIColor` | `EDTSColor.blue50` | Track background color while `on` |
 | `indicatorColor` | `UIColor` | `EDTSColor.white` | Indicator (knob) color while `off` |
-| `indicatorActiveColor` | `UIColor` | `EDTSColor.white` | Indicator (knob) color while `on` |
+| `indicatorActiveTintColor` | `UIColor` | `EDTSColor.white` | Indicator (knob) color while `on` |
+| `iconTintColor` | `UIColor` | `EDTSColor.white` | Tint color applied to `icon` while `off` |
+| `iconActiveTintColor` | `UIColor` | `EDTSColor.white` | Tint color applied to `iconActive` while `on` |
 
 ### Sizing
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| `trackWidth` | `CGFloat` | `44` | Width of the track container |
+| `trackWidth` | `CGFloat` | `44` | Width of the track container. Auto-derived from `indicatorSize` unless set explicitly (see note above) |
 | `indicatorSize` | `CGFloat` | `16` | Width and height of the indicator (knob) |
+| `iconSize` | `CGFloat` | `16` | Width and height of the icon. **Setting this also overwrites `indicatorSize`** to the same value |
 | `indicatorPadding` | `CGFloat` | `2` | Inset between the indicator and the edge of the track. Also used to derive track height (`indicatorSize + indicatorPadding * 2`) |
+| `cornerRadius` | `CGFloat` | `0.0` | Corner radius applied to both the track and the indicator. Once set explicitly, it overrides the automatic radius that's otherwise derived from `indicatorSize / 2` |
 
 ### Shadow
 
@@ -124,6 +144,8 @@ public protocol EDTSToggleDelegate: AnyObject {
 ```
 
 Assign `toggle.delegate` to receive a callback whenever the user taps the track. The toggle flips its own internal state and animates before notifying the delegate of the new `isActive` value.
+
+> Note: the second parameter is named `alertbox` in the current source, which looks like a copy/paste leftover from another component rather than an intentional name. Worth a quick rename pass (e.g. to `toggle`) next time the public API is touched, since it's surfaced to consumers of the protocol.
 
 ---
 
