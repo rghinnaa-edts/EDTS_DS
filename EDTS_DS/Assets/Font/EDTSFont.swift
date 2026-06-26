@@ -56,6 +56,8 @@ public struct EDTSFont {
     
     public static let D1 = BaseFont.semibold(size: 28, lineHeight: 30)
     public static let D2 = BaseFont.semibold(size: 24, lineHeight: 26)
+    public static let D3 = BaseFont.semibold(size: 24, lineHeight: 26)
+    public static let D4 = BaseFont.semibold(size: 20, lineHeight: 22)
     
     public static let H1 = BaseFont.semibold(size: 16, lineHeight: 18)
     public static let H2 = BaseFont.semibold(size: 14, lineHeight: 16)
