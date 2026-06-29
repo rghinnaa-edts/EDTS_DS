@@ -465,30 +465,50 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func setupDefaultStyle(){
-        fillColorStart = EDTSColor.skyblueLeading
-        fillColorEnd = EDTSColor.skyblueTrailing
-        fillColorOrientation = "horizontal"
-        fillPaddingTop = 1
-        fillPaddingBottom = 1
-        fillPaddingLeading = 1
-        fillPaddingTrailing = 1
-        indicatorColorStart = EDTSColor.skyblueLeading
-        indicatorColorEnd = EDTSColor.skyblueTrailing
-        indicatorColorOrientation = "horizontal"
-        indicatorSize = 8
-        badgeLabelColor = EDTSColor.white
-        badgeFontSize = 8
-        badgeFontWeight = "bold"
-        badgeColorStart = EDTSColor.skyblueLeading
-        badgeColorEnd = EDTSColor.skyblueTrailing
-        badgeColorOrientation = "horizontal"
-        badgeSize = 16
-        trackColor = EDTSColor.grey20
-        borderWidth = 0
-        paddingTop = 5
-        paddingBottom = 5
-        isHasIndicator = true
-        isHasBadge = true
+        if EDTSColor.theme == .klikIDM {
+            fillColorStart = EDTSColor.skyblueLeading
+            fillColorEnd = EDTSColor.skyblueTrailing
+            fillColorOrientation = "horizontal"
+            fillPaddingTop = 1
+            fillPaddingBottom = 1
+            fillPaddingLeading = 1
+            fillPaddingTrailing = 1
+            indicatorColorStart = EDTSColor.skyblueLeading
+            indicatorColorEnd = EDTSColor.skyblueTrailing
+            indicatorColorOrientation = "horizontal"
+            indicatorSize = 8
+            badgeLabelColor = EDTSColor.white
+            badgeFontSize = 8
+            badgeFontWeight = "bold"
+            badgeColorStart = EDTSColor.skyblueLeading
+            badgeColorEnd = EDTSColor.skyblueTrailing
+            badgeColorOrientation = "horizontal"
+            badgeSize = 16
+            trackColor = EDTSColor.grey20
+            borderWidth = 0
+            paddingTop = 5
+            paddingBottom = 5
+            isHasIndicator = true
+            isHasBadge = true
+        } else {
+            fillColorStart = EDTSColor.skyblueLeading
+            fillColorEnd = EDTSColor.skyblueTrailing
+            fillPaddingTop = 0
+            fillPaddingBottom = 0
+            fillPaddingLeading = 0
+            fillPaddingTrailing = 0
+            indicatorSize = 0
+            badgeSize = 0
+            trackColor = EDTSColor.white
+            borderWidth = 0
+            paddingTop = 0
+            paddingBottom = 0
+            isHasIndicator = false
+            isHasBadge = false
+        }
+        
+        let minWidth: CGFloat = isHasIndicator ? indicatorSize + 2 : 0
+        fillWidthConstraint.constant = minWidth
     }
     
     private func setupFillBgColor() {
@@ -703,7 +723,7 @@ public class EDTSProgressTracker: UIView {
         let trackWidth = trackView.frame.width
         guard trackWidth > 0 else { return }
 
-        let minWidth: CGFloat = isHasIndicator ? indicatorSize : 0
+        let minWidth: CGFloat = isHasIndicator ? indicatorSize + 2 : 0
         let fillLeadingOffset = leadingFillViewConstraint?.constant ?? 0
         let fillTrailingPad  = fillPaddingTrailing >= 0 ? fillPaddingTrailing : 0
         let maxWidth: CGFloat = trackWidth - fillLeadingOffset - fillTrailingPad
@@ -798,9 +818,15 @@ public class EDTSProgressTracker: UIView {
             }
             self.lastDisplayedLaps = displayLaps
 
-            self.animateFillFadeOut(startingFullAlpha: isFirstLap ? 0 : 1) {
+            if EDTSColor.theme == .klikIDM {
+                self.animateFillFadeOut(startingFullAlpha: isFirstLap ? 0 : 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        completion()
+                    }
+                }
+            } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                       completion()
+                    completion()
                 }
             }
         }
