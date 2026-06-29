@@ -24,12 +24,11 @@
                 <outlet property="indicatorHeightConstraint" destination="Whf-si-DLb" id="Dli-pF-bUt"/>
                 <outlet property="indicatorView" destination="jpX-gc-Nab" id="wxK-v6-gaC"/>
                 <outlet property="indicatorWidthConstraint" destination="wI0-rq-WUX" id="Vyo-4C-oN0"/>
-                <outlet property="innerShadowView" destination="duk-Ms-BwL" id="cWP-Tv-TaH"/>
+                <outlet property="innerShadowView" destination="3hH-46-cH6" id="bXR-Cf-OVO"/>
                 <outlet property="lblBadge" destination="CzA-Fy-CsP" id="W0J-vn-24z"/>
                 <outlet property="leadingFillViewConstraint" destination="nI8-xu-m8G" id="THm-Om-foD"/>
                 <outlet property="leadingFullTrackViewConstraint" destination="Nbm-ri-EXT" id="9VC-pn-rtF"/>
                 <outlet property="leadingPaddingConstraint" destination="iAG-Se-z8L" id="ENo-zX-RxI"/>
-                <outlet property="shadowWrapperView" destination="3hH-46-cH6" id="4QY-8a-Y8Q"/>
                 <outlet property="topFillViewConstraint" destination="OIV-VF-oQg" id="sQF-pE-I9k"/>
                 <outlet property="topFullTrackViewConstraint" destination="gs7-Gh-YTJ" id="6No-Lw-odh"/>
                 <outlet property="topPaddingConstraint" destination="XCx-Vr-cVR" id="cRc-9w-aeR"/>
@@ -47,21 +46,9 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7fD-4z-ehQ" userLabel="TrackView">
                     <rect key="frame" x="0.0" y="5" width="393" height="6"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hH-46-cH6">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hH-46-cH6" customClass="InnerShadowView" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="393" height="6"/>
-                            <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="duk-Ms-BwL" customClass="InnerShadowView" customModule="EDTS_DS" customModuleProvider="target">
-                                    <rect key="frame" x="-1" y="-1" width="395" height="8"/>
-                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                </view>
-                            </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="duk-Ms-BwL" firstAttribute="leading" secondItem="3hH-46-cH6" secondAttribute="leading" constant="-1" id="Aqo-xW-pzR"/>
-                                <constraint firstItem="duk-Ms-BwL" firstAttribute="top" secondItem="3hH-46-cH6" secondAttribute="top" constant="-1" id="OO5-vs-iSX"/>
-                                <constraint firstAttribute="bottom" secondItem="duk-Ms-BwL" secondAttribute="bottom" constant="-1" id="eg1-ZY-elO"/>
-                                <constraint firstAttribute="trailing" secondItem="duk-Ms-BwL" secondAttribute="trailing" constant="-1" id="mXB-zT-q13"/>
-                            </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ph7-4o-ZmK" userLabel="FullTrackView">
                             <rect key="frame" x="1" y="1" width="391" height="4"/>
@@ -144,13 +131,13 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.53333333333333333" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemCyanColor">
-            <color red="0.0" green="0.75294117647058822" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.1960784314" green="0.67843137249999996" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

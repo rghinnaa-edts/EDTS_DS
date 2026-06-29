@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InnerShadowView: UIView {
+class InnerShadow: UIView {
     var cornerRadius: CGFloat = 0 {
         didSet {
             layer.cornerRadius = cornerRadius
@@ -27,7 +27,7 @@ class InnerShadowView: UIView {
         }
     }
     
-    var shadowRadius: CGFloat = 2 {
+    var shadowRadius: CGFloat = 3 {
         didSet {
             innerShadowLayer.shadowRadius = shadowRadius
             setNeedsLayout()
@@ -58,7 +58,7 @@ class InnerShadowView: UIView {
         setupUI()
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
         innerShadowLayer.frame = bounds

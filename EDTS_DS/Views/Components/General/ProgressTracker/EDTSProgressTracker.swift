@@ -19,7 +19,6 @@ public class EDTSProgressTracker: UIView {
     @IBOutlet weak var badgeView: UIView!
     @IBOutlet weak var lblBadge: UILabel!
     @IBOutlet weak var innerShadowView: InnerShadowView!
-    @IBOutlet weak var shadowWrapperView: UIView!
     
     @IBOutlet weak var topPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomPaddingConstraint: NSLayoutConstraint!
@@ -292,27 +291,27 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
-    @IBInspectable public var shadowOpacity: Float = Float.zero {
+    @IBInspectable public var trackInnerShadowOpacity: Float = Float.zero {
         didSet {
-            innerShadowView.shadowOpacity = shadowOpacity
+            innerShadowView.shadowOpacity = trackInnerShadowOpacity
         }
     }
     
-    @IBInspectable public var shadowRadius: CGFloat = CGFloat.zero {
+    @IBInspectable public var trackInnerShadowRadius: CGFloat = CGFloat.zero {
         didSet {
-            innerShadowView.shadowRadius = shadowRadius
+            innerShadowView.shadowRadius = trackInnerShadowRadius
         }
     }
     
-    @IBInspectable public var shadowOffset: CGSize = CGSize.zero {
+    @IBInspectable public var trackInnerShadowOffset: CGSize = CGSize.zero {
         didSet {
-            innerShadowView.shadowOffset = shadowOffset
+            innerShadowView.shadowOffset = trackInnerShadowOffset
         }
     }
     
-    @IBInspectable public var shadowColor: UIColor?{
+    @IBInspectable public var trackInnerShadowColor: UIColor?{
         didSet {
-            innerShadowView.shadowColor = shadowColor ?? EDTSColor.black
+            innerShadowView.shadowColor = trackInnerShadowColor ?? EDTSColor.black
         }
     }
     
@@ -387,15 +386,15 @@ public class EDTSProgressTracker: UIView {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        shadowWrapperView.clipsToBounds = true
-        shadowWrapperView.layer.masksToBounds = true
         trackView.applyCircular()
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = UIBezierPath(
-            roundedRect: shadowWrapperView.bounds,
-            cornerRadius: trackView.layer.cornerRadius
-        ).cgPath
-        shadowWrapperView.layer.mask = maskLayer
+//        innerShadowView.clipsToBounds = true
+//        innerShadowView.layer.masksToBounds = true
+//        let maskLayer = CAShapeLayer()
+//        maskLayer.path = UIBezierPath(
+//            roundedRect: innerShadowView.bounds,
+//            cornerRadius: trackView.layer.cornerRadius
+//        ).cgPath
+//        innerShadowView.layer.mask = maskLayer
         
         innerShadowView.cornerRadius = trackView.frame.height / 2.0
         fullTrackView.applyCircular()
@@ -814,14 +813,18 @@ public class EDTSProgressTracker: UIView {
             fillWidthConstraint.constant = minWidth
             fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: minWidth, height: fillView.frame.height)
             UIView.performWithoutAnimation { self.layoutIfNeeded() }
-
-            animateFillFadeIn {
-                self.animateFillWidth(to: targetWidth, completion: completion)
+            
+            fillView.isHidden = false
+            
+            UIView.performWithoutAnimation {
+                self.layoutIfNeeded()
             }
+            
+            animateFillWidth(to: targetWidth, completion: completion)
         } else {
             animateFillWidth(to: targetWidth, completion: completion)
         }
-
+        
         if badgeLabelAttributed == nil {
             lblBadge.text = badgeLabel ?? "x\(displayLaps)"
             setupBadgeConstraint()
@@ -1179,23 +1182,6 @@ public class EDTSProgressTracker: UIView {
                     height: self.fillView.frame.height
                 )
                 UIView.performWithoutAnimation { self.layoutIfNeeded() }
-                completion?()
-            }
-        )
-    }
-
-    private func animateFillFadeIn(completion: (() -> Void)? = nil) {
-        fillView.alpha = 0
-        fillView.isHidden = false
-
-        UIView.animate(
-            withDuration: 0.4,
-            delay: 0,
-            options: [.curveEaseInOut],
-            animations: {
-                self.fillView.alpha = 1
-            },
-            completion: { _ in
                 completion?()
             }
         )
