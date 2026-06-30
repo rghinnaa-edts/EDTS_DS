@@ -19,11 +19,10 @@ The `EDTSToggle` component is a lightweight, animated on/off switch built for UI
 
 ### By State
 
-| State | Preview |
+| Type | Preview |
 |---|---|
-| `off` | _Add preview image_ |
-| `on` | _Add preview image_ |
-| `on` (with icon) | _Add preview image_ |
+| `default` | ![Default Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_150/v1782803702/WhatsApp_GIF_2026-06-30_at_14.03.36_mfqfss.gif) |
+| `with icon` | ![Default Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_150/v1782803703/WhatsApp_GIF_2026-06-30_at_14.05.08_rkqjry.gif) |
 
 ---
 
@@ -118,7 +117,7 @@ toggle.desc = "Switch to a darker color theme"
 | `trackWidth` | `CGFloat` | `44` | Width of the track container. Auto-derived from `indicatorSize` unless set explicitly (see note above) |
 | `indicatorSize` | `CGFloat` | `16` | Width and height of the indicator (knob) |
 | `iconSize` | `CGFloat` | `16` | Width and height of the icon. **Setting this also overwrites `indicatorSize`** to the same value |
-| `indicatorPadding` | `CGFloat` | `2` | Inset between the indicator and the edge of the track. Also used to derive track height (`indicatorSize + indicatorPadding * 2`) |
+| `indicatorPadding` | `CGFloat` | `2` | Inset between the indicator and the edge of the track. Also used to derive track height |
 | `cornerRadius` | `CGFloat` | `0.0` | Corner radius applied to both the track and the indicator. Once set explicitly, it overrides the automatic radius that's otherwise derived from `indicatorSize / 2` |
 
 ### Shadow

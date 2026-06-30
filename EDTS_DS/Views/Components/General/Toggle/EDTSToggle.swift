@@ -137,7 +137,7 @@ public class EDTSToggle: UIView {
         }
     }
  
-    @IBInspectable public var indicatorColor: UIColor = EDTSColor.white {
+    @IBInspectable public var indicatorTintColor: UIColor = EDTSColor.white {
         didSet {
             updateState(animated: false)
         }
@@ -250,7 +250,6 @@ public class EDTSToggle: UIView {
     private var isTrackWidthExplicit: Bool = false
     private var isUpdatingTrackWidthInternally: Bool = false
     private var isCornerRadiusExplicit: Bool = false
-    private var animateNextStateChange = false
     private var isOn: Bool = false
     private var toggleIcon: UIImage? = nil
     private var toggleIconActive: UIImage? = nil
@@ -412,7 +411,7 @@ public class EDTSToggle: UIView {
  
         let applyColor = {
             self.vTrack.backgroundColor = self.isOn ? self.trackActiveTintColor : self.trackTintColor
-            self.vIndicator.backgroundColor = self.isOn ? self.indicatorActiveTintColor : self.indicatorColor
+            self.vIndicator.backgroundColor = self.isOn ? self.indicatorActiveTintColor : self.indicatorTintColor
             self.ivIcon.tintColor = self.isOn ? self.iconActiveTintColor : self.iconTintColor
             self.ivIcon?.image = currentIcon?.withRenderingMode(.alwaysTemplate)
             self.ivIcon?.isHidden = (currentIcon == nil)
