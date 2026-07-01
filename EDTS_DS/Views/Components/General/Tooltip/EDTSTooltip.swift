@@ -175,7 +175,7 @@ public class EDTSTooltip: UIView {
         minimumPressDuration: TimeInterval = 0.35,
         animated: Bool = true,
         dismissOnRelease: Bool = true,
-        dismissOnReleaseDelay: TimeInterval = 0,
+        dismissOnReleaseDelay: TimeInterval = 0.5,
         autoDismissAfter: TimeInterval? = nil
     ) {
         target.isUserInteractionEnabled = true
@@ -274,7 +274,7 @@ public class EDTSTooltip: UIView {
             completion?()
             return
         }
-        UIView.animate(withDuration: 0.15, delay: 0.5, animations: {
+        UIView.animate(withDuration: 0.15, animations: {
             self.alpha = 0
             self.transform = self.initialTransform(for: self.direction)
         }, completion: { _ in
