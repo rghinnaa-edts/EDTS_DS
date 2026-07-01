@@ -6,9 +6,7 @@ The `EDTSTooltip` component is a lightweight, self-positioning tooltip/callout v
 
 - Self-positioning callout that calculates its own frame relative to a target view and a container, including edge-clamping so it never renders off-screen
 - Four supported directions (`top`, `bottom`, `leading`, `trailing`), each with its own arrow orientation and entrance/exit transform
-- Built-in long-press-to-show / release-to-dismiss workflow via `attach(to:)`, or fully manual control via `show(on:)` / `dismiss()`
-- Title label independently configurable via plain or attributed strings, with custom font name/size/weight and color
-- Configurable background color, corner radius, shadow (color/opacity/offset/radius), and per-edge padding
+- Built-in long-press-to-show / release-to-dismiss workflow via `attach(to:)`, with an optional delay before the release-triggered dismiss fires, or fully manual control via `show(on:)` / `dismiss()`
 - Optional auto-dismiss after a fixed duration, on either the manual or long-press flow
 - Tap-to-dismiss built in — tapping the tooltip itself dismisses it
 - `IBDesignable` / `IBInspectable` support for Interface Builder assembly
@@ -60,6 +58,18 @@ tooltip.detach(from: cardView)
 
 Removes the long-press gesture from the target and clears the internal association between the target and the tooltip.
 
+### Delaying the Release Dismiss
+
+```swift
+tooltip.attach(
+    to: cardView,
+    direction: .top,
+    in: view,
+    dismissOnRelease: true,
+    dismissOnReleaseDelay: 0.5
+)
+```
+
 ### Auto-Dismiss After a Duration
 
 ```swift
@@ -70,7 +80,7 @@ tooltip.show(on: infoIcon, direction: .trailing, in: view, autoDismissAfter: 2.0
 tooltip.attach(to: infoIcon, direction: .trailing, in: view, autoDismissAfter: 2.0)
 ```
 
-When set, the tooltip schedules its own `dismiss()` call after the given number of seconds. This is cancelled automatically if `dismiss()` is called manually beforehand.
+When set, the tooltip schedules its own `dismiss()` call after the given number of seconds. This is cancelled automatically if `dismiss()` is called manually beforehand, or superseded if a `dismissOnReleaseDelay` timer gets scheduled first (see below).
 
 ### Dismissing
 
@@ -80,7 +90,7 @@ tooltip.dismiss()
 
 Also triggered automatically:
 - When the tooltip itself is tapped
-- When a long-press gesture attached via `attach(to:)` ends/cancels/fails, if `dismissOnRelease` is `true`
+- When a long-press gesture attached via `attach(to:)` ends/cancels/fails and `dismissOnRelease` is `true` — immediately if `dismissOnReleaseDelay` is `0`, or after that delay otherwise
 - When an `autoDismissAfter` timer elapses
 
 ### Reacting to Dismissal
@@ -151,10 +161,11 @@ public func attach(
     minimumPressDuration: TimeInterval = 0.35,
     animated: Bool = true,
     dismissOnRelease: Bool = true,
+    dismissOnReleaseDelay: TimeInterval = 0,
     autoDismissAfter: TimeInterval? = nil
 )
 ```
-Wires up a `UILongPressGestureRecognizer` on `target` (also setting `target.isUserInteractionEnabled = true`) and retains the tooltip instance on the target via `objc_setAssociatedObject`. On `.began`, the tooltip calls `show(on:direction:in:animated:autoDismissAfter:)` internally; on `.ended` / `.cancelled` / `.failed`, it calls `dismiss()` if `dismissOnRelease` is `true`.
+Wires up a `UILongPressGestureRecognizer` on `target` 
 
 ```swift
 public func detach(from target: UIView)
@@ -170,14 +181,12 @@ public func show(
     autoDismissAfter: TimeInterval? = nil
 )
 ```
-Presents the tooltip pointing at `target`. Resolves a container to add itself to — `parentView` if provided, otherwise `target.window`. If neither is available yet (e.g. the target isn't in a window), the call is retried asynchronously on the next run loop. Sizes and positions itself via internal layout, then, if `animated` is `true`, fades and slides in from the direction-appropriate offset over `0.15s` with `curveEaseOut`. If `autoDismissAfter` is set, schedules an automatic `dismiss()` after that interval.
+Presents the tooltip pointing at `target`. Resolves a container to add itself to — `parentView` if provided, otherwise `target.window`. 
 
 ```swift
 public func dismiss(animated: Bool = true, completion: (() -> Void)? = nil)
 ```
-Cancels any pending auto-dismiss timer, then removes the tooltip. When `animated` is `false`, removal is immediate: the view is removed from its superview and `onDismiss` / `completion` fire right away. When `animated` is `true`, the fade/slide-out animation starts after a fixed **`0.5s` delay**, runs for `0.15s`, and then removes the view from its superview, resets its transform, and calls `onDismiss` / `completion`.
-
-> **Note:** The `0.5s` delay before the animated dismiss is currently hardcoded inside `dismiss(animated:completion:)` and is not exposed as a parameter. If you need a configurable delay, consider adding a `delay: TimeInterval` parameter to the method signature.
+Cancels any pending auto-dismiss timer, then removes the tooltip. 
 
 ```swift
 public func updatePosition()
@@ -197,13 +206,11 @@ Re-runs the internal layout pass (recomputes size, position, arrow tip, and path
 | `leading` | To the left of the target, vertically centered on it | Rightward, toward the target |
 | `trailing` | To the right of the target, vertically centered on it | Leftward, toward the target |
 
-The bubble is offset from the target's edge by `spacing + arrowSize.height` (arrow is a fixed `12 x 8` triangle), and the arrow tip is clamped so it always stays within the bubble's rounded corners even when the bubble itself has been clamped to stay on-screen. The whole tooltip's position is additionally clamped with an `8pt` margin from the superview's bounds on all sides.
-
 ### Sizing
 
-The label is measured with `sizeThatFits`, constrained to `maxWidth` minus horizontal padding, so long text wraps rather than overflowing. The bubble's final size is `label size + padding`, capped at `maxWidth`.
+The bubble's final size is `label size + padding`, capped at `maxWidth`.
 
-### Show / Dismiss Animation
+### Animation
 
 | Action | Property | Value | Delay | Duration | Curve |
 |---|---|---|---|---|---|
@@ -211,8 +218,6 @@ The label is measured with `sizeThatFits`, constrained to `maxWidth` minus horiz
 | Show | Transform | direction offset (`±4pt`) → `identity` | `0s` | `0.15s` | `curveEaseOut` |
 | Dismiss | Alpha | `1` → `0` | `0.5s` | `0.15s` | default |
 | Dismiss | Transform | `identity` → direction offset (`±4pt`) | `0.5s` | `0.15s` | default |
-
-When `dismiss(animated: false)` is called, removal is immediate with no delay and no animation.
 
 ### Tap to Dismiss
 
@@ -225,7 +230,7 @@ The long-press gesture recognizer added to the target drives the tooltip directl
 | Gesture State | Tooltip Behavior |
 |---|---|
 | `.began` | `show(on:direction:in:animated:autoDismissAfter:)` is called with the values passed to `attach(to:)` |
-| `.ended`, `.cancelled`, `.failed` | `dismiss()` is called only if `dismissOnRelease` was `true` |
+| `.ended`, `.cancelled`, `.failed` | If `dismissOnRelease` is `true`: any pending `autoDismissAfter` timer is cancelled, then `dismiss()` is called immediately if `dismissOnReleaseDelay` is `0`, or scheduled after `dismissOnReleaseDelay` seconds otherwise. If `dismissOnRelease` is `false`, nothing happens on release |
 
 Only one tooltip instance can be associated with a given target at a time (subsequent `attach(to:)` calls on the same target will overwrite the retained association).
 
