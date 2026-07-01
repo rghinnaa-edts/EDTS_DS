@@ -126,12 +126,24 @@ public class EDTSProgressTracker: UIView {
     }
     
     @IBInspectable public var value: CGFloat = 0.0 {
-        didSet{
+        didSet {
+            if value > limitValue {
+                value = limitValue
+                calculateValue()
+                return
+            }
+
             calculateValue()
         }
     }
     
     @IBInspectable public var maxValue: CGFloat = 100.0 {
+        didSet{
+            calculateValue()
+        }
+    }
+    
+    @IBInspectable public var limitValue: CGFloat = 13500.0 {
         didSet{
             calculateValue()
         }
@@ -361,7 +373,6 @@ public class EDTSProgressTracker: UIView {
     private var badgeGradientLayer: CAGradientLayer?
     
     private var wasAtMaxValue: Bool = false
-//    private var wasBadgeVisible: Bool = false
     private var lastDisplayedLaps: Int = 0
     private var isIndicatorVisible: Bool = false
     private var indicatorAnimationID: UUID = UUID()
@@ -387,14 +398,6 @@ public class EDTSProgressTracker: UIView {
     override public func layoutSubviews() {
         super.layoutSubviews()
         trackView.applyCircular()
-//        innerShadowView.clipsToBounds = true
-//        innerShadowView.layer.masksToBounds = true
-//        let maskLayer = CAShapeLayer()
-//        maskLayer.path = UIBezierPath(
-//            roundedRect: innerShadowView.bounds,
-//            cornerRadius: trackView.layer.cornerRadius
-//        ).cgPath
-//        innerShadowView.layer.mask = maskLayer
         
         innerShadowView.cornerRadius = trackView.frame.height / 2.0
         fullTrackView.applyCircular()
@@ -473,6 +476,7 @@ public class EDTSProgressTracker: UIView {
             fillPaddingBottom = 1
             fillPaddingLeading = 1
             fillPaddingTrailing = 1
+            fullTrackColor = EDTSColor.blue30
             indicatorColorStart = EDTSColor.skyblueLeading
             indicatorColorEnd = EDTSColor.skyblueTrailing
             indicatorColorOrientation = "horizontal"
@@ -497,8 +501,19 @@ public class EDTSProgressTracker: UIView {
             fillPaddingBottom = 0
             fillPaddingLeading = 0
             fillPaddingTrailing = 0
+            if limitValue > self.maxValue {
+                fullTrackColor = EDTSColor.blue10
+            } else {
+                fullTrackColor = .clear
+            }
             indicatorSize = 0
-            badgeSize = 0
+            badgeLabelColor = EDTSColor.white
+            badgeFontSize = 8
+            badgeFontWeight = "bold"
+            badgeColorStart = EDTSColor.skyblueLeading
+            badgeColorEnd = EDTSColor.skyblueTrailing
+            badgeColorOrientation = "horizontal"
+            badgeSize = 16
             trackColor = EDTSColor.white
             borderWidth = 0
             paddingTop = 0
@@ -507,6 +522,7 @@ public class EDTSProgressTracker: UIView {
             isHasBadge = false
         }
         
+//        limitValue = maxValue
         let minWidth: CGFloat = isHasIndicator ? indicatorSize + 2 : 0
         fillWidthConstraint.constant = minWidth
     }
@@ -587,7 +603,7 @@ public class EDTSProgressTracker: UIView {
                 fullTrackGradientLayer?.removeFromSuperlayer()
                 fullTrackGradientLayer = nil
             }
-            fullTrackView.backgroundColor = fullTrackColor ?? EDTSColor.blue30
+            fullTrackView.backgroundColor = fullTrackColor
         }
     }
     
@@ -684,7 +700,7 @@ public class EDTSProgressTracker: UIView {
         
         fullTrackView.isHidden = !isComplete
         
-        let shouldShowBadge = isComplete && isHasBadge
+        let shouldShowBadge = isComplete && isHasBadge && limitValue > maxValue
         badgeView.isHidden = !shouldShowBadge
         lblBadge.isHidden = !shouldShowBadge
     }
@@ -709,12 +725,14 @@ public class EDTSProgressTracker: UIView {
         }
     }
 
-    private func processValue(_ targetValue: CGFloat, compressed: Bool){
+    private func processValue(_ targetValue: CGFloat, compressed: Bool) {
         guard maxValue > 0 else { return }
 
-        let ratio = targetValue / maxValue
+        let cappedValue = min(targetValue, limitValue)
+
+        let ratio = cappedValue / maxValue
         let badgeWidth = badgeSize > 0 ? badgeSize : (lblBadge.intrinsicContentSize.width + 8)
-        let isAtMaxValue = targetValue > 0 && targetValue.truncatingRemainder(dividingBy: maxValue) == 0
+        let isAtMaxValue = cappedValue > 0 && cappedValue.truncatingRemainder(dividingBy: maxValue) == 0
 
         let newLapCount = isAtMaxValue ? Int(ratio) - 1 : Int(ratio)
         let newCycleRatio: CGFloat = isAtMaxValue ? 1.0 : ratio - CGFloat(Int(ratio))
@@ -725,7 +743,7 @@ public class EDTSProgressTracker: UIView {
 
         let minWidth: CGFloat = isHasIndicator ? indicatorSize + 2 : 0
         let fillLeadingOffset = leadingFillViewConstraint?.constant ?? 0
-        let fillTrailingPad  = fillPaddingTrailing >= 0 ? fillPaddingTrailing : 0
+        let fillTrailingPad = fillPaddingTrailing >= 0 ? fillPaddingTrailing : 0
         let maxWidth: CGFloat = trackWidth - fillLeadingOffset - fillTrailingPad
 
         let previousLapCount = wasAtMaxValue ? lapCount + 1 : lapCount
@@ -735,9 +753,6 @@ public class EDTSProgressTracker: UIView {
         lapCount = newLapCount
         cycleRatio = newCycleRatio
         wasAtMaxValue = isAtMaxValue
-
-        let shouldCompressLapAnimation =
-            isAnimating && lapsToAnimate > 0
 
         if compressed && lapsToAnimate > 0 {
             enqueue {
@@ -760,7 +775,6 @@ public class EDTSProgressTracker: UIView {
                     )
                 }
             }
-
         }
 
         if hasRemainder || (lapsToAnimate == 0 && !isAtMaxValue) {
@@ -811,14 +825,29 @@ public class EDTSProgressTracker: UIView {
                 self.lblBadge.text = self.badgeLabel ?? "x\(displayLaps)"
                 self.setupBadgeConstraint()
             }
-            if isFirstLap {
-                self.animateBadgeScaleFromZero()
-            } else {
-                self.animateBadgeScaleFromIdentity()
+            
+            let shouldAnimateBadge = self.isHasBadge && self.limitValue > self.maxValue
+
+            if shouldAnimateBadge {
+                if isFirstLap {
+                    self.animateBadgeScaleFromZero()
+                } else {
+                    self.animateBadgeScaleFromIdentity()
+                }
             }
+            
             self.lastDisplayedLaps = displayLaps
 
-            if EDTSColor.theme == .klikIDM {
+            var shouldShowAnimatedFullTrack: Bool {
+                let hasColor =
+                (self.fullTrackColor != nil) ||
+                (self.fullTrackColorStart != nil) ||
+                (self.fullTrackColorEnd != nil)
+                
+                return self.limitValue > self.maxValue && hasColor
+            }
+            
+            if shouldShowAnimatedFullTrack {
                 self.animateFillFadeOut(startingFullAlpha: isFirstLap ? 0 : 1) {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         completion()
@@ -1045,7 +1074,6 @@ public class EDTSProgressTracker: UIView {
                 self.indicatorView.transform = .identity
             },
             completion: { finished in
-                // Only apply if this is still the latest animation call
                 guard self.indicatorAnimationID == animID else { return }
                 if finished {
                     self.indicatorView.transform = .identity
