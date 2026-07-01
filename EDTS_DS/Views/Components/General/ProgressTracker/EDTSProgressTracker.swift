@@ -44,20 +44,25 @@ public class EDTSProgressTracker: UIView {
     
     @IBOutlet weak var fillWidthConstraint: NSLayoutConstraint!
     
+    // MARK: - Poinku Inner Shadow Outlets
+    @IBOutlet weak var innerShadowView1: InnerShadowView!
+    @IBOutlet weak var innerShadowView2: InnerShadowView!
+    @IBOutlet weak var innerShadowViewContainer: UIView!
+    
     // MARK: - Inspectables
-    @IBInspectable public var fillColor: UIColor?{
+    @IBInspectable public var fillTintColor: UIColor?{
         didSet{
             setupFillBgColor()
         }
     }
     
-    @IBInspectable public var fillColorStart: UIColor?{
+    @IBInspectable public var fillTintColorStart: UIColor?{
         didSet{
             setupFillBgColor()
         }
     }
     
-    @IBInspectable public var fillColorEnd: UIColor?{
+    @IBInspectable public var fillTintColorEnd: UIColor?{
         didSet{
             setupFillBgColor()
         }
@@ -69,19 +74,19 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
-    @IBInspectable public var fullTrackColor: UIColor?{
+    @IBInspectable public var fullTrackTintColor: UIColor?{
         didSet{
             setupFullTrackBgColor()
         }
     }
     
-    @IBInspectable public var fullTrackColorStart: UIColor?{
+    @IBInspectable public var fullTrackTintColorStart: UIColor?{
         didSet{
             setupFullTrackBgColor()
         }
     }
     
-    @IBInspectable public var fullTrackColorEnd: UIColor?{
+    @IBInspectable public var fullTrackTintColorEnd: UIColor?{
         didSet{
             setupFullTrackBgColor()
         }
@@ -137,31 +142,33 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
-    @IBInspectable public var maxValue: CGFloat = 100.0 {
-        didSet{
-            calculateValue()
-        }
-    }
+    @IBInspectable public var maxValue: CGFloat = 100.0
+//    {
+//        didSet{
+//            calculateValue()
+//        }
+//    }
     
-    @IBInspectable public var limitValue: CGFloat = 13500.0 {
-        didSet{
-            calculateValue()
-        }
-    }
+    @IBInspectable public var limitValue: CGFloat = 100.0
+//    {
+//        didSet{
+//            calculateValue()
+//        }
+//    }
     
-    @IBInspectable public var indicatorColor: UIColor?{
-        didSet{
-            setupIndicatorBgColor()
-        }
-    }
-    
-    @IBInspectable public var indicatorColorStart: UIColor?{
+    @IBInspectable public var indicatorTintColor: UIColor?{
         didSet{
             setupIndicatorBgColor()
         }
     }
     
-    @IBInspectable public var indicatorColorEnd: UIColor?{
+    @IBInspectable public var indicatorTintColorStart: UIColor?{
+        didSet{
+            setupIndicatorBgColor()
+        }
+    }
+    
+    @IBInspectable public var indicatorTintColorEnd: UIColor?{
         didSet{
             setupIndicatorBgColor()
         }
@@ -225,19 +232,19 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
-    @IBInspectable public var badgeColor: UIColor?{
+    @IBInspectable public var badgeTintColor: UIColor?{
         didSet{
             setupBadgeBgColor()
         }
     }
     
-    @IBInspectable public var badgeColorStart: UIColor?{
+    @IBInspectable public var badgeTintColorStart: UIColor?{
         didSet{
             setupBadgeBgColor()
         }
     }
     
-    @IBInspectable public var badgeColorEnd: UIColor?{
+    @IBInspectable public var badgeTintColorEnd: UIColor?{
         didSet{
             setupBadgeBgColor()
         }
@@ -261,19 +268,19 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
-    @IBInspectable public var trackColor: UIColor?{
+    @IBInspectable public var trackTintColor: UIColor?{
         didSet{
             setupTrackBgColor()
         }
     }
     
-    @IBInspectable public var trackColorStart: UIColor?{
+    @IBInspectable public var trackTintColorStart: UIColor?{
         didSet {
             setupTrackBgColor()
         }
     }
     
-    @IBInspectable public var trackColorEnd: UIColor?{
+    @IBInspectable public var trackTintColorEnd: UIColor?{
         didSet {
             setupTrackBgColor()
         }
@@ -305,24 +312,28 @@ public class EDTSProgressTracker: UIView {
     
     @IBInspectable public var trackInnerShadowOpacity: Float = Float.zero {
         didSet {
+            innerShadowViewContainer.isHidden = true
             innerShadowView.shadowOpacity = trackInnerShadowOpacity
         }
     }
     
     @IBInspectable public var trackInnerShadowRadius: CGFloat = CGFloat.zero {
         didSet {
+            innerShadowViewContainer.isHidden = true
             innerShadowView.shadowRadius = trackInnerShadowRadius
         }
     }
     
     @IBInspectable public var trackInnerShadowOffset: CGSize = CGSize.zero {
         didSet {
+            innerShadowViewContainer.isHidden = true
             innerShadowView.shadowOffset = trackInnerShadowOffset
         }
     }
     
     @IBInspectable public var trackInnerShadowColor: UIColor?{
         didSet {
+            innerShadowViewContainer.isHidden = true
             innerShadowView.shadowColor = trackInnerShadowColor ?? EDTSColor.black
         }
     }
@@ -365,15 +376,16 @@ public class EDTSProgressTracker: UIView {
     
     // MARK: - Private Variable
     private var lapCount: Int = 0
-    private var cycleRatio: CGFloat = 0.0
+//    private var cycleRatio: CGFloat = 0.0
     private var trackGradientLayer: CAGradientLayer?
     private var fillGradientLayer: CAGradientLayer?
     private var fullTrackGradientLayer: CAGradientLayer?
     private var indicatorGradientLayer: CAGradientLayer?
     private var badgeGradientLayer: CAGradientLayer?
     
+    private var lastProcessedValue: CGFloat = 0.0
     private var wasAtMaxValue: Bool = false
-    private var lastDisplayedLaps: Int = 0
+//    private var lastDisplayedLaps: Int = 0
     private var isIndicatorVisible: Bool = false
     private var indicatorAnimationID: UUID = UUID()
     private var animationQueue: [() -> Void] = []
@@ -383,6 +395,7 @@ public class EDTSProgressTracker: UIView {
     private var pendingValue: CGFloat? = nil
     
     private var receivedMultipleUpdates = false
+    
     
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -397,9 +410,12 @@ public class EDTSProgressTracker: UIView {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
-        trackView.applyCircular()
         
-        innerShadowView.cornerRadius = trackView.frame.height / 2.0
+        trackView.applyCircular()
+        innerShadowView.cornerRadius = trackView.layer.cornerRadius
+        innerShadowView1.cornerRadius = trackView.layer.cornerRadius
+        innerShadowView2.cornerRadius = trackView.layer.cornerRadius
+        innerShadowViewContainer.layer.cornerRadius = trackView.layer.cornerRadius
         fullTrackView.applyCircular()
         fillView.layer.cornerRadius = fullTrackView.layer.cornerRadius
         indicatorView.applyCircular()
@@ -423,7 +439,6 @@ public class EDTSProgressTracker: UIView {
     
     override public var intrinsicContentSize: CGSize {
         let trackWidth = trackView.frame.width
-        
         let height = badgeView.frame.height
         
         return CGSize(width: trackWidth, height: height)
@@ -469,57 +484,76 @@ public class EDTSProgressTracker: UIView {
     
     private func setupDefaultStyle(){
         if EDTSColor.theme == .klikIDM {
-            fillColorStart = EDTSColor.skyblueLeading
-            fillColorEnd = EDTSColor.skyblueTrailing
+            fillTintColorStart = EDTSColor.skyblueLeading
+            fillTintColorEnd = EDTSColor.skyblueTrailing
             fillColorOrientation = "horizontal"
             fillPaddingTop = 1
             fillPaddingBottom = 1
             fillPaddingLeading = 1
             fillPaddingTrailing = 1
-            fullTrackColor = EDTSColor.blue30
-            indicatorColorStart = EDTSColor.skyblueLeading
-            indicatorColorEnd = EDTSColor.skyblueTrailing
+            fullTrackTintColor = EDTSColor.blue30
+            indicatorTintColorStart = EDTSColor.skyblueLeading
+            indicatorTintColorEnd = EDTSColor.skyblueTrailing
             indicatorColorOrientation = "horizontal"
             indicatorSize = 8
             badgeLabelColor = EDTSColor.white
             badgeFontSize = 8
             badgeFontWeight = "bold"
-            badgeColorStart = EDTSColor.skyblueLeading
-            badgeColorEnd = EDTSColor.skyblueTrailing
+            badgeTintColorStart = EDTSColor.skyblueLeading
+            badgeTintColorEnd = EDTSColor.skyblueTrailing
             badgeColorOrientation = "horizontal"
             badgeSize = 16
-            trackColor = EDTSColor.grey20
+            trackTintColor = EDTSColor.grey20
             borderWidth = 0
             paddingTop = 5
             paddingBottom = 5
             isHasIndicator = true
             isHasBadge = true
+            
+            innerShadowView.isHidden = false
+            innerShadowView.shadowOpacity = 0.10
+            innerShadowView.shadowOffset = CGSize(width: 0, height: 0)
+            innerShadowView.shadowColor = EDTSColor.black
+            innerShadowView.shadowRadius = 2
+            innerShadowViewContainer.isHidden = true
         } else {
-            fillColorStart = EDTSColor.skyblueLeading
-            fillColorEnd = EDTSColor.skyblueTrailing
+            fillTintColorStart = EDTSColor.skyblueLeading
+            fillTintColorEnd = EDTSColor.skyblueTrailing
             fillPaddingTop = 0
             fillPaddingBottom = 0
             fillPaddingLeading = 0
             fillPaddingTrailing = 0
             if limitValue > self.maxValue {
-                fullTrackColor = EDTSColor.blue10
+                fullTrackTintColor = EDTSColor.blue10
             } else {
-                fullTrackColor = .clear
+                fullTrackTintColor = .clear
             }
             indicatorSize = 0
             badgeLabelColor = EDTSColor.white
             badgeFontSize = 8
             badgeFontWeight = "bold"
-            badgeColorStart = EDTSColor.skyblueLeading
-            badgeColorEnd = EDTSColor.skyblueTrailing
+            badgeTintColorStart = EDTSColor.skyblueLeading
+            badgeTintColorEnd = EDTSColor.skyblueTrailing
             badgeColorOrientation = "horizontal"
             badgeSize = 16
-            trackColor = EDTSColor.white
+            trackTintColor = EDTSColor.white
             borderWidth = 0
             paddingTop = 0
             paddingBottom = 0
             isHasIndicator = false
             isHasBadge = false
+            
+            innerShadowView.isHidden = true
+            innerShadowViewContainer.isHidden = false
+            innerShadowView1.shadowOpacity = 0.08
+            innerShadowView1.shadowOffset = CGSize(width: 0, height: 1)
+            innerShadowView1.shadowColor = EDTSColor.black
+            innerShadowView1.shadowRadius = 2
+            
+            innerShadowView2.shadowOpacity = 0.10
+            innerShadowView2.shadowOffset = CGSize(width: 0, height: -4)
+            innerShadowView2.shadowColor = EDTSColor.black
+            innerShadowView2.shadowRadius = 2
         }
         
 //        limitValue = maxValue
@@ -528,7 +562,7 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func setupFillBgColor() {
-        if (fillColorStart != nil || fillColorEnd != nil) {
+        if (fillTintColorStart != nil || fillTintColorEnd != nil) {
             if fillGradientLayer == nil {
                 let gradient = CAGradientLayer()
                 fillView.layer.insertSublayer(gradient, at: 0)
@@ -539,8 +573,8 @@ public class EDTSProgressTracker: UIView {
             fillGradientLayer?.cornerRadius = fullTrackView.layer.cornerRadius
             
             fillGradientLayer?.colors = [
-                fillColorStart?.cgColor ?? UIColor.clear.cgColor,
-                fillColorEnd?.cgColor ?? UIColor.clear.cgColor
+                fillTintColorStart?.cgColor ?? UIColor.clear.cgColor,
+                fillTintColorEnd?.cgColor ?? UIColor.clear.cgColor
             ]
             
             let normalized = fillColorOrientation?
@@ -563,12 +597,12 @@ public class EDTSProgressTracker: UIView {
                 fillGradientLayer?.removeFromSuperlayer()
                 fillGradientLayer = nil
             }
-            fillView.backgroundColor = fillColor ?? .clear
+            fillView.backgroundColor = fillTintColor ?? .clear
         }
     }
     
     private func setupFullTrackBgColor() {
-        if (fullTrackColorStart != nil || fullTrackColorEnd != nil) {
+        if (fullTrackTintColorStart != nil || fullTrackTintColorEnd != nil) {
             if fullTrackGradientLayer == nil {
                 let gradient = CAGradientLayer()
                 fullTrackView.layer.insertSublayer(gradient, at: 0)
@@ -579,8 +613,8 @@ public class EDTSProgressTracker: UIView {
             fullTrackGradientLayer?.cornerRadius = fullTrackView.layer.cornerRadius
             
             fullTrackGradientLayer?.colors = [
-                fullTrackColorStart?.cgColor ?? UIColor.clear.cgColor,
-                fullTrackColorEnd?.cgColor ?? UIColor.clear.cgColor
+                fullTrackTintColorStart?.cgColor ?? UIColor.clear.cgColor,
+                fullTrackTintColorEnd?.cgColor ?? UIColor.clear.cgColor
             ]
             
             let normalized = fullTrackColorOrientation?
@@ -603,7 +637,7 @@ public class EDTSProgressTracker: UIView {
                 fullTrackGradientLayer?.removeFromSuperlayer()
                 fullTrackGradientLayer = nil
             }
-            fullTrackView.backgroundColor = fullTrackColor
+            fullTrackView.backgroundColor = fullTrackTintColor
         }
     }
     
@@ -631,7 +665,7 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func setupIndicatorBgColor() {
-        if (indicatorColorStart != nil || indicatorColorEnd != nil) {
+        if (indicatorTintColorStart != nil || indicatorTintColorEnd != nil) {
             if indicatorGradientLayer == nil {
                 let gradient = CAGradientLayer()
                 indicatorView.layer.insertSublayer(gradient, at: 0)
@@ -642,8 +676,8 @@ public class EDTSProgressTracker: UIView {
             indicatorGradientLayer?.cornerRadius = indicatorView.layer.cornerRadius
             
             indicatorGradientLayer?.colors = [
-                indicatorColorStart?.cgColor ?? UIColor.clear.cgColor,
-                indicatorColorEnd?.cgColor ?? UIColor.clear.cgColor
+                indicatorTintColorStart?.cgColor ?? UIColor.clear.cgColor,
+                indicatorTintColorEnd?.cgColor ?? UIColor.clear.cgColor
             ]
             
             let normalized = indicatorColorOrientation?
@@ -666,7 +700,7 @@ public class EDTSProgressTracker: UIView {
                 indicatorGradientLayer?.removeFromSuperlayer()
                 indicatorGradientLayer = nil
             }
-            indicatorView.backgroundColor = indicatorColor ?? .clear
+            indicatorView.backgroundColor = indicatorTintColor ?? .clear
         }
     }
     
@@ -730,6 +764,11 @@ public class EDTSProgressTracker: UIView {
 
         let cappedValue = min(targetValue, limitValue)
 
+        let previousValue = lastProcessedValue
+        let jumpRatio = (cappedValue - previousValue) / maxValue
+        let isSpam = compressed || jumpRatio > 2
+        lastProcessedValue = cappedValue
+
         let ratio = cappedValue / maxValue
         let badgeWidth = badgeSize > 0 ? badgeSize : (lblBadge.intrinsicContentSize.width + 8)
         let isAtMaxValue = cappedValue > 0 && cappedValue.truncatingRemainder(dividingBy: maxValue) == 0
@@ -751,10 +790,10 @@ public class EDTSProgressTracker: UIView {
         let hasRemainder = !isAtMaxValue && newCycleRatio > 0
 
         lapCount = newLapCount
-        cycleRatio = newCycleRatio
+//        cycleRatio = newCycleRatio
         wasAtMaxValue = isAtMaxValue
 
-        if compressed && lapsToAnimate > 0 {
+        if isSpam && lapsToAnimate > 0 {
             enqueue {
                 self.runLapCycleAnimation(
                     trackWidth: maxWidth,
@@ -836,13 +875,13 @@ public class EDTSProgressTracker: UIView {
                 }
             }
             
-            self.lastDisplayedLaps = displayLaps
+//            self.lastDisplayedLaps = displayLaps
 
             var shouldShowAnimatedFullTrack: Bool {
                 let hasColor =
-                (self.fullTrackColor != nil) ||
-                (self.fullTrackColorStart != nil) ||
-                (self.fullTrackColorEnd != nil)
+                (self.fullTrackTintColor != nil) ||
+                (self.fullTrackTintColorStart != nil) ||
+                (self.fullTrackTintColorEnd != nil)
                 
                 return self.limitValue > self.maxValue && hasColor
             }
@@ -884,7 +923,7 @@ public class EDTSProgressTracker: UIView {
             lblBadge.text = badgeLabel ?? "x\(displayLaps)"
             setupBadgeConstraint()
         }
-        lastDisplayedLaps = displayLaps
+//        lastDisplayedLaps = displayLaps
         setupBadge()
     }
     
@@ -923,7 +962,7 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func setupBadgeBgColor() {
-        if (badgeColorStart != nil || badgeColorEnd != nil) {
+        if (badgeTintColorStart != nil || badgeTintColorEnd != nil) {
             if badgeGradientLayer == nil {
                 let gradient = CAGradientLayer()
                 badgeView.layer.insertSublayer(gradient, at: 0)
@@ -934,8 +973,8 @@ public class EDTSProgressTracker: UIView {
             badgeGradientLayer?.cornerRadius = badgeView.layer.cornerRadius
             
             badgeGradientLayer?.colors = [
-                badgeColorStart?.cgColor ?? UIColor.clear.cgColor,
-                badgeColorEnd?.cgColor ?? UIColor.clear.cgColor
+                badgeTintColorStart?.cgColor ?? UIColor.clear.cgColor,
+                badgeTintColorEnd?.cgColor ?? UIColor.clear.cgColor
             ]
             
             let normalized = badgeColorOrientation?
@@ -958,7 +997,7 @@ public class EDTSProgressTracker: UIView {
                 badgeGradientLayer?.removeFromSuperlayer()
                 badgeGradientLayer = nil
             }
-            badgeView.backgroundColor = badgeColor ?? .clear
+            badgeView.backgroundColor = badgeTintColor ?? .clear
         }
     }
     
@@ -987,7 +1026,7 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func setupTrackBgColor() {
-        if (trackColorStart != nil || trackColorEnd != nil) {
+        if (trackTintColorStart != nil || trackTintColorEnd != nil) {
             if trackGradientLayer == nil {
                 let gradient = CAGradientLayer()
                 trackView.layer.insertSublayer(gradient, at: 0)
@@ -998,8 +1037,8 @@ public class EDTSProgressTracker: UIView {
             trackGradientLayer?.cornerRadius = trackView.layer.cornerRadius
             
             trackGradientLayer?.colors = [
-                trackColorStart?.cgColor ?? UIColor.clear.cgColor,
-                trackColorEnd?.cgColor ?? UIColor.clear.cgColor
+                trackTintColorStart?.cgColor ?? UIColor.clear.cgColor,
+                trackTintColorEnd?.cgColor ?? UIColor.clear.cgColor
             ]
             
             let normalized = trackColorOrientation?
@@ -1022,7 +1061,7 @@ public class EDTSProgressTracker: UIView {
                 trackGradientLayer?.removeFromSuperlayer()
                 trackGradientLayer = nil
             }
-            trackView.backgroundColor = trackColor ?? .clear
+            trackView.backgroundColor = trackTintColor ?? .clear
         }
     }
     

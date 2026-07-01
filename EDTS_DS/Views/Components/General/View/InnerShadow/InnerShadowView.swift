@@ -6,35 +6,36 @@
 //
 import UIKit
 
+@IBDesignable
 public class InnerShadowView: UIView {
     private let innerShadow = InnerShadow()
     
-    public var cornerRadius: CGFloat = 0 {
+    @IBInspectable public var cornerRadius: CGFloat = 0 {
         didSet {
             innerShadow.cornerRadius = cornerRadius
             setNeedsLayout()
         }
     }
     
-    public var shadowColor: UIColor = EDTSColor.black {
+    @IBInspectable public var shadowColor: UIColor = EDTSColor.black {
         didSet {
             innerShadow.shadowColor = shadowColor
         }
     }
     
-    public var shadowOpacity: Float = 0.1 {
+    @IBInspectable public var shadowOpacity: Float = 0.1 {
         didSet {
             innerShadow.shadowOpacity = shadowOpacity
         }
     }
     
-    public var shadowRadius: CGFloat = 2 {
+    @IBInspectable public var shadowRadius: CGFloat = 2 {
         didSet {
             innerShadow.shadowRadius = shadowRadius
         }
     }
     
-    public var shadowOffset: CGSize = .zero {
+    @IBInspectable public var shadowOffset: CGSize = .zero {
         didSet {
             innerShadow.shadowOffset = shadowOffset
         }

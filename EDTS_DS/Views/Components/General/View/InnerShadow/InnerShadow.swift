@@ -27,7 +27,7 @@ class InnerShadow: UIView {
         }
     }
     
-    var shadowRadius: CGFloat = 3 {
+    var shadowRadius: CGFloat = 2 {
         didSet {
             innerShadowLayer.shadowRadius = shadowRadius
             setNeedsLayout()
