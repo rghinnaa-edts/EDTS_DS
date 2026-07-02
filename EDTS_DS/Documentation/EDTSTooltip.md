@@ -13,6 +13,15 @@ The `EDTSTooltip` component is a lightweight, self-positioning tooltip/callout v
 
 ---
 
+## Preview
+
+| Type | Preview |
+|---|---|
+| `show` | ![Show Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_300/v1782964971/WhatsApp_GIF_2026-07-02_at_10.48.30_t0fjbg.gif) |
+| `attach` | ![Attach Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_300/v1782964972/WhatsApp_GIF_2026-07-02_at_10.49.51_wndlog.gif) |
+
+---
+
 ## Installation
 
 Add to your project:
