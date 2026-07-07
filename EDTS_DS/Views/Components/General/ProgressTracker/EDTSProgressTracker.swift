@@ -25,6 +25,11 @@ public class EDTSProgressTracker: UIView {
     @IBOutlet weak var leadingPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailingPaddingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var badgeTopPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var badgeBottomPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var badgeLeadingPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var badgeTrailingPaddingConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var topFullTrackViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomFullTrackViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var leadingFullTrackViewConstraint: NSLayoutConstraint!
@@ -34,7 +39,7 @@ public class EDTSProgressTracker: UIView {
     @IBOutlet weak var bottomFillViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var leadingFillViewConstraint: NSLayoutConstraint!
     
-    
+    @IBOutlet weak var trackHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var indicatorWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var indicatorHeightConstraint: NSLayoutConstraint!
@@ -270,6 +275,34 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
+    @IBInspectable public var badgePaddingTop: CGFloat = 0 {
+        didSet {
+            setupBadgePadding()
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    @IBInspectable public var badgePaddingBottom: CGFloat = 0 {
+        didSet {
+            setupBadgePadding()
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    @IBInspectable public var badgePaddingLeading: CGFloat = 0 {
+        didSet {
+            setupBadgePadding()
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    @IBInspectable public var badgePaddingTrailing: CGFloat = 0 {
+        didSet {
+            setupBadgePadding()
+            invalidateIntrinsicContentSize()
+        }
+    }
+    
     @IBInspectable public var trackTintColor: UIColor?{
         didSet{
             setupTrackBgColor()
@@ -441,13 +474,14 @@ public class EDTSProgressTracker: UIView {
     
     override public var intrinsicContentSize: CGSize {
         let trackWidth = trackView.frame.width
-        let badgeHeight = badgeSize
-        let indicatorHeight = indicatorSize
-//        trackHeight
-        let height = isHasBadge ? badgeHeight : indicatorHeight
+        let badgeHeight = isHasBadge ? badgeSize : 0
+        let indicatorHeight = isHasIndicator ? indicatorSize : 0
+        let trackHeight = trackView.frame.height
+        let height = max(trackHeight, indicatorHeight, badgeHeight)
         print("height: \(height)")
         print("badgeSize: \(badgeSize)")
         print("indicatorSize: \(indicatorSize)")
+        print("trackHeight: \(trackHeight)")
 
         return CGSize(width: trackWidth, height: height)
     }
@@ -480,6 +514,7 @@ public class EDTSProgressTracker: UIView {
         setupIndicatorCornerRadius()
         
         setupBadge()
+        setupBadgePadding()
         setupFont()
         setupBadgeBgColor()
         
@@ -564,6 +599,10 @@ public class EDTSProgressTracker: UIView {
             innerShadowView2.shadowRadius = 2
         }
         
+        badgePaddingTop = 2
+        badgePaddingBottom = 2
+        badgePaddingLeading = 4
+        badgePaddingTrailing = 4
 //        limitValue = maxValue
         let minWidth: CGFloat = isHasIndicator ? indicatorSize + 2 : 0
         fillWidthConstraint.constant = minWidth
@@ -714,7 +753,7 @@ public class EDTSProgressTracker: UIView {
     
     private func setupTrackConstraint() {
         guard trackHeight >= 0 else { return }
-//        trackHeightConstraint?.constant = trackHeight
+        trackHeightConstraint?.constant = trackHeight
         invalidateIntrinsicContentSize()
         layoutIfNeeded()
     }
@@ -1018,20 +1057,49 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
+//    private func setupBadgeConstraint() {
+//        lblBadge.sizeToFit()
+//        let textWidth = lblBadge.intrinsicContentSize.width + 8
+//        let textHeight = lblBadge.intrinsicContentSize.height + 4
+//
+//        badgeWidthConstraint?.constant = max(badgeSize, textWidth, textHeight)
+//        badgeHeightConstraint?.constant = max(badgeSize, textHeight)
+//
+//        invalidateIntrinsicContentSize()
+//        
+//        let w = max(badgeSize, textWidth, textHeight)
+//        let h = max(badgeSize, textHeight)
+//        badgeGradientLayer?.frame = CGRect(x: 0, y: 0, width: w, height: h)
+//        badgeGradientLayer?.cornerRadius = h / 2
+//    }
+    
     private func setupBadgeConstraint() {
         lblBadge.sizeToFit()
-        let textWidth = lblBadge.intrinsicContentSize.width + 8
-        let textHeight = lblBadge.intrinsicContentSize.height + 4
+
+        let textWidth = lblBadge.intrinsicContentSize.width +
+            badgePaddingLeading + badgePaddingTrailing
+
+        let textHeight = lblBadge.intrinsicContentSize.height +
+            badgePaddingTop + badgePaddingBottom
 
         badgeWidthConstraint?.constant = max(badgeSize, textWidth, textHeight)
         badgeHeightConstraint?.constant = max(badgeSize, textHeight)
 
         invalidateIntrinsicContentSize()
-        
-        let w = max(badgeSize, textWidth, textHeight)
-        let h = max(badgeSize, textHeight)
+
+        let w = badgeWidthConstraint.constant
+        let h = badgeHeightConstraint.constant
         badgeGradientLayer?.frame = CGRect(x: 0, y: 0, width: w, height: h)
         badgeGradientLayer?.cornerRadius = h / 2
+    }
+    
+    private func setupBadgePadding() {
+        badgeTopPaddingConstraint.constant = badgePaddingTop
+        badgeBottomPaddingConstraint.constant = badgePaddingBottom
+        badgeLeadingPaddingConstraint.constant = badgePaddingLeading
+        badgeTrailingPaddingConstraint.constant = badgePaddingTrailing
+        
+        layoutIfNeeded()
     }
     
     private func setupBadgeCornerRadius() {
