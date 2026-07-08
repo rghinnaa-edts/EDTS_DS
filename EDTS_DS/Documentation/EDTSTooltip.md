@@ -148,7 +148,7 @@ tooltip.onDismiss = {
 | `paddingLeading` | `CGFloat` | `8` | Space between the leading edge of the bubble and the label |
 | `paddingTrailing` | `CGFloat` | `8` | Space between the trailing edge of the bubble and the label |
 | `spacing` | `CGFloat` | `8` | Gap between the target view's edge and the tip of the arrow |
-| `maxWidth` | `CGFloat` | `240` | Maximum width of the bubble; the label wraps to fit, and the bubble's final width is clamped to this value |
+| `maxWidth` | `CGFloat` | `UIScreen.main.bounds.width - 32` | Maximum width of the bubble; defaults to the device's screen width minus 16pt padding on each side. The label wraps to fit, and the bubble's final width is clamped to this value |
 
 ### Callbacks
 

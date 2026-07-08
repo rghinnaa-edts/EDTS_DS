@@ -124,7 +124,7 @@ public class EDTSTooltip: UIView {
     
     @IBInspectable public var spacing: CGFloat = 8
 
-    @IBInspectable public var maxWidth: CGFloat = 240
+    @IBInspectable public var maxWidth: CGFloat = UIScreen.main.bounds.width - 32
 
     public var onDismiss: (() -> Void)?
 
