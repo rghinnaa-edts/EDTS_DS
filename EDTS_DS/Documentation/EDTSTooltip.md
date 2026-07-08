@@ -27,8 +27,6 @@ The `EDTSTooltip` component is a lightweight, self-positioning tooltip/callout v
 Add to your project:
 - `EDTSTooltip.swift`
 
-> **Note:** The source file is currently named `EDTSToggle.swift`, but the type it defines is `EDTSTooltip`. You may want to rename the file to match the type for clarity.
-
 ---
 
 ## Usage
@@ -170,7 +168,7 @@ public func attach(
     minimumPressDuration: TimeInterval = 0.35,
     animated: Bool = true,
     dismissOnRelease: Bool = true,
-    dismissOnReleaseDelay: TimeInterval = 0,
+    dismissOnReleaseDelay: TimeInterval = 0.5,
     autoDismissAfter: TimeInterval? = nil
 )
 ```

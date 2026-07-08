@@ -1,5 +1,5 @@
 //
-//  EDTSToggle.swift
+//  EDTSTooltip.swift
 //  EDTS_DS
 //
 //  Created by Rizka Ghinna Auliya on 18/06/26.
