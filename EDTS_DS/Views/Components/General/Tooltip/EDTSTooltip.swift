@@ -63,8 +63,8 @@ public class EDTSTooltip: UIView {
 
     @IBInspectable public var bgColor: UIColor = .black {
         didSet {
-            setNeedsDisplay()
             updateBackgroundColor()
+            setNeedsDisplay()
         }
     }
 
@@ -100,28 +100,24 @@ public class EDTSTooltip: UIView {
     
     @IBInspectable public var paddingTop: CGFloat = 8 {
         didSet {
-            topPadding = paddingTop
             setNeedsLayout()
         }
     }
     
     @IBInspectable public var paddingBottom: CGFloat = 8 {
         didSet {
-            bottomPadding = paddingBottom
             setNeedsLayout()
         }
     }
     
     @IBInspectable public var paddingLeading: CGFloat = 8 {
         didSet {
-            leadingPadding = paddingLeading
             setNeedsLayout()
         }
     }
     
     @IBInspectable public var paddingTrailing: CGFloat = 8 {
         didSet {
-            trailingPadding = paddingTrailing
             setNeedsLayout()
         }
     }
@@ -130,29 +126,27 @@ public class EDTSTooltip: UIView {
 
     @IBInspectable public var maxWidth: CGFloat = 240
 
-    @IBInspectable public var onDismiss: (() -> Void)?
+    public var onDismiss: (() -> Void)?
 
     // MARK: - Private Properties
 
     private let lblText = UILabel()
     private let backgroundLayer = CAShapeLayer()
     private let arrowSize = CGSize(width: 12, height: 8)
-    private var direction: EDTSTooltipDirection = .bottom
+    
+    private static var associatedTooltipKey: UInt8 = 0
+    
     private weak var targetView: UIView?
-    private var autoDismissWorkItem: DispatchWorkItem?
-
     private weak var longPressParentView: UIView?
+    private weak var longPressGesture: UILongPressGestureRecognizer?
+    
+    private var direction: EDTSTooltipDirection = .bottom
+    private var autoDismissWorkItem: DispatchWorkItem?
     private var longPressAnimated: Bool = true
     private var longPressAutoDismissAfter: TimeInterval?
     private var dismissOnRelease: Bool = true
     private var dismissOnReleaseDelay: TimeInterval = 0.5
-    private weak var longPressGesture: UILongPressGestureRecognizer?
-    private static var associatedTooltipKey: UInt8 = 0
-    
-    private var topPadding: CGFloat = 8
-    private var bottomPadding: CGFloat = 8
-    private var leadingPadding: CGFloat = 8
-    private var trailingPadding: CGFloat = 8
+    private var animationGeneration: Int = 0
 
     // MARK: - Init
 
@@ -239,28 +233,45 @@ public class EDTSTooltip: UIView {
 
         guard let container = parentView ?? target.window else { return }
 
+        autoDismissWorkItem?.cancel()
+        animationGeneration += 1
+        let currentGeneration = animationGeneration
+
+        layer.removeAllAnimations()
+        transform = .identity
+
         self.targetView = target
         self.direction = direction
         lblText.text = label
 
         container.layoutIfNeeded()
 
+        let isAlreadyVisible = self.superview === container
+
         frame = container.bounds
-        alpha = animated ? 0 : 1
+        if !isAlreadyVisible {
+            alpha = animated ? 0 : 1
+        }
         container.addSubview(self)
 
         layoutTooltip()
 
         if animated {
             transform = initialTransform(for: direction)
-            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut]) {
+            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut, .beginFromCurrentState, .allowUserInteraction]) {
                 self.alpha = 1
                 self.transform = .identity
             }
+        } else {
+            alpha = 1
+            transform = .identity
         }
 
         if let duration = autoDismissAfter {
-            let workItem = DispatchWorkItem { [weak self] in self?.dismiss() }
+            let workItem = DispatchWorkItem { [weak self] in
+                guard let self = self, self.animationGeneration == currentGeneration else { return }
+                self.dismiss()
+            }
             autoDismissWorkItem = workItem
             DispatchQueue.main.asyncAfter(deadline: .now() + duration, execute: workItem)
         }
@@ -268,16 +279,21 @@ public class EDTSTooltip: UIView {
 
     public func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
         autoDismissWorkItem?.cancel()
+        animationGeneration += 1
+        let currentGeneration = animationGeneration
+
         guard animated else {
             removeFromSuperview()
             onDismiss?()
             completion?()
             return
         }
-        UIView.animate(withDuration: 0.15, animations: {
+
+        UIView.animate(withDuration: 0.15, delay: 0, options: [.beginFromCurrentState, .allowUserInteraction], animations: {
             self.alpha = 0
             self.transform = self.initialTransform(for: self.direction)
-        }, completion: { _ in
+        }, completion: { [weak self] _ in
+            guard let self = self, self.animationGeneration == currentGeneration else { return }
             self.removeFromSuperview()
             self.transform = .identity
             self.onDismiss?()
@@ -346,12 +362,12 @@ public class EDTSTooltip: UIView {
 
         let targetFrame = target.convert(target.bounds, to: superview)
 
-        let labelMaxWidth = maxWidth - leadingPadding - trailingPadding
+        let labelMaxWidth = maxWidth - paddingLeading - paddingTrailing
         let textSize = lblText.sizeThatFits(CGSize(width: labelMaxWidth, height: .greatestFiniteMagnitude))
 
         var backgroundSize = CGSize(
-            width: textSize.width + leadingPadding + trailingPadding,
-            height: textSize.height + topPadding + bottomPadding
+            width: textSize.width + paddingLeading + paddingTrailing,
+            height: textSize.height + paddingTop + paddingBottom
         )
         backgroundSize.width = min(backgroundSize.width, maxWidth)
 
@@ -415,10 +431,10 @@ public class EDTSTooltip: UIView {
         backgroundLayer.frame = self.bounds
 
         lblText.frame = CGRect(
-            x: localbackgroundRect.minX + leadingPadding,
-            y: localbackgroundRect.minY + topPadding,
-            width: localbackgroundRect.width - leadingPadding - trailingPadding,
-            height: localbackgroundRect.height - topPadding - bottomPadding
+            x: localbackgroundRect.minX + paddingLeading,
+            y: localbackgroundRect.minY + paddingTop,
+            width: localbackgroundRect.width - paddingLeading - paddingTrailing,
+            height: localbackgroundRect.height - paddingTop - paddingBottom
         )
     }
 
@@ -454,10 +470,6 @@ public class EDTSTooltip: UIView {
     }
 
     // MARK: - Layout updates on rotation / target movement
-
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-    }
 
     public func updatePosition() {
         layoutTooltip()
