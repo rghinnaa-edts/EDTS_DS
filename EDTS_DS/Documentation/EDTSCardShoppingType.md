@@ -17,7 +17,7 @@ The `EDTSCardShoppingType` component is a two-sided, card-style selector built f
 
 ## Preview
 
-![Card Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_200/v1783415936/WhatsApp_GIF_2026-07-07_at_16.17.27_luzrq5.gif)
+![Card Preview](https://res.cloudinary.com/dr6cm6n5f/image/upload/c_scale,h_80/v1783415936/WhatsApp_GIF_2026-07-07_at_16.17.27_luzrq5.gif)
 
 ---
 
