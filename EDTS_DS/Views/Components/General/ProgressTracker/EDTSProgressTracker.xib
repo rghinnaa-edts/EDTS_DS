@@ -26,6 +26,7 @@
                 <outlet property="fillWidthConstraint" destination="gqi-bz-mwU" id="bqC-eJ-Hnk"/>
                 <outlet property="fullTrackView" destination="ph7-4o-ZmK" id="Abd-9Y-8oL"/>
                 <outlet property="indicatorHeightConstraint" destination="Whf-si-DLb" id="Dli-pF-bUt"/>
+                <outlet property="indicatorTrailingConstraint" destination="rPc-ZQ-Mzb" id="oyT-hx-BGo"/>
                 <outlet property="indicatorView" destination="jpX-gc-Nab" id="wxK-v6-gaC"/>
                 <outlet property="indicatorWidthConstraint" destination="wI0-rq-WUX" id="Vyo-4C-oN0"/>
                 <outlet property="innerShadowView" destination="3hH-46-cH6" id="bXR-Cf-OVO"/>
@@ -60,10 +61,6 @@
                                 <constraint firstAttribute="height" constant="6" id="aA0-ll-ucO"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hH-46-cH6" customClass="InnerShadowView" customModule="EDTS_DS" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="19" width="393" height="6"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QMy-gg-i2P">
                             <rect key="frame" x="0.0" y="19" width="393" height="6"/>
                             <subviews>
@@ -88,6 +85,10 @@
                                 <constraint firstItem="2Hf-Wv-JBW" firstAttribute="top" secondItem="QMy-gg-i2P" secondAttribute="top" id="xTf-E7-ypB"/>
                             </constraints>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hH-46-cH6" customClass="InnerShadowView" customModule="EDTS_DS" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="19" width="393" height="6"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ph7-4o-ZmK" userLabel="FullTrackView">
                             <rect key="frame" x="1" y="20" width="391" height="4"/>
                             <color key="backgroundColor" systemColor="systemCyanColor"/>
@@ -96,7 +97,7 @@
                             <rect key="frame" x="1" y="20" width="10" height="4"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jpX-gc-Nab" userLabel="IndicatorView">
-                                    <rect key="frame" x="2" y="-2" width="8" height="8"/>
+                                    <rect key="frame" x="6" y="-2" width="8" height="8"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="8" id="Whf-si-DLb"/>
@@ -108,7 +109,7 @@
                             <color key="backgroundColor" systemColor="systemBlueColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="10" id="gqi-bz-mwU"/>
-                                <constraint firstAttribute="trailing" secondItem="jpX-gc-Nab" secondAttribute="trailing" id="rPc-ZQ-Mzb"/>
+                                <constraint firstAttribute="trailing" secondItem="jpX-gc-Nab" secondAttribute="trailing" constant="-4" id="rPc-ZQ-Mzb"/>
                                 <constraint firstItem="jpX-gc-Nab" firstAttribute="centerY" secondItem="sCv-6m-XQJ" secondAttribute="centerY" id="uT3-jG-Xb7"/>
                             </constraints>
                         </view>
