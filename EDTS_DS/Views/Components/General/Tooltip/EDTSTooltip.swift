@@ -231,7 +231,7 @@ public class EDTSTooltip: UIView {
             return
         }
 
-        guard let container = parentView ?? target.window else { return }
+        guard let container = parentView ?? target.enclosingViewController()?.view ?? target.window else { return }
 
         autoDismissWorkItem?.cancel()
         animationGeneration += 1
@@ -299,6 +299,10 @@ public class EDTSTooltip: UIView {
             self.onDismiss?()
             completion?()
         })
+    }
+    
+    public func updatePosition() {
+        layoutTooltip()
     }
     
     // MARK: Private Functions
@@ -467,12 +471,6 @@ public class EDTSTooltip: UIView {
         arrowPath.close()
         path.append(arrowPath)
         return path
-    }
-
-    // MARK: - Layout updates on rotation / target movement
-
-    public func updatePosition() {
-        layoutTooltip()
     }
 
     // MARK: - Gesture

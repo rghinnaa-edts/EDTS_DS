@@ -442,4 +442,13 @@ extension UIView {
         maskLayer.path = path.cgPath
         layer.mask = maskLayer
     }
+    
+    public func enclosingViewController() -> UIViewController? {
+        var responder: UIResponder? = self
+        while let r = responder {
+            if let vc = r as? UIViewController { return vc }
+            responder = r.next
+        }
+        return nil
+    }
 }
