@@ -15,6 +15,8 @@ public enum ShoppingType {
 @IBDesignable
 public class EDTSCardShoppingType: UIView {
     
+    // MARK: - Outlets
+    
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var vContainer: UIView!
     @IBOutlet weak var vIndicator: UIView!
@@ -29,6 +31,8 @@ public class EDTSCardShoppingType: UIView {
     
     @IBOutlet weak var vIndicatorWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var vIndicatorLeadingConstraint: NSLayoutConstraint!
+    
+    // MARK: - Inspectables
     
     @IBInspectable public var titleFirst: String? {
         didSet {
@@ -55,6 +59,19 @@ public class EDTSCardShoppingType: UIView {
         didSet {
             lblDescTypeFirst.text = nil
             lblDescTypeFirst.attributedText = descAttributedSecond
+        }
+    }
+    
+    @IBInspectable public var iconFirst: UIImage? {
+        didSet {
+            ivTypeFirst.image = iconFirst?.withRenderingMode(.alwaysTemplate)
+        }
+    }
+    
+    @IBInspectable public var indicatorColorFirst: UIColor? {
+        didSet {
+            firstndicatorColor = indicatorColorFirst
+            updateIndicatorState(animated: false)
         }
     }
     
@@ -86,15 +103,30 @@ public class EDTSCardShoppingType: UIView {
         }
     }
     
+    @IBInspectable public var iconSecond: UIImage? {
+        didSet {
+            ivTypeSecond.image = iconSecond?.withRenderingMode(.alwaysTemplate)
+        }
+    }
+    
+    @IBInspectable public var indicatorColorSecond: UIColor? {
+        didSet {
+            secondIndicatorColor = indicatorColorSecond
+            updateIndicatorState(animated: false)
+        }
+    }
+    
     @IBInspectable public var titleColor: UIColor? {
         didSet {
             titleLabelColor = titleColor
+            updateIndicatorState(animated: false)
         }
     }
     
     @IBInspectable public var descColor: UIColor? {
         didSet {
             descLabelColor = descColor
+            updateIndicatorState(animated: false)
         }
     }
     
@@ -134,39 +166,17 @@ public class EDTSCardShoppingType: UIView {
         }
     }
     
-    @IBInspectable public var iconFirst: UIImage? {
-        didSet {
-            ivTypeFirst.image = iconFirst?.withRenderingMode(.alwaysTemplate)
-        }
-    }
-    
-    @IBInspectable public var iconSecond: UIImage? {
-        didSet {
-            ivTypeSecond.image = iconSecond?.withRenderingMode(.alwaysTemplate)
-        }
-    }
-    
     @IBInspectable public var iconTintColor: UIColor? {
         didSet {
             iconColor = iconTintColor
+            updateIndicatorState(animated: false)
         }
     }
     
     @IBInspectable public var activeTintColor: UIColor? {
         didSet {
             activeColor = activeTintColor
-        }
-    }
-    
-    @IBInspectable public var firstIndicatorColor: UIColor? {
-        didSet {
-            indicatorColorFirst = firstIndicatorColor
-        }
-    }
-    
-    @IBInspectable public var secondIndicatorColor: UIColor? {
-        didSet {
-            indicatorColorSecond = secondIndicatorColor
+            updateIndicatorState(animated: false)
         }
     }
     
@@ -207,9 +217,15 @@ public class EDTSCardShoppingType: UIView {
         }
     }
     
+    // MARK: - Public Variables
+    
+    public weak var delegate: EDTSCardShoppingTypeDelegate?
+    
+    // MARK: - Private Variables
+    
     private var containerColor: UIColor? = EDTSColor.grey20
-    private var indicatorColorFirst: UIColor? = EDTSColor.xpress
-    private var indicatorColorSecond: UIColor? = EDTSColor.xtra
+    private var firstndicatorColor: UIColor? = EDTSColor.xpress
+    private var secondIndicatorColor: UIColor? = EDTSColor.xtra
     
     private var iconColor: UIColor? = EDTSColor.grey60
     private var titleLabelColor: UIColor? = EDTSColor.grey60
@@ -244,8 +260,19 @@ public class EDTSCardShoppingType: UIView {
     
     override public func layoutSubviews() {
         super.layoutSubviews()
+        
         updateIndicatorWidth()
     }
+    
+    // MARK: - Public Functions
+    
+    public func setSelectedType(_ type: ShoppingType, animated: Bool = false) {
+        guard selectedType != type else { return }
+        selectedType = type
+        updateIndicatorState(animated: animated)
+    }
+    
+    // MARK: - Private Functions
  
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
@@ -264,7 +291,9 @@ public class EDTSCardShoppingType: UIView {
     private func setupUI() {
         setupBackground()
         setupLabel()
+        setupLabelFont()
         setupImage()
+        setupImageColor()
         
         let tapFirst = UITapGestureRecognizer(target: self, action: #selector(didTapTypeFirst))
         vTypeFirst.addGestureRecognizer(tapFirst)
@@ -322,15 +351,17 @@ public class EDTSCardShoppingType: UIView {
     }
     
     private func setupLabel() {
-        lblTitleTypeFirst.font = EDTSFont.H3.font
-        lblDescTypeFirst.font = EDTSFont.B4.Regular.font
-        lblTitleTypeSecond.font = EDTSFont.H3.font
-        lblDescTypeSecond.font = EDTSFont.B4.Regular.font
-        
         lblTitleTypeFirst.textColor = titleLabelColor
         lblDescTypeFirst.textColor = descLabelColor
         lblTitleTypeSecond.textColor = titleLabelColor
         lblDescTypeSecond.textColor = descLabelColor
+    }
+    
+    private func setupLabelFont() {
+        lblTitleTypeFirst.font = EDTSFont.H3.font
+        lblDescTypeFirst.font = EDTSFont.B4.Regular.font
+        lblTitleTypeSecond.font = EDTSFont.H3.font
+        lblDescTypeSecond.font = EDTSFont.B4.Regular.font
     }
     
     private func setupImage() {
@@ -341,12 +372,9 @@ public class EDTSCardShoppingType: UIView {
         ivTypeSecond.image = UIImage(named: "ic_xtra", in: bundleSecond, compatibleWith: nil)
     }
     
-    // MARK: - Public API
-    
-    public func setSelectedType(_ type: ShoppingType, animated: Bool = false) {
-        guard selectedType != type else { return }
-        selectedType = type
-        updateIndicatorState(animated: animated)
+    private func setupImageColor() {
+        ivTypeFirst.tintColor = iconColor
+        ivTypeSecond.tintColor = iconColor
     }
     
     // MARK: - Indicator handling
@@ -360,18 +388,6 @@ public class EDTSCardShoppingType: UIView {
         }
     }
     
-    @objc private func didTapTypeFirst() {
-        guard selectedType != .first else { return }
-        selectedType = .first
-        updateIndicatorState(animated: true)
-    }
-    
-    @objc private func didTapTypeSecond() {
-        guard selectedType != .second else { return }
-        selectedType = .second
-        updateIndicatorState(animated: true)
-    }
-    
     private func updateIndicatorState(animated: Bool) {
         updateIndicatorWidth()
         
@@ -381,10 +397,10 @@ public class EDTSCardShoppingType: UIView {
         switch selectedType {
         case .first:
             vIndicatorLeadingConstraint.constant = 0
-            indicatorColor = indicatorColorFirst
+            indicatorColor = firstndicatorColor
         case .second:
             vIndicatorLeadingConstraint.constant = halfWidth
-            indicatorColor = indicatorColorSecond
+            indicatorColor = secondIndicatorColor
         }
         
         let applyAnimatableChanges = { [weak self] in
@@ -421,4 +437,27 @@ public class EDTSCardShoppingType: UIView {
             applyColorChanges()
         }
     }
+    
+    // MARK: - Action
+    
+    @objc private func didTapTypeFirst() {
+        guard selectedType != .first else { return }
+        selectedType = .first
+        updateIndicatorState(animated: true)
+        
+        delegate?.didSelectShoppingType(isFirstActive: selectedType == .first, self)
+    }
+    
+    @objc private func didTapTypeSecond() {
+        guard selectedType != .second else { return }
+        selectedType = .second
+        updateIndicatorState(animated: true)
+        
+        delegate?.didSelectShoppingType(isFirstActive: selectedType == .first, self)
+    }
+}
+
+@MainActor
+public protocol EDTSCardShoppingTypeDelegate: AnyObject {
+    func didSelectShoppingType(isFirstActive: Bool, _ card: EDTSCardShoppingType)
 }

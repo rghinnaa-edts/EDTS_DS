@@ -94,7 +94,7 @@ card.descAttributedSecond = NSAttributedString(string: "Extra careful handling",
 | `titleFirst` | `String?` | Title text for the first pane; setting this clears `titleAttributedFirst` |
 | `titleAttributedFirst` | `NSAttributedString?` | Attributed variant of `titleFirst`; setting this clears `titleFirst` |
 | `descFirst` | `String?` | Description text for the first pane; setting this clears `descAttributedFirst` |
-| `descAttributedFirst` | `NSAttributedString?` | Attributed variant of `descFirst`; setting this clears `descFirst` (see known issue above) |
+| `descAttributedFirst` | `NSAttributedString?` | Attributed variant of `descFirst`; setting this clears `descFirst` |
 | `titleSecond` | `String?` | Title text for the second pane; setting this clears `titleAttributedSecond` |
 | `titleAttributedSecond` | `NSAttributedString?` | Attributed variant of `titleSecond`; setting this clears `titleSecond` |
 | `descSecond` | `String?` | Description text for the second pane; setting this clears `descAttributedSecond` |
@@ -128,7 +128,7 @@ card.descAttributedSecond = NSAttributedString(string: "Extra careful handling",
 | `titleFontName` | `String` | `""` | Custom font name for both title labels; falls back to system font if the name can't be resolved |
 | `titleFontSize` | `CGFloat` | `0` | Point size for both title labels; font changes only apply when this is `> 0` |
 | `titleFontWeight` | `String?` | `nil` (treated as `"regular"`) | Weight keyword used to resolve a system font weight when `titleFontName` can't be resolved or is empty |
-| `descFontName` | `String` | `""` | Custom font name for both description labels (see known issue above regarding `titleFontName`) |
+| `descFontName` | `String` | `""` | Custom font name for both description labels |
 | `descFontSize` | `CGFloat` | `0` | Point size for both description labels; font changes only apply when this is `> 0` |
 | `descFontWeight` | `String?` | `nil` (treated as `"regular"`) | Weight keyword used to resolve a system font weight for the description labels |
 
@@ -155,7 +155,7 @@ card.descAttributedSecond = NSAttributedString(string: "Extra careful handling",
 ## Animation
 
 Triggered whenever the selection changes (via tap or `setSelectedType(_:animated:)`).
-/ea
+
 | Aspect | Value | Notes |
 |---|---|---|
 | Duration | `0.4s` | Spring-based, applies to the indicator's position and color |
