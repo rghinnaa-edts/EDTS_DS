@@ -448,5 +448,5 @@ public class EDTSToggle: UIView {
 
 @MainActor
 public protocol EDTSToggleDelegate: AnyObject {
-    func didTapToggle(active isActive: Bool, _ alertbox: EDTSToggle)
+    func didTapToggle(active isActive: Bool, _ toggle: EDTSToggle)
 }
