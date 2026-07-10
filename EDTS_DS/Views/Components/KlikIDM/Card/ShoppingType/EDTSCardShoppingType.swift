@@ -58,7 +58,7 @@ public class EDTSCardShoppingType: UIView {
     @IBInspectable public var descAttributedFirst: NSAttributedString? {
         didSet {
             lblDescTypeFirst.text = nil
-            lblDescTypeFirst.attributedText = descAttributedSecond
+            lblDescTypeFirst.attributedText = descAttributedFirst
         }
     }
     
