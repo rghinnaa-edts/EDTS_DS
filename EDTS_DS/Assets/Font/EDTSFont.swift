@@ -7,18 +7,6 @@
 
 import UIKit
 
-public enum FontWeight: String {
-    case ultralight = "ultralight"
-    case thin = "thin"
-    case light = "light"
-    case regular = "regular"
-    case medium = "medium"
-    case semibold = "semibold"
-    case bold = "bold"
-    case heavy = "heavy"
-    case black = "black"
-}
-
 public struct EDTSFont {
     
     public struct FontStyle {
@@ -68,6 +56,8 @@ public struct EDTSFont {
     
     public static let D1 = BaseFont.semibold(size: 28, lineHeight: 30)
     public static let D2 = BaseFont.semibold(size: 24, lineHeight: 26)
+    public static let D3 = BaseFont.semibold(size: 24, lineHeight: 26)
+    public static let D4 = BaseFont.semibold(size: 20, lineHeight: 22)
     
     public static let H1 = BaseFont.semibold(size: 16, lineHeight: 18)
     public static let H2 = BaseFont.semibold(size: 14, lineHeight: 16)
@@ -87,6 +77,7 @@ public struct EDTSFont {
     }
     
     public struct B3 {
+        public static let Bold = BaseFont.bold(size: 12, lineHeight: 16)
         public static let Semibold = BaseFont.semibold(size: 12, lineHeight: 16)
         public static let Medium = BaseFont.medium(size: 12, lineHeight: 16)
         public static let Regular = BaseFont.regular(size: 12, lineHeight: 16)
@@ -95,7 +86,13 @@ public struct EDTSFont {
     public struct B4 {
         public static let Bold = BaseFont.bold(size: 10, lineHeight: 14)
         public static let Semibold = BaseFont.semibold(size: 10, lineHeight: 14)
+        public static let Medium = BaseFont.medium(size: 10, lineHeight: 14)
         public static let Regular = BaseFont.regular(size: 10, lineHeight: 14)
+    }
+    
+    public struct B5 {
+        public static let Medium = BaseFont.bold(size: 8, lineHeight: 12)
+        public static let Regular = BaseFont.regular(size: 8, lineHeight: 12)
     }
 
     public struct P1 {
@@ -109,8 +106,42 @@ public struct EDTSFont {
     }
     
     public struct Button {
-        public static let Big = BaseFont.semibold(size: 14, lineHeight: 24)
+        public static let Large = BaseFont.semibold(size: 14, lineHeight: 24)
         public static let Medium = BaseFont.semibold(size: 14, lineHeight: 16)
         public static let Small = BaseFont.semibold(size: 12, lineHeight: 16)
+    }
+}
+
+// MARK: - Font Weight
+
+public enum FontWeight: String {
+    case ultralight = "ultralight"
+    case thin = "thin"
+    case light = "light"
+    case regular = "regular"
+    case medium = "medium"
+    case semibold = "semibold"
+    case bold = "bold"
+    case heavy = "heavy"
+    case black = "black"
+}
+
+public func setupFontWeight(from value: String) -> UIFont.Weight {
+    let normalized = value
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+        .lowercased()
+    
+    let weight = FontWeight(rawValue: normalized) ?? .regular
+    
+    switch weight {
+    case .ultralight: return .ultraLight
+    case .thin:       return .thin
+    case .light:      return .light
+    case .regular:    return .regular
+    case .medium:     return .medium
+    case .semibold:   return .semibold
+    case .bold:       return .bold
+    case .heavy:      return .heavy
+    case .black:      return .black
     }
 }
