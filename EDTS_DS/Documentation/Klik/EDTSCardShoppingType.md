@@ -160,10 +160,14 @@ Applied by `setupDefaultValue()` at initialization, before any consumer-provided
 
 ---
 
-## Behavior Notes
+## Delegate
 
-- Tapping either pane (`vTypeFirst` / `vTypeSecond`) switches the selection with animation; tapping the already-selected pane is a no-op.
-- The indicator's width is always half of the container's width, recalculated on every `layoutSubviews()` call.
+```swift
+@MainActor
+public protocol EDTSCardShoppingTypeDelegate: AnyObject {
+    func didSelectShoppingType(isFirstActive: Bool, _ card: EDTSCardShoppingType)
+}
+```
 
 ---
 
@@ -180,6 +184,13 @@ Triggered whenever the selection changes (via tap or `setSelectedType(_:animated
 | Indicator Position | `0` → `containerView.bounds.width / 2` | Leading constraint slides the indicator to the selected half |
 | Indicator Color | `firstIndicatorColor` → `secondIndicatorColor` (or reverse) | Animated alongside the position change |
 | Label/Icon Tint | Inactive color → `activeTintColor` (or reverse) | Applied via a separate `0.25s` cross-dissolve transition |
+
+---
+
+## Behavior Notes
+
+- Tapping either pane (`vTypeFirst` / `vTypeSecond`) switches the selection with animation; tapping the already-selected pane is a no-op.
+- The indicator's width is always half of the container's width, recalculated on every `layoutSubviews()` call.
 
 ---
 
