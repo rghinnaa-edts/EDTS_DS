@@ -224,7 +224,7 @@ public class EDTSCardShoppingType: UIView {
     // MARK: - Private Variables
     
     private var containerColor: UIColor? = EDTSColor.grey20
-    private var firstndicatorColor: UIColor? = EDTSColor.xpress
+    private var firstIndicatorColor: UIColor? = EDTSColor.xpress
     private var secondIndicatorColor: UIColor? = EDTSColor.xtra
     
     private var iconColor: UIColor? = EDTSColor.grey60
@@ -326,7 +326,7 @@ public class EDTSCardShoppingType: UIView {
         guard descFontSize > 0 else { return }
         let weight = setupFontWeight(from: descFontWeight ?? "regular")
         
-        if !titleFontName.isEmpty {
+        if !descFontName.isEmpty {
             lblDescTypeFirst.font = UIFont(name: descFontName, size: descFontSize) ?? UIFont.systemFont(ofSize: descFontSize, weight: weight)
             lblDescTypeSecond.font = UIFont(name: descFontName, size: descFontSize) ?? UIFont.systemFont(ofSize: descFontSize, weight: weight)
         } else {
@@ -401,7 +401,7 @@ public class EDTSCardShoppingType: UIView {
         switch selectedType {
         case .first:
             vIndicatorLeadingConstraint.constant = 0
-            indicatorColor = firstndicatorColor
+            indicatorColor = firstIndicatorColor
         case .second:
             vIndicatorLeadingConstraint.constant = halfWidth
             indicatorColor = secondIndicatorColor
