@@ -144,11 +144,26 @@ card.descAttributedSecond = NSAttributedString(string: "Extra careful handling",
 
 ---
 
+### Default Values
+ 
+Applied by `setupDefaultValue()` at initialization, before any consumer-provided values are set. These are the values the card renders if the corresponding property is left untouched.
+ 
+| Property | Default Value | Notes |
+|---|---|---|
+| `iconFirst` | `ic_xpress` | Loaded from the component's own bundle |
+| `titleFirst` | `"Belanja Xpress"` | Plain text, not attributed |
+| `descFirst` | `"1 Jam Sampai"` | Plain text, not attributed |
+| `iconSecond` | `ic_xtra` | Loaded from the component's own bundle |
+| `titleSecond` | `"Belanja Xtra"` | Plain text, not attributed |
+| `descSecond` | `"Tiba 1-3 hari"` | Plain text, not attributed |
+| Selected pane | `.first` | Initial `selectedType`; indicator starts aligned to the first pane |
+
+---
+
 ## Behavior Notes
 
 - Tapping either pane (`vTypeFirst` / `vTypeSecond`) switches the selection with animation; tapping the already-selected pane is a no-op.
 - The indicator's width is always half of the container's width, recalculated on every `layoutSubviews()` call.
-- There is no delegate protocol for this component — selection changes (whether triggered by a tap or by calling `setSelectedType`) are not reported back to any external observer.
 
 ---
 
