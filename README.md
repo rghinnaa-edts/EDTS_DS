@@ -25,7 +25,7 @@ EDTS_DS is an iOS SDK containing components and animations designed to help deve
 - [EDTSTextfield](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSTextfield.md)
 - [EDTSToast](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSToast.md)
 - [EDTSToggle](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSToggle.md)
-- [EDTSTooltip](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSTooltipmd)
+- [EDTSTooltip](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSTooltip.md)
 
 ### Klik
 - [EDTSCardMyCoupon](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/Klik/EDTSCardMyCoupon.md)
