@@ -14,10 +14,10 @@ EDTS_DS is an iOS SDK containing components and animations designed to help deve
 
 ### General
 - [EDTSAlertBox](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSAlertbox.md)
-- [EDTSBadge](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSBBadge.md)
+- [EDTSBadge](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSBadge.md)
 - [EDTSButton](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButton.md)
 - [EDTSButtonIcon](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButtonIcon.md)
-- [EDTSButtonStepper](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSBButtonStepper.md)
+- [EDTSButtonStepper](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButtonStepper.md)
 - [EDTSCheckbox](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSCheckbox.md)
 - [EDTSChip](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSChip.md)
 - [EDTSCoachmark](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSCoachmark.md)
