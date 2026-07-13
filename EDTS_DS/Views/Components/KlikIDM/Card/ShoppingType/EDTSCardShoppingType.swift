@@ -70,7 +70,7 @@ public class EDTSCardShoppingType: UIView {
     
     @IBInspectable public var indicatorColorFirst: UIColor? {
         didSet {
-            firstndicatorColor = indicatorColorFirst
+            firstIndicatorColor = indicatorColorFirst
             updateIndicatorState(animated: false)
         }
     }
