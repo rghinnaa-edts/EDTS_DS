@@ -6,8 +6,8 @@
 
 | Feature / Variation | Description |
 | -------------------- | ----------- |
-| **Single-Lap** | Lorem ipsum dolor sit amet |
-| **Multi-Lap** | Lorem ipsum dolor sit amet |
+| **Single-Lap** | ![Single-Lap Progress Tracker](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1783924407/progress_tracker_limit_100_w6rw42.gif) |
+| **Multi-Lap** | ![Multi-Lap Progress Tracker](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1783924410/progress_tracker_limit_500_dte4bz.gif) |
 
 ## Basic Usage
 

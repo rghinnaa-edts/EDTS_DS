@@ -685,6 +685,7 @@ public class EDTSProgressTracker: UIView {
     // MARK: - Setup Indicator
     private func setupIndicator() {
         indicatorView.isHidden = !isHasIndicator
+        invalidateIntrinsicContentSize()
     }
     
     private func setupIndicatorBgColor() {
@@ -759,6 +760,8 @@ public class EDTSProgressTracker: UIView {
         let shouldShowBadge = isComplete && isHasBadge && limitValue > maxValue
         badgeView.isHidden = !shouldShowBadge
         lblBadge.isHidden = !shouldShowBadge
+        
+        invalidateIntrinsicContentSize()
     }
     
     private func setupBadgeBgColor() {
@@ -992,7 +995,6 @@ public class EDTSProgressTracker: UIView {
         
         let cappedValue = min(targetValue, limitValue)
         
-//        let previousValue = lastProcessedValue
         let jumpRatio = (cappedValue - lastProcessedValue) / maxValue
         let isSpam = compressed || jumpRatio > 2
         lastProcessedValue = cappedValue
