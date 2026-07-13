@@ -1,6 +1,6 @@
-# Badge
+# EDTSBadge
 
-The Badge component is a customable Stepper component for incrementing and decrementing numeric values through an intuitive, interactive interface.
+The `EDTSBadge` component is a customable Stepper component for incrementing and decrementing numeric values through an intuitive, interactive interface.
 
 ## Parameters
 
