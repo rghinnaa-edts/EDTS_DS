@@ -1,5 +1,5 @@
-# Button Stepper
-The Button Stepper component is a customable Stepper component for incrementing and decrementing numeric values through an intuitive, interactive interface.
+# EDTSButtonStepper
+The `EDTSButtonStepper` component is a customable Stepper component for incrementing and decrementing numeric values through an intuitive, interactive interface.
 
 ## Preview
 | Type | Variant `Blue` | Variant `White` |
