@@ -20,7 +20,6 @@
                 <outlet property="badgeWidthConstraint" destination="TSA-HC-YMR" id="y0e-5P-r3m"/>
                 <outlet property="bottomFillViewConstraint" destination="7M9-Sj-kld" id="03h-xq-amK"/>
                 <outlet property="bottomFullTrackViewConstraint" destination="FY7-1c-c3W" id="dl6-rD-DFW"/>
-                <outlet property="bottomPaddingConstraint" destination="PS5-39-tKw" id="Zyf-Sv-kXr"/>
                 <outlet property="containerView" destination="iN0-l3-epB" id="TIj-Q4-gra"/>
                 <outlet property="fillView" destination="sCv-6m-XQJ" id="eSU-am-aqi"/>
                 <outlet property="fillWidthConstraint" destination="gqi-bz-mwU" id="bqC-eJ-Hnk"/>
@@ -36,14 +35,11 @@
                 <outlet property="lblBadge" destination="CzA-Fy-CsP" id="W0J-vn-24z"/>
                 <outlet property="leadingFillViewConstraint" destination="nI8-xu-m8G" id="THm-Om-foD"/>
                 <outlet property="leadingFullTrackViewConstraint" destination="Nbm-ri-EXT" id="9VC-pn-rtF"/>
-                <outlet property="leadingPaddingConstraint" destination="iAG-Se-z8L" id="ENo-zX-RxI"/>
                 <outlet property="topFillViewConstraint" destination="OIV-VF-oQg" id="sQF-pE-I9k"/>
                 <outlet property="topFullTrackViewConstraint" destination="gs7-Gh-YTJ" id="6No-Lw-odh"/>
-                <outlet property="topPaddingConstraint" destination="XCx-Vr-cVR" id="cRc-9w-aeR"/>
                 <outlet property="trackHeightConstraint" destination="aA0-ll-ucO" id="baH-x0-p0A"/>
                 <outlet property="trackView" destination="Rk7-a6-4U5" id="Uru-Dp-PgD"/>
                 <outlet property="trailingFullTrackViewConstraint" destination="CL8-s6-dWn" id="d0K-CV-5Nf"/>
-                <outlet property="trailingPaddingConstraint" destination="6QK-Zb-fVR" id="sie-lj-0Nr"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
