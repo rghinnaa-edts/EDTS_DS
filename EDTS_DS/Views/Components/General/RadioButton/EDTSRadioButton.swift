@@ -44,6 +44,7 @@ public class EDTSRadioButton: UIView {
             lblTitle.attributedText = nil
             lblTitle.text = title
             lblTitle.isHidden = title == nil || title?.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
             invalidateIntrinsicContentSize()
         }
     }
@@ -53,6 +54,7 @@ public class EDTSRadioButton: UIView {
             lblTitle.text = nil
             lblTitle.attributedText = titleAttributed
             lblTitle.isHidden = titleAttributed == nil || titleAttributed?.string.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
             invalidateIntrinsicContentSize()
         }
     }
@@ -92,6 +94,7 @@ public class EDTSRadioButton: UIView {
             lblBody.attributedText = nil
             lblBody.text = desc
             lblBody.isHidden = desc == nil || desc?.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
             invalidateIntrinsicContentSize()
         }
     }
@@ -101,6 +104,7 @@ public class EDTSRadioButton: UIView {
             lblBody.text = nil
             lblBody.attributedText = descAttributed
             lblBody.isHidden = descAttributed == nil || descAttributed?.string.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
             invalidateIntrinsicContentSize()
         }
     }
