@@ -402,6 +402,7 @@ public class EDTSRadioButton: UIView {
     
     private func setupRadioButtonState(_ isActive: Bool = false) {
         bulletContainerView.isUserInteractionEnabled = resolvedRadioButtonState != .disabled
+        vStackContainer.isUserInteractionEnabled = resolvedRadioButtonState != .disabled
         
         switch resolvedRadioButtonState {
         case .`default`:
@@ -496,6 +497,7 @@ public class EDTSRadioButton: UIView {
     
     private func setupIconGestures() {
         bulletContainerView.isUserInteractionEnabled = true
+        vStackContainer.isUserInteractionEnabled = true
         
         let bulletContainerViewPress = UILongPressGestureRecognizer(
             target: self,
@@ -503,6 +505,13 @@ public class EDTSRadioButton: UIView {
         )
         bulletContainerViewPress.minimumPressDuration = 0
         bulletContainerView.addGestureRecognizer(bulletContainerViewPress)
+        
+        let vStackContainerPress = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(onLongPressBulletContainerView(_:))
+        )
+        vStackContainerPress.minimumPressDuration = 0
+        vStackContainer.addGestureRecognizer(vStackContainerPress)
         
     }
     

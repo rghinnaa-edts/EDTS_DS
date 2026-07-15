@@ -372,6 +372,7 @@ public class EDTSCheckbox: UIView {
     
     private func setupCheckboxState(_ isActive: Bool = false) {
         ivIconContainerView.isUserInteractionEnabled = resolvedCheckboxState != .disabled
+        vStackContainer.isUserInteractionEnabled = resolvedCheckboxState != .disabled
         
         switch resolvedCheckboxState {
         case .default:
@@ -465,6 +466,7 @@ public class EDTSCheckbox: UIView {
     
     private func setupIconGestures() {
         ivIconContainerView.isUserInteractionEnabled = true
+        vStackContainer.isUserInteractionEnabled = true
         
         let ivIconContainerViewPress = UILongPressGestureRecognizer(
             target: self,
@@ -472,6 +474,13 @@ public class EDTSCheckbox: UIView {
         )
         ivIconContainerViewPress.minimumPressDuration = 0
         ivIconContainerView.addGestureRecognizer(ivIconContainerViewPress)
+        
+        let vStackContainerPress = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(onLongPressBulletContainerView(_:))
+        )
+        vStackContainerPress.minimumPressDuration = 0
+        vStackContainer.addGestureRecognizer(vStackContainerPress)
         
     }
     
