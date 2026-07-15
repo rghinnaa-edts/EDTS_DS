@@ -9,6 +9,10 @@
 | **Single-Lap** | ![Single-Lap Progress Tracker](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1783924407/progress_tracker_limit_100_w6rw42.gif) |
 | **Multi-Lap** | ![Multi-Lap Progress Tracker](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1783924410/progress_tracker_limit_500_dte4bz.gif) |
 
+## Anatomy
+
+![Progress Tracker Anatomy](w_500,c_scale,q_auto,f_auto/)
+
 ## Basic Usage
 
 ### 1. Add to Layout
@@ -65,32 +69,41 @@ progressTracker.value = 45
 | `trackTintColorStart` | `UIColor?` | `nil` | Start color for track gradient background |
 | `trackTintColorEnd` | `UIColor?` | `nil` | End color for track gradient background |
 | `trackColorOrientation` | `String?` | `"horizontal"` | Gradient direction for track: `"horizontal"` or `"vertical"` |
-| `trackHeight` | `CGFloat` | `-1.0` (unset) | Height of the track; only applied when `>= 0` |
-| `trackCornerRadius` | `CGFloat` | `-1.0` (unset) | Corner radius for track, full-track, and fill views; when `< 0`, corners are fully circular (pill shape) |
-| `trackPaddingTop` | `CGFloat` | `-1.0` (unset) | Top inset applied to the full-track and fill views; only applied when `>= 0` |
-| `trackPaddingBottom` | `CGFloat` | `-1.0` (unset) | Bottom inset applied to the full-track and fill views; only applied when `>= 0` |
-| `trackPaddingLeading` | `CGFloat` | `-1.0` (unset) | Leading inset applied to the full-track and fill views; only applied when `>= 0` |
-| `trackPaddingTrailing` | `CGFloat` | `-1.0` (unset) | Trailing inset applied to the full-track view; only applied when `>= 0` |
+| `trackHeight` | `CGFloat` | `-1.0` | Height of the track; only applied when `>= 0` |
+| `trackCornerRadius` | `CGFloat` | `-1.0` | Corner radius for track, full-track, and fill views; when `< 0`, corners are fully circular (pill shape) |
+| `trackPaddingTop` | `CGFloat` | `-1.0` | Top inset applied to the full-track and fill views; only applied when `>= 0` |
+| `trackPaddingBottom` | `CGFloat` | `-1.0` | Bottom inset applied to the full-track and fill views; only applied when `>= 0` |
+| `trackPaddingLeading` | `CGFloat` | `-1.0` | Leading inset applied to the full-track and fill views; only applied when `>= 0` |
+| `trackPaddingTrailing` | `CGFloat` | `-1.0` | Trailing inset applied to the full-track view; only applied when `>= 0` |
 
-### Fill Properties
-
-| Property Name | Type | Default | Description |
-| -------------- | ---- | ------- | ----------- |
-| `fillTintColor` | `UIColor?` | `clear` | Fill background color (ignored if gradient is set) |
-| `fillTintColorStart` | `UIColor?` | `skyblueLeading` | Start color for fill gradient background |
-| `fillTintColorEnd` | `UIColor?` | `skyblueTrailing` | End color for fill gradient background |
-| `fillColorOrientation` | `String?` | `"horizontal"` | Gradient direction for fill: `"horizontal"` or `"vertical"` |
-
-### Full Track (Completed Lap) Properties
+### Track Fill Properties
 
 | Property Name | Type | Default | Description |
 | -------------- | ---- | ------- | ----------- |
-| `fullTrackTintColor` | `UIColor?` | `nil` | Background color shown once a lap is completed (ignored if gradient is set) |
-| `fullTrackTintColorStart` | `UIColor?` | `nil` | Start color for full-track gradient background |
-| `fullTrackTintColorEnd` | `UIColor?` | `nil` | End color for full-track gradient background |
-| `fullTrackColorOrientation` | `String?` | `"horizontal"` | Gradient direction for full-track: `"horizontal"` or `"vertical"` |
+| `trackFillTintColor` | `UIColor?` | `clear` | Fill background color (ignored if gradient is set) |
+| `trackFillTintColorStart` | `UIColor?` | `skyblueLeading` | Start color for fill gradient background |
+| `trackFillTintColorEnd` | `UIColor?` | `skyblueTrailing` | End color for fill gradient background |
+| `trackFillColorOrientation` | `String?` | `"horizontal"` | Gradient direction for fill: `"horizontal"` or `"vertical"` |
+
+### Track Full (Completed Lap) Properties
+
+| Property Name | Type | Default | Description |
+| -------------- | ---- | ------- | ----------- |
+| `trackFullTintColor` | `UIColor?` | `nil` | Background color shown once a lap is completed (ignored if gradient is set) |
+| `trackFullTintColorStart` | `UIColor?` | `nil` | Start color for full-track gradient background |
+| `trackFullTintColorEnd` | `UIColor?` | `nil` | End color for full-track gradient background |
+| `trackFullColorOrientation` | `String?` | `"horizontal"` | Gradient direction for full-track: `"horizontal"` or `"vertical"` |
 
 > **Note:** The full-track layer (and its fade-in animation) is only shown between laps when `limitValue > maxValue` **and** a full-track color (solid or gradient) is set.
+
+### Inner Shadow Properties
+
+| Property Name | Type | Default | Description |
+| -------------- | ---- | ------- | ----------- |
+| `trackInnerShadowOpacity` | `Float` | `0.0` | Inner shadow opacity for the track |
+| `trackInnerShadowRadius` | `CGFloat` | `0.0` | Inner shadow blur radius for the track |
+| `trackInnerShadowOffset` | `CGSize` | `.zero` | Inner shadow offset for the track |
+| `trackInnerShadowColor` | `UIColor?` | `black` | Inner shadow color for the track |
 
 ### Indicator Properties
 
@@ -102,15 +115,15 @@ progressTracker.value = 45
 | `indicatorTintColorEnd` | `UIColor?` | `skyblueTrailing` | End color for indicator gradient background |
 | `indicatorColorOrientation` | `String?` | `"horizontal"` | Gradient direction for indicator: `"horizontal"` or `"vertical"` |
 | `indicatorSize` | `CGFloat` | `8` | Width/height of the indicator dot |
-| `indicatorCornerRadius` | `CGFloat` | `-1.0` (unset) | Corner radius of the indicator; when `< 0`, the indicator is fully circular |
+| `indicatorCornerRadius` | `CGFloat` | `-1.0` | Corner radius of the indicator; when `< 0`, the indicator is fully circular |
 
 ### Badge Properties
 
 | Property Name | Type | Default | Description |
 | -------------- | ---- | ------- | ----------- |
 | `isHasBadge` | `Bool` | `false` | Shows/hides the lap-count badge (also requires `limitValue > maxValue` to display) |
-| `badgeLabel` | `String?` | `nil` | Custom badge text (overrides the auto-generated `xN` lap label) |
-| `badgeLabelAttributed` | `NSAttributedString?` | `nil` | Attributed badge text (overrides `badgeLabel` and the auto-generated `xN` lap label) |
+| `badgeLabel` | `String?` | `nil` | Custom badge text |
+| `badgeLabelAttributed` | `NSAttributedString?` | `nil` | Attributed badge text |
 | `badgeLabelColor` | `UIColor?` | `white` | Badge label text color |
 | `badgeFontName` | `String` | `""` (system font) | Custom font name for badge label (falls back to system font if not found) |
 | `badgeFontSize` | `CGFloat` | `8` | Font size for badge label |
@@ -120,22 +133,13 @@ progressTracker.value = 45
 | `badgeTintColorEnd` | `UIColor?` | `skyblueTrailing` | End color for badge gradient background |
 | `badgeColorOrientation` | `String?` | `"horizontal"` | Gradient direction for badge: `"horizontal"` or `"vertical"` |
 | `badgeSize` | `CGFloat` | `16` | Minimum width/height of the badge (grows to fit text + padding) |
-| `badgeCornerRadius` | `CGFloat` | `-1.0` (unset) | Corner radius of the badge; when `< 0`, the badge is fully circular |
+| `badgeCornerRadius` | `CGFloat` | `-1.0` | Corner radius of the badge; when `< 0`, the badge is fully circular |
 | `badgePaddingTop` | `CGFloat` | `2` | Top inset inside the badge |
 | `badgePaddingBottom` | `CGFloat` | `2` | Bottom inset inside the badge |
 | `badgePaddingLeading` | `CGFloat` | `4` | Leading inset inside the badge |
 | `badgePaddingTrailing` | `CGFloat` | `4` | Trailing inset inside the badge |
 
 > **Note:** If `badgeLabel` and `badgeLabelAttributed` are both left `nil`, the badge label is generated automatically on each completed lap (`x1`, `x2`, `x3`, ...). Setting either property disables the auto-generated lap text.
-
-### Inner Shadow Properties
-
-| Property Name | Type | Default | Description |
-| -------------- | ---- | ------- | ----------- |
-| `trackInnerShadowOpacity` | `Float` | `0.0` | Inner shadow opacity for the track |
-| `trackInnerShadowRadius` | `CGFloat` | `0.0` | Inner shadow blur radius for the track |
-| `trackInnerShadowOffset` | `CGSize` | `.zero` | Inner shadow offset for the track |
-| `trackInnerShadowColor` | `UIColor?` | `black` | Inner shadow color for the track |
 
 ## Theme-Dependent Default Styling
 
