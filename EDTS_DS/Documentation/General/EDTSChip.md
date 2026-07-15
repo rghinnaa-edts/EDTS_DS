@@ -191,4 +191,6 @@ chip.labelColorActive = nil         // Active: .white (falls back to inactive â†
 - The fallback system ensures that active state can inherit from inactive state, providing flexible customization
 - Shadow properties default to zero values when not set
 
+---
+
 *For further customization, you can ask UX Engineer or inherit `EDTSChip` and override its methods, or add additional functionality as required.*

@@ -271,4 +271,6 @@ public protocol EDTSToastDelegate: AnyObject {
 - Only one toast can be displayed at a time
 - Showing a new toast automatically removes the currently displayed toast before presenting the new one
 
+---
+
 *For further customization, you can ask UX Engineer or inherit `EDTSToast` and override its methods, or add additional functionality as required.*

@@ -206,4 +206,6 @@ public enum EDTSCheckboxType: String {
 - Setting `checkboxType` has no effect when a custom `icon` is provided — the custom icon always takes precedence
 - The `disabled` state automatically disables user interaction on the box container
 
+---
+
 *For further customization, you can ask UX Engineer or inherit `EDTSCheckbox` and override its methods, or add additional functionality as required.*
