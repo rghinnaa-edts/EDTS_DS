@@ -1,19 +1,19 @@
 //
-//  StampCardCell.swift
-//  Poinku-DS-SB
+//  StampCardSmall.swift
+//  Poinku-DS
 //
-//  Created by Rizka Ghinna Auliya on 10/02/25.
+//  Created by Rizka Ghinna Auliya on 06/03/25.
 //
 
 import UIKit
 
-public class EDTSCardStampCell: UICollectionViewCell {
+public class StampCardSmall: UICollectionViewCell {
     
     @IBOutlet var stampCard: UIView!
     @IBOutlet var ivStampCard: UIImageView!
     @IBOutlet var vQuantity: UIView!
-    @IBOutlet var lblQuantity: UILabel!
     @IBOutlet var ivQuantity: UIImageView!
+    @IBOutlet var lblQuantity: UILabel!
     @IBOutlet var lblStampCard: UILabel!
     @IBOutlet var vStamp: UIView!
     @IBOutlet var lblStamp: UILabel!
@@ -29,7 +29,7 @@ public class EDTSCardStampCell: UICollectionViewCell {
     public var isHotProduct: Bool = false
     public var isDiscount: Bool = false
     public var discountImp: Int = 0
-    public var size: Size = .fullSize
+    public var size: Size = .stampPage
     
     public enum Size {
         case fullSize
@@ -37,48 +37,20 @@ public class EDTSCardStampCell: UICollectionViewCell {
         case stampPage
     }
     
-    public struct Product {
-        let id: String
-        let title: String
-        let imageURL: String
-        let quantity: Int
-        let stampCount: Int
-        let price: Int
-        let isNew: Bool
-        let isHotProduct: Bool
-        let isDiscount: Bool
-        let discountImp: Int
-        let Size: Size
-    }
-    
-    override public init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         setupStampCard()
     }
 
-    required public init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupStampCard()
     }
     
-    override public func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
         
         setupUI()
-    }
-    
-    public func configure(with product: Product) {
-        id = product.id
-        title = product.title
-        imageURL = product.imageURL
-        quantity = product.quantity
-        stampCount = product.stampCount
-        price = product.price
-        isNew = product.isNew
-        isHotProduct = product.isHotProduct
-        isDiscount = product.isDiscount
-        discountImp = product.discountImp
-        size = product.Size
     }
     
     public func calculateHeight(for width: CGFloat) -> CGFloat {
@@ -98,7 +70,7 @@ public class EDTSCardStampCell: UICollectionViewCell {
 
     private func setupStampCard() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("EDTSCardStampCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("StampCardSmall", owner: self, options: nil),
            let view = nib.first as? UIView {
             stampCard = view
             stampCard.frame = bounds
@@ -107,13 +79,13 @@ public class EDTSCardStampCell: UICollectionViewCell {
             
             setupUI()
         } else {
-            print("Failed to load StampCard XIB")
+            print("Failed to load StampCardSmall XIB")
         }
     }
     
     private func setupUI() {
         UIStampCard()
-        UICoupon()
+        UIQuantity()
         UIStamp()
 //        UIRibbonHotProduct()
 //        UIRibbonNew()
@@ -124,15 +96,8 @@ public class EDTSCardStampCell: UICollectionViewCell {
         stampCard.layer.masksToBounds = true
         
         stampCard.backgroundColor = .white
-        stampCard.layer.shadowColor = UIColor.black.cgColor
-        stampCard.layer.shadowOpacity = 0.15
-        stampCard.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-        stampCard.layer.shadowRadius = 3.0
-        stampCard.layer.masksToBounds = false
-        
-        vQuantity.layer.cornerRadius = 8
-        vQuantity.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        vQuantity.clipsToBounds = true
+        stampCard.layer.borderWidth = 1
+        stampCard.layer.borderColor = EDTSColor.blue30.cgColor
         
         lblStampCard.textColor = EDTSColor.grey70
         lblStampCard.font = EDTSFont.B3.Regular.font
@@ -140,17 +105,23 @@ public class EDTSCardStampCell: UICollectionViewCell {
         btnExchange.titleLabel?.text = "Tukar Stamp"
         btnExchange.backgroundColor = EDTSColor.blue30
         btnExchange.layer.cornerRadius = 4
-        btnExchange.titleLabel?.textColor = EDTSColor.white
+        btnExchange.titleLabel?.textColor = .white
         btnExchange.titleLabel?.font = EDTSFont.Button.Small.font
         
-        lblStampCard.text = "Diskon Rp2.000 Kellogg’s Frosted Flakes"
+        lblStampCard.text = "Diskon Rp2.000 Lifebuoy Red Fresh"
+//        ivStampCard.image = UIImage(named: "img_product")
     }
     
-    private func UICoupon() {
-        if quantity > 10 && quantity < 0 {
-            ivQuantity.image = UIImage(named: "product-empty")
-        }
+    private func UIQuantity() {
+        vQuantity.layer.cornerRadius = 8
+        vQuantity.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        vQuantity.clipsToBounds = true
         
+        ivQuantity.image = if quantity < 10 && quantity > 0 {
+            UIImage(named: "exclamation")
+        } else {
+            UIImage(named: "img_product")
+        }
         ivQuantity.image = ivQuantity.image?.withRenderingMode(.alwaysTemplate)
         
         ivQuantity.tintColor = if quantity < 10 && quantity > 0 {

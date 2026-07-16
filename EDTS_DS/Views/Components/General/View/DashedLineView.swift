@@ -8,7 +8,7 @@
 import UIKit
 
 @IBDesignable
-class DashedLineView: UIView {
+public class DashedLineView: UIView {
     
     private let shapeLayer = CAShapeLayer()
     
@@ -47,7 +47,7 @@ class DashedLineView: UIView {
         layer.addSublayer(shapeLayer)
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         let path = CGMutablePath()

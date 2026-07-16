@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LiquidGlassBackgroundView: UIView {
+public class LiquidGlassBackgroundView: UIView {
     private var blurView: UIVisualEffectView
     private let gradientOverlay = CAGradientLayer()
     private let gradientBorder = CAGradientLayer()
@@ -61,7 +61,7 @@ class LiquidGlassBackgroundView: UIView {
         setupGradientStroke()
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         gradientOverlay.frame = blurView.bounds
         gradientBorder.frame = blurView.bounds

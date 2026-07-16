@@ -187,7 +187,6 @@ extension UIView {
         guard let container = superview else { return }
         
         let circular = CAShapeLayer()
-        let center = CGPoint(x: frame.midX, y: frame.midY)
         let startRect = CGRect(x: frame.midX - 1, y: frame.midY - 1, width: 2, height: 2)
         let endRect = CGRect(x: frame.midX - size/2, y: frame.midY - size/2, width: size, height: size)
         

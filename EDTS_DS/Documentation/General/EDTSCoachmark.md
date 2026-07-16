@@ -1,5 +1,5 @@
-# Coachmark
-The `Coachmark` component is a visual overlay element that helps guide users through the app's features and functionality.
+# EDTSCoachmark
+The `EDTSCoachmark` component is a visual overlay element that helps guide users through the app's features and functionality.
 
 ## Features
 -  Customizable coachmark UI implementation
@@ -57,8 +57,8 @@ The `Coachmark` component is a visual overlay element that helps guide users thr
 | `isHideSpotlight`         | For showing the coachmark without spotlight                  | `Bool`              | `false`             |
 
 ## Installation
-To use the `Coachmark` component, please follow this step.
-For now, It's available only when you add the coachmark class file of swift and XIB into your project. It placed at `KlikIDM_DS/Views/Components/General/Coachmark`
+To use the `EDTSCoachmark` component, please follow this step.
+For now, It's available only when you add the coachmark class file of swift and XIB into your project. It placed at `EDTS_DS/Views/Components/General/Coachmark`
 - Add file EDTSCoachmark.swift and EDTSCoachmark.XIB into your project
 
 ## Usage
@@ -116,4 +116,4 @@ Call function inside main thread
 ```
 * * *
 
-For further customization or to extend this component, you can ask UX Engineer or Inherit the `Coachmark` and override its methods or add additional functionality as required.
+For further customization or to extend this component, you can ask UX Engineer or Inherit the `EDTSCoachmark` and override its methods or add additional functionality as required.
