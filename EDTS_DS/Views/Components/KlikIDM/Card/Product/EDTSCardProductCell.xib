@@ -159,7 +159,7 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="PG9-Wh-rcq">
                                             <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="12"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-point" translatesAutoresizingMaskIntoConstraints="NO" id="HYl-CJ-r65">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_point" translatesAutoresizingMaskIntoConstraints="NO" id="HYl-CJ-r65">
                                                     <rect key="frame" x="0.0" y="0.0" width="12" height="12"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="12" id="j17-vl-uaN"/>
@@ -185,7 +185,7 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="Ws5-np-Vws">
                                             <rect key="frame" x="52.333333333333329" y="0.0" width="41.333333333333329" height="12"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-stamp" translatesAutoresizingMaskIntoConstraints="NO" id="Fyp-du-hOZ">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_stamp" translatesAutoresizingMaskIntoConstraints="NO" id="Fyp-du-hOZ">
                                                     <rect key="frame" x="0.0" y="0.0" width="12" height="12"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="12" id="LLr-SB-1vG"/>
@@ -269,8 +269,8 @@
         </view>
     </objects>
     <resources>
-        <image name="ic-point" width="12" height="12"/>
-        <image name="ic-stamp" width="12" height="12"/>
+        <image name="ic_point" width="128" height="128"/>
+        <image name="ic_stamp" width="128" height="128"/>
         <namedColor name="10Blue">
             <color red="0.94901960784313721" green="0.97647058823529409" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

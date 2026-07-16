@@ -120,7 +120,7 @@ public class StampCardSmall: UICollectionViewCell {
         ivQuantity.image = if quantity < 10 && quantity > 0 {
             UIImage(named: "exclamation")
         } else {
-            UIImage(named: "product-empty")
+            UIImage(named: "img_product")
         }
         ivQuantity.image = ivQuantity.image?.withRenderingMode(.alwaysTemplate)
         

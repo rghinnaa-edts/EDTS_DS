@@ -143,7 +143,7 @@ public class EDTSCardCouponCell: UICollectionViewCell {
     
     private func UIAvailable() {
         if coupon > 10 && coupon < 0 {
-            ivAvailable.image = UIImage(named: "product-empty")
+            ivAvailable.image = UIImage(named: "img_product")
         }
         ivAvailable.image = ivAvailable.image?.withRenderingMode(.alwaysTemplate)
         
