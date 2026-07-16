@@ -1,98 +1,80 @@
 //
-//  InnerShadowView.swift
+//  InnerShadow.swift
 //  EDTS_DS
 //
-//  Created by Yovita Handayiani on 11/06/26.
+//  Created by Yovita Handayiani on 29/06/26.
 //
-
 import UIKit
 
-class InnerShadow: UIView {
-    var cornerRadius: CGFloat = 0 {
+@IBDesignable
+public class InnerShadow: UIView {
+    private let innerShadow = InsetShadowView()
+    
+    @IBInspectable public var cornerRadius: CGFloat = 0 {
         didSet {
-            layer.cornerRadius = cornerRadius
+            innerShadow.cornerRadius = cornerRadius
             setNeedsLayout()
         }
     }
     
-    var shadowColor: UIColor = EDTSColor.black {
+    @IBInspectable public var shadowColor: UIColor = EDTSColor.black {
         didSet {
-            innerShadowLayer.shadowColor = shadowColor.cgColor
+            innerShadow.shadowColor = shadowColor
         }
     }
     
-    var shadowOpacity: Float = 0.10 {
+    @IBInspectable public var shadowOpacity: Float = 0.1 {
         didSet {
-            innerShadowLayer.shadowOpacity = shadowOpacity
+            innerShadow.shadowOpacity = shadowOpacity
         }
     }
     
-    var shadowRadius: CGFloat = 2 {
+    @IBInspectable public var shadowRadius: CGFloat = 2 {
         didSet {
-            innerShadowLayer.shadowRadius = shadowRadius
-            setNeedsLayout()
+            innerShadow.shadowRadius = shadowRadius
         }
     }
     
-    var shadowOffset: CGSize = .zero {
+    @IBInspectable public var shadowOffset: CGSize = .zero {
         didSet {
-            innerShadowLayer.shadowOffset = shadowOffset
+            innerShadow.shadowOffset = shadowOffset
         }
     }
     
-    // MARK: - Private Variable
-    private lazy var innerShadowLayer: CAShapeLayer = {
-        let shadowLayer = CAShapeLayer()
-        shadowLayer.fillRule = .evenOdd
-        return shadowLayer
-    }()
-    
-    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupUI()
+        setup()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupUI()
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
     }
     
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        innerShadowLayer.frame = bounds
-        
-        let radius = layer.cornerRadius
-        let inset = shadowRadius + 2
-        
-        let innerRect = bounds
-        let outerRect = bounds.insetBy(dx: -inset, dy: -inset)
-        
-        let path = CGMutablePath()
-        path.addRoundedRect(in: outerRect,
-                            cornerWidth: radius + inset,
-                            cornerHeight: radius + inset)
-        path.addRoundedRect(in: innerRect,
-                            cornerWidth: radius,
-                            cornerHeight: radius)
-        
-        innerShadowLayer.path = path
-        innerShadowLayer.fillRule = .evenOdd
-        innerShadowLayer.fillColor = UIColor.black.cgColor
+        layer.mask = {
+            let mask = CAShapeLayer()
+            mask.path = UIBezierPath(
+                roundedRect: bounds,
+                cornerRadius: cornerRadius
+            ).cgPath
+            return mask
+        }()
     }
     
-    // MARK: - Setup & Styling
-    private func setupUI() {
-        backgroundColor = .clear
-        layer.cornerRadius = cornerRadius
-        layer.masksToBounds = true
+    private func setup() {
+        clipsToBounds = true
         
-        innerShadowLayer.shadowColor = shadowColor.cgColor
-        innerShadowLayer.shadowOpacity = shadowOpacity
-        innerShadowLayer.shadowRadius = shadowRadius
-        innerShadowLayer.shadowOffset = shadowOffset
-
-        layer.addSublayer(innerShadowLayer)
+        addSubview(innerShadow)
+        innerShadow.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            innerShadow.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -1),
+            innerShadow.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 1),
+            innerShadow.topAnchor.constraint(equalTo: topAnchor, constant: -1),
+            innerShadow.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 1),
+        ])
     }
 }

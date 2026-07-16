@@ -12,15 +12,16 @@ import UIKit
 public class EDTSProgressTracker: UIView {
     // MARK: - Outlets
     @IBOutlet var containerView: UIView!
+    @IBOutlet weak var trackContainer: UIView!
     @IBOutlet weak var trackView: UIView!
     @IBOutlet weak var fullTrackView: UIView!
     @IBOutlet weak var fillView: UIView!
     @IBOutlet weak var indicatorView: UIView!
     @IBOutlet weak var badgeView: UIView!
     @IBOutlet weak var lblBadge: UILabel!
-    @IBOutlet weak var innerShadowView: InnerShadowView!
-    @IBOutlet weak var innerShadowView1: InnerShadowView!
-    @IBOutlet weak var innerShadowView2: InnerShadowView!
+    @IBOutlet weak var innerShadowView: InnerShadow!
+    @IBOutlet weak var innerShadowView1: InnerShadow!
+    @IBOutlet weak var innerShadowView2: InnerShadow!
     @IBOutlet weak var innerShadowViewContainer: UIView!
     
     @IBOutlet weak var fillWidthConstraint: NSLayoutConstraint!
@@ -369,6 +370,25 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
+    @IBInspectable public var isLoadingState: Bool = false {
+        didSet {
+            guard isLoadingState != oldValue else { return }
+            debounceTimer?.invalidate()
+            debounceTimer = nil
+            pendingValue = nil
+            isUserInputSpam = false
+            animationQueue.removeAll()
+            isAnimating = false
+            
+            if isLoadingState {
+                lapCount = 0
+                wasAtMaxValue = false
+                fullTrackView.isHidden = true
+                limitValue = maxValue
+            }
+        }
+    }
+    
     // MARK: - Private Variable
     private var lapCount: Int = 0
     private var trackGradientLayer: CAGradientLayer?
@@ -390,10 +410,10 @@ public class EDTSProgressTracker: UIView {
     private var isUserInputSpam = false
     private var initialFillMinWidth = 0
     
-    private var spamDebounceDuration: TimeInterval = 0.3
-    private var fadeAnimationDuration: TimeInterval = 0.4
-    private var scaleAnimationDuration: TimeInterval = 0.2
-    private var fillAnimationDuration: TimeInterval = 0.8
+    private let spamDebounceDuration: TimeInterval = 0.3
+    private let fadeAnimationDuration: TimeInterval = 0.4
+    private let scaleAnimationDuration: TimeInterval = 0.2
+    private let fillAnimationDuration: TimeInterval = 0.8
     
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -409,6 +429,7 @@ public class EDTSProgressTracker: UIView {
     // MARK: - Public Function
     override public func layoutSubviews() {
         super.layoutSubviews()
+        containerView.layoutIfNeeded()
         
         if trackCornerRadius >= 0 {
             trackView.layer.cornerRadius = trackCornerRadius
@@ -456,7 +477,7 @@ public class EDTSProgressTracker: UIView {
     }
     
     override public var intrinsicContentSize: CGSize {
-        let trackWidth = trackView.frame.width
+        let trackWidth = trackContainer.frame.width
         let badgeHeight = isHasBadge ? badgeSize : 0
         let indicatorHeight = isHasIndicator ? indicatorSize : 0
         let trackHeight = trackView.frame.height
@@ -606,84 +627,75 @@ public class EDTSProgressTracker: UIView {
     }
     
     // MARK: - Setup Fill
-    private func setupFillBgColor() {
-        if (trackFillTintColorStart != nil || trackFillTintColorEnd != nil) {
-            if fillGradientLayer == nil {
+    private func applyGradient(
+        to view: UIView,
+        layer: inout CAGradientLayer?,
+        start: UIColor?,
+        end: UIColor?,
+        solid: UIColor?,
+        orientation: String?
+    ) {
+        if start != nil || end != nil {
+            if layer == nil {
                 let gradient = CAGradientLayer()
-                fillView.layer.insertSublayer(gradient, at: 0)
-                fillGradientLayer = gradient
+                view.layer.insertSublayer(gradient, at: 0)
+                layer = gradient
             }
             
-            fillGradientLayer?.frame = fillView.bounds
-            fillGradientLayer?.cornerRadius = fullTrackView.layer.cornerRadius
+            layer?.frame = view.bounds
+            layer?.cornerRadius = view.layer.cornerRadius
             
-            fillGradientLayer?.colors = [
-                trackFillTintColorStart?.cgColor ?? UIColor.clear.cgColor,
-                trackFillTintColorEnd?.cgColor ?? UIColor.clear.cgColor
+            layer?.colors = [
+                start?.cgColor ?? UIColor.clear.cgColor,
+                end?.cgColor ?? UIColor.clear.cgColor
             ]
             
-            let normalized = trackFillColorOrientation?
+            let normalized = orientation?
                 .trimmingCharacters(in: .whitespacesAndNewlines)
                 .lowercased()
-            let orientation = Orientation(rawValue: normalized ?? "horizontal") ?? .horizontal
+            let resolvedOrientation = Orientation(rawValue: normalized ?? "horizontal") ?? .horizontal
             
-            switch orientation {
+            switch resolvedOrientation {
             case .horizontal:
-                fillGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
-                fillGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
+                layer?.startPoint = CGPoint(x: 0, y: 0.5)
+                layer?.endPoint   = CGPoint(x: 1, y: 0.5)
             case .vertical:
-                fillGradientLayer?.startPoint = CGPoint(x: 0.5, y: 0)
-                fillGradientLayer?.endPoint   = CGPoint(x: 0.5, y: 1)
+                layer?.startPoint = CGPoint(x: 0.5, y: 0)
+                layer?.endPoint   = CGPoint(x: 0.5, y: 1)
             }
             
-            fillView.backgroundColor = .clear
+            view.backgroundColor = .clear
         } else {
-            if fillGradientLayer != nil {
-                fillGradientLayer?.removeFromSuperlayer()
-                fillGradientLayer = nil
+            if layer != nil {
+                layer?.removeFromSuperlayer()
+                layer = nil
             }
-            fillView.backgroundColor = trackFillTintColor ?? .clear
+            view.backgroundColor = solid ?? .clear
         }
     }
     
+    private func setupFillBgColor() {
+        applyGradient(
+                to: fillView,
+                layer: &fillGradientLayer,
+                start: trackFillTintColorStart,
+                end: trackFillTintColorEnd,
+                solid: trackFillTintColor,
+                orientation: trackFillColorOrientation
+            )
+        
+        fillView.layer.cornerRadius = fullTrackView.layer.cornerRadius
+    }
+    
     private func setupFullTrackBgColor() {
-        if (trackFullTintColorStart != nil || trackFullTintColorEnd != nil) {
-            if fullTrackGradientLayer == nil {
-                let gradient = CAGradientLayer()
-                fullTrackView.layer.insertSublayer(gradient, at: 0)
-                fullTrackGradientLayer = gradient
-            }
-            
-            fullTrackGradientLayer?.frame = fullTrackView.bounds
-            fullTrackGradientLayer?.cornerRadius = fullTrackView.layer.cornerRadius
-            
-            fullTrackGradientLayer?.colors = [
-                trackFullTintColorStart?.cgColor ?? UIColor.clear.cgColor,
-                trackFullTintColorEnd?.cgColor ?? UIColor.clear.cgColor
-            ]
-            
-            let normalized = trackFullColorOrientation?
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                .lowercased()
-            let orientation = Orientation(rawValue: normalized ?? "horizontal") ?? .horizontal
-            
-            switch orientation {
-            case .horizontal:
-                fullTrackGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
-                fullTrackGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
-            case .vertical:
-                fullTrackGradientLayer?.startPoint = CGPoint(x: 0.5, y: 0)
-                fullTrackGradientLayer?.endPoint   = CGPoint(x: 0.5, y: 1)
-            }
-            
-            fullTrackView.backgroundColor = .clear
-        } else {
-            if fullTrackGradientLayer != nil {
-                fullTrackGradientLayer?.removeFromSuperlayer()
-                fullTrackGradientLayer = nil
-            }
-            fullTrackView.backgroundColor = trackFullTintColor
-        }
+        applyGradient(
+                to: fullTrackView,
+                layer: &fullTrackGradientLayer,
+                start: trackFullTintColorStart,
+                end: trackFullTintColorEnd,
+                solid: trackFullTintColor,
+                orientation: trackFullColorOrientation
+            )
     }
     
     private func setupInitialFillWidth(){
@@ -702,43 +714,14 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func setupIndicatorBgColor() {
-        if (indicatorTintColorStart != nil || indicatorTintColorEnd != nil) {
-            if indicatorGradientLayer == nil {
-                let gradient = CAGradientLayer()
-                indicatorView.layer.insertSublayer(gradient, at: 0)
-                indicatorGradientLayer = gradient
-            }
-            
-            indicatorGradientLayer?.frame = indicatorView.bounds
-            indicatorGradientLayer?.cornerRadius = indicatorView.layer.cornerRadius
-            
-            indicatorGradientLayer?.colors = [
-                indicatorTintColorStart?.cgColor ?? UIColor.clear.cgColor,
-                indicatorTintColorEnd?.cgColor ?? UIColor.clear.cgColor
-            ]
-            
-            let normalized = indicatorColorOrientation?
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                .lowercased()
-            let orientation = Orientation(rawValue: normalized ?? "horizontal") ?? .horizontal
-            
-            switch orientation {
-            case .horizontal:
-                indicatorGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
-                indicatorGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
-            case .vertical:
-                indicatorGradientLayer?.startPoint = CGPoint(x: 0.5, y: 0)
-                indicatorGradientLayer?.endPoint   = CGPoint(x: 0.5, y: 1)
-            }
-            
-            indicatorView.backgroundColor = .clear
-        } else {
-            if indicatorGradientLayer != nil {
-                indicatorGradientLayer?.removeFromSuperlayer()
-                indicatorGradientLayer = nil
-            }
-            indicatorView.backgroundColor = indicatorTintColor ?? .clear
-        }
+        applyGradient(
+                to: indicatorView,
+                layer: &indicatorGradientLayer,
+                start: indicatorTintColorStart,
+                end: indicatorTintColorEnd,
+                solid: indicatorTintColor,
+                orientation: indicatorColorOrientation
+            )
     }
     
     private func setupIndicatorConstraint() {
@@ -783,43 +766,14 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func setupBadgeBgColor() {
-        if (badgeTintColorStart != nil || badgeTintColorEnd != nil) {
-            if badgeGradientLayer == nil {
-                let gradient = CAGradientLayer()
-                badgeView.layer.insertSublayer(gradient, at: 0)
-                badgeGradientLayer = gradient
-            }
-            
-            badgeGradientLayer?.frame = badgeView.bounds
-            badgeGradientLayer?.cornerRadius = badgeView.layer.cornerRadius
-            
-            badgeGradientLayer?.colors = [
-                badgeTintColorStart?.cgColor ?? UIColor.clear.cgColor,
-                badgeTintColorEnd?.cgColor ?? UIColor.clear.cgColor
-            ]
-            
-            let normalized = badgeColorOrientation?
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                .lowercased()
-            let orientation = Orientation(rawValue: normalized ?? "horizontal") ?? .horizontal
-            
-            switch orientation {
-            case .horizontal:
-                badgeGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
-                badgeGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
-            case .vertical:
-                badgeGradientLayer?.startPoint = CGPoint(x: 0.5, y: 0)
-                badgeGradientLayer?.endPoint   = CGPoint(x: 0.5, y: 1)
-            }
-            
-            badgeView.backgroundColor = .clear
-        } else {
-            if badgeGradientLayer != nil {
-                badgeGradientLayer?.removeFromSuperlayer()
-                badgeGradientLayer = nil
-            }
-            badgeView.backgroundColor = badgeTintColor ?? .clear
-        }
+        applyGradient(
+                to: badgeView,
+                layer: &badgeGradientLayer,
+                start: badgeTintColorStart,
+                end: badgeTintColorEnd,
+                solid: badgeTintColor,
+                orientation: badgeColorOrientation
+            )
     }
     
     private func setupBadgeFont() {
@@ -835,26 +789,6 @@ public class EDTSProgressTracker: UIView {
         invalidateIntrinsicContentSize()
         layoutIfNeeded()
     }
-    
-//    private func setupBadgeFontWeight(from value: String) -> UIFont.Weight {
-//        let normalized = value
-//            .trimmingCharacters(in: .whitespacesAndNewlines)
-//            .lowercased()
-//        
-//        let weight = FontWeight(rawValue: normalized) ?? .regular
-//        
-//        switch weight {
-//        case .ultralight: return .ultraLight
-//        case .thin:       return .thin
-//        case .light:      return .light
-//        case .regular:    return .regular
-//        case .medium:     return .medium
-//        case .semibold:   return .semibold
-//        case .bold:       return .bold
-//        case .heavy:      return .heavy
-//        case .black:      return .black
-//        }
-//    }
     
     private func setupBadgeSize() {
         lblBadge.sizeToFit()
@@ -899,61 +833,26 @@ public class EDTSProgressTracker: UIView {
     
     // MARK: - Setup Track
     private func setupTrackBgColor() {
-        if (trackTintColorStart != nil || trackTintColorEnd != nil) {
-            if trackGradientLayer == nil {
-                let gradient = CAGradientLayer()
-                trackView.layer.insertSublayer(gradient, at: 0)
-                trackGradientLayer = gradient
-            }
-            
-            trackGradientLayer?.frame = trackView.bounds
-            trackGradientLayer?.cornerRadius = trackView.layer.cornerRadius
-            
-            trackGradientLayer?.colors = [
-                trackTintColorStart?.cgColor ?? UIColor.clear.cgColor,
-                trackTintColorEnd?.cgColor ?? UIColor.clear.cgColor
-            ]
-            
-            let normalized = trackColorOrientation?
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                .lowercased()
-            let orientation = Orientation(rawValue: normalized ?? "horizontal") ?? .horizontal
-            
-            switch orientation {
-            case .horizontal:
-                trackGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
-                trackGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
-            case .vertical:
-                trackGradientLayer?.startPoint = CGPoint(x: 0.5, y: 0)
-                trackGradientLayer?.endPoint   = CGPoint(x: 0.5, y: 1)
-            }
-            
-            trackView.backgroundColor = .clear
-        } else {
-            if trackGradientLayer != nil {
-                trackGradientLayer?.removeFromSuperlayer()
-                trackGradientLayer = nil
-            }
-            trackView.backgroundColor = trackTintColor ?? .clear
-        }
+        applyGradient(
+                to: trackView,
+                layer: &trackGradientLayer,
+                start: trackTintColorStart,
+                end: trackTintColorEnd,
+                solid: trackTintColor,
+                orientation: trackColorOrientation
+            )
     }
     
     private func setupTrackHeight() {
         guard trackHeight >= 0 else { return }
         trackHeightConstraint?.constant = trackHeight
         
-        trackGradientLayer?.frame = trackView.bounds
-        trackGradientLayer?.cornerRadius = trackView.layer.cornerRadius
-        
-        fullTrackGradientLayer?.frame = fullTrackView.bounds
-        fullTrackGradientLayer?.cornerRadius = fullTrackView.layer.cornerRadius
-        
-        fillGradientLayer?.frame = fillView.bounds
-        fillGradientLayer?.cornerRadius = fullTrackView.layer.cornerRadius
-        
         invalidateIntrinsicContentSize()
         setNeedsLayout()
         layoutIfNeeded()
+        
+        setupTrackCornerRadius()
+        setupTrackPadding()
     }
     
     private func setupTrackCornerRadius() {
@@ -1010,6 +909,14 @@ public class EDTSProgressTracker: UIView {
         }
     }
     private func calculateValue() {
+        if isLoadingState {
+            debounceTimer?.invalidate()
+            pendingValue = nil
+            isUserInputSpam = false
+            processLoadingValue(value)
+            return
+        }
+        
         if pendingValue != nil {
             isUserInputSpam = true
         }
@@ -1027,6 +934,37 @@ public class EDTSProgressTracker: UIView {
             
             self.processValue(target, compressed: isSpam)
         }
+    }
+    
+    private func processLoadingValue(_ targetValue: CGFloat) {
+        guard maxValue > 0 else { return }
+        
+        let cappedValue = min(targetValue, limitValue)
+        lastProcessedValue = cappedValue
+        
+        let ratio = min(max(cappedValue / maxValue, 0), 1)
+        
+        let trackWidth = trackView.frame.width
+        guard trackWidth > 0 else { return }
+        
+        let minWidth: CGFloat = isHasIndicator ? indicatorSize + 1 : 0
+        let fillLeadingOffset = leadingFillViewConstraint?.constant ?? 0
+        let fillTrailingPad = trackPaddingTrailing >= 0 ? trackPaddingTrailing : 0
+        let maxWidth: CGFloat = trackWidth - fillLeadingOffset - fillTrailingPad
+        
+        let fillWidth = minWidth + (maxWidth - minWidth) * ratio
+        let targetWidth = min(max(fillWidth, minWidth), maxWidth)
+        
+        animationQueue.removeAll()
+        
+        fullTrackView.isHidden = true
+        let isAtMax = ratio >= 1.0
+        if !isAtMax {
+            badgeView.isHidden = true
+            lblBadge.isHidden = true
+        }
+        
+        animateFillWidthInterruptible(to: targetWidth, isAtMax: isAtMax)
     }
     
     private func processValue(_ targetValue: CGFloat, compressed: Bool) {
@@ -1092,7 +1030,6 @@ public class EDTSProgressTracker: UIView {
             if hasRemainder && cameFromCompletedLap {
                 enqueue {
                     self.animateFillFadeOut(startingFullAlpha: 1) {
-//                        self.dequeueAndRun()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                             self.runPartialLapAnimation(
                                 targetWidth: targetWidth,
@@ -1163,26 +1100,9 @@ public class EDTSProgressTracker: UIView {
                 }
             }
             
-//            var shouldShowAnimatedFullTrack: Bool {
-//                let hasColor =
-//                (self.trackFullTintColor != nil) ||
-//                (self.trackFullTintColorStart != nil) ||
-//                (self.trackFullTintColorEnd != nil)
-//                
-//                return self.limitValue > self.maxValue && hasColor
-//            }
-//            
-//            if shouldShowAnimatedFullTrack {
-//                self.animateFillFadeOut(startingFullAlpha: isFirstLap ? 0 : 1) {
-//                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                        completion()
-//                    }
-//                }
-//            } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     completion()
                 }
-//            }
         }
     }
     
@@ -1309,6 +1229,66 @@ public class EDTSProgressTracker: UIView {
         )
     }
     
+    private func animateFillWidthInterruptible(to targetWidth: CGFloat, isAtMax: Bool = false) {
+        if fillView.isHidden {
+            fillWidthConstraint.constant = 0
+            fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
+            UIView.performWithoutAnimation { self.layoutIfNeeded() }
+        }
+        fillView.isHidden = false
+        fillView.alpha = 1
+        
+        if isHasIndicator && !isAtMax {
+            indicatorView.layer.removeAllAnimations()
+            indicatorView.isHidden = true
+            indicatorView.transform = .identity
+            isIndicatorVisible = false
+        }
+        
+        fillWidthConstraint?.constant = targetWidth
+        invalidateIntrinsicContentSize()
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(fillAnimationDuration)
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
+        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: targetWidth, height: fillView.frame.height)
+        CATransaction.commit()
+        
+        UIView.animate(
+            withDuration: fillAnimationDuration,
+            delay: 0,
+            options: [.curveEaseInOut, .beginFromCurrentState],
+            animations: {
+                self.layoutIfNeeded()
+            },
+            completion: { finished in
+                guard finished else { return }
+                self.fillGradientLayer?.frame = self.fillView.bounds
+                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
+                
+                if isAtMax {
+                        if self.isHasBadge {
+                            self.badgeView.isHidden = false
+                            self.lblBadge.isHidden = false
+                            self.animateScaleUpBadge()
+                        }
+                        
+                        if self.isHasIndicator && !self.isHasBadge {
+                            let trailingPad = self.trackPaddingTrailing >= 0 ? self.trackPaddingTrailing : 0
+                            self.indicatorTrailingConstraint.constant = -trailingPad
+                            self.isIndicatorVisible = true
+                            
+                            UIView.performWithoutAnimation {
+                                self.layoutIfNeeded()
+                            }
+                            
+                            self.animateScaleUpIndicator()
+                        }
+                    }
+            }
+        )
+    }
+    
     private func animateFillWidthToTargetValue(to targetWidth: CGFloat, completion: (() -> Void)? = nil) {
         if isHasIndicator && isIndicatorVisible {
             animateScaleDownIndicator {
@@ -1363,7 +1343,9 @@ public class EDTSProgressTracker: UIView {
                 withDuration: fillAnimationDuration,
                 delay: 0,
                 options: [.curveEaseInOut],
-                animations: { self.layoutIfNeeded() },
+                animations: {
+                    self.layoutIfNeeded()
+                },
                 completion: { finished in
                     guard finished else { return }
                     self.fillGradientLayer?.frame = self.fillView.bounds
@@ -1379,12 +1361,16 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func animateFillWidthToMaxValue(trackWidth: CGFloat, completion: (() -> Void)? = nil) {
+        let shouldShowIndicatorAtMax = isHasIndicator && !isHasBadge
+        
         if isHasIndicator && isIndicatorVisible {
             animateScaleDownIndicator {
-                self.indicatorView.layer.removeAllAnimations()
-                self.indicatorView.isHidden = true
-                self.indicatorView.transform = .identity
-                self.isIndicatorVisible = false
+                if !shouldShowIndicatorAtMax {
+                    self.indicatorView.layer.removeAllAnimations()
+                    self.indicatorView.isHidden = true
+                    self.indicatorView.transform = .identity
+                    self.isIndicatorVisible = false
+                }
                 
                 self.fillWidthConstraint?.constant = trackWidth
                 self.invalidateIntrinsicContentSize()
@@ -1407,6 +1393,17 @@ public class EDTSProgressTracker: UIView {
                         self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
                         
                         if finished {
+                            if shouldShowIndicatorAtMax {
+                                let trailingPad = self.trackPaddingTrailing >= 0 ? self.trackPaddingTrailing : 0
+                                self.indicatorTrailingConstraint.constant = -trailingPad
+                                self.isIndicatorVisible = true
+                                
+                                UIView.performWithoutAnimation {
+                                    self.layoutIfNeeded()
+                                }
+                                
+                                self.animateScaleUpIndicator()
+                            }
                             completion?()
                         }
                     }

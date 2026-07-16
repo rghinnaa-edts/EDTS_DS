@@ -37,6 +37,7 @@
                 <outlet property="leadingFullTrackViewConstraint" destination="Nbm-ri-EXT" id="9VC-pn-rtF"/>
                 <outlet property="topFillViewConstraint" destination="OIV-VF-oQg" id="sQF-pE-I9k"/>
                 <outlet property="topFullTrackViewConstraint" destination="gs7-Gh-YTJ" id="6No-Lw-odh"/>
+                <outlet property="trackContainer" destination="7fD-4z-ehQ" id="ABL-Tp-X75"/>
                 <outlet property="trackHeightConstraint" destination="aA0-ll-ucO" id="baH-x0-p0A"/>
                 <outlet property="trackView" destination="Rk7-a6-4U5" id="Uru-Dp-PgD"/>
                 <outlet property="trailingFullTrackViewConstraint" destination="CL8-s6-dWn" id="d0K-CV-5Nf"/>
@@ -60,11 +61,11 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QMy-gg-i2P">
                             <rect key="frame" x="0.0" y="19" width="393" height="6"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Hf-Wv-JBW" customClass="InnerShadowView" customModule="EDTS_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Hf-Wv-JBW" customClass="InnerShadow" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="6"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Aa-7F-Pl4" customClass="InnerShadowView" customModule="EDTS_DS" customModuleProvider="target">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Aa-7F-Pl4" customClass="InnerShadow" customModule="EDTS_DS" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="6"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
@@ -81,7 +82,7 @@
                                 <constraint firstItem="2Hf-Wv-JBW" firstAttribute="top" secondItem="QMy-gg-i2P" secondAttribute="top" id="xTf-E7-ypB"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hH-46-cH6" customClass="InnerShadowView" customModule="EDTS_DS" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3hH-46-cH6" customClass="InnerShadow" customModule="EDTS_DS" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="19" width="393" height="6"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>

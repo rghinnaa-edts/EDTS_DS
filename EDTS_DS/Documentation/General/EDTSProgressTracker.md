@@ -11,7 +11,7 @@
 
 ## Anatomy
 
-![Progress Tracker Anatomy](w_500,c_scale,q_auto,f_auto/)
+![Progress Tracker Anatomy](https://res.cloudinary.com/dacnnk5j4/image/upload/w_1000,c_scale,q_auto,f_auto/v1784182909/Docs_n1dare.png)
 
 ## Basic Usage
 
