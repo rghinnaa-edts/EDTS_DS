@@ -1026,7 +1026,7 @@ public class EDTSTextField: UIView {
         lblCounter.text = hasCounter ? "\(tfValue.text?.count ?? 0)/\(counterMax)" : ""
 
         if hasCounter {
-            if supportMessage == nil { lblSupport.text = "ic_placeholder" }
+            if supportMessage == nil { lblSupport.text = "placeholder" }
             lblSupportHeightConstraint?.isActive = false
         }
 

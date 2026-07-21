@@ -148,7 +148,7 @@ public class EDTSCardStampCell: UICollectionViewCell {
     
     private func UICoupon() {
         if quantity > 10 && quantity < 0 {
-            ivQuantity.image = UIImage(named: "product-empty")
+            ivQuantity.image = UIImage(named: "img_product")
         }
         
         ivQuantity.image = ivQuantity.image?.withRenderingMode(.alwaysTemplate)

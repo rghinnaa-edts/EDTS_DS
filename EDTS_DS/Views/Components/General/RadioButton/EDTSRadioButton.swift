@@ -44,6 +44,7 @@ public class EDTSRadioButton: UIView {
             lblTitle.attributedText = nil
             lblTitle.text = title
             lblTitle.isHidden = title == nil || title?.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
             invalidateIntrinsicContentSize()
         }
     }
@@ -53,6 +54,7 @@ public class EDTSRadioButton: UIView {
             lblTitle.text = nil
             lblTitle.attributedText = titleAttributed
             lblTitle.isHidden = titleAttributed == nil || titleAttributed?.string.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
             invalidateIntrinsicContentSize()
         }
     }
@@ -92,6 +94,7 @@ public class EDTSRadioButton: UIView {
             lblBody.attributedText = nil
             lblBody.text = desc
             lblBody.isHidden = desc == nil || desc?.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
             invalidateIntrinsicContentSize()
         }
     }
@@ -101,6 +104,7 @@ public class EDTSRadioButton: UIView {
             lblBody.text = nil
             lblBody.attributedText = descAttributed
             lblBody.isHidden = descAttributed == nil || descAttributed?.string.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
             invalidateIntrinsicContentSize()
         }
     }
@@ -398,6 +402,7 @@ public class EDTSRadioButton: UIView {
     
     private func setupRadioButtonState(_ isActive: Bool = false) {
         bulletContainerView.isUserInteractionEnabled = resolvedRadioButtonState != .disabled
+        vStackContainer.isUserInteractionEnabled = resolvedRadioButtonState != .disabled
         
         switch resolvedRadioButtonState {
         case .`default`:
@@ -492,6 +497,7 @@ public class EDTSRadioButton: UIView {
     
     private func setupIconGestures() {
         bulletContainerView.isUserInteractionEnabled = true
+        vStackContainer.isUserInteractionEnabled = true
         
         let bulletContainerViewPress = UILongPressGestureRecognizer(
             target: self,
@@ -499,6 +505,13 @@ public class EDTSRadioButton: UIView {
         )
         bulletContainerViewPress.minimumPressDuration = 0
         bulletContainerView.addGestureRecognizer(bulletContainerViewPress)
+        
+        let vStackContainerPress = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(onLongPressBulletContainerView(_:))
+        )
+        vStackContainerPress.minimumPressDuration = 0
+        vStackContainer.addGestureRecognizer(vStackContainerPress)
         
     }
     
