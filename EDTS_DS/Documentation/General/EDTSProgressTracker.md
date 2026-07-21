@@ -1,6 +1,6 @@
 # EDTSProgressTracker
 
-`EDTSProgressTracker` is a customizable progress bar component that supports single-lap and multi-lap progress (values that exceed `maxValue`), an optional trailing indicator dot, an optional lap-count badge, gradient backgrounds, and debounced/queued fill animations so rapid value updates animate smoothly instead of janking.
+`EDTSProgressTracker` is a customizable progress bar component that supports single-lap and multi-lap progress (values that exceed `maxValue`), an optional trailing indicator dot, an optional lap-count badge, gradient backgrounds, a simplified loading mode, a continuous intermittent (indeterminate) animation mode, and debounced/queued fill animations so rapid value updates animate smoothly instead of janking.
 
 ## Preview
 
@@ -49,9 +49,11 @@ progressTracker.value = 45
 `EDTSProgressTracker` treats `maxValue` as the length of a single "lap" of the track. Setting `value` higher than `maxValue` completes one or more laps:
 
 - Each time `value` crosses a multiple of `maxValue`, the fill animates to 100%, the badge (if enabled) updates its lap count label (`x1`, `x2`, ...) and pulses, and the fill then resets to animate the remaining partial lap.
-- `limitValue` caps the maximum value the tracker will accept (values above it are clamped). Setting `limitValue` above `maxValue` is what enables multi-lap / badge behavior; if `limitValue` is not greater than `maxValue`, the badge and full-track-complete styling stay hidden even if `isHasBadge` is `true`.
+- `limitValue` caps the maximum value the tracker will accept (values above it are clamped). Setting `limitValue` above `maxValue` is what enables multi-lap / badge behavior; if `limitValue` is not greater than `maxValue`, the **badge** stays hidden even if `isHasBadge` is `true` — however, the full-track (completed-lap) layer still becomes visible whenever `value` reaches a multiple of `maxValue`, regardless of `limitValue`.
 - Rapid, successive value changes within a 300ms window are debounced. If several updates land in the same debounce window (or the jump between the last processed value and the new target exceeds two laps), intermediate lap animations are compressed into a single "spam" animation instead of animating every lap individually, keeping the UI responsive.
 - All lap/partial-fill animations are queued and run sequentially (`animationQueue`), so overlapping updates never interrupt an in-flight animation.
+- Setting `isLoadingState` to `true` switches the tracker into a simplified loading mode: it cancels any pending debounce timer and queued animations, hides the full-track (lap) layer, and forces `limitValue` to `maxValue`. While active, `value` changes bypass the debounced multi-lap logic and animate as a single interruptible fill instead.
+- Setting `isIntermittentState` to `true` starts a continuous, looping fill animation that ignores `value` entirely (useful for indeterminate progress); its visual style is controlled by `intermittentAnimationType`. Setting it back to `false` stops the animation and resets the fill.
 
 ## Properties Reference
 
@@ -62,6 +64,14 @@ progressTracker.value = 45
 | `value` | `CGFloat` | `0.0` | Current progress value. Automatically clamped to `limitValue` and triggers a debounced fill animation. |
 | `maxValue` | `CGFloat` | `100.0` | The value that represents one full "lap" of the track. |
 | `limitValue` | `CGFloat` | `100.0` | Maximum value the tracker will accept; values above are clamped. Set above `maxValue` to enable multi-lap / badge behavior. |
+| `isLoadingState` | `Bool` | `false` | Switches the tracker into a simplified loading mode (see Progress Behavior above): clears any queued/debounced animations, hides the full-track layer, and pins `limitValue` to `maxValue`. |
+
+### Intermittent Animation Properties
+
+| Property Name | Type | Default | Description |
+| -------------- | ---- | ------- | ----------- |
+| `isIntermittentState` | `Bool` | `false` | Starts/stops a continuous looping fill animation that ignores `value`, using the style set in `intermittentAnimationType`. |
+| `intermittentAnimationType` | `String` | `"stretch"` | Style of the looping animation while `isIntermittentState` is `true`. `"stretch"` grows the fill from empty to full track width, then shrinks it back down. `"fixed"` slides a fixed-width bar (1/3 of the track width) across the track. Backed by the `IntermittentAnimationType` enum (`stretch`, `fixed`); unrecognized values fall back to `stretch`. |
 
 ### Track Properties
 
@@ -96,7 +106,7 @@ progressTracker.value = 45
 | `trackFullTintColorEnd` | `UIColor?` | `nil` | End color for full-track gradient background |
 | `trackFullColorOrientation` | `String?` | `"horizontal"` | Gradient direction for full-track: `"horizontal"` or `"vertical"` |
 
-> **Note:** The full-track layer (and its fade-in animation) is only shown between laps when `limitValue > maxValue` **and** a full-track color (solid or gradient) is set.
+> **Note:** The full-track (completed-lap) layer becomes visible whenever the current lap reaches 100%. The lap-count **badge**, however, only appears when `isHasBadge` is `true` **and** `limitValue > maxValue`.
 
 ### Inner Shadow Properties
 
@@ -152,8 +162,6 @@ On initialization, `EDTSProgressTracker` applies one of two default styles depen
 | `.klikIDM` | `1pt` all sides | `blue30` | `grey20` | Enabled | Enabled | Single inner shadow, `10%` opacity, `2pt` radius |
 | `.poinku` | `0pt` all sides | `nil` | `white` | Disabled | Disabled | Dual inner shadow (top `8%`/`2pt` and bottom `10%`/`2pt`) |
 
-> When theme is `.poinku`, setting `limitValue` greater than `maxValue` automatically sets `fullTrackTintColor` to `blue10`; setting it back to `maxValue` or below resets `fullTrackTintColor` to `clear`.
-
 ## Animation Details
 
 | Animation Type | Duration | Easing | Description |
@@ -166,9 +174,11 @@ On initialization, `EDTSProgressTracker` applies one of two default styles depen
 | `Badge Scale Up` | `200ms` | `EaseInOut` | Scales the badge in from zero on the first completed lap |
 | `Badge Pulse` | `200ms` + `200ms` | `EaseInOut` | Scales the badge up to `110%` then back to `100%` on each subsequent completed lap |
 | `Full Track Fade` | `400ms` | `EaseInOut` | Cross-fades the fill out and the full-track (completed) layer in between laps |
+| `Intermittent Stretch (Grow/Shrink)` | `700ms` grow + `700ms` shrink | `EaseInOut` | Fill grows from empty to the full track width, then its leading edge catches up to shrink it back to zero width; repeats continuously while `isIntermittentState` is `true` and `intermittentAnimationType` is `"stretch"` |
+| `Intermittent Fixed (Grow/Slide/Shrink)` | `2100ms` total (`700ms` × 3), split proportionally across each segment | `Linear` | A fixed-width bar (1/3 of the track width) grows in from the leading edge, slides across the track, then shrinks off the trailing edge; repeats continuously while `intermittentAnimationType` is `"fixed"` |
 
 ## Notes
 
-- Multi-lap / badge behavior requires `limitValue` to be set greater than `maxValue` — otherwise the tracker behaves as a standard single-pass progress bar and the full-track/badge layers stay hidden.
+- Multi-lap / badge behavior requires `limitValue` to be set greater than `maxValue` — otherwise the **badge** layer stays hidden even if `isHasBadge` is `true`.
 
 *For further customization, you can ask UX Engineer or inherit `EDTSProgressTracker` and override its methods, or add additional functionality as required.*

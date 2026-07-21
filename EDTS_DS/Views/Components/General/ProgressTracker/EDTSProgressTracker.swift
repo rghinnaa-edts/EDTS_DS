@@ -399,7 +399,7 @@ public class EDTSProgressTracker: UIView {
             guard isIntermittentState != oldValue else { return }
                     if isIntermittentState {
                         startIntermittentAnimation()
-                        runIntermittentGrowPhase()
+                        animateIntermittentBar()
                     } else {
                         stopIntermittentAnimation()
                     }
@@ -412,14 +412,41 @@ public class EDTSProgressTracker: UIView {
             guard isIntermittentState else { return }
             stopIntermittentAnimation()
             startIntermittentAnimation()
-            runIntermittentGrowPhase()
+            animateIntermittentBar()
         }
     }
     
-    private var isIntermittentAnimating: Bool = false
+    // MARK: - Private Variable
+    private let spamDebounceDuration: TimeInterval = 0.3
+    private let fadeAnimationDuration: TimeInterval = 0.4
+    private let scaleAnimationDuration: TimeInterval = 0.2
+    private let fillAnimationDuration: TimeInterval = 0.8
     private let intermittentAnimationDuration: TimeInterval = 0.7
-    private var trailingFillViewConstraint: NSLayoutConstraint?
+
+    private var trackGradientLayer: CAGradientLayer?
+    private var fillGradientLayer: CAGradientLayer?
+    private var fullTrackGradientLayer: CAGradientLayer?
+    private var indicatorGradientLayer: CAGradientLayer?
+    private var badgeGradientLayer: CAGradientLayer?
+    
+    private var lapCount: Int = 0
+    private var lastProcessedValue: CGFloat = 0.0
+    private var pendingValue: CGFloat? = nil
+    private var initialFillMinWidth = 0
+    
+    private var indicatorAnimationID: UUID = UUID()
     private var intermittentGenerationID = UUID()
+    private var animationQueue: [() -> Void] = []
+    
+    private var wasAtMaxValue: Bool = false
+    private var isIndicatorVisible: Bool = false
+    private var isUserInputSpam = false
+    private var isAnimating: Bool = false
+    private var isIntermittentAnimating: Bool = false
+    
+    private var debounceTimer: Timer?
+    
+    private var trailingFillViewConstraint: NSLayoutConstraint?
     
     private var resolvedIntermittentAnimationType: IntermittentAnimationType {
         let normalized = intermittentAnimationType
@@ -427,327 +454,6 @@ public class EDTSProgressTracker: UIView {
             .lowercased()
         return IntermittentAnimationType(rawValue: normalized) ?? .stretch
     }
-    
-    private func setupTrailingChaseConstraint() {
-        guard trailingFillViewConstraint == nil else { return }
-        let c = fillView.trailingAnchor.constraint(equalTo: trackView.trailingAnchor, constant: trackPaddingTrailing)
-        c.priority = .required
-        c.isActive = false
-        trailingFillViewConstraint = c
-    }
-    
-    private func activateTrailingChase() {
-        setupTrailingChaseConstraint()
-        fillWidthConstraint.priority = UILayoutPriority(999)
-        trailingFillViewConstraint?.priority = .required
-        trailingFillViewConstraint?.isActive = true
-    }
-    
-    private func deactivateTrailingChase() {
-        guard let trailing = trailingFillViewConstraint, trailing.isActive else { return }
-        
-        let currentWidth = fillView.frame.width
-        
-        trailing.isActive = false
-        fillWidthConstraint.priority = .required
-        fillWidthConstraint.constant = currentWidth
-    }
-    
-    // MARK: - Intermittent (Indeterminate) Loading Animation
-    
-    private func startIntermittentAnimation() {
-        guard !isIntermittentAnimating else { return }
-        isIntermittentAnimating = true
-        intermittentGenerationID = UUID()
-        setupTrailingChaseConstraint()
-        deactivateTrailingChase()
-        
-        debounceTimer?.invalidate()
-        debounceTimer = nil
-        pendingValue = nil
-        animationQueue.removeAll()
-        isAnimating = false
-        
-        fullTrackView.isHidden = true
-        badgeView.isHidden = true
-        lblBadge.isHidden = true
-        indicatorView.isHidden = true
-        
-        fillView.isHidden = false
-        fillView.alpha = 1
-        
-        setNeedsLayout()
-        layoutIfNeeded()
-    }
-    
-    private func stopIntermittentAnimation() {
-        isIntermittentAnimating = false
-        intermittentGenerationID = UUID()
-        fillView.layer.removeAllAnimations()
-        
-        deactivateTrailingChase()
-        
-        let leadingOffset = trackPaddingLeading >= 0 ? trackPaddingLeading : 0
-        leadingFillViewConstraint?.constant = leadingOffset
-        fillWidthConstraint?.constant = 0
-        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
-        fillView.isHidden = true
-        
-        indicatorView.isHidden = !isHasIndicator
-        isIndicatorVisible = false
-        
-        invalidateIntrinsicContentSize()
-        UIView.performWithoutAnimation { self.layoutIfNeeded() }
-    }
-    
-    private func intermittentMaxWidth() -> CGFloat {
-        layoutIfNeeded()
-        let trackWidth = fullTrackView.frame.width
-        
-        return trackWidth
-    }
-    
-    private func runIntermittentGrowPhase() {
-        guard isIntermittentState, isIntermittentAnimating else { return }
-        
-        switch resolvedIntermittentAnimationType {
-        case .stretch:
-            runTypeAGrowPhase()
-        case .fixed:
-            runTypeBGrowPhase()
-        }
-    }
-    
-    private func runTypeAGrowPhase() {
-        guard isIntermittentState, isIntermittentAnimating else { return }
-        let genID = intermittentGenerationID
-        deactivateTrailingChase()
-        
-        let leadingOffset = trackPaddingLeading >= 0 ? trackPaddingLeading : 0
-        let maxWidth = intermittentMaxWidth()
-        
-        guard maxWidth > 0 else {
-            DispatchQueue.main.async { [weak self] in
-                self?.runIntermittentGrowPhase()
-            }
-            return
-        }
-        
-        leadingFillViewConstraint?.constant = leadingOffset
-        fillWidthConstraint?.constant = 0
-        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
-        UIView.performWithoutAnimation { self.layoutIfNeeded() }
-        
-        fillWidthConstraint?.constant = maxWidth
-        invalidateIntrinsicContentSize()
-        
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(intermittentAnimationDuration)
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
-        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: maxWidth, height: fillView.frame.height)
-        CATransaction.commit()
-        
-        UIView.animate(
-            withDuration: intermittentAnimationDuration,
-            delay: 0,
-            options: [.curveEaseInOut],
-            animations: {
-                self.layoutIfNeeded()
-            },
-            completion: { [weak self] finished in
-                guard let self, finished else { return }
-                guard self.intermittentGenerationID == genID else { return }
-                self.fillGradientLayer?.frame = self.fillView.bounds
-                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
-                
-                guard self.isIntermittentState, self.isIntermittentAnimating else { return }
-                self.runTypeAChasePhase(leadingOffset: leadingOffset, maxWidth: maxWidth)
-            }
-        )
-    }
-    
-    private func runTypeAChasePhase(leadingOffset: CGFloat, maxWidth: CGFloat) {
-        guard isIntermittentState, isIntermittentAnimating, maxWidth > 0 else { return }
-        let genID = intermittentGenerationID
-        let trailingEdgeLeadingConstant = leadingOffset + maxWidth
-        
-        activateTrailingChase()
-        
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(intermittentAnimationDuration)
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
-        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
-        CATransaction.commit()
-        
-        UIView.animate(
-            withDuration: intermittentAnimationDuration,
-            delay: 0,
-            options: [.curveEaseInOut],
-            animations: {
-                self.leadingFillViewConstraint?.constant = trailingEdgeLeadingConstant
-                self.layoutIfNeeded()
-            },
-            completion: { [weak self] finished in
-                guard let self, finished else { return }
-                guard self.intermittentGenerationID == genID else { return }
-                self.fillGradientLayer?.frame = self.fillView.bounds
-                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
-                
-                self.runIntermittentGrowPhase()
-            }
-        )
-    }
-    
-    private func runTypeBShrinkPhase(barWidth: CGFloat, maxWidth: CGFloat, leadingOffset: CGFloat) {
-        guard isIntermittentState, isIntermittentAnimating else { return }
-        let genID = intermittentGenerationID
-        let totalDuration = intermittentAnimationDuration * 3
-        let totalDistance = maxWidth + barWidth
-        let shrinkDuration = totalDuration * (barWidth / totalDistance)
-        
-        let finalLeading = leadingOffset + maxWidth
-        
-        activateTrailingChase()
-        
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(shrinkDuration)
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .linear))
-        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
-        CATransaction.commit()
-        
-        UIView.animate(
-            withDuration: shrinkDuration,
-            delay: 0,
-            options: [.curveLinear],
-            animations: {
-                self.leadingFillViewConstraint?.constant = finalLeading
-                self.layoutIfNeeded()
-            },
-            completion: { [weak self] finished in
-                guard let self, finished else {
-                    self?.deactivateTrailingChase()
-                    return
-                }
-                guard self.intermittentGenerationID == genID else { return }
-                self.deactivateTrailingChase()
-                guard self.isIntermittentState, self.isIntermittentAnimating else { return }
-                self.runIntermittentGrowPhase()
-            }
-        )
-    }
-    
-    private func runTypeBGrowPhase() {
-        guard isIntermittentState, isIntermittentAnimating else { return }
-        let genID = intermittentGenerationID
-        let leadingOffset = trackPaddingLeading >= 0 ? trackPaddingLeading : 0
-        let maxWidth = intermittentMaxWidth()
-        
-        guard maxWidth > 0 else {
-            DispatchQueue.main.async { [weak self] in
-                self?.runIntermittentGrowPhase()
-            }
-            return
-        }
-        
-        let barWidth = maxWidth / 3
-        let totalDuration = intermittentAnimationDuration * 3
-        let totalDistance = maxWidth + barWidth
-        let growDuration = totalDuration * (barWidth / totalDistance)
-        
-        leadingFillViewConstraint?.constant = leadingOffset
-        fillWidthConstraint?.constant = 0
-        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
-        UIView.performWithoutAnimation { self.layoutIfNeeded() }
-        
-        fillWidthConstraint?.constant = barWidth
-        invalidateIntrinsicContentSize()
-        
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(growDuration)
-        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .linear))
-        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: barWidth, height: fillView.frame.height)
-        CATransaction.commit()
-        
-        UIView.animate(
-            withDuration: growDuration,
-            delay: 0,
-            options: [.curveLinear],
-            animations: {
-                self.layoutIfNeeded()
-            },
-            completion: { [weak self] finished in
-                guard let self, finished else { return }
-                guard self.intermittentGenerationID == genID else { return }
-                self.fillGradientLayer?.frame = self.fillView.bounds
-                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
-                
-                guard self.isIntermittentState, self.isIntermittentAnimating else { return }
-                self.runTypeBSlidePhase(barWidth: barWidth, maxWidth: maxWidth, leadingOffset: leadingOffset)
-            }
-        )
-    }
-    
-    private func runTypeBSlidePhase(barWidth: CGFloat, maxWidth: CGFloat, leadingOffset: CGFloat) {
-        guard isIntermittentState, isIntermittentAnimating else { return }
-        let genID = intermittentGenerationID
-        guard maxWidth > barWidth else {
-            runTypeBShrinkPhase(barWidth: barWidth, maxWidth: maxWidth, leadingOffset: leadingOffset)
-            return
-        }
-        
-        let totalDuration = intermittentAnimationDuration * 3
-        let totalDistance = maxWidth + barWidth
-        let slideDistance = maxWidth - barWidth
-        let slideDuration = totalDuration * (slideDistance / totalDistance)
-        
-        let targetLeading = leadingOffset + slideDistance
-        
-        UIView.animate(
-            withDuration: slideDuration,
-            delay: 0,
-            options: [.curveLinear],
-            animations: {
-                self.leadingFillViewConstraint?.constant = targetLeading
-                self.layoutIfNeeded()
-            },
-            completion: { [weak self] finished in
-                guard let self, finished else { return }
-                guard self.intermittentGenerationID == genID else { return }
-                self.fillGradientLayer?.frame = self.fillView.bounds
-                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
-                
-                guard self.isIntermittentState, self.isIntermittentAnimating else { return }
-                
-                self.runTypeBShrinkPhase(barWidth: barWidth, maxWidth: maxWidth, leadingOffset: leadingOffset)
-            }
-        )
-    }
-    
-    // MARK: - Private Variable
-    private var lapCount: Int = 0
-    private var trackGradientLayer: CAGradientLayer?
-    private var fillGradientLayer: CAGradientLayer?
-    private var fullTrackGradientLayer: CAGradientLayer?
-    private var indicatorGradientLayer: CAGradientLayer?
-    private var badgeGradientLayer: CAGradientLayer?
-    
-    private var lastProcessedValue: CGFloat = 0.0
-    private var wasAtMaxValue: Bool = false
-    private var isIndicatorVisible: Bool = false
-    private var indicatorAnimationID: UUID = UUID()
-    private var animationQueue: [() -> Void] = []
-    private var isAnimating: Bool = false
-    
-    private var debounceTimer: Timer?
-    private var pendingValue: CGFloat? = nil
-    
-    private var isUserInputSpam = false
-    private var initialFillMinWidth = 0
-    
-    private let spamDebounceDuration: TimeInterval = 0.3
-    private let fadeAnimationDuration: TimeInterval = 0.4
-    private let scaleAnimationDuration: TimeInterval = 0.2
-    private let fillAnimationDuration: TimeInterval = 0.8
     
     // MARK: - Initializers
     override init(frame: CGRect) {
@@ -1466,6 +1172,38 @@ public class EDTSProgressTracker: UIView {
         setupBadge()
     }
     
+    private func intermittentMaxWidth() -> CGFloat {
+        layoutIfNeeded()
+        let trackWidth = fullTrackView.frame.width
+        
+        return trackWidth
+    }
+    
+    private func setupFillViewTrailingConstraint() {
+        guard trailingFillViewConstraint == nil else { return }
+        let c = fillView.trailingAnchor.constraint(equalTo: trackView.trailingAnchor, constant: trackPaddingTrailing)
+        c.priority = .required
+        c.isActive = false
+        trailingFillViewConstraint = c
+    }
+    
+    private func activateFillViewTrailingConstraint() {
+        setupFillViewTrailingConstraint()
+        fillWidthConstraint.priority = UILayoutPriority(999)
+        trailingFillViewConstraint?.priority = .required
+        trailingFillViewConstraint?.isActive = true
+    }
+    
+    private func deactivateFillViewTrailingConstraint() {
+        guard let trailing = trailingFillViewConstraint, trailing.isActive else { return }
+        
+        let currentWidth = fillView.frame.width
+        
+        trailing.isActive = false
+        fillWidthConstraint.priority = .required
+        fillWidthConstraint.constant = currentWidth
+    }
+    
     // MARK: - Animation
     private func animateScaleUpIndicator() {
         let animID = UUID()
@@ -1806,6 +1544,267 @@ public class EDTSProgressTracker: UIView {
                 )
                 UIView.performWithoutAnimation { self.layoutIfNeeded() }
                 completion?()
+            }
+        )
+    }
+    
+    private func startIntermittentAnimation() {
+        guard !isIntermittentAnimating else { return }
+        isIntermittentAnimating = true
+        intermittentGenerationID = UUID()
+        setupFillViewTrailingConstraint()
+        deactivateFillViewTrailingConstraint()
+        
+        debounceTimer?.invalidate()
+        debounceTimer = nil
+        pendingValue = nil
+        animationQueue.removeAll()
+        isAnimating = false
+        
+        fullTrackView.isHidden = true
+        badgeView.isHidden = true
+        lblBadge.isHidden = true
+        indicatorView.isHidden = true
+        
+        fillView.isHidden = false
+        fillView.alpha = 1
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+    }
+    
+    private func stopIntermittentAnimation() {
+        isIntermittentAnimating = false
+        intermittentGenerationID = UUID()
+        fillView.layer.removeAllAnimations()
+        
+        deactivateFillViewTrailingConstraint()
+        
+        let leadingOffset = trackPaddingLeading >= 0 ? trackPaddingLeading : 0
+        leadingFillViewConstraint?.constant = leadingOffset
+        fillWidthConstraint?.constant = 0
+        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
+        fillView.isHidden = true
+        
+        indicatorView.isHidden = !isHasIndicator
+        isIndicatorVisible = false
+        
+        invalidateIntrinsicContentSize()
+        UIView.performWithoutAnimation { self.layoutIfNeeded() }
+    }
+    
+    private func animateIntermittentBar() {
+        guard isIntermittentState, isIntermittentAnimating else { return }
+        
+        switch resolvedIntermittentAnimationType {
+        case .stretch:
+            animateStretchBarGrow()
+        case .fixed:
+            animateFixedBarGrow()
+        }
+    }
+    
+    private func animateStretchBarGrow() {
+        guard isIntermittentState, isIntermittentAnimating else { return }
+        let genID = intermittentGenerationID
+        deactivateFillViewTrailingConstraint()
+        
+        let leadingOffset = trackPaddingLeading >= 0 ? trackPaddingLeading : 0
+        let maxWidth = intermittentMaxWidth()
+        
+        guard maxWidth > 0 else {
+            DispatchQueue.main.async { [weak self] in
+                self?.animateIntermittentBar()
+            }
+            return
+        }
+        
+        leadingFillViewConstraint?.constant = leadingOffset
+        fillWidthConstraint?.constant = 0
+        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
+        UIView.performWithoutAnimation { self.layoutIfNeeded() }
+        
+        fillWidthConstraint?.constant = maxWidth
+        invalidateIntrinsicContentSize()
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(intermittentAnimationDuration)
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
+        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: maxWidth, height: fillView.frame.height)
+        CATransaction.commit()
+        
+        UIView.animate(
+            withDuration: intermittentAnimationDuration,
+            delay: 0,
+            options: [.curveEaseInOut],
+            animations: {
+                self.layoutIfNeeded()
+            },
+            completion: { [weak self] finished in
+                guard let self, finished else { return }
+                guard self.intermittentGenerationID == genID else { return }
+                self.fillGradientLayer?.frame = self.fillView.bounds
+                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
+                
+                guard self.isIntermittentState, self.isIntermittentAnimating else { return }
+                self.animateStretchBarShrink(leadingOffset: leadingOffset, maxWidth: maxWidth)
+            }
+        )
+    }
+    
+    private func animateStretchBarShrink(leadingOffset: CGFloat, maxWidth: CGFloat) {
+        guard isIntermittentState, isIntermittentAnimating, maxWidth > 0 else { return }
+        let genID = intermittentGenerationID
+        let trailingEdgeLeadingConstant = leadingOffset + maxWidth
+        
+        activateFillViewTrailingConstraint()
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(intermittentAnimationDuration)
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .easeInEaseOut))
+        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
+        CATransaction.commit()
+        
+        UIView.animate(
+            withDuration: intermittentAnimationDuration,
+            delay: 0,
+            options: [.curveEaseInOut],
+            animations: {
+                self.leadingFillViewConstraint?.constant = trailingEdgeLeadingConstant
+                self.layoutIfNeeded()
+            },
+            completion: { [weak self] finished in
+                guard let self, finished else { return }
+                guard self.intermittentGenerationID == genID else { return }
+                self.fillGradientLayer?.frame = self.fillView.bounds
+                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
+                
+                self.animateIntermittentBar()
+            }
+        )
+    }
+    
+    private func animateFixedBarShrink(barWidth: CGFloat, maxWidth: CGFloat, leadingOffset: CGFloat) {
+        guard isIntermittentState, isIntermittentAnimating else { return }
+        let genID = intermittentGenerationID
+        let totalDuration = intermittentAnimationDuration * 3
+        let totalDistance = maxWidth + barWidth
+        let shrinkDuration = totalDuration * (barWidth / totalDistance)
+        
+        let finalLeading = leadingOffset + maxWidth
+        
+        activateFillViewTrailingConstraint()
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(shrinkDuration)
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .linear))
+        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
+        CATransaction.commit()
+        
+        UIView.animate(
+            withDuration: shrinkDuration,
+            delay: 0,
+            options: [.curveLinear],
+            animations: {
+                self.leadingFillViewConstraint?.constant = finalLeading
+                self.layoutIfNeeded()
+            },
+            completion: { [weak self] finished in
+                guard let self, finished else {
+                    self?.deactivateFillViewTrailingConstraint()
+                    return
+                }
+                guard self.intermittentGenerationID == genID else { return }
+                self.deactivateFillViewTrailingConstraint()
+                guard self.isIntermittentState, self.isIntermittentAnimating else { return }
+                self.animateIntermittentBar()
+            }
+        )
+    }
+    
+    private func animateFixedBarGrow() {
+        guard isIntermittentState, isIntermittentAnimating else { return }
+        let genID = intermittentGenerationID
+        let leadingOffset = trackPaddingLeading >= 0 ? trackPaddingLeading : 0
+        let maxWidth = intermittentMaxWidth()
+        
+        guard maxWidth > 0 else {
+            DispatchQueue.main.async { [weak self] in
+                self?.animateIntermittentBar()
+            }
+            return
+        }
+        
+        let barWidth = maxWidth / 3
+        let totalDuration = intermittentAnimationDuration * 3
+        let totalDistance = maxWidth + barWidth
+        let growDuration = totalDuration * (barWidth / totalDistance)
+        
+        leadingFillViewConstraint?.constant = leadingOffset
+        fillWidthConstraint?.constant = 0
+        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: 0, height: fillView.frame.height)
+        UIView.performWithoutAnimation { self.layoutIfNeeded() }
+        
+        fillWidthConstraint?.constant = barWidth
+        invalidateIntrinsicContentSize()
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(growDuration)
+        CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(name: .linear))
+        fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: barWidth, height: fillView.frame.height)
+        CATransaction.commit()
+        
+        UIView.animate(
+            withDuration: growDuration,
+            delay: 0,
+            options: [.curveLinear],
+            animations: {
+                self.layoutIfNeeded()
+            },
+            completion: { [weak self] finished in
+                guard let self, finished else { return }
+                guard self.intermittentGenerationID == genID else { return }
+                self.fillGradientLayer?.frame = self.fillView.bounds
+                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
+                
+                guard self.isIntermittentState, self.isIntermittentAnimating else { return }
+                self.animateFixedBarSlide(barWidth: barWidth, maxWidth: maxWidth, leadingOffset: leadingOffset)
+            }
+        )
+    }
+    
+    private func animateFixedBarSlide(barWidth: CGFloat, maxWidth: CGFloat, leadingOffset: CGFloat) {
+        guard isIntermittentState, isIntermittentAnimating else { return }
+        let genID = intermittentGenerationID
+        guard maxWidth > barWidth else {
+            animateFixedBarShrink(barWidth: barWidth, maxWidth: maxWidth, leadingOffset: leadingOffset)
+            return
+        }
+        
+        let totalDuration = intermittentAnimationDuration * 3
+        let totalDistance = maxWidth + barWidth
+        let slideDistance = maxWidth - barWidth
+        let slideDuration = totalDuration * (slideDistance / totalDistance)
+        
+        let targetLeading = leadingOffset + slideDistance
+        
+        UIView.animate(
+            withDuration: slideDuration,
+            delay: 0,
+            options: [.curveLinear],
+            animations: {
+                self.leadingFillViewConstraint?.constant = targetLeading
+                self.layoutIfNeeded()
+            },
+            completion: { [weak self] finished in
+                guard let self, finished else { return }
+                guard self.intermittentGenerationID == genID else { return }
+                self.fillGradientLayer?.frame = self.fillView.bounds
+                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
+                
+                guard self.isIntermittentState, self.isIntermittentAnimating else { return }
+                
+                self.animateFixedBarShrink(barWidth: barWidth, maxWidth: maxWidth, leadingOffset: leadingOffset)
             }
         )
     }
