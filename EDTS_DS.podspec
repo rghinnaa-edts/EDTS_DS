@@ -39,7 +39,7 @@ Pod::Spec.new do |spec|
   end
 
   spec.subspec 'Assets' do |ss|
-    ss.resource_bundle = { 'EDTS_DSAssets' => 'EDTS_DS/Assets/Assets/**/*.xcassets' }
+    ss.resource_bundle = { 'EDTS_DSAssets' => 'EDTS_DS/Assets/**/*.xcassets' }
   end
 
   # ──────────────────────────────────────────────────────────
@@ -52,12 +52,32 @@ Pod::Spec.new do |spec|
   end
 
   # ──────────────────────────────────────────────────────────
+  # Helper
+  # ──────────────────────────────────────────────────────────
+
+  spec.subspec 'Helper' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Helper/**/*.swift'
+  end
+
+  # ──────────────────────────────────────────────────────────
+  # Extensions
+  # ──────────────────────────────────────────────────────────
+
+  # Extensions
+  spec.subspec 'Extensions' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Extensions/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Extensions/**/*.xib")
+    ss.dependency 'EDTS_DS/Color'
+    ss.dependency 'EDTS_DS/Font'
+  end
+
+  # ──────────────────────────────────────────────────────────
   # General components (shared across all brands)
   # ──────────────────────────────────────────────────────────
 
   general_components = %w[
     Card Checkbox Chip
-    Loading RadioButton Ribbon Search Skeleton
+    Loading Ribbon Search Skeleton
     StepPageNav Textfield Toggle Tooltip View
   ]
 
@@ -68,6 +88,7 @@ Pod::Spec.new do |spec|
       ss.dependency 'EDTS_DS/Color'
       ss.dependency 'EDTS_DS/Font'
       ss.dependency 'EDTS_DS/Assets'
+      ss.dependency 'EDTS_DS/Extensions'
     end
   end
 
@@ -75,7 +96,7 @@ Pod::Spec.new do |spec|
   spec.subspec 'Alertbox' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/General/Alertbox/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Alertbox/**/*.xib")
-    ss.dependency 'EDTS_DS/Button/Default'
+    ss.dependency 'EDTS_DS/Button'
   end
 
   # Badge
@@ -85,35 +106,58 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Skeleton'
   end
 
-  # Button has its own variants (Default, Icon, Stepper) — nested subspec
-  spec.subspec 'Button' do |button|
+ # Button Default
+  spec.subspec 'Button' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Components/General/Button/Default/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Button/Default/**/*.xib")
+    ss.dependency 'EDTS_DS/Color'
+    ss.dependency 'EDTS_DS/Font'
+    ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Signifier'
+    ss.dependency 'EDTS_DS/Extensions'
+  end
 
-    button_variants = %w[Default Icon Stepper]
+  # Button Icon
+  spec.subspec 'ButtonIcon' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Components/General/Button/Icon/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Button/Icon/**/*.xib")
+    ss.dependency 'EDTS_DS/Button'
+    ss.dependency 'EDTS_DS/Signifier'
+    ss.dependency 'EDTS_DS/Extensions'
+  end
 
-    button_variants.each do |name|
-      button.subspec name do |ss|
-        ss.source_files = "EDTS_DS/Views/Components/General/Button/#{name}/**/*.swift"
-        set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Button/#{name}/**/*.xib")
-        ss.dependency 'EDTS_DS/Color'
-        ss.dependency 'EDTS_DS/Font'
-        ss.dependency 'EDTS_DS/Assets'
-        ss.dependency 'EDTS_DS/Signifier'
-      end
-    end
+ # Button Stepper
+  spec.subspec 'ButtonStepper' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Components/General/Button/Stepper/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Button/Stepper/**/*.xib")
+    ss.dependency 'EDTS_DS/Color'
+    ss.dependency 'EDTS_DS/Font'
+    ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Signifier'
+    ss.dependency 'EDTS_DS/Extensions'
   end
 
   # Coachmark
   spec.subspec 'Coachmark' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/General/Coachmark/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Coachmark/**/*.xib")
-    ss.dependency 'EDTS_DS/Button/Default'
+    ss.dependency 'EDTS_DS/Button'
+    ss.dependency 'EDTS_DS/Extensions'
   end
 
   # Dialog
   spec.subspec 'Dialog' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/General/Dialog/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Dialog/**/*.xib")
-    ss.dependency 'EDTS_DS/Button/Default'
+    ss.dependency 'EDTS_DS/Button'
+    ss.dependency 'EDTS_DS/Extensions'
+  end
+
+  # Radio Button
+  spec.subspec 'RadioButton' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Components/General/RadioButton/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/RadioButton/**/*.xib")
+    ss.dependency 'EDTS_DS/View'
   end
 
   # Signifier
@@ -129,14 +173,15 @@ Pod::Spec.new do |spec|
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Tab/**/*.xib")
     ss.dependency 'EDTS_DS/Chip'
     ss.dependency 'EDTS_DS/Skeleton'
+    ss.dependency 'EDTS_DS/Extensions'
   end
 
   # Toast
   spec.subspec 'Toast' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/General/Toast/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Toast/**/*.xib")
-    ss.dependency 'EDTS_DS/Button/Default'
-    ss.dependency 'EDTS_DS/Button/Icon'
+    ss.dependency 'EDTS_DS/Button'
+    ss.dependency 'EDTS_DS/ButtonIcon'
   end
 
   # ──────────────────────────────────────────────────────────
@@ -148,8 +193,10 @@ Pod::Spec.new do |spec|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/CouponOffered/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/CouponOffered/**/*.xib")
     ss.dependency 'EDTS_DS/Badge'
-    ss.dependency 'EDTS_DS/Button/Default'
+    ss.dependency 'EDTS_DS/Button'
     ss.dependency 'EDTS_DS/Ribbon'
+    ss.dependency 'EDTS_DS/Extensions'
+    ss.dependency 'EDTS_DS/Helper'
   end
 
   # Card My Coupon
@@ -158,6 +205,8 @@ Pod::Spec.new do |spec|
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/MyCoupon/**/*.xib")
     ss.dependency 'EDTS_DS/Badge'
     ss.dependency 'EDTS_DS/Ribbon'
+    ss.dependency 'EDTS_DS/Extensions'
+    ss.dependency 'EDTS_DS/View'
   end
 
   # Card Product
@@ -165,7 +214,8 @@ Pod::Spec.new do |spec|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/Product/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/Product/**/*.xib")
     ss.dependency 'EDTS_DS/Badge'
-    ss.dependency 'EDTS_DS/Button/Stepper'
+    ss.dependency 'EDTS_DS/ButtonStepper'
+    ss.dependency 'EDTS_DS/Extensions'
   end
 
   # Card Shopping Type
