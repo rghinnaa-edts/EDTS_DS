@@ -370,10 +370,10 @@ public class EDTSToast: UIView {
         btnAction.btnType = "Primary"
         btnAction.btnSize = "Small"
         btnAction.btnState = "Default"
-        btnAction.labelColor = .white
+        btnAction.labelColor = EDTSColor.white
         btnAction.fontSize = 12
         btnAction.fontWeight = "semibold"
-        btnAction.bgColor = .clear
+        btnAction.bgColor = UIColor.clear
         btnAction.paddingTop = 0
         btnAction.paddingBottom = 0
         btnAction.paddingLeading = 0
@@ -385,7 +385,7 @@ public class EDTSToast: UIView {
         btnIconAction.btnType = "Primary"
         btnIconAction.btnSize = "Small"
         btnIconAction.btnState = "Default"
-        btnIconAction.bgColor = .clear
+        btnIconAction.bgColor = UIColor.clear
         btnIconAction.paddingTop = 0
         btnIconAction.paddingBottom = 0
         btnIconAction.paddingLeading = 0

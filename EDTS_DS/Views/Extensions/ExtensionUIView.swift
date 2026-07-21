@@ -69,7 +69,7 @@ extension UIView {
     }
     
     // MARK: - Shaping View To Circle/Elipse
-    func applyCircular() {
+    public func applyCircular() {
         layoutIfNeeded()
         layer.cornerRadius = min(layer.bounds.width, layer.bounds.height) / 2
     }
@@ -91,7 +91,7 @@ extension UIView {
         set { objc_setAssociatedObject(self, &RippleKeys.rippleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    func showRipple(from touchPoint: CGPoint? = nil, cornerRadius: CGFloat? = nil,
+    public func showRipple(from touchPoint: CGPoint? = nil, cornerRadius: CGFloat? = nil,
                     color: UIColor? = EDTSColor.grey30.withAlphaComponent(0.12)) {
         let tempTouchPoint = touchPoint ?? CGPoint(x: bounds.midX, y: bounds.midY)
         rippleStartTime = Date()
@@ -148,7 +148,7 @@ extension UIView {
         ripple.add(group, forKey: "rippleExpand")
     }
     
-    func hideRipple() {
+    public func hideRipple() {
         let layersToHide = activeRippleLayers
         activeRippleLayers = []
         
@@ -181,7 +181,7 @@ extension UIView {
         set { objc_setAssociatedObject(self, &RippleKeys.circularRippleLayer, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    func showRippleCircular(size: CGFloat = 32,
+    public func showRippleCircular(size: CGFloat = 32,
                           color: UIColor? = EDTSColor.grey30.withAlphaComponent(0.22)) {
         
         guard let container = superview else { return }
@@ -223,7 +223,7 @@ extension UIView {
         circular.add(group, forKey: "circularRippleExpand")
     }
     
-    func hideRippleCircular() {
+    public func hideRippleCircular() {
         let layersToHide = activeCircularRippleLayers
         activeCircularRippleLayers = []
         
