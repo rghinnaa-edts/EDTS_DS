@@ -253,7 +253,7 @@ public class EDTSCardCouponOffered: UIView {
     }
     
     public func startFloatingAnimation() {
-        let icon = UIImage(named: "ic-voucher")
+        let icon = UIImage(named: "ic_voucher")
         
         DispatchQueue.main.async {
             self.showFloatingAnimation(
@@ -369,7 +369,7 @@ public class EDTSCardCouponOffered: UIView {
         badgeMinimumTransaction.label = "Minimum Transaksi"
         badgeMinimumTransaction.bgColor = UIColor.clear
         badgeMinimumTransaction.labelColor = EDTSColor.grey40
-        badgeMinimumTransaction.icon = UIImage(named: "ic-bag")
+        badgeMinimumTransaction.icon = UIImage(named: "ic_bag")
         badgeMinimumTransaction.iconTint = EDTSColor.grey40
         badgeMinimumTransaction.paddingLeading = 0
     }
@@ -378,7 +378,7 @@ public class EDTSCardCouponOffered: UIView {
         badgeService.label = "Service"
         badgeService.bgColor = UIColor.clear
         badgeService.labelColor = EDTSColor.grey40
-        badgeService.icon = UIImage(named: "ic-cart")
+        badgeService.icon = UIImage(named: "ic_cart")
         badgeService.iconTint = EDTSColor.grey40
         badgeService.paddingLeading = 0
     }
@@ -387,7 +387,7 @@ public class EDTSCardCouponOffered: UIView {
         badgePeriode.label = "Periode"
         badgePeriode.bgColor = UIColor.clear
         badgePeriode.labelColor = EDTSColor.grey40
-        badgePeriode.icon = UIImage(named: "ic-clock")
+        badgePeriode.icon = UIImage(named: "ic_clock")
         badgePeriode.iconTint = EDTSColor.grey40
         badgePeriode.paddingLeading = 0
     }

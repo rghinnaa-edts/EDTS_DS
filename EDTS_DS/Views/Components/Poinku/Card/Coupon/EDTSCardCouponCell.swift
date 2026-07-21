@@ -1,31 +1,29 @@
 //
 //  CouponCardCell.swift
-//  Poinku-DS
+//  Poinku-DS-SB
 //
 //  Created by Rizka Ghinna Auliya on 10/02/25.
 //
 
 import UIKit
 
-public class EDTSCardPointCell: UICollectionViewCell {
+public class EDTSCardCouponCell: UICollectionViewCell {
     
-    @IBOutlet var poinCard: UIView!
-    @IBOutlet var ivPoinCard: UIImageView!
-    @IBOutlet var vCoupon: UIView!
-    @IBOutlet var lblCoupon: UILabel!
-    @IBOutlet var ivCoupon: UIImageView!
-    @IBOutlet var lblPoinCard: UILabel!
-    @IBOutlet var vPoin: UIView!
-    @IBOutlet var lblPoin: UILabel!
-    @IBOutlet var btnExchange: UIButton!
+    @IBOutlet var couponCard: UIView!
+    @IBOutlet var ivCouponCard: UIImageView!
+    @IBOutlet var vAvailable: UIView!
+    @IBOutlet var lblAvailable: UILabel!
+    @IBOutlet var ivAvailable: UIImageView!
+    @IBOutlet var lblCouponCard: UILabel!
     @IBOutlet var vIKupon: UIView!
     @IBOutlet var ivIKupon: UIImageView!
     @IBOutlet var lblIKupon: UILabel!
+    @IBOutlet var btnExchange: UIButton!
     
     public var id: String = ""
     public var title: String = ""
     public var imageURL: String = ""
-    public var coupon: Int = 9
+    public var coupon: Int = 0
     public var stampCount: Int = 0
     public var price: Int = 0
     public var isNew: Bool = false
@@ -56,12 +54,12 @@ public class EDTSCardPointCell: UICollectionViewCell {
     
     override public init(frame: CGRect) {
         super.init(frame: frame)
-        setupPoinCard()
+        setupCouponCard()
     }
 
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
-        setupPoinCard()
+        setupCouponCard()
     }
     
     override public func awakeFromNib() {
@@ -85,10 +83,10 @@ public class EDTSCardPointCell: UICollectionViewCell {
     }
     
     public func calculateHeight(for width: CGFloat) -> CGFloat {
-        let widthConstraint = poinCard.widthAnchor.constraint(equalToConstant: width)
+        let widthConstraint = couponCard.widthAnchor.constraint(equalToConstant: width)
         widthConstraint.isActive = true
         
-        let size = poinCard.systemLayoutSizeFitting(
+        let size = couponCard.systemLayoutSizeFitting(
             CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
@@ -99,91 +97,87 @@ public class EDTSCardPointCell: UICollectionViewCell {
         return size.height
     }
 
-    private func setupPoinCard() {
+    private func setupCouponCard() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("EDTSCardPointCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCouponCardCell", owner: self, options: nil),
            let view = nib.first as? UIView {
-            poinCard = view
-            poinCard.frame = bounds
-            poinCard.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-            addSubview(poinCard)
+            couponCard = view
+            couponCard.frame = bounds
+            couponCard.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+            addSubview(couponCard)
             
             setupUI()
         } else {
-            print("Failed to load PoinCard XIB")
+            print("Failed to load CouponCardCell XIB")
         }
     }
     
     private func setupUI() {
-        UIPoinCard()
-        UICoupon()
+        UIStampCard()
+        UIAvailable()
         UIikupon()
-        UIPoin()
         UIRibbonHotProduct()
     }
     
-    private func UIPoinCard() {
-        poinCard.layer.cornerRadius = 8
-        poinCard.layer.masksToBounds = true
+    private func UIStampCard() {
+        couponCard.layer.cornerRadius = 8
+        couponCard.layer.masksToBounds = true
         
-        poinCard.backgroundColor = .white
-        poinCard.layer.shadowColor = UIColor.black.cgColor
-        poinCard.layer.shadowOpacity = 0.15
-        poinCard.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
-        poinCard.layer.shadowRadius = 3.0
-        poinCard.layer.masksToBounds = false
+        couponCard.backgroundColor = .white
+        couponCard.layer.shadowColor = UIColor.black.cgColor
+        couponCard.layer.shadowOpacity = 0.15
+        couponCard.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
+        couponCard.layer.shadowRadius = 3.0
+        couponCard.layer.masksToBounds = false
         
-        lblPoinCard.textColor = EDTSColor.grey70
-        lblPoinCard.font = EDTSFont.B3.Regular.font
+        lblCouponCard.textColor = EDTSColor.grey70
+        lblCouponCard.font = EDTSFont.B3.Regular.font
         
-        btnExchange.titleLabel?.text = "Tukar Poin"
         btnExchange.backgroundColor = EDTSColor.blue30
         btnExchange.layer.cornerRadius = 4
         btnExchange.titleLabel?.textColor = .white
         btnExchange.titleLabel?.font = EDTSFont.Button.Small.font
         
-        lblPoinCard.text = "Diskon Rp5.000 1 Pcs Kellogg’s Frosted Flakes 300gr"
-//        ivPoinCard.image = UIImage(named: "img_product")
+        lblCouponCard.text = "Diskon Rp2.000 Lifebuoy Red Fresh"
     }
     
-    private func UICoupon() {
+    private func UIAvailable() {
         if coupon > 10 && coupon < 0 {
-            ivCoupon.image = UIImage(named: "product-empty")
+            ivAvailable.image = UIImage(named: "img_product")
         }
+        ivAvailable.image = ivAvailable.image?.withRenderingMode(.alwaysTemplate)
         
-        ivCoupon.image = ivCoupon.image?.withRenderingMode(.alwaysTemplate)
-        
-        ivCoupon.tintColor = if coupon < 10 && coupon > 0 {
+        ivAvailable.tintColor = if coupon < 10 && coupon > 0 {
             EDTSColor.warningStrong
         } else {
             EDTSColor.errorStrong
         }
         
-        vCoupon.backgroundColor = if coupon < 10 && coupon > 0 {
+        vAvailable.backgroundColor = if coupon < 10 && coupon > 0 {
             EDTSColor.warningWeak
         } else {
             EDTSColor.errorWeak
         }
         
-        lblCoupon.textColor = if coupon < 10 && coupon > 0 {
+        lblAvailable.textColor = if coupon < 10 && coupon > 0 {
             EDTSColor.warningStrong
         } else {
             EDTSColor.errorStrong
         }
         
-        lblCoupon.text = if coupon < 10 && coupon > 0 {
+        lblAvailable.text = if coupon < 10 && coupon > 0 {
             "Kupon Mau Habis"
         } else {
             "Kupon Habis"
         }
-        lblCoupon.font = EDTSFont.B4.Regular.font
+        lblAvailable.font = EDTSFont.B4.Regular.font
     }
     
     private func UIikupon() {
         ivIKupon.image = ivIKupon.image?.withRenderingMode(.alwaysTemplate)
         ivIKupon.tintColor = EDTSColor.primaryStrong
         
-        vIKupon.backgroundColor = EDTSColor.primaryWeak
+        vIKupon.backgroundColor = EDTSColor.primaryStrong
         vIKupon.layer.cornerRadius = 8
         vIKupon.layer.borderWidth = 1
         vIKupon.layer.borderColor = EDTSColor.primaryStrong.cgColor
@@ -191,17 +185,6 @@ public class EDTSCardPointCell: UICollectionViewCell {
         lblIKupon.textColor = EDTSColor.primaryStrong
         lblIKupon.font = EDTSFont.B4.Regular.font
         lblIKupon.text = "i-Kupon"
-    }
-    
-    private func UIPoin() {
-        vPoin.backgroundColor = EDTSColor.secondaryWeak
-        vPoin.layer.cornerRadius = 8
-        vPoin.layer.borderWidth = 1
-        vPoin.layer.borderColor = EDTSColor.warningStrong.cgColor
-        
-        lblPoin.textColor = EDTSColor.warningStrong
-        lblPoin.font = EDTSFont.B4.Regular.font
-        lblPoin.text = "5.500 Poin"
     }
     
     private func UIRibbonHotProduct() {
@@ -214,8 +197,8 @@ public class EDTSCardPointCell: UICollectionViewCell {
         ribbonView.gravity = .start
 
         ribbonView.anchorToView(
-            rootParent: poinCard,
-            targetView: poinCard
+            rootParent: couponCard,
+            targetView: couponCard
         )
     }
 }
