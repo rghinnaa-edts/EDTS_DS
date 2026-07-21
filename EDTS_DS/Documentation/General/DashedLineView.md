@@ -6,8 +6,8 @@
 
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Horizontal Dashed Line** | *(add preview asset)* |
-| **Vertical Dashed Line** | *(add preview asset)* |
+| **Horizontal Dashed Line** | ![Horizontal Dashed Line](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784621077/dashed_line_view_horizontal_eyiw6z.png) |
+| **Vertical Dashed Line** | ![Vertical Dashed Line](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784621076/dashed_line_view_vertical_qx5i8q.png) |
 
 ## Basic Usage
 

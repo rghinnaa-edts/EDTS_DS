@@ -1,6 +1,6 @@
-# InnerShadowView
+# InnerShadow
 
-`InnerShadowView` is an `@IBDesignable` container view that renders a configurable inner shadow around its edges, using an even-odd fill rule to mask a shadow layer to the shape of the view's rounded rect.
+`InnerShadow` is an `@IBDesignable` container view that renders a configurable inner shadow around its edges, using an even-odd fill rule to mask a shadow layer to the shape of the view's rounded rect.
 
 ## Preview
 
@@ -16,12 +16,12 @@
 **Swift (Storyboard/XIB):**
 ```swift
 // Add UIView from Interface Builder
-// Set Custom Class to InnerShadowView in Identity Inspector
+// Set Custom Class to InnerShadow in Identity Inspector
 ```
 
 **Swift (Programmatic):**
 ```swift
-let innerShadowView = InnerShadowView(frame: .zero)
+let innerShadowView = InnerShadow(frame: .zero)
 view.addSubview(innerShadowView)
 ```
 
@@ -57,4 +57,4 @@ All shadow properties are `@IBInspectable`, so they can be configured directly f
 
 ---
 
-*For further customization, you can ask UX Engineer or inherit `InnerShadowView` and override its methods, or add additional functionality as required.*
+*For further customization, you can ask UX Engineer or inherit `InnerShadow` and override its methods, or add additional functionality as required.*

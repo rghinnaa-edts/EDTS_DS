@@ -22,15 +22,15 @@ This document covers the utility extensions available on `UIView`, `Int`, and `S
 ##Preview
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Circular Shape** | *(add preview asset)* |
-| **Elipse Shape** | *(add preview asset)* |
-| **Ripple Effect (Bounded)** | *(add preview asset)* |
-| **Ripple Effect (Circular, Behind View)** | *(add preview asset)* |
-| **Grayscale Applied** | *(add preview asset)* |
+| **Circular Shape** | ![Circular Shape](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784623809/apply_circular_circle_mho70d.png) |
+| **Elipse Shape** | ![Elipse Shape](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784621076/apply_circular_oilcgp.png) |
+| **Ripple Effect** | ![Ripple Effect](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784621076/ripple_zx7cyw.gif) |
+| **Ripple Effect (Circular)** | ![Ripple Effect (Circular)](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784621076/ripple_circular_lfmgdv.gif) |
+| **Grayscale** | ![Grayscale](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784621076/grayscale_sjnmt2.png) |
 | **Coupon Background** | *(add preview asset)* |
-| **Format Rupiah** | *(add preview asset)* |
-| **Format Decimal** | *(add preview asset)* |
-| **Strikethrough** | *(add preview asset)* |
+| **Format Rupiah** | ![Format Rupiah](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1784621075/format_rupiah_uqguvl.png) |
+| **Format Decimal** | ![Format Decimal](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1784621075/format_decimal_kw8tsr.png) |
+| **Strikethrough** | ![Strikethrough](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1784621075/strikethrough_da7f32.png) |
 
 ---
 
