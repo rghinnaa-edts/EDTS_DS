@@ -153,6 +153,15 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Extensions'
   end
 
+  # Progress Tracker
+  spec.subspec 'ProgressTracker' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Components/General/ProgressTracker/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/ProgressTracker/**/*.xib")
+    ss.dependency 'EDTS_DS/Color'
+    ss.dependency 'EDTS_DS/Extensions'
+    ss.dependency 'EDTS_DS/View'
+  end
+
   # Radio Button
   spec.subspec 'RadioButton' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/General/RadioButton/**/*.swift'
