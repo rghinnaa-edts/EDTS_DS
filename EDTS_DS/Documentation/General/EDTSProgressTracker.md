@@ -108,7 +108,7 @@ progressTracker.value = 45
 
 > **Note:** The full-track (completed-lap) layer becomes visible whenever the current lap reaches 100%. The lap-count **badge**, however, only appears when `isHasBadge` is `true` **and** `limitValue > maxValue`.
 
-### Inner Shadow Properties
+### Track Inner Shadow Properties
 
 | Property Name | Type | Default | Description |
 | -------------- | ---- | ------- | ----------- |

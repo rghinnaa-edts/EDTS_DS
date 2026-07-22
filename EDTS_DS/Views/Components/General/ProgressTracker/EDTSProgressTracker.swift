@@ -378,41 +378,21 @@ public class EDTSProgressTracker: UIView {
     @IBInspectable public var isLoadingState: Bool = false {
         didSet {
             guard isLoadingState != oldValue else { return }
-            debounceTimer?.invalidate()
-            debounceTimer = nil
-            pendingValue = nil
-            isUserInputSpam = false
-            animationQueue.removeAll()
-            isAnimating = false
-            
-            if isLoadingState {
-                lapCount = 0
-                wasAtMaxValue = false
-                fullTrackView.isHidden = true
-                limitValue = maxValue
-            }
+            setupLoadingState()
         }
     }
     
     @IBInspectable public var isIntermittentState: Bool = false {
         didSet {
             guard isIntermittentState != oldValue else { return }
-                    if isIntermittentState {
-                        startIntermittentAnimation()
-                        animateIntermittentBar()
-                    } else {
-                        stopIntermittentAnimation()
-                    }
+            setupIntermittentState()
         }
     }
     
     @IBInspectable public var intermittentAnimationType: String = "stretch" {
         didSet {
             guard oldValue.lowercased() != intermittentAnimationType.lowercased() else { return }
-            guard isIntermittentState else { return }
-            stopIntermittentAnimation()
-            startIntermittentAnimation()
-            animateIntermittentBar()
+            setupIntermittentAnimationType()
         }
     }
     
@@ -422,7 +402,7 @@ public class EDTSProgressTracker: UIView {
     private let scaleAnimationDuration: TimeInterval = 0.2
     private let fillAnimationDuration: TimeInterval = 0.8
     private let intermittentAnimationDuration: TimeInterval = 0.7
-
+    
     private var trackGradientLayer: CAGradientLayer?
     private var fillGradientLayer: CAGradientLayer?
     private var fullTrackGradientLayer: CAGradientLayer?
@@ -936,6 +916,38 @@ public class EDTSProgressTracker: UIView {
         }
         
         invalidateIntrinsicContentSize()
+    }
+    
+    private func setupLoadingState() {
+        debounceTimer?.invalidate()
+        debounceTimer = nil
+        pendingValue = nil
+        isUserInputSpam = false
+        animationQueue.removeAll()
+        isAnimating = false
+        
+        if isLoadingState {
+            lapCount = 0
+            wasAtMaxValue = false
+            fullTrackView.isHidden = true
+            limitValue = maxValue
+        }
+    }
+    
+    private func setupIntermittentState() {
+        if isIntermittentState {
+            startIntermittentAnimation()
+            animateIntermittentBar()
+        } else {
+            stopIntermittentAnimation()
+        }
+    }
+    
+    private func setupIntermittentAnimationType() {
+        guard isIntermittentState else { return }
+        stopIntermittentAnimation()
+        startIntermittentAnimation()
+        animateIntermittentBar()
     }
     
     // MARK: - Setup & Calculating Progress Bar Value
