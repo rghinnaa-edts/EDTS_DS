@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "EDTS_DS"
-  spec.version      = "0.1.1"
+  spec.version      = "0.1.2"
   spec.summary      = "UI Components and Animation"
   spec.description  = "UI Components and Animation of EDTS Apps"
 
@@ -137,6 +137,14 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Extensions'
   end
 
+  # Card Selection
+  spec.subspec 'CardSelection' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Components/General/Card/Selection/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Card/Selection/**/*.xib")
+    ss.dependency 'EDTS_DS/Color'
+    ss.dependency 'EDTS_DS/Font'
+  end
+
   # Coachmark
   spec.subspec 'Coachmark' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/General/Coachmark/**/*.swift'
@@ -197,8 +205,10 @@ Pod::Spec.new do |spec|
   # KlikIDM brand-specific components (nested subspecs)
   # ──────────────────────────────────────────────────────────
 
+  spec.subspec 'Klik' do |klik|
+
   # Card Coupon Offered
-  spec.subspec 'CouponOffered' do |ss|
+  klik.subspec 'CouponOffered' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/CouponOffered/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/CouponOffered/**/*.xib")
     ss.dependency 'EDTS_DS/Badge'
@@ -209,7 +219,7 @@ Pod::Spec.new do |spec|
   end
 
   # Card My Coupon
-  spec.subspec 'MyCoupon' do |ss|
+  klik.subspec 'MyCoupon' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/MyCoupon/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/MyCoupon/**/*.xib")
     ss.dependency 'EDTS_DS/Badge'
@@ -219,7 +229,7 @@ Pod::Spec.new do |spec|
   end
 
   # Card Product
-  spec.subspec 'Product' do |ss|
+  klik.subspec 'Product' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/Product/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/Product/**/*.xib")
     ss.dependency 'EDTS_DS/Badge'
@@ -228,11 +238,13 @@ Pod::Spec.new do |spec|
   end
 
   # Card Shopping Type
-  spec.subspec 'ShoppingType' do |ss|
+  klik.subspec 'ShoppingType' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/ShoppingType/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/ShoppingType/**/*.xib")
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
+  end
+
   end
 
   # ──────────────────────────────────────────────────────────
