@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "EDTS_DS"
-  spec.version      = "0.0.4"
+  spec.version      = "0.1.0"
   spec.summary      = "UI Components and Animation"
   spec.description  = "UI Components and Animation of EDTS Apps"
 
