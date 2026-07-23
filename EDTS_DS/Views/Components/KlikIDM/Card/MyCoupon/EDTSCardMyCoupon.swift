@@ -335,11 +335,9 @@ public class EDTSCardMyCoupon: UIView {
         lblTitle.font = EDTSFont.B2.Semibold.font
         lblDesc.font = EDTSFont.B3.Regular.font
         descColor = EDTSColor.grey30
-        let bundleLeading = Bundle(for: type(of: self))
-        ivLeadingIcon.image = UIImage(named: "img_coupon", in: bundleLeading, compatibleWith: nil)
+        ivLeadingIcon.image = UIImage(named: "img_coupon", in: .edtsDS, compatibleWith: nil)
         setupLeadingIconBg(EDTSColor.white)
-        let bundleTrailing = Bundle(for: type(of: self))
-        ivTrailingIcon.image = UIImage(named: "ic_chevron_right", in: bundleTrailing, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        ivTrailingIcon.image = UIImage(named: "ic_chevron_right", in: .edtsDS, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
         iconTintColorTrailing = EDTSColor.white
         setupBadge()
     }

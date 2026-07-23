@@ -59,8 +59,7 @@ public class EDTSSearchField: UISearchBar {
             searchIconView.contentMode = .scaleAspectFit
             searchIconView.tintColor = EDTSColor.grey60
             
-            let bundle = Bundle(for: type(of: self))
-            searchIconView.image = UIImage(named: "ic_search", in: bundle, compatibleWith: nil)
+            searchIconView.image = UIImage(named: "ic_search", in: .edtsDS, compatibleWith: nil)
 
             let containerView = UIView(frame: CGRect(x: 0, y: 0, width: 24, height: textField.frame.height))
             searchIconView.center.y = containerView.bounds.height / 2

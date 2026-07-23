@@ -1109,8 +1109,7 @@ public class EDTSTextField: UIView {
 
     private func updatePasswordIcon() {
         let iconName = tfValue.isSecureTextEntry ? "ic_visibility_off" : "ic_visibility_on"
-        let bundle = Bundle(for: type(of: self))
-        ivTrailing.image = UIImage(named: iconName, in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        ivTrailing.image = UIImage(named: iconName, in: .edtsDS, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }
     
     // MARK: - Clear Button
@@ -1121,8 +1120,7 @@ public class EDTSTextField: UIView {
         ivTrailing.isUserInteractionEnabled = true
 
         let hasText = !(tfValue.text?.isEmpty ?? true)
-        let bundle = Bundle(for: type(of: self))
-        ivTrailing.image = UIImage(named: "ic_error", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        ivTrailing.image = UIImage(named: "ic_error", in: .edtsDS, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
         ivTrailing.tintColor = EDTSColor.grey50
         ivTrailing.isHidden = false
         ivTrailingWidthConstraint?.constant = 24

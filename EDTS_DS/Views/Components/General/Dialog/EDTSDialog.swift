@@ -427,8 +427,7 @@ public class EDTSDialog: UIView {
     }
     
     private func setupCloseButton() {
-        let bundle = Bundle(for: type(of: self))
-        ivClose.image = UIImage(named: "ic_close", in: bundle, compatibleWith: nil)
+        ivClose.image = UIImage(named: "ic_close", in: .edtsDS, compatibleWith: nil)
         ivClose.tintColor = EDTSColor.grey50
         
         ivClose.isUserInteractionEnabled = true
@@ -553,8 +552,7 @@ public class EDTSDialog: UIView {
         isBtnPositionAtTopLabel = true
         
         if image == nil {
-            let bundle = Bundle(for: type(of: self))
-            ivImage.image = UIImage(named: "ic_placeholder", in: bundle, compatibleWith: nil)
+            ivImage.image = UIImage(named: "ic_placeholder", in: .edtsDS, compatibleWith: nil)
             ivImageWidthConstraint?.constant = dialogImageSize
         }
         if support == nil {
