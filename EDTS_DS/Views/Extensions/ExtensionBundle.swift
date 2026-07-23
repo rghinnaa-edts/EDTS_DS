@@ -10,7 +10,7 @@ import UIKit
 final class EDTSBundleFinder {}
 
 extension Bundle {
-    static let edtsDS: Bundle = {
+    public static let edtsDS: Bundle = {
         let frameworkBundle = Bundle(for: EDTSBundleFinder.self)
 
         // CocoaPods with resource_bundle nests it inside the framework bundle

@@ -96,6 +96,7 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Button'
   end
 
@@ -106,6 +107,7 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Skeleton'
   end
 
@@ -116,8 +118,8 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
-    ss.dependency 'EDTS_DS/Signifier'
     ss.dependency 'EDTS_DS/Extensions'
+    ss.dependency 'EDTS_DS/Signifier'
   end
 
   # Button Icon
@@ -127,9 +129,9 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Button'
     ss.dependency 'EDTS_DS/Signifier'
-    ss.dependency 'EDTS_DS/Extensions'
   end
 
  # Button Stepper
@@ -139,8 +141,8 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
-    ss.dependency 'EDTS_DS/Signifier'
     ss.dependency 'EDTS_DS/Extensions'
+    ss.dependency 'EDTS_DS/Signifier'
   end
 
   # Card Selection
@@ -150,6 +152,7 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
   end
 
   # Coachmark
@@ -159,8 +162,8 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
-    ss.dependency 'EDTS_DS/Button'
     ss.dependency 'EDTS_DS/Extensions'
+    ss.dependency 'EDTS_DS/Button'
   end
 
   # Dialog
@@ -170,8 +173,8 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
-    ss.dependency 'EDTS_DS/Button'
     ss.dependency 'EDTS_DS/Extensions'
+    ss.dependency 'EDTS_DS/Button'
   end
 
   # Progress Tracker
@@ -192,6 +195,7 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/View'
   end
 
@@ -202,6 +206,7 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Skeleton'
   end
 
@@ -212,9 +217,9 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Chip'
     ss.dependency 'EDTS_DS/Skeleton'
-    ss.dependency 'EDTS_DS/Extensions'
   end
 
   # Toast
@@ -224,6 +229,7 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Button'
     ss.dependency 'EDTS_DS/ButtonIcon'
   end
@@ -241,10 +247,10 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Badge'
     ss.dependency 'EDTS_DS/Button'
     ss.dependency 'EDTS_DS/Ribbon'
-    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Helper'
   end
 
@@ -255,9 +261,9 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Badge'
     ss.dependency 'EDTS_DS/Ribbon'
-    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/View'
   end
 
@@ -268,9 +274,9 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
     ss.dependency 'EDTS_DS/Badge'
     ss.dependency 'EDTS_DS/ButtonStepper'
-    ss.dependency 'EDTS_DS/Extensions'
   end
 
   # Card Shopping Type
@@ -280,6 +286,7 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
   end
 
   end
@@ -301,6 +308,7 @@ Pod::Spec.new do |spec|
           ss.dependency 'EDTS_DS/Color'
           ss.dependency 'EDTS_DS/Font'
           ss.dependency 'EDTS_DS/Assets'
+          ss.dependency 'EDTS_DS/Extensions'
           ss.dependency 'EDTS_DS/Font'
           ss.dependency 'EDTS_DS/Ribbon'
         end
@@ -324,6 +332,7 @@ Pod::Spec.new do |spec|
           ss.dependency 'EDTS_DS/Color'
           ss.dependency 'EDTS_DS/Font'
           ss.dependency 'EDTS_DS/Assets'
+          ss.dependency 'EDTS_DS/Extensions'
           ss.dependency 'EDTS_DS/Poinku/OnBoarding/PageControl'
         end
       end
