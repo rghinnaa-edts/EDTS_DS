@@ -230,4 +230,6 @@ button.labelColor = nil       // Nil value → uses preset default white
 - Gradient background is enabled when `bgColorStart` or `bgColorEnd` are set; when enabled, `bgColor` is ignored
 - The `disabled` state automatically sets `isUserInteractionEnabled = false`
 
+---
+
 *For further customization, you can ask UX Engineer or inherit `EDTSButton` and override its methods, or add additional functionality as required.*

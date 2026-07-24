@@ -210,4 +210,6 @@ button.bgColor = .red             // Custom value overrides preset → uses red
 - Ripple animation is disabled while gradient mode is active
 - The `disabled` state automatically sets `isUserInteractionEnabled = false`
 
+---
+
 *For further customization, you can ask UX Engineer or inherit `EDTSButtonIcon` and override its methods, or add additional functionality as required.*

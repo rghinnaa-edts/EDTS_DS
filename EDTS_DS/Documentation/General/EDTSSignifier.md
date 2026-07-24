@@ -151,4 +151,6 @@ public func showSignifier(to view: UIView)
 
 - Setting `labelAttributed` overrides `label`; setting `label` clears `labelAttributed` — only one text source is active at a time
 
+---
+
 *For further customization, you can ask a UX Engineer or inherit `EDTSSignifier` and override its methods, or add additional functionality as required.*
