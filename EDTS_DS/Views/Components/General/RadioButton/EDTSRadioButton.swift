@@ -307,15 +307,21 @@ public class EDTSRadioButton: UIView {
     }
     
     private func setupDefaultStyle(){
+        if EDTSColor.theme == .klikIDM {
+            lblBody.font = EDTSFont.B3.Regular.font
+            title = "Title radio button"
+        } else if EDTSColor.theme == .poinku {
+            lblBody.font = EDTSFont.B3.Regular.font
+            title = "Title Here"
+        }
+        
         lblTitle.font = EDTSFont.B2.Medium.font
-        lblBody.font = EDTSFont.B3.Regular.font
-        borderWidth = 1
-        title = "Title radio button"
         desc = ""
+        borderWidth = 1
         iconPadding = 0
         paddingLeading = 2
         labelSpacing = 4
-        spacing = 8
+        spacing = 10
         bulletContainerView.applyCircular()
         bulletView.applyCircular()
         
@@ -415,21 +421,38 @@ public class EDTSRadioButton: UIView {
     private func setupRadioButtonDisabled() {
         switch self.isActive {
         case false:
-            self.lblTitle.textColor = EDTSColor.grey40
-            self.lblBody.textColor = EDTSColor.grey30
-            self.bulletContainerView.backgroundColor = EDTSColor.grey20
-            self.bulletView.backgroundColor = EDTSColor.grey20
-            self.ivIcon.tintColor = EDTSColor.grey20
-            self.bulletContainerView.layer.borderColor = EDTSColor.grey30.cgColor
-
+            if EDTSColor.theme == .klikIDM {
+                self.lblTitle.textColor = EDTSColor.grey40
+                self.lblBody.textColor = EDTSColor.grey30
+                self.bulletContainerView.backgroundColor = EDTSColor.grey20
+                self.bulletView.backgroundColor = EDTSColor.grey20
+                self.ivIcon.tintColor = EDTSColor.grey20
+                self.bulletContainerView.layer.borderColor = EDTSColor.grey30.cgColor
+            } else if EDTSColor.theme == .poinku {
+                self.lblTitle.textColor = EDTSColor.grey50
+                self.lblBody.textColor = EDTSColor.grey30
+                self.bulletContainerView.backgroundColor = EDTSColor.grey20
+                self.bulletView.backgroundColor = EDTSColor.grey20
+                self.ivIcon.tintColor = EDTSColor.grey20
+                self.bulletContainerView.layer.borderColor = EDTSColor.grey30.cgColor
+            }
             
         case true:
-            self.lblTitle.textColor = EDTSColor.grey40
-            self.lblBody.textColor = EDTSColor.grey30
-            self.bulletContainerView.backgroundColor = EDTSColor.grey20
-            self.bulletView.backgroundColor = EDTSColor.grey40
-            self.ivIcon.tintColor = EDTSColor.grey40
-            self.bulletContainerView.layer.borderColor = EDTSColor.grey40.cgColor
+            if EDTSColor.theme == .klikIDM {
+                self.lblTitle.textColor = EDTSColor.grey40
+                self.lblBody.textColor = EDTSColor.grey30
+                self.bulletContainerView.backgroundColor = EDTSColor.grey20
+                self.bulletView.backgroundColor = EDTSColor.grey40
+                self.ivIcon.tintColor = EDTSColor.grey40
+                self.bulletContainerView.layer.borderColor = EDTSColor.grey40.cgColor
+            } else if EDTSColor.theme == .poinku {
+                self.lblTitle.textColor = EDTSColor.grey50
+                self.lblBody.textColor = EDTSColor.grey30
+                self.bulletContainerView.backgroundColor = EDTSColor.grey20
+                self.bulletView.backgroundColor = EDTSColor.grey30
+                self.ivIcon.tintColor = EDTSColor.grey30
+                self.bulletContainerView.layer.borderColor = EDTSColor.grey30.cgColor
+            }
         }
     }
     
@@ -439,20 +462,38 @@ public class EDTSRadioButton: UIView {
         let changes = {
             switch self.isActive {
             case false:
-                self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey60
-                self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey50
-                self.bulletContainerView.backgroundColor = self.iconBgColorInactive ?? EDTSColor.white
-                self.bulletView.backgroundColor = self.iconTintColorInactive ?? EDTSColor.white
-                self.ivIcon.tintColor = self.iconTintColorInactive ?? (self.iconInactive == nil ? EDTSColor.white : EDTSColor.blue50)
-                self.bulletContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
+                if EDTSColor.theme == .klikIDM {
+                    self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey60
+                    self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey50
+                    self.bulletContainerView.backgroundColor = self.iconBgColorInactive ?? EDTSColor.white
+                    self.bulletView.backgroundColor = self.iconTintColorInactive ?? EDTSColor.white
+                    self.ivIcon.tintColor = self.iconTintColorInactive ?? (self.iconInactive == nil ? EDTSColor.white : EDTSColor.blue50)
+                    self.bulletContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
+                } else if EDTSColor.theme == .poinku {
+                    self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey70
+                    self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey60
+                    self.bulletContainerView.backgroundColor = self.iconBgColorInactive ?? EDTSColor.white
+                    self.bulletView.backgroundColor = self.iconTintColorInactive ?? EDTSColor.white
+                    self.ivIcon.tintColor = self.iconTintColorInactive ?? (self.iconInactive == nil ? EDTSColor.white : EDTSColor.blue50)
+                    self.bulletContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
+                }
                 
             case true:
-                self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey60
-                self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey50
-                self.bulletContainerView.backgroundColor = self.iconBgColorActive ?? EDTSColor.blue50
-                self.bulletView.backgroundColor = self.iconTintColorActive ?? EDTSColor.white
-                self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
-                self.bulletContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? UIColor.clear.cgColor
+                if EDTSColor.theme == .klikIDM {
+                    self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey60
+                    self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey50
+                    self.bulletContainerView.backgroundColor = self.iconBgColorActive ?? EDTSColor.blue50
+                    self.bulletView.backgroundColor = self.iconTintColorActive ?? EDTSColor.white
+                    self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
+                    self.bulletContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? UIColor.clear.cgColor
+                } else if EDTSColor.theme == .poinku {
+                    self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey70
+                    self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey60
+                    self.bulletContainerView.backgroundColor = self.iconBgColorActive ?? EDTSColor.blue30
+                    self.bulletView.backgroundColor = self.iconTintColorActive ?? EDTSColor.white
+                    self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
+                    self.bulletContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? EDTSColor.blue30.cgColor
+                }
             }
         }
         

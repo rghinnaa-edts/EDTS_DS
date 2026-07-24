@@ -238,26 +238,21 @@ public class EDTSSignifier: UIView {
     
     private func setupDefaultStyle() {
         if EDTSColor.theme == .poinku {
-            paddingLeading = 2
-            paddingTrailing = 2
             paddingTop = 0
             paddingBottom = 0
-            labelColor = EDTSColor.white
-            bgColor = EDTSColor.red30
-            borderWidth = 0
-            borderColor = nil
             lblTitle.font = EDTSFont.B5.Medium.font
-        } else {
-            paddingLeading = 2
-            paddingTrailing = 2
+        } else if EDTSColor.theme == .klikIDM {
             paddingTop = 1
             paddingBottom = 1
-            labelColor = EDTSColor.white
-            bgColor = EDTSColor.red30
-            borderWidth = 0
-            borderColor = nil
             lblTitle.font = EDTSFont.B4.Semibold.font
         }
+        
+        paddingLeading = 2
+        paddingTrailing = 2
+        labelColor = EDTSColor.white
+        bgColor = EDTSColor.red30
+        borderWidth = 0
+        borderColor = nil
         label = "0"
         
         invalidateIntrinsicContentSize()

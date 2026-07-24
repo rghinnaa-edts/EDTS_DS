@@ -51,6 +51,9 @@ public class EDTSCheckbox: UIView {
         didSet{
             lblTitle.attributedText = nil
             lblTitle.text = title
+            lblTitle.isHidden = title == nil || title?.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
+            invalidateIntrinsicContentSize()
         }
     }
     
@@ -58,6 +61,9 @@ public class EDTSCheckbox: UIView {
         didSet {
             lblTitle.text = nil
             lblTitle.attributedText = titleAttributed
+            lblTitle.isHidden = titleAttributed == nil || titleAttributed?.string.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
+            invalidateIntrinsicContentSize()
         }
     }
     
@@ -95,6 +101,9 @@ public class EDTSCheckbox: UIView {
         didSet{
             lblBody.attributedText = nil
             lblBody.text = desc
+            lblBody.isHidden = desc == nil || desc?.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
+            invalidateIntrinsicContentSize()
         }
     }
     
@@ -102,6 +111,9 @@ public class EDTSCheckbox: UIView {
         didSet {
             lblBody.text = nil
             lblBody.attributedText = descAttributed
+            lblBody.isHidden = descAttributed == nil || descAttributed?.string.isEmpty == true
+            vStackContainer.isHidden = lblTitle.isHidden && lblBody.isHidden
+            invalidateIntrinsicContentSize()
         }
     }
     

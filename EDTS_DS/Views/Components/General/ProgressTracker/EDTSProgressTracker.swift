@@ -563,7 +563,7 @@ public class EDTSProgressTracker: UIView {
             innerShadowView.shadowColor = EDTSColor.black
             innerShadowView.shadowRadius = 2
             innerShadowViewContainer.isHidden = true
-        } else {
+        } else if EDTSColor.theme == .poinku {
             //Default Poinku Track Styling
             trackPaddingTop = 0
             trackPaddingBottom = 0
