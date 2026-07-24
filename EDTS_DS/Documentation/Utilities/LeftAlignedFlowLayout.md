@@ -6,8 +6,8 @@
 
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Vertical Mode (Left-Aligned Flow)** | *(add preview asset)* |
-| **Grid Mode** | *(add preview asset)* |
+| **Vertical Mode** | ![Vertical Mode](https://res.cloudinary.com/dacnnk5j4/image/upload/w_400,c_scale,q_auto,f_auto/v1784874442/left_aligned_vertical_rqdgxi.gif) |
+| **Grid Mode** | ![Grid Mode](https://res.cloudinary.com/dacnnk5j4/image/upload/w_400,c_scale,q_auto,f_auto/v1784874441/left_aligned_grid_nysvvr.gif) |
 
 ## Basic Usage
 

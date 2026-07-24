@@ -6,7 +6,7 @@
 
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Staggered Grid Layout** | *(add preview asset)* |
+| **Staggered Grid Layout** | ![Staggered Grid Layout](https://res.cloudinary.com/dacnnk5j4/image/upload/w_400,c_scale,q_auto,f_auto/v1784874441/staggerd_qpxley.gif) |
 
 ## Basic Usage
 

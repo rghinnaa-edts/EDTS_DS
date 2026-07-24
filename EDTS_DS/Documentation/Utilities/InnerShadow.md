@@ -6,8 +6,8 @@
 
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Inner Shadow (Default)** | *(add preview asset)* |
-| **Rounded Inner Shadow** | *(add preview asset)* |
+| **Inner Shadow (Default)** | ![Inner Shadow](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784874442/inner_shadow_lufkn5.png) |
+| **Rounded Inner Shadow** | ![Rounded Inner Shadow](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784874442/inner_shadow_circular_vhhhmf.png) |
 
 ## Basic Usage
 

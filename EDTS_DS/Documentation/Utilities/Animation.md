@@ -18,11 +18,11 @@ This document covers the collection of animation helpers used across `EDTS_DS` f
 ## Preview
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Gradient Border** | *(add preview asset)* |
-| **Neon Pulse** | *(add preview asset)* |
-| **Floating Animation** | *(add preview asset)* |
-| **Scroll Scale Animation** | *(add preview asset)* |
-| **Scroll Fade Animation** | *(add preview asset)* |
+| **Gradient Border** | ![Gradient Border](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1784874442/gradient_border_n6tevb.gif) |
+| **Neon Pulse** | ![Neon Pulse](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1784874441/neon_pulse_b9fn46.gif) |
+| **Floating Animation** | ![Floating Animation](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1784874441/floating_wf4itq.gif) |
+| **Scroll Scale Animation** | ![Scroll Scale Animation](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1784874441/scale_qafcic.gif) |
+| **Scroll Fade Animation** | ![Scroll Fade Animation](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1784874442/fade_mludfn.gif) |
 
 ---
 
