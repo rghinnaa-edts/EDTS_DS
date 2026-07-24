@@ -38,6 +38,9 @@ EDTS_DS is an iOS SDK containing components and animations designed to help deve
 - [MyCoupon](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/Klik/EDTSCardMyCoupon.md)
 - [ShoppingType](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/Klik/EDTSCardShoppingType.md)
 
+### Poinku
+- [OnBoarding](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/Poinku/EDTSOnBoarding.md)
+
 ---
 
 To view the prototype, please visit the [EDTS_DS_Prototype](https://github.com/rghinnaa-edts/EDTS_DS_Prototype) repository.
