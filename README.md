@@ -13,25 +13,30 @@ EDTS_DS is an iOS SDK containing components and animations designed to help deve
 ## Table of Contents
 
 ### General
-- [EDTSAlertBox](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSAlertbox.md)
-- [EDTSBadge](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSBadge.md)
-- [EDTSButton](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButton.md)
-- [EDTSButtonIcon](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButtonIcon.md)
-- [EDTSButtonStepper](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButtonStepper.md)
-- [EDTSCheckbox](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSCheckbox.md)
-- [EDTSChip](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSChip.md)
-- [EDTSCoachmark](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSCoachmark.md)
-- [EDTSDialog](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSDialog.md)
-- [EDTSRadioButton](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSRadioButton.md)
-- [EDTSSignifier](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/Signifier.md)
-- [EDTSTextfield](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSTextfield.md)
-- [EDTSToast](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSToast.md)
-- [EDTSToggle](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSToggle.md)
-- [EDTSTooltip](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSTooltip.md)
+- [AlertBox](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSAlertbox.md)
+- [Badge](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSBadge.md)
+- [Button](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButton.md)
+- [ButtonIcon](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButtonIcon.md)
+- [ButtonStepper](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSButtonStepper.md)
+- [CardSelection](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSCheckbox.md)
+- [Checkbox](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSCheckbox.md)
+- [Chip](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSChip.md)
+- [Coachmark](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSCoachmark.md)
+- [Dialog](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSDialog.md)
+- [ProgressTracker](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSProgressTracker.md)
+- [RadioButton](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSRadioButton.md)
+- [Ribbon](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSRibbon.md)
+- [Signifier](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/Signifier.md)
+- [Skeleton](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSSkeleton.md)
+- [StepPageNav](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSStepPageNav.md)
+- [Textfield](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSTextfield.md)
+- [Toast](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSToast.md)
+- [Toggle](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSToggle.md)
+- [Tooltip](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/General/EDTSTooltip.md)
 
 ### Klik
-- [EDTSCardMyCoupon](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/Klik/EDTSCardMyCoupon.md)
-- [EDTSCardShoppingType](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/Klik/EDTSCardShoppingType.md)
+- [MyCoupon](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/Klik/EDTSCardMyCoupon.md)
+- [ShoppingType](https://github.com/rghinnaa-edts/EDTS_DS/blob/main/EDTS_DS/Documentation/Klik/EDTSCardShoppingType.md)
 
 ---
 
@@ -43,7 +48,7 @@ To view the prototype, please visit the [EDTS_DS_Prototype](https://github.com/r
 
 ```ruby
 target 'MyApp' do
-  pod 'EDTS_DS'
+  pod 'EDTS_DS/{Component Name}'
 end
 ```
 
