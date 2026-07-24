@@ -386,11 +386,9 @@ public class EDTSCheckbox: UIView {
         if(icon == nil){
             switch resolvedCheckboxType {
             case .checked:
-                let bundle = Bundle(for: type(of: self))
-                ivIcon.image = UIImage(named: "ic_check", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+                ivIcon.image = UIImage(named: "ic_check", in: .edtsDS, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
             case .indeterminated:
-                let bundle = Bundle(for: type(of: self))
-                ivIcon.image = UIImage(named: "ic_minus", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+                ivIcon.image = UIImage(named: "ic_minus", in: .edtsDS, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
             }
         }else{
             ivIcon.image = icon?.withRenderingMode(.alwaysTemplate)

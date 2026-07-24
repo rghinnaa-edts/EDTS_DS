@@ -412,8 +412,7 @@ public class EDTSAlertbox: UIView {
             )
         }
         
-        let bundle = Bundle(for: type(of: self))
-        ivIcon.image = UIImage(named: alertIcon, in: bundle, compatibleWith: nil)
+        ivIcon.image = UIImage(named: alertIcon, in: .edtsDS, compatibleWith: nil)
         
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
@@ -547,8 +546,7 @@ public class EDTSAlertbox: UIView {
     }
     
     private func setupCloseButton() {
-        let bundle = Bundle(for: type(of: self))
-        ivClose.image = UIImage(named: "ic_close", in: bundle, compatibleWith: nil)
+        ivClose.image = UIImage(named: "ic_close", in: .edtsDS, compatibleWith: nil)
         ivClose.tintColor = EDTSColor.grey50
         
         ivClose.isUserInteractionEnabled = true

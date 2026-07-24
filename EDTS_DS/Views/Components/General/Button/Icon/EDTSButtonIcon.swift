@@ -300,8 +300,7 @@ public class EDTSButtonIcon: UIButton {
     
     private func setupIcon() {
         ivIcon.isHidden = false
-        let bundle = Bundle(for: type(of: self))
-        ivIcon.image = UIImage(named: "ic_placeholder", in: bundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+        ivIcon.image = UIImage(named: "ic_placeholder", in: .edtsDS, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
     }
     
     private func setupBackground() {

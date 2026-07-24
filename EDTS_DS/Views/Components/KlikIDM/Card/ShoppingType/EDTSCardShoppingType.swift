@@ -365,13 +365,11 @@ public class EDTSCardShoppingType: UIView {
     }
     
     private func setupDefaultValue() {
-        let bundle = Bundle(for: type(of: self))
-        ivTypeFirst.image = UIImage(named: "ic_xpress", in: bundle, compatibleWith: nil)
+        ivTypeFirst.image = UIImage(named: "ic_xpress", in: .edtsDS, compatibleWith: nil)
         lblTitleTypeFirst.text = "Belanja Xpress"
         lblDescTypeFirst.text = "1 Jam Sampai"
         
-        let bundleSecond = Bundle(for: type(of: self))
-        ivTypeSecond.image = UIImage(named: "ic_xtra", in: bundleSecond, compatibleWith: nil)
+        ivTypeSecond.image = UIImage(named: "ic_xtra", in: .edtsDS, compatibleWith: nil)
         lblTitleTypeSecond.text = "Belanja Xtra"
         lblDescTypeSecond.text = "Tiba 1-3 hari"
     }
