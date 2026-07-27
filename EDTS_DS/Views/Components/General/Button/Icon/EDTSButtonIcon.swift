@@ -403,24 +403,42 @@ public class EDTSButtonIcon: UIButton {
     private func setupButtonSize() {
         switch resolvedButtonSize {
         case .small:
+            if EDTSColor.theme == .klikIDM {
+                tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
+            } else if EDTSColor.theme == .poinku {
+                tempCornerRadius = cornerRadius == defaultValue ? 8 : cornerRadius
+            }
+            
             tempIconSize = iconSize == CGFloat.zero ? 16 : iconSize
-            tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
             tempPaddingTop = paddingTop == defaultValue ? 4 : paddingTop
             tempPaddingBottom = paddingBottom == defaultValue ? 4 : paddingBottom
             tempPaddingLeading = paddingLeading == defaultValue ? 4 : paddingLeading
             tempPaddingTrailing = paddingTrailing == defaultValue ? 4 : paddingTrailing
             
         case .medium:
+            if EDTSColor.theme == .klikIDM {
+                tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
+                tempPaddingTop = paddingTop == defaultValue ? 8 : paddingTop
+                tempPaddingBottom = paddingBottom == defaultValue ? 8 : paddingBottom
+                tempPaddingLeading = paddingLeading == defaultValue ? 8 : paddingLeading
+                tempPaddingTrailing = paddingTrailing == defaultValue ? 8 : paddingTrailing
+            } else if EDTSColor.theme == .poinku {
+                tempCornerRadius = cornerRadius == defaultValue ? 8 : cornerRadius
+                tempPaddingTop = paddingTop == defaultValue ? 6 : paddingTop
+                tempPaddingBottom = paddingBottom == defaultValue ? 6 : paddingBottom
+                tempPaddingLeading = paddingLeading == defaultValue ? 6 : paddingLeading
+                tempPaddingTrailing = paddingTrailing == defaultValue ? 6 : paddingTrailing
+            }
+            
             tempIconSize = iconSize == CGFloat.zero ? 16 : iconSize
-            tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
-            tempPaddingTop = paddingTop == defaultValue ? 8 : paddingTop
-            tempPaddingBottom = paddingBottom == defaultValue ? 8 : paddingBottom
-            tempPaddingLeading = paddingLeading == defaultValue ? 8 : paddingLeading
-            tempPaddingTrailing = paddingTrailing == defaultValue ? 8 : paddingTrailing
             
         case .large:
+            if EDTSColor.theme == .klikIDM {
+                tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
+            } else if EDTSColor.theme == .poinku {
+                tempCornerRadius = cornerRadius == defaultValue ? 8 : cornerRadius
+            }
             tempIconSize = iconSize == CGFloat.zero ? 24 : iconSize
-            tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
             tempPaddingTop = paddingTop == defaultValue ? 8 : paddingTop
             tempPaddingBottom = paddingBottom == defaultValue ? 8 : paddingBottom
             tempPaddingLeading = paddingLeading == defaultValue ? 8 : paddingLeading
@@ -487,8 +505,14 @@ public class EDTSButtonIcon: UIButton {
     private func setupButtonPrimary(_ state: BtnState) {
         switch state {
         case .default:
-            tempIconTintColor = iconTintColor ?? EDTSColor.white
-            tempBgColor = bgColor ?? EDTSColor.blueDefault
+            if EDTSColor.theme == .klikIDM {
+                tempIconTintColor = iconTintColor ?? EDTSColor.white
+                tempBgColor = bgColor ?? EDTSColor.blueDefault
+            } else if EDTSColor.theme == .poinku {
+                tempIconTintColor = iconTintColor ?? EDTSColor.white
+                tempBgColor = bgColor ?? EDTSColor.blue30
+            }
+            
             tempBorderColor = borderColor ?? EDTSColor.blueDefault
             tempBorderWidth = borderWidth == CGFloat.zero ? 0 : borderWidth
             layer.shadowColor = shadowColor?.cgColor
@@ -501,8 +525,14 @@ public class EDTSButtonIcon: UIButton {
             layer.shadowColor = shadowFocusColor?.cgColor
             
         case .disabled:
-            tempIconTintColor = iconDisabledTintColor ?? EDTSColor.white
-            tempBgColor = bgDisabledColor ?? EDTSColor.disabled
+            if EDTSColor.theme == .klikIDM {
+                tempIconTintColor = iconDisabledTintColor ?? EDTSColor.white
+                tempBgColor = bgDisabledColor ?? EDTSColor.disabled
+            } else if EDTSColor.theme == .poinku {
+                tempIconTintColor = iconDisabledTintColor ?? EDTSColor.white
+                tempBgColor = bgDisabledColor ?? EDTSColor.grey30
+            }
+            
             tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == CGFloat.zero ? 0 : borderWidth
             layer.shadowColor = shadowDisabledColor?.cgColor
@@ -518,9 +548,15 @@ public class EDTSButtonIcon: UIButton {
     private func setupButtonSecondary(_ state: BtnState) {
         switch state {
         case .default:
-            tempIconTintColor = iconTintColor ?? EDTSColor.blueDefault
+            if EDTSColor.theme == .klikIDM {
+                tempIconTintColor = iconTintColor ?? EDTSColor.blueDefault
+                tempBorderColor = borderColor ?? EDTSColor.blueDefault
+            } else if EDTSColor.theme == .poinku {
+                tempIconTintColor = iconTintColor ?? EDTSColor.blue30
+                tempBorderColor = borderColor ?? EDTSColor.blue30
+            }
+            
             tempBgColor = bgColor ?? EDTSColor.white
-            tempBorderColor = borderColor ?? EDTSColor.blueDefault
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
             layer.shadowColor = shadowColor?.cgColor
             
@@ -532,9 +568,15 @@ public class EDTSButtonIcon: UIButton {
             layer.shadowColor = shadowFocusColor?.cgColor
             
         case .disabled:
-            tempIconTintColor = iconDisabledTintColor ?? EDTSColor.disabled
+            if EDTSColor.theme == .klikIDM {
+                tempIconTintColor = iconDisabledTintColor ?? EDTSColor.disabled
+                tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
+            } else if EDTSColor.theme == .poinku {
+                tempIconTintColor = iconDisabledTintColor ?? EDTSColor.grey30
+                tempBorderColor = borderDisabledColor ?? EDTSColor.grey30
+            }
+            
             tempBgColor = bgDisabledColor ?? EDTSColor.white
-            tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == CGFloat.zero ? 1 : borderWidth
             layer.shadowColor = shadowDisabledColor?.cgColor
             isUserInteractionEnabled = false

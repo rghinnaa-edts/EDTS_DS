@@ -319,9 +319,9 @@ public class EDTSRadioButton: UIView {
         desc = ""
         borderWidth = 1
         iconPadding = 0
-        paddingLeading = 2
+        paddingLeading = 0
         labelSpacing = 4
-        spacing = 10
+        spacing = 8
         bulletContainerView.applyCircular()
         bulletView.applyCircular()
         

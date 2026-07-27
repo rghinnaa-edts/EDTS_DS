@@ -347,13 +347,24 @@ public class EDTSChip: UIView {
         setupIcon()
         setupIconConstraint()
         setupIconGestures()
-        lblTitle.font = EDTSFont.B3.Semibold.font
-        iconSize = 20
-        iconSpacing = 4
-        paddingTop = 4
-        paddingBottom = 4
-        paddingLeading = 8
-        paddingTrailing = 8
+        
+        if EDTSColor.theme == .klikIDM {
+            lblTitle.font = EDTSFont.B3.Semibold.font
+            iconSize = 20
+            iconSpacing = 4
+            paddingTop = 4
+            paddingBottom = 4
+            paddingLeading = 8
+            paddingTrailing = 8
+        } else if EDTSColor.theme == .poinku {
+            lblTitle.font = EDTSFont.B3.Semibold.font
+            iconSize = 16
+            iconSpacing = 4
+            paddingTop = 4
+            paddingBottom = 4
+            paddingLeading = 8
+            paddingTrailing = 8
+        }
     }
     
     private func setupIcon() {
@@ -418,30 +429,58 @@ public class EDTSChip: UIView {
         let changes = {
             switch newState {
             case .inactive:
-                self.ivLeadingIcon.tintColor = self.iconTintColorLeading ?? EDTSColor.blue50
-                self.ivLeadingIconBG.backgroundColor = self.iconBgColorLeading ?? EDTSColor.white
-                self.lblTitle.textColor = self.labelColor ?? EDTSColor.blue50
-                self.ivTrailingIcon.tintColor = self.iconTintColorTrailing ?? EDTSColor.blue50
-                self.ivTrailingIconBG.backgroundColor = self.iconBgColorTrailing ?? EDTSColor.white
-                self.containerView.backgroundColor = self.bgColor ?? EDTSColor.grey20
-                self.containerView.layer.borderColor = self.borderColor?.cgColor ?? UIColor.clear.cgColor
-                self.containerView.layer.shadowOpacity = self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero
-                self.containerView.layer.shadowRadius = self.shadowRadius != CGFloat.zero ? self.shadowRadius : CGFloat.zero
-                self.containerView.layer.shadowOffset = self.shadowOffset != CGSize.zero ? self.shadowOffset : CGSize.zero
-                self.containerView.layer.shadowColor = self.shadowColor?.cgColor ?? UIColor.clear.cgColor
+                if EDTSColor.theme == .klikIDM {
+                    self.ivLeadingIcon.tintColor = self.iconTintColorLeading ?? EDTSColor.blue50
+                    self.ivLeadingIconBG.backgroundColor = self.iconBgColorLeading ?? EDTSColor.white
+                    self.lblTitle.textColor = self.labelColor ?? EDTSColor.blue50
+                    self.ivTrailingIcon.tintColor = self.iconTintColorTrailing ?? EDTSColor.blue50
+                    self.ivTrailingIconBG.backgroundColor = self.iconBgColorTrailing ?? EDTSColor.white
+                    self.containerView.backgroundColor = self.bgColor ?? EDTSColor.grey20
+                    self.containerView.layer.borderColor = self.borderColor?.cgColor ?? UIColor.clear.cgColor
+                    self.containerView.layer.shadowOpacity = self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero
+                    self.containerView.layer.shadowRadius = self.shadowRadius != CGFloat.zero ? self.shadowRadius : CGFloat.zero
+                    self.containerView.layer.shadowOffset = self.shadowOffset != CGSize.zero ? self.shadowOffset : CGSize.zero
+                    self.containerView.layer.shadowColor = self.shadowColor?.cgColor ?? UIColor.clear.cgColor
+                } else if EDTSColor.theme == .poinku {
+                    self.ivLeadingIcon.tintColor = self.iconTintColorLeading ?? EDTSColor.grey60
+                    self.ivLeadingIconBG.backgroundColor = self.iconBgColorLeading ?? .clear
+                    self.lblTitle.textColor = self.labelColor ?? EDTSColor.grey80
+                    self.ivTrailingIcon.tintColor = self.iconTintColorTrailing ?? EDTSColor.grey60
+                    self.ivTrailingIconBG.backgroundColor = self.iconBgColorTrailing ?? .clear
+                    self.containerView.backgroundColor = self.bgColor ?? EDTSColor.grey20
+                    self.containerView.layer.borderColor = self.borderColor?.cgColor ?? UIColor.clear.cgColor
+                    self.containerView.layer.shadowOpacity = self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero
+                    self.containerView.layer.shadowRadius = self.shadowRadius != CGFloat.zero ? self.shadowRadius : CGFloat.zero
+                    self.containerView.layer.shadowOffset = self.shadowOffset != CGSize.zero ? self.shadowOffset : CGSize.zero
+                    self.containerView.layer.shadowColor = self.shadowColor?.cgColor ?? UIColor.clear.cgColor
+                }
                 
             case .active:
-                self.ivLeadingIcon.tintColor = self.iconTintColorLeadingActive ?? (self.iconTintColorLeading ?? EDTSColor.blue50)
-                self.ivLeadingIconBG.backgroundColor = self.iconBgColorLeadingActive ?? (self.iconBgColorLeading ?? EDTSColor.white)
-                self.lblTitle.textColor = self.labelColorActive ?? (self.labelColor ?? EDTSColor.white)
-                self.ivTrailingIcon.tintColor = self.iconTintColorTrailingActive ?? (self.iconTintColorTrailing ?? EDTSColor.blue50)
-                self.ivTrailingIconBG.backgroundColor = self.iconBgColorTrailingActive ?? (self.iconBgColorTrailing ?? EDTSColor.white)
-                self.containerView.backgroundColor = self.bgColorActive ?? (self.bgColor ?? EDTSColor.blue50)
-                self.containerView.layer.borderColor = self.borderColorActive?.cgColor ?? (self.borderColor?.cgColor ?? UIColor.clear.cgColor)
-                self.containerView.layer.shadowOpacity = self.shadowOpacityActive != Float.zero ? self.shadowOpacityActive : (self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero)
-                self.containerView.layer.shadowRadius = self.shadowRadiusActive != CGFloat.zero ? self.shadowRadiusActive : (self.shadowRadius != CGFloat.zero ? self.shadowRadius : CGFloat.zero)
-                self.containerView.layer.shadowOffset = self.shadowOffsetActive != CGSize.zero ? self.shadowOffsetActive : (self.shadowOffset != CGSize.zero ? self.shadowOffset : CGSize.zero)
-                self.containerView.layer.shadowColor = self.shadowColorActive?.cgColor ?? (self.shadowColor?.cgColor ?? UIColor.clear.cgColor)
+                if EDTSColor.theme == .klikIDM {
+                    self.ivLeadingIcon.tintColor = self.iconTintColorLeadingActive ?? (self.iconTintColorLeading ?? EDTSColor.blue50)
+                    self.ivLeadingIconBG.backgroundColor = self.iconBgColorLeadingActive ?? (self.iconBgColorLeading ?? EDTSColor.white)
+                    self.lblTitle.textColor = self.labelColorActive ?? (self.labelColor ?? EDTSColor.white)
+                    self.ivTrailingIcon.tintColor = self.iconTintColorTrailingActive ?? (self.iconTintColorTrailing ?? EDTSColor.blue50)
+                    self.ivTrailingIconBG.backgroundColor = self.iconBgColorTrailingActive ?? (self.iconBgColorTrailing ?? EDTSColor.white)
+                    self.containerView.backgroundColor = self.bgColorActive ?? (self.bgColor ?? EDTSColor.blue50)
+                    self.containerView.layer.borderColor = self.borderColorActive?.cgColor ?? (self.borderColor?.cgColor ?? UIColor.clear.cgColor)
+                    self.containerView.layer.shadowOpacity = self.shadowOpacityActive != Float.zero ? self.shadowOpacityActive : (self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero)
+                    self.containerView.layer.shadowRadius = self.shadowRadiusActive != CGFloat.zero ? self.shadowRadiusActive : (self.shadowRadius != CGFloat.zero ? self.shadowRadius : CGFloat.zero)
+                    self.containerView.layer.shadowOffset = self.shadowOffsetActive != CGSize.zero ? self.shadowOffsetActive : (self.shadowOffset != CGSize.zero ? self.shadowOffset : CGSize.zero)
+                    self.containerView.layer.shadowColor = self.shadowColorActive?.cgColor ?? (self.shadowColor?.cgColor ?? UIColor.clear.cgColor)
+                } else if EDTSColor.theme == .poinku {
+                    self.ivLeadingIcon.tintColor = self.iconTintColorLeadingActive ?? (self.iconTintColorLeading ?? EDTSColor.white)
+                    self.ivLeadingIconBG.backgroundColor = self.iconBgColorLeadingActive ?? (self.iconBgColorLeading ?? .clear)
+                    self.lblTitle.textColor = self.labelColorActive ?? (self.labelColor ?? EDTSColor.white)
+                    self.ivTrailingIcon.tintColor = self.iconTintColorTrailingActive ?? (self.iconTintColorTrailing ?? EDTSColor.white)
+                    self.ivTrailingIconBG.backgroundColor = self.iconBgColorTrailingActive ?? (self.iconBgColorTrailing ?? .clear)
+                    self.containerView.backgroundColor = self.bgColorActive ?? (self.bgColor ?? EDTSColor.blue30)
+                    self.containerView.layer.borderColor = self.borderColorActive?.cgColor ?? (self.borderColor?.cgColor ?? EDTSColor.blue40.cgColor)
+                    self.containerView.layer.shadowOpacity = self.shadowOpacityActive != Float.zero ? self.shadowOpacityActive : (self.shadowOpacity != Float.zero ? self.shadowOpacity : Float.zero)
+                    self.containerView.layer.shadowRadius = self.shadowRadiusActive != CGFloat.zero ? self.shadowRadiusActive : (self.shadowRadius != CGFloat.zero ? self.shadowRadius : CGFloat.zero)
+                    self.containerView.layer.shadowOffset = self.shadowOffsetActive != CGSize.zero ? self.shadowOffsetActive : (self.shadowOffset != CGSize.zero ? self.shadowOffset : CGSize.zero)
+                    self.containerView.layer.shadowColor = self.shadowColorActive?.cgColor ?? (self.shadowColor?.cgColor ?? UIColor.clear.cgColor)
+                }
             }
         }
         

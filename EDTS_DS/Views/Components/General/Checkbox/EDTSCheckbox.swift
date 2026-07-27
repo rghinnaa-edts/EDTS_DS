@@ -307,15 +307,27 @@ public class EDTSCheckbox: UIView {
     }
     
     private func setupDefaultStyle(){
-        lblTitle.font = EDTSFont.B2.Medium.font
-        lblBody.font = EDTSFont.B3.Regular.font
-        borderWidth = 1
-        title = "Title checkboxes"
-        desc = "Body text goes here"
-        paddingLeading = 2
-        labelSpacing = 4
-        spacing = 8
-        ivIconContainerView.layer.cornerRadius = 4
+        if EDTSColor.theme == .klikIDM {
+            lblTitle.font = EDTSFont.B2.Medium.font
+            lblBody.font = EDTSFont.B3.Regular.font
+            borderWidth = 1
+            title = "Title checkboxes"
+            desc = "Body text goes here"
+            paddingLeading = 0
+            labelSpacing = 4
+            spacing = 8
+            ivIconContainerView.layer.cornerRadius = 4
+        } else if EDTSColor.theme == .poinku {
+            lblTitle.font = EDTSFont.B2.Medium.font
+            lblBody.font = EDTSFont.B3.Regular.font
+            borderWidth = 1
+            title = "Title Here"
+            desc = "Body text"
+            paddingLeading = 0
+            labelSpacing = 4
+            spacing = 8
+            ivIconContainerView.layer.cornerRadius = 4
+        }
         
         invalidateIntrinsicContentSize()
     }
@@ -410,19 +422,35 @@ public class EDTSCheckbox: UIView {
     private func setupCheckboxDisabled() {
         switch self.isActive {
         case false:
-            self.lblTitle.textColor = EDTSColor.grey40
-            self.lblBody.textColor = EDTSColor.grey30
-            self.ivIconContainerView.backgroundColor = EDTSColor.grey20
-            self.ivIcon.tintColor = EDTSColor.grey20
-            self.ivIconContainerView.layer.borderColor = EDTSColor.grey30.cgColor
+            if EDTSColor.theme == .klikIDM {
+                self.lblTitle.textColor = EDTSColor.grey40
+                self.lblBody.textColor = EDTSColor.grey30
+                self.ivIconContainerView.backgroundColor = EDTSColor.grey20
+                self.ivIcon.tintColor = EDTSColor.grey20
+                self.ivIconContainerView.layer.borderColor = EDTSColor.grey30.cgColor
+            } else if EDTSColor.theme == .poinku {
+                self.lblTitle.textColor = EDTSColor.grey50
+                self.lblBody.textColor = EDTSColor.grey30
+                self.ivIconContainerView.backgroundColor = EDTSColor.grey20
+                self.ivIcon.tintColor = EDTSColor.grey20
+                self.ivIconContainerView.layer.borderColor = EDTSColor.grey30.cgColor
+            }
 
             
         case true:
-            self.lblTitle.textColor = EDTSColor.grey40
-            self.lblBody.textColor = EDTSColor.grey30
-            self.ivIconContainerView.backgroundColor = EDTSColor.grey20
-            self.ivIcon.tintColor = EDTSColor.grey40
-            self.ivIconContainerView.layer.borderColor = EDTSColor.grey40.cgColor
+            if EDTSColor.theme == .klikIDM {
+                self.lblTitle.textColor = EDTSColor.grey40
+                self.lblBody.textColor = EDTSColor.grey30
+                self.ivIconContainerView.backgroundColor = EDTSColor.grey20
+                self.ivIcon.tintColor = EDTSColor.grey40
+                self.ivIconContainerView.layer.borderColor = EDTSColor.grey40.cgColor
+            } else if EDTSColor.theme == .poinku {
+                self.lblTitle.textColor = EDTSColor.grey50
+                self.lblBody.textColor = EDTSColor.grey30
+                self.ivIconContainerView.backgroundColor = EDTSColor.grey20
+                self.ivIcon.tintColor = EDTSColor.grey30
+                self.ivIconContainerView.layer.borderColor = EDTSColor.grey30.cgColor
+            }
         }
     }
     
@@ -432,18 +460,34 @@ public class EDTSCheckbox: UIView {
         let changes = {
             switch self.isActive {
             case false:
-                self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey60
-                self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey50
-                self.ivIconContainerView.backgroundColor = self.boxBgColorInactive ?? EDTSColor.white
-                self.ivIcon.tintColor = self.iconTintColorInactive ?? EDTSColor.white
-                self.ivIconContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
+                if EDTSColor.theme == .klikIDM {
+                    self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey60
+                    self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey50
+                    self.ivIconContainerView.backgroundColor = self.boxBgColorInactive ?? EDTSColor.white
+                    self.ivIcon.tintColor = self.iconTintColorInactive ?? EDTSColor.white
+                    self.ivIconContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
+                } else if EDTSColor.theme == .poinku {
+                    self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey70
+                    self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey60
+                    self.ivIconContainerView.backgroundColor = self.boxBgColorInactive ?? EDTSColor.white
+                    self.ivIcon.tintColor = self.iconTintColorInactive ?? EDTSColor.white
+                    self.ivIconContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.grey30.cgColor
+                }
                 
             case true:
-                self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey60
-                self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey50
-                self.ivIconContainerView.backgroundColor = self.boxBgColorActive ?? EDTSColor.blue50
-                self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
-                self.ivIconContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? UIColor.clear.cgColor
+                if EDTSColor.theme == .klikIDM {
+                    self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey60
+                    self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey50
+                    self.ivIconContainerView.backgroundColor = self.boxBgColorActive ?? EDTSColor.blue50
+                    self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
+                    self.ivIconContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? UIColor.clear.cgColor
+                } else if EDTSColor.theme == .poinku {
+                    self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey70
+                    self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey60
+                    self.ivIconContainerView.backgroundColor = self.boxBgColorInactive ?? EDTSColor.blue30
+                    self.ivIcon.tintColor = self.iconTintColorInactive ?? EDTSColor.white
+                    self.ivIconContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.blue30.cgColor
+                }
             }
         }
         
