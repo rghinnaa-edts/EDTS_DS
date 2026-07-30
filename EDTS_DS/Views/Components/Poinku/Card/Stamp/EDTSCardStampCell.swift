@@ -117,6 +117,9 @@ public class EDTSCardStampCell: UICollectionViewCell {
         UIStamp()
 //        UIRibbonHotProduct()
 //        UIRibbonNew()
+        
+        ivStampCard.image = UIImage(named: "img_product", in: .edtsDS, compatibleWith: nil)
+        ivQuantity.image = UIImage(named: "ic_warning", in: .edtsDS, compatibleWith: nil)
     }
     
     private func UIStampCard() {
