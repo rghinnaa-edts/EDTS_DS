@@ -6,7 +6,7 @@
 
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Liquid Glass Background** | ![Liquid Glass Background](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1785825113/liquid_glass_background_view_pdsofc.png) |
+| **Liquid Glass Background** | ![Liquid Glass Background](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1785832577/liquid_glass_background_view_pdsofc.png) |
 
 ## Basic Usage
 
