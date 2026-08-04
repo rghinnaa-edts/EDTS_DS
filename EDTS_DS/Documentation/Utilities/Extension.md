@@ -22,10 +22,10 @@ This document covers the utility extensions available on `UIView`, `Int`, and `S
 ## Preview
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Coupon Background** | *(add preview asset)* |
+| **Coupon Background** | ![Coupon Background](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1785824343/coupon_background_elr5uk.png) |
 | **Grayscale** | ![Grayscale](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784621076/grayscale_sjnmt2.png) |
-| **Shape Circular** | ![Circular Shape](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784623809/apply_circular_circle_mho70d.png) |
-| **Shape Elipse** | ![Elipse Shape](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784621076/apply_circular_oilcgp.png) |
+| **Shape Circular** | ![Circular Shape](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1785824513/apply_circular_circle_mho70d.png) |
+| **Shape Elipse** | ![Elipse Shape](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1785824487/apply_circular_oilcgp.png) |
 | **Ripple Effect (Circular)** | ![Ripple Effect (Circular)](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784621076/ripple_circular_lfmgdv.gif) |
 | **Ripple Effect** | ![Ripple Effect](https://res.cloudinary.com/dacnnk5j4/image/upload/w_500,c_scale,q_auto,f_auto/v1784621076/ripple_zx7cyw.gif) |
 | **Text Format Decimal** | ![Text Format Decimal](https://res.cloudinary.com/dacnnk5j4/image/upload/w_100,c_scale,q_auto,f_auto/v1784621075/format_decimal_kw8tsr.png) |
