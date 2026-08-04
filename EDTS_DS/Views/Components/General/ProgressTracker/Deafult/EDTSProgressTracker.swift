@@ -545,25 +545,7 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func setupDefaultStyle(){
-        if EDTSColor.theme == .klikIDM {
-            //Default Klik Track Styling
-            trackPaddingTop = 1
-            trackPaddingBottom = 1
-            trackPaddingLeading = 1
-            trackPaddingTrailing = 1
-            trackFullTintColor = EDTSColor.blue30
-            trackTintColor = EDTSColor.grey20
-            isHasIndicator = true
-            isHasBadge = true
-            
-            //Default Klik Shadow
-            innerShadowView.isHidden = false
-            innerShadowView.shadowOpacity = 0.10
-            innerShadowView.shadowOffset = CGSize(width: 0, height: 0)
-            innerShadowView.shadowColor = EDTSColor.black
-            innerShadowView.shadowRadius = 2
-            innerShadowViewContainer.isHidden = true
-        } else if EDTSColor.theme == .poinku {
+        if EDTSColor.theme == .poinku {
             //Default Poinku Track Styling
             trackPaddingTop = 0
             trackPaddingBottom = 0
@@ -585,6 +567,24 @@ public class EDTSProgressTracker: UIView {
             innerShadowView2.shadowOffset = CGSize(width: 0, height: -4)
             innerShadowView2.shadowColor = EDTSColor.black
             innerShadowView2.shadowRadius = 2
+        } else {
+            //Default Klik Track Styling
+            trackPaddingTop = 1
+            trackPaddingBottom = 1
+            trackPaddingLeading = 1
+            trackPaddingTrailing = 1
+            trackFullTintColor = EDTSColor.blue30
+            trackTintColor = EDTSColor.grey20
+            isHasIndicator = true
+            isHasBadge = true
+            
+            //Default Klik Shadow
+            innerShadowView.isHidden = false
+            innerShadowView.shadowOpacity = 0.10
+            innerShadowView.shadowOffset = CGSize(width: 0, height: 0)
+            innerShadowView.shadowColor = EDTSColor.black
+            innerShadowView.shadowRadius = 2
+            innerShadowViewContainer.isHidden = true
         }
         
         //Default Fill Gradient BgColor
