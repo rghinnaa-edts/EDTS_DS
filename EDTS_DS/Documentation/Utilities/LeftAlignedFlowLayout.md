@@ -6,8 +6,8 @@
 
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Vertical Mode** | ![Vertical Mode](https://res.cloudinary.com/dacnnk5j4/image/upload/w_400,c_scale,q_auto,f_auto/v1784874442/left_aligned_vertical_rqdgxi.gif) |
-| **Grid Mode** | ![Grid Mode](https://res.cloudinary.com/dacnnk5j4/image/upload/w_400,c_scale,q_auto,f_auto/v1784874441/left_aligned_grid_nysvvr.gif) |
+| **Vertical Mode** | ![Vertical Mode](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1784874442/left_aligned_vertical_rqdgxi.gif) |
+| **Grid Mode** | ![Grid Mode](https://res.cloudinary.com/dacnnk5j4/image/upload/w_300,c_scale,q_auto,f_auto/v1784874441/left_aligned_grid_nysvvr.gif) |
 
 ## Basic Usage
 

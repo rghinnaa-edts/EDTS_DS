@@ -9,16 +9,28 @@ import UIKit
 
 public enum Mode {
     case vertical
+    case horizontal
     case grid(columns: Int)
 }
 
-public class LeftAlignedFlowLayout: UICollectionViewFlowLayout {
+public class EDTSFlowLayout: UICollectionViewFlowLayout {
     // MARK: - Public Variable
-    public var mode: Mode = .vertical
+    public var mode: Mode = .vertical {
+        didSet {
+            switch mode {
+            case .vertical, .grid:
+                scrollDirection = .vertical
+            case .horizontal:
+                scrollDirection = .horizontal
+            }
+            invalidateLayout()
+        }
+    }
     
     // MARK: - Private Variable
     private var tempAttributes: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
+    private var contentWidth: CGFloat = 0
     
     // MARK: - Public Function
     override public func prepare() {
@@ -26,7 +38,9 @@ public class LeftAlignedFlowLayout: UICollectionViewFlowLayout {
         
         switch mode {
         case .vertical:
-            break
+            computeGridAttributes(columns: 1)
+        case .horizontal:
+            computeHorizontalAttributes()
         case .grid(let columns):
             computeGridAttributes(columns: columns)
         }
@@ -34,50 +48,31 @@ public class LeftAlignedFlowLayout: UICollectionViewFlowLayout {
     
     override public var collectionViewContentSize: CGSize {
         switch mode {
-        case .vertical:
-            return super.collectionViewContentSize
-        case .grid:
+        case .vertical, .grid:
             guard let collectionView = collectionView else { return .zero }
             return CGSize(width: collectionView.bounds.width, height: contentHeight)
+        case .horizontal:
+            guard let collectionView = collectionView else { return .zero }
+            return CGSize(width: contentWidth, height: collectionView.bounds.height)
         }
     }
     
     override public func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        switch mode {
-        case .vertical:
-            guard let attributes = super.layoutAttributesForElements(in: rect) else { return nil }
-            
-            var leftMargin = sectionInset.left
-            var maxY: CGFloat = -1.0
-            
-            for layoutAttribute in attributes where layoutAttribute.representedElementCategory == .cell {
-                if layoutAttribute.frame.origin.y >= maxY {
-                    leftMargin = sectionInset.left
-                }
-                
-                layoutAttribute.frame.origin.x = leftMargin
-                leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
-                maxY = max(layoutAttribute.frame.maxY, maxY)
-            }
-            
-            return attributes
-        case .grid:
-            return tempAttributes.filter { $0.frame.intersects(rect) }
-        }
+        tempAttributes.filter { $0.frame.intersects(rect) }
     }
     
     override public func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        switch mode {
-        case .vertical:
-            return super.layoutAttributesForItem(at: indexPath)
-        case .grid:
-            return tempAttributes.first { $0.indexPath == indexPath }
-        }
+        tempAttributes.first { $0.indexPath == indexPath }
     }
     
     override public func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         guard let collectionView = collectionView else { return false }
-        return newBounds.width != collectionView.bounds.width
+        switch mode {
+        case .horizontal:
+            return newBounds.height != collectionView.bounds.height
+        case .vertical, .grid:
+            return newBounds.width != collectionView.bounds.width
+        }
     }
     
     // MARK: - Private Function
@@ -119,12 +114,37 @@ public class LeftAlignedFlowLayout: UICollectionViewFlowLayout {
         contentHeight = y + rowMaxHeight + insets.bottom
     }
     
+    private func computeHorizontalAttributes() {
+        guard let collectionView = collectionView else { return }
+        
+        tempAttributes.removeAll()
+        let insets = sectionInset
+        let itemSpacing = minimumInteritemSpacing
+        
+        let itemCount = collectionView.numberOfItems(inSection: 0)
+        var x: CGFloat = insets.left
+        
+        for index in 0..<itemCount {
+            let indexPath = IndexPath(item: index, section: 0)
+            let itemSize = sizeForItem(at: indexPath, columnWidth: 0)
+            let y = insets.top
+            
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            attributes.frame = CGRect(x: x, y: y, width: itemSize.width, height: itemSize.height)
+            tempAttributes.append(attributes)
+            
+            x += itemSize.width + itemSpacing
+        }
+        
+        contentWidth = itemCount > 0 ? (x - itemSpacing + insets.right) : insets.left + insets.right
+    }
+    
     private func sizeForItem(at indexPath: IndexPath, columnWidth: CGFloat) -> CGSize {
         guard let collectionView = collectionView,
               let delegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout else {
             return CGSize(width: columnWidth, height: 0)
         }
         return delegate.collectionView?(collectionView, layout: self, sizeForItemAt: indexPath)
-            ?? CGSize(width: columnWidth, height: 0)
+        ?? CGSize(width: columnWidth, height: 0)
     }
 }
