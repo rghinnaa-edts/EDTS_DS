@@ -378,7 +378,6 @@ public class EDTSRadioGroup: UIView, UICollectionViewDataSource, UICollectionVie
                 
                 cell.radioButtonItem.isActive = true
                 _selectedIndex = indexPath.row
-                print("didSelectRadioButton")
             }
         }
     }
@@ -386,7 +385,6 @@ public class EDTSRadioGroup: UIView, UICollectionViewDataSource, UICollectionVie
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         for cell in collectionView.visibleCells.compactMap({ $0 as? EDTSRadioButtonCell }) {
             cell.radioButtonItem.cancelPress()
-            print("scrollViewWillBeginDragging")
         }
     }
     

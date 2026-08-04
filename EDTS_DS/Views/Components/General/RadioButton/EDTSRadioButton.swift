@@ -507,26 +507,6 @@ public class EDTSRadioButton: UIView {
         }
     }
     
-//    private func setupIconGestures() {
-//        bulletContainerView.isUserInteractionEnabled = true
-//        vStackContainer.isUserInteractionEnabled = true
-//        
-//        let bulletContainerViewPress = UILongPressGestureRecognizer(
-//            target: self,
-//            action: #selector(onLongPressBulletContainerView(_:))
-//        )
-//        bulletContainerViewPress.minimumPressDuration = 0
-//        bulletContainerView.addGestureRecognizer(bulletContainerViewPress)
-//        
-//        let vStackContainerPress = UILongPressGestureRecognizer(
-//            target: self,
-//            action: #selector(onLongPressBulletContainerView(_:))
-//        )
-//        vStackContainerPress.minimumPressDuration = 0
-//        vStackContainer.addGestureRecognizer(vStackContainerPress)
-//        
-//    }
-    
     private func setupIconGestures() {
         bulletContainerView.isUserInteractionEnabled = true
         vStackContainer.isUserInteractionEnabled = true
@@ -578,5 +558,25 @@ extension EDTSRadioButton: UIGestureRecognizerDelegate {
         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
     ) -> Bool {
         true
+    }
+
+    public func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        if let scrollView = enclosingScrollView(),
+           otherGestureRecognizer === scrollView.panGestureRecognizer {
+            return true
+        }
+        return false
+    }
+
+    private func enclosingScrollView() -> UIScrollView? {
+        var view: UIView? = superview
+        while let v = view {
+            if let scrollView = v as? UIScrollView { return scrollView }
+            view = v.superview
+        }
+        return nil
     }
 }
