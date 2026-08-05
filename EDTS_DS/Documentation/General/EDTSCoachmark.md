@@ -114,7 +114,6 @@ Call function inside main thread
                 coachmark.show()
         }
 ```
-
----
+* * *
 
 For further customization or to extend this component, you can ask UX Engineer or Inherit the `EDTSCoachmark` and override its methods or add additional functionality as required.

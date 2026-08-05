@@ -102,9 +102,6 @@ public class StraggeredCollectionLayout: UICollectionViewLayout {
     }
     
     public override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        guard indexPath.item >= 0, indexPath.item < cache.count else {
-            return nil
-        }
         return cache[indexPath.item]
     }
     
