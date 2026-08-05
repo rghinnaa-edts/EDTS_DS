@@ -120,6 +120,10 @@ public class EDTSCardPointCell: UICollectionViewCell {
         UIikupon()
         UIPoin()
         UIRibbonHotProduct()
+        
+        ivPoinCard.image = UIImage(named: "img_product", in: .edtsDS, compatibleWith: nil)
+        ivCoupon.image = UIImage(named: "ic_warning", in: .edtsDS, compatibleWith: nil)
+        ivIKupon.image = UIImage(named: "ic_store", in: .edtsDS, compatibleWith: nil)
     }
     
     private func UIPoinCard() {
