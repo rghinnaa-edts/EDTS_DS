@@ -282,6 +282,18 @@ public class EDTSRadioButton: UIView {
         return CGSize(width: totalWidth, height: totalHeight)
     }
     
+    // MARK: - Public Function
+    public func cancelPress() {
+        for gesture in bulletContainerView.gestureRecognizers ?? [] {
+            gesture.isEnabled = false
+            gesture.isEnabled = true
+        }
+        for gesture in vStackContainer.gestureRecognizers ?? [] {
+            gesture.isEnabled = false
+            gesture.isEnabled = true
+        }
+    }
+    
     // MARK: - Setup & Styling
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
@@ -504,6 +516,7 @@ public class EDTSRadioButton: UIView {
             action: #selector(onLongPressBulletContainerView(_:))
         )
         bulletContainerViewPress.minimumPressDuration = 0
+        bulletContainerViewPress.delegate = self
         bulletContainerView.addGestureRecognizer(bulletContainerViewPress)
         
         let vStackContainerPress = UILongPressGestureRecognizer(
@@ -511,6 +524,7 @@ public class EDTSRadioButton: UIView {
             action: #selector(onLongPressBulletContainerView(_:))
         )
         vStackContainerPress.minimumPressDuration = 0
+        vStackContainerPress.delegate = self
         vStackContainer.addGestureRecognizer(vStackContainerPress)
         
     }
@@ -536,4 +550,33 @@ public class EDTSRadioButton: UIView {
 @MainActor
 public protocol EDTSRadioButtonDelegate: AnyObject {
     func didSelectRadioButton(_ radioButton: EDTSRadioButton)
+}
+
+extension EDTSRadioButton: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        true
+    }
+
+    public func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        if let scrollView = enclosingScrollView(),
+           otherGestureRecognizer === scrollView.panGestureRecognizer {
+            return true
+        }
+        return false
+    }
+
+    private func enclosingScrollView() -> UIScrollView? {
+        var view: UIView? = superview
+        while let v = view {
+            if let scrollView = v as? UIScrollView { return scrollView }
+            view = v.superview
+        }
+        return nil
+    }
 }
