@@ -12,9 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSCoachmark" customModule="EDTS_DS" customModuleProvider="target">
             <connections>
-                <outlet property="btnFilledTopConstraint" destination="PO3-Xq-7Lf" id="CQA-Pc-rjK"/>
                 <outlet property="btnNext" destination="WGR-B5-qYp" id="mG5-BI-gEz"/>
-                <outlet property="btnOutlineTopConstraint" destination="Ndq-Y8-bdf" id="9Ox-i6-as5"/>
                 <outlet property="btnSkip" destination="Eyr-f7-XtR" id="VOk-i4-xc5"/>
                 <outlet property="ivIcon" destination="sfP-C8-bUu" id="JFN-C6-0QB"/>
                 <outlet property="lblDescription" destination="pCw-ZZ-grU" id="04c-2X-Yfp"/>

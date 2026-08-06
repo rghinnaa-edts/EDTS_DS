@@ -23,7 +23,7 @@ public class EDTSCardCouponCell: UICollectionViewCell {
     public var id: String = ""
     public var title: String = ""
     public var imageURL: String = ""
-    public var coupon: Int = 15
+    public var coupon: Int = 0
     public var stampCount: Int = 0
     public var price: Int = 0
     public var isNew: Bool = false
@@ -99,7 +99,7 @@ public class EDTSCardCouponCell: UICollectionViewCell {
 
     private func setupCouponCard() {
         let bundle = Bundle(for: type(of: self))
-        if let nib = bundle.loadNibNamed("EDTSCardCouponCell", owner: self, options: nil),
+        if let nib = bundle.loadNibNamed("EDTSCouponCardCell", owner: self, options: nil),
            let view = nib.first as? UIView {
             couponCard = view
             couponCard.frame = bounds
@@ -117,10 +117,6 @@ public class EDTSCardCouponCell: UICollectionViewCell {
         UIAvailable()
         UIikupon()
         UIRibbonHotProduct()
-        
-        ivCouponCard.image = UIImage(named: "img_product", in: .edtsDS, compatibleWith: nil)
-        ivAvailable.image = UIImage(named: "ic_warning", in: .edtsDS, compatibleWith: nil)
-        ivIKupon.image = UIImage(named: "ic_store", in: .edtsDS, compatibleWith: nil)
     }
     
     private func UIStampCard() {
@@ -137,7 +133,6 @@ public class EDTSCardCouponCell: UICollectionViewCell {
         lblCouponCard.textColor = EDTSColor.grey70
         lblCouponCard.font = EDTSFont.B3.Regular.font
         
-        btnExchange.titleLabel?.text = "Pakai Kupon"
         btnExchange.backgroundColor = EDTSColor.blue30
         btnExchange.layer.cornerRadius = 4
         btnExchange.titleLabel?.textColor = .white
@@ -147,9 +142,10 @@ public class EDTSCardCouponCell: UICollectionViewCell {
     }
     
     private func UIAvailable() {
-        if coupon > 10 && coupon <= 0 {
-            ivAvailable.image = UIImage(named: "img_product", in: .edtsDS, compatibleWith: nil)
+        if coupon > 10 && coupon < 0 {
+            ivAvailable.image = UIImage(named: "img_product")
         }
+        ivAvailable.image = ivAvailable.image?.withRenderingMode(.alwaysTemplate)
         
         ivAvailable.tintColor = if coupon < 10 && coupon > 0 {
             EDTSColor.warningStrong
@@ -178,9 +174,10 @@ public class EDTSCardCouponCell: UICollectionViewCell {
     }
     
     private func UIikupon() {
+        ivIKupon.image = ivIKupon.image?.withRenderingMode(.alwaysTemplate)
         ivIKupon.tintColor = EDTSColor.primaryStrong
         
-        vIKupon.backgroundColor = EDTSColor.primaryWeak
+        vIKupon.backgroundColor = EDTSColor.primaryStrong
         vIKupon.layer.cornerRadius = 8
         vIKupon.layer.borderWidth = 1
         vIKupon.layer.borderColor = EDTSColor.primaryStrong.cgColor
