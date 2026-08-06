@@ -355,72 +355,60 @@ extension UIView {
         cornerRadius: CGFloat
     ) -> UIBezierPath {
         let path = UIBezierPath()
-        
-        let width = bounds.width
-        let height = bounds.height
-        
+
+        let width = rect.width
+        let height = rect.height
+
         path.move(to: CGPoint(x: 0, y: cornerRadius))
-        
+
         path.addArc(withCenter: CGPoint(x: cornerRadius, y: cornerRadius),
                     radius: cornerRadius,
                     startAngle: .pi,
                     endAngle: .pi * 1.5,
                     clockwise: true)
-        
+
         path.addLine(to: CGPoint(x: width - cornerRadius, y: 0))
-        
+
         path.addArc(withCenter: CGPoint(x: width - cornerRadius, y: cornerRadius),
                     radius: cornerRadius,
                     startAngle: .pi * 1.5,
                     endAngle: 0,
                     clockwise: true)
-        
-        path.addLine(to: CGPoint(x: width, y: notchPosition))
-        
+
+        path.addLine(to: CGPoint(x: width, y: notchPosition - notchRadius))
+
         path.addArc(withCenter: CGPoint(x: width, y: notchPosition),
                     radius: notchRadius,
-                    startAngle: 0,
-                    endAngle: .pi,
+                    startAngle: .pi * 1.5,
+                    endAngle: .pi * 0.5,
                     clockwise: false)
-        
-        path.addArc(withCenter: CGPoint(x: width, y: notchPosition),
-                    radius: notchRadius,
-                    startAngle: .pi,
-                    endAngle: 0,
-                    clockwise: false)
-        
+
         path.addLine(to: CGPoint(x: width, y: height - cornerRadius))
-        
+
         path.addArc(withCenter: CGPoint(x: width - cornerRadius, y: height - cornerRadius),
                     radius: cornerRadius,
                     startAngle: 0,
                     endAngle: .pi * 0.5,
                     clockwise: true)
-        
+
         path.addLine(to: CGPoint(x: cornerRadius, y: height))
-        
+
         path.addArc(withCenter: CGPoint(x: cornerRadius, y: height - cornerRadius),
                     radius: cornerRadius,
                     startAngle: .pi * 0.5,
                     endAngle: .pi,
                     clockwise: true)
-        
-        path.addLine(to: CGPoint(x: 0, y: notchPosition))
-        
+
+        path.addLine(to: CGPoint(x: 0, y: notchPosition + notchRadius))
+
         path.addArc(withCenter: CGPoint(x: 0, y: notchPosition),
                     radius: notchRadius,
-                    startAngle: .pi,
-                    endAngle: 0,
+                    startAngle: .pi * 0.5,
+                    endAngle: -.pi * 0.5,
                     clockwise: false)
-        
-        path.addArc(withCenter: CGPoint(x: 0, y: notchPosition),
-                    radius: notchRadius,
-                    startAngle: 0,
-                    endAngle: .pi,
-                    clockwise: false)
-        
+
         path.addLine(to: CGPoint(x: 0, y: cornerRadius))
-        
+
         path.close()
         return path
     }
