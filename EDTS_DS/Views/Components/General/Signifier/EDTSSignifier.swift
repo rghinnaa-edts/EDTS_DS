@@ -237,14 +237,14 @@ public class EDTSSignifier: UIView {
     }
     
     private func setupDefaultStyle() {
-        if EDTSColor.theme == .klikIDM {
-            paddingTop = 1
-            paddingBottom = 1
-            lblTitle.font = EDTSFont.B4.Semibold.font
-        } else {
+        if EDTSColor.theme == .poinku {
             paddingTop = 0
             paddingBottom = 0
             lblTitle.font = EDTSFont.B5.Medium.font
+        } else {
+            paddingTop = 1
+            paddingBottom = 1
+            lblTitle.font = EDTSFont.B4.Semibold.font
         }
         
         paddingLeading = 2
