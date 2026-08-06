@@ -224,13 +224,15 @@ public class EDTSRadioGroup: UIView, UICollectionViewDataSource, UICollectionVie
         let layout: UICollectionViewFlowLayout = {
                switch displayMode {
                case .vertical:
-                   let leftLayout = LeftAlignedFlowLayout()
+                   let leftLayout = EDTSFlowLayout()
                    leftLayout.mode = .vertical
                    return leftLayout
                case .horizontal:
-                   return UICollectionViewFlowLayout()
+                   let horizontalLayout = EDTSFlowLayout()
+                   horizontalLayout.mode = .horizontal
+                   return horizontalLayout
                case .spanGrid(let columns):
-                   let gridLayout = LeftAlignedFlowLayout()
+                   let gridLayout = EDTSFlowLayout()
                    gridLayout.mode = .grid(columns: columns)
                    return gridLayout
                }
@@ -377,6 +379,12 @@ public class EDTSRadioGroup: UIView, UICollectionViewDataSource, UICollectionVie
                 cell.radioButtonItem.isActive = true
                 _selectedIndex = indexPath.row
             }
+        }
+    }
+        
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        for cell in collectionView.visibleCells.compactMap({ $0 as? EDTSRadioButtonCell }) {
+            cell.radioButtonItem.cancelPress()
         }
     }
     

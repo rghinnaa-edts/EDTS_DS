@@ -40,7 +40,7 @@
                 <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2R9-dz-6QO">
                     <rect key="frame" x="0.0" y="120.00000000000001" width="150" height="27.666666666666671"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="ic_warning" translatesAutoresizingMaskIntoConstraints="NO" id="1YZ-JG-4Er">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="exclamation" translatesAutoresizingMaskIntoConstraints="NO" id="1YZ-JG-4Er">
                             <rect key="frame" x="8" y="2" width="16" height="23.666666666666668"/>
                             <color key="tintColor" name="Warning-Strong"/>
                             <constraints>
@@ -79,7 +79,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="k8G-EV-ksY">
                             <rect key="frame" x="8.0000000000000036" y="2" width="61.333333333333343" height="16"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_store" translatesAutoresizingMaskIntoConstraints="NO" id="Z5q-7q-1Q2">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="store-01" translatesAutoresizingMaskIntoConstraints="NO" id="Z5q-7q-1Q2">
                                     <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="5DK-gF-6kV"/>
@@ -156,9 +156,9 @@
         </view>
     </objects>
     <resources>
-        <image name="ic_store" width="32" height="32"/>
-        <image name="ic_warning" width="32" height="32"/>
+        <image name="exclamation" width="48" height="48"/>
         <image name="img_product" width="360" height="360"/>
+        <image name="store-01" width="48" height="48"/>
         <namedColor name="Orange-10">
             <color red="0.93333333333333335" green="0.7803921568627451" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

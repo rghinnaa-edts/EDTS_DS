@@ -42,8 +42,6 @@ public class EDTSCoachmark: UIView {
     @IBOutlet weak var ivIcon: UIImageView!
     @IBOutlet weak var vDivider: UIView!
     
-    @IBOutlet weak var btnOutlineTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var btnFilledTopConstraint: NSLayoutConstraint!
     // MARK: - Public Properties
 
     public var coachmarkType: String = CoachmarkType.multiple.rawValue {
@@ -124,15 +122,9 @@ public class EDTSCoachmark: UIView {
         }
     }
     
-    public var isIconHide: Bool = false {
+    public var isIconShow: Bool = false {
         didSet {
             setupIcon()
-        }
-    }
-    
-    public var isDividerHide: Bool = false {
-        didSet {
-            setupDividerVisibility()
         }
     }
     
@@ -163,7 +155,6 @@ public class EDTSCoachmark: UIView {
     private var totalSteps = 0
     private var spotlightLayer: CAShapeLayer?
     private var spotlightFrame: CGRect = .zero
-    private var triangleShapeLayer: CAShapeLayer?
     private var triangleView: UIView?
     private let triangleHeight: CGFloat = 8
     private let triangleWidth: CGFloat = 12
@@ -173,15 +164,6 @@ public class EDTSCoachmark: UIView {
     private var offsetMargin: CGFloat = 16
     private var contentMargin: CGFloat = 24
     private var arrowPosition: CoachmarkArrowPosition = .top
-    
-    private var vIconBackgroundWidthConstraint: NSLayoutConstraint?
-    private var vIconBackgroundOriginalWidthConstraint: NSLayoutConstraint?
-    private var vLabelContainerOriginalLeadingConstraint: NSLayoutConstraint?
-    private var vLabelContainerToContentViewLeadingConstraint: NSLayoutConstraint?
-    private var vDividerOriginalHeightConstraint: NSLayoutConstraint?
-    private var vDividerZeroHeightConstraint: NSLayoutConstraint?
-    private var btnSkipTrailingToNextConstraint: NSLayoutConstraint?
-    private var btnSkipTrailingToSuperviewConstraint: NSLayoutConstraint?
 
     // MARK: - Init
 
@@ -289,7 +271,6 @@ public class EDTSCoachmark: UIView {
     }
 
     private func setupUI() {
-        updateTheme()
         updateCoachmarkType()
         vIconBackground.applyCircular()
         vIconBackground.backgroundColor = EDTSColor.grey20
@@ -301,13 +282,6 @@ public class EDTSCoachmark: UIView {
             setupButtonConstraintsSingle()
             setupIconConstraintsSingle()
             setupDividerConstraintsSingle()
-        }
-    }
-    
-    private func updateTheme() {
-        if EDTSColor.theme == .poinku {
-            isIconHide = true
-            isDividerHide = true
         }
     }
 
@@ -326,25 +300,22 @@ public class EDTSCoachmark: UIView {
         
         targetView = stepConfig.targetView
         endTargetView = stepConfig.endTargetView
-        spotlightRadius = stepConfig.spotlightRadius ?? 4
-        contentMargin = stepConfig.contentMargin ?? 24
-        offsetMargin = stepConfig.offsetMargin ?? -1
+        spotlightRadius = stepConfig.spotlightRadius
+        contentMargin = stepConfig.contentMargin
+        offsetMargin = stepConfig.offsetMargin
 
-        setupIcon(stepConfig)
         setupTitle(stepConfig)
         setupDescription(stepConfig)
         setupStepConjunction()
-        setupButton(btnSkip, label: stepConfig.btnOutlinedText ?? "Tutup", type: .tertiary, hidden: stepConfig.isBtnOutlinedHide ?? false)
-        setupButton(btnNext, label: stepConfig.btnFilledText ?? "Berikutnya", type: .primary, hidden: stepConfig.isBtnFilledHide ?? false)
-        adjustButtonTrailingForVisibility()
+        setupButton(btnSkip, label: stepConfig.btnOutlinedText, type: .tertiary, hidden: stepConfig.isBtnOutlinedHide)
+        setupButton(btnNext, label: stepConfig.btnFilledText, type: .primary, hidden: stepConfig.isBtnFilledHide)
+
+        if !stepConfig.isBtnOutlinedHide && !stepConfig.isBtnFilledHide {
+            btnSkip.isHidden = (currentStep == totalSteps)
+        }
         
         if currentStep == totalSteps {
-            if stepConfig.btnFilledText == nil {
-                btnNext.label = "Mengerti"
-            }
-            if stepConfig.isBtnOutlinedHide == nil {
-                btnSkip.isHidden = true
-            }
+            btnNext.label = "Mengerti"
         }
 
         if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }),
@@ -441,13 +412,7 @@ public class EDTSCoachmark: UIView {
         }
     }
     
-    private func setupIcon(_ config: CoachmarkStepConfig? = nil) {
-        if let icon = config?.icon {
-            ivIcon.image = icon
-        } else {
-            ivIcon.image = UIImage(named: "ic_placeholder", in: .edtsDS, compatibleWith: nil)
-        }
-        
+    private func setupIcon() {
         if let iconTint = iconTint {
             ivIcon.tintColor = iconTint
         }
@@ -455,51 +420,6 @@ public class EDTSCoachmark: UIView {
         if let iconBgColor = iconBgColor {
             vIconBackground.backgroundColor = iconBgColor
         }
-        
-        updateIconVisibility()
-    }
-
-    private func updateIconVisibility() {
-        guard let contentView = contentView else { return }
-
-        vIconBackground.isHidden = isIconHide
-        ivIcon.isHidden = isIconHide
-
-        if vIconBackgroundOriginalWidthConstraint == nil {
-            vIconBackgroundOriginalWidthConstraint = vIconBackground.constraints.first { $0.firstAttribute == .width }
-        }
-        if vLabelContainerOriginalLeadingConstraint == nil {
-            vLabelContainerOriginalLeadingConstraint = contentView.constraints.first {
-                ($0.firstItem as? UIView) == vLabelContainer && $0.firstAttribute == .leading
-            }
-        }
-
-        if isIconHide {
-            vIconBackgroundOriginalWidthConstraint?.isActive = false
-            vLabelContainerOriginalLeadingConstraint?.isActive = false
-
-            vIconBackground.translatesAutoresizingMaskIntoConstraints = false
-            vLabelContainer.translatesAutoresizingMaskIntoConstraints = false
-
-            if vIconBackgroundWidthConstraint == nil {
-                vIconBackgroundWidthConstraint = vIconBackground.widthAnchor.constraint(equalToConstant: 0)
-            }
-            if vLabelContainerToContentViewLeadingConstraint == nil {
-                vLabelContainerToContentViewLeadingConstraint = vLabelContainer.leadingAnchor.constraint(
-                    equalTo: contentView.leadingAnchor, constant: 16
-                )
-            }
-            vIconBackgroundWidthConstraint?.isActive = true
-            vLabelContainerToContentViewLeadingConstraint?.isActive = true
-        } else {
-            vIconBackgroundWidthConstraint?.isActive = false
-            vLabelContainerToContentViewLeadingConstraint?.isActive = false
-
-            vIconBackgroundOriginalWidthConstraint?.isActive = true
-            vLabelContainerOriginalLeadingConstraint?.isActive = true
-        }
-
-        setupCoachmarkSize()
     }
     
     private func setupButton(_ button: EDTSButton, label: String?, type: BtnType, hidden: Bool) {
@@ -521,29 +441,23 @@ public class EDTSCoachmark: UIView {
         }
     }
     
-    private func adjustButtonTrailingForVisibility() {
-        guard let contentView = contentView else { return }
-
-        if btnSkipTrailingToNextConstraint == nil {
-            btnSkipTrailingToNextConstraint = contentView.constraints.first {
-                ($0.firstItem as? UIView) == btnSkip && $0.firstAttribute == .trailing
-            }
-        }
-
-        if btnNext.isHidden && !btnSkip.isHidden {
-            btnSkipTrailingToNextConstraint?.isActive = false
-
-            if btnSkipTrailingToSuperviewConstraint == nil {
-                btnSkip.translatesAutoresizingMaskIntoConstraints = false
-                btnSkipTrailingToSuperviewConstraint = btnSkip.trailingAnchor.constraint(
-                    equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,
-                    constant: -16
-                )
-            }
-            btnSkipTrailingToSuperviewConstraint?.isActive = true
-        } else {
-            btnSkipTrailingToSuperviewConstraint?.isActive = false
-            btnSkipTrailingToNextConstraint?.isActive = true
+    public func setupFontWeight(from value: String) -> UIFont.Weight {
+        let lowercased = value
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+        
+        let weight = FontWeight(rawValue: lowercased) ?? .regular
+        
+        switch weight {
+        case .ultralight: return .ultraLight
+        case .thin:       return .thin
+        case .light:      return .light
+        case .regular:    return .regular
+        case .medium:     return .medium
+        case .semibold:   return .semibold
+        case .bold:       return .bold
+        case .heavy:      return .heavy
+        case .black:      return .black
         }
     }
 
@@ -599,31 +513,6 @@ public class EDTSCoachmark: UIView {
             vDivider.topAnchor.constraint(equalTo: vLabelContainer.bottomAnchor, constant: 0)
         ])
     }
-    
-    private func setupDividerVisibility() {
-        if vDividerOriginalHeightConstraint == nil {
-            vDividerOriginalHeightConstraint = vDivider.constraints.first { $0.firstAttribute == .height }
-        }
-
-        if isDividerHide {
-            vDividerOriginalHeightConstraint?.isActive = false
-
-            vDivider.translatesAutoresizingMaskIntoConstraints = false
-            if vDividerZeroHeightConstraint == nil {
-                vDividerZeroHeightConstraint = vDivider.heightAnchor.constraint(equalToConstant: 0)
-            }
-            vDividerZeroHeightConstraint?.isActive = true
-            btnOutlineTopConstraint?.constant = 4
-            btnFilledTopConstraint?.constant = 4
-        } else {
-            vDividerZeroHeightConstraint?.isActive = false
-            vDividerOriginalHeightConstraint?.isActive = true
-            btnOutlineTopConstraint?.constant = 16
-            btnFilledTopConstraint?.constant = 16
-        }
-
-        setupCoachmarkSize()
-    }
 
     // MARK: - Layout
 
@@ -636,10 +525,8 @@ public class EDTSCoachmark: UIView {
                            vLabelContainer.isHidden ? 0 : vLabelContainer.frame.height)
         totalHeight += 16
 
-        if !isDividerHide {
+        if !vDivider.isHidden {
             totalHeight += vDivider.frame.height + 16
-        } else {
-            totalHeight += 8
         }
 
         let bottomHeight = [btnNext, btnSkip, lblTotalStep]
@@ -699,9 +586,9 @@ public class EDTSCoachmark: UIView {
         guard let config = getCurrentStep(), config.isTargetAList else {
             return targetFrame.insetBy(dx: -spotlightRadius, dy: -spotlightRadius)
         }
-        let left = config.spotlightPaddingLeft ?? config.spotlightPadding ?? 8
-        let right = config.spotlightPaddingRight ?? config.spotlightPadding ?? 8
-        let verticalSpacing = config.spotlightPadding ?? 8
+        let left = config.spotlightPaddingLeft ?? config.spotlightPadding
+        let right = config.spotlightPaddingRight ?? config.spotlightPadding
+        let verticalSpacing = config.spotlightPadding
         return CGRect(x: targetFrame.minX + left, y: targetFrame.minY - verticalSpacing,
                       width: targetFrame.width - (left + right), height: targetFrame.height + (verticalSpacing * 2))
     }
@@ -807,7 +694,7 @@ public class EDTSCoachmark: UIView {
     }
 
     // MARK: - Triangle
-    
+
     private func createTriangleArrow() {
         triangleView?.removeFromSuperview()
 
@@ -829,21 +716,6 @@ public class EDTSCoachmark: UIView {
         let layer = CAShapeLayer()
         layer.path = path.cgPath
         layer.fillColor = EDTSColor.white.cgColor
-
-        let shadowTop: CGFloat = 2
-        let shadowPath = UIBezierPath()
-        shadowPath.move(to: CGPoint(x: 0, y: shadowTop))
-        shadowPath.addLine(to: CGPoint(x: triangleWidth, y: shadowTop))
-        shadowPath.addLine(to: rightControl)
-        shadowPath.addQuadCurve(to: leftControl, controlPoint: CGPoint(x: triangleWidth / 2, y: triangleHeight))
-        shadowPath.close()
-
-        layer.shadowColor = EDTSColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 4
-        layer.shadowOpacity = 0.1
-        layer.shadowPath = shadowPath.cgPath
-
         view.layer.addSublayer(layer)
     }
 
@@ -967,7 +839,6 @@ private extension CGRect {
 // MARK: - CoachmarkStepConfig
 
 public struct CoachmarkStepConfig {
-    let icon: UIImage?
     let title: String?
     let titleAttributted: NSAttributedString?
     let description: String?
@@ -976,39 +847,37 @@ public struct CoachmarkStepConfig {
     let endTargetView: UIView?
     let btnOutlinedText: String?
     let btnFilledText: String?
-    let isBtnOutlinedHide: Bool?
-    let isBtnFilledHide: Bool?
-    let contentMargin: CGFloat?
-    let offsetMargin: CGFloat?
-    let spotlightRadius: CGFloat?
-    let spotlightPadding: CGFloat?
+    let isBtnOutlinedHide: Bool
+    let isBtnFilledHide: Bool
+    let contentMargin: CGFloat
+    let offsetMargin: CGFloat
+    let spotlightRadius: CGFloat
+    let spotlightPadding: CGFloat
     let spotlightPaddingLeft: CGFloat?
     let spotlightPaddingRight: CGFloat?
     let isTargetAList: Bool
     let isHideSpotlight: Bool
 
     public init(
-        icon: UIImage? = nil,
         title: String? = nil,
         titleAttributted: NSAttributedString? = nil,
         description: String? = nil,
         descriptionAttributted: NSAttributedString? = nil,
         targetView: UIView? = nil,
         endTargetView: UIView? = nil,
-        btnOutlinedText: String? = nil, //"Tutup",
-        btnFilledText: String? = nil, //"Berikutnya",
-        isBtnOutlinedHide: Bool? = nil,
-        isBtnFilledHide: Bool? = nil,
-        contentMargin: CGFloat? = nil, //24,
-        offsetMargin: CGFloat? = nil, // -1,
-        spotlightRadius: CGFloat? = nil, // = 4,
-        spotlightPadding: CGFloat? = nil, // = 8,
+        btnOutlinedText: String? = "Tutup",
+        btnFilledText: String? = "Berikutnya",
+        isBtnOutlinedHide: Bool = false,
+        isBtnFilledHide: Bool = false,
+        contentMargin: CGFloat = 24,
+        offsetMargin: CGFloat = -1,
+        spotlightRadius: CGFloat = 4,
+        spotlightPadding: CGFloat = 8,
         spotlightPaddingLeft: CGFloat? = nil,
         spotlightPaddingRight: CGFloat? = nil,
         isTargetAList: Bool = false,
         isHideSpotlight: Bool = false
     ) {
-        self.icon = icon
         self.title = title
         self.titleAttributted = titleAttributted
         self.description = description

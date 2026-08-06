@@ -15,54 +15,46 @@ The `EDTSCoachmark` component is a visual overlay element that helps guide users
 - `dismiss(animated: Bool = true, completion: (() -> Void)? = nil)`
 
 #### Parameters:
-| Parameters              | Description                                             | Type          | Default Value                     |
-|--------------------------|----------------------------------------------------------|---------------|------------------------------------|
-| `coachmarkType`         | Type of Coachmark                                       | `Enum String` | `CoachmarkType.multiple.rawValue` |
-| `stepConjunction`       | Conjunction of Step Text                                | `String`      | `dari`                            |
-| `titleFontName`         | Font name of title                                      | `String`      | `nil`                             |
-| `titleFontSize`         | Font size of title                                      | `CGFloat`     | `18`                              |
-| `titleFontWeight`       | Font weight of title                                    | `Enum String` | `FontWeight.regular.rawValue`     |
-| `descFontName`          | Font name of description                                | `String`      | `nil`                             |
-| `descFontSize`          | Font size of description                                | `CGFloat`     | `14`                              |
-| `descFontWeight`        | Font weight of description                              | `Enum String` | `FontWeight.regular.rawValue`     |
-| `stepFontName`          | Font name of step                                       | `String`      | `nil`                             |
-| `stepFontSize`          | Font size of step                                       | `CGFloat`     | `14`                              |
-| `stepFontWeight`        | Font weight of step                                     | `Enum String` | `FontWeight.regular.rawValue`     |
-| `iconTint`              | Icon tint color                                         | `UIColor`     | `nil`                             |
-| `iconBgColor`           | Background Icon color                                   | `UIColor`     | `nil`                             |
-| `isIconHide`            | Hide/Show Icon                                          | `Bool`        | `false`                           |
-| `isDividerHide`         | Hide/Show the divider between content and buttons       | `Bool`        | `false`                           |
-| `btnOutlinedTint`       | Button outlined tint color                              | `UIColor`     | `nil`                             |
-| `btnFilledTint`         | Button filled tint color                                | `UIColor`     | `nil`                             |
-| `onDismiss`             | Closure called after the coachmark is dismissed         | `(() -> Void)?` | `nil`                           |
-
-> Note: `isIconHide` and `isDividerHide` are automatically set to `true` when the active `EDTSColor.theme` is `.poinku`, hiding the icon and divider by default for that theme.
+| Parameters              | Description                 | Type          | Default Value                     |
+|-------------------------|-----------------------------|---------------|-----------------------------------|
+| `coachmarkType`         | Type of Coachmark           | `Enum String` | `CoachmarkType.multiple.rawValue` |
+| `stepConjunction`       | Conjunction of Step Text    | `String`      | `dari`                            |
+| `titleFontName`         | Font name of title          | `String`      | `nil`                             |
+| `titleFontSize`         | Font size of title          | `CGFloat`     | `18`                              |
+| `titleFontWeight`       | Font weight of title        | `Enum String` | `FontWeight.regular.rawValue`     |
+| `descFontName`          | Font name of description    | `String`      | `nil`                             |
+| `descFontSize`          | Font size of description    | `CGFloat`     | `14`                              |
+| `descFontWeight`        | Font weight of description  | `Enum String` | `FontWeight.regular.rawValue`     |
+| `stepFontName`          | Font name of step           | `String`      | `nil`                             |
+| `stepFontSize`          | Font size of step           | `CGFloat`     | `14`                              |
+| `stepFontWeight`        | Font weight of step         | `Enum String` | `FontWeight.regular.rawValue`     |
+| `iconTint`              | Icon tint color             | `UIColor`     | `nil`                             |
+| `iconBgColor`           | Background Icon color       | `UIColor`     | `nil`                             |
+| `isIconShow`            | Hide/Show Icon              | `Bool`        | `false`                           |
+| `btnOutlinedTint`       | Button outlined tint color  | `UIColor`     | `nil`                             |
+| `btnFilledTint`         | Button filled tint color    | `UIColor`     | `nil`                             |
 
 #### Step Configuration:
 | Step Configuration        | Description                                                  | Type                | Default Value       |
-|---------------------------|--------------------------------------------------------------|---------------------|----------------------|
-| `title`                   | Title of the coachmark                                       | `String`            | `nil`                |
-| `titleAttributted`        | Title attributted text of the coachmark                      | `NSAttributedString`| `nil`                |
-| `description`             | Description of the coachmark                                 | `String`            | `nil`                |
-| `descriptionAttributted`  | Description attributted text of the coachmark                | `NSAttributedString`| `nil`                |
-| `targetView`              | Relative view for coachmark's spotlight anchor               | `UIView`            | `nil`                |
-| `endTargetView`           | Relative view for coachmark's end spotlight anchor            | `UIView`            | `nil`                |
-| `btnOutlinedText`         | Change Text of Button Outlined                                | `String`            | `nil` (falls back to "Tutup") |
-| `btnFilledText`           | Change Text of Button Filled                                  | `String`            | `nil` (falls back to "Berikutnya") |
-| `isBtnOutlinedHide`       | Hide the Button Outlined                                      | `Bool`              | `false`              |
-| `isBtnFilledHide`         | Hide the Button Filled                                        | `Bool`              | `false`              |
-| `contentMargin`           | Horizontal Margin of coachmark to parent view (Left & Right)  | `CGFloat`           | `24`                 |
-| `offsetMargin`            | Horizontal Offset of coachmark to parent view (Left)          | `CGFloat`           | `-1`                 |
-| `spotlightRadius`         | Corner radius of the spotlight                                | `CGFloat`           | `4`                  |
-| `spotlightPadding`        | Spotlight padding (top, left, bottom, right)                  | `CGFloat`           | `8`                  |
-| `spotlightPaddingLeft`    | Spotlight padding left (overrides `spotlightPadding`)         | `CGFloat`           | `nil`                |
-| `spotlightPaddingRight`   | Spotlight padding right (overrides `spotlightPadding`)        | `CGFloat`           | `nil`                |
-| `isTargetAList`           | Identify if the target is a list                              | `Bool`              | `false`              |
-| `isHideSpotlight`         | For showing the coachmark without spotlight                   | `Bool`              | `false`              |
-
-> Note: Provide either `title` or `titleAttributted` (and either `description` or `descriptionAttributted`); if both plain and attributed values are omitted, the corresponding label falls back to empty text.
-
-> Note: On the final step (`currentStep == totalSteps`), if `btnFilledText` was not provided the "next" button label automatically switches to "Mengerti", and if `isBtnOutlinedHide` was not explicitly set the outlined button is hidden automatically.
+|---------------------------|--------------------------------------------------------------|---------------------|---------------------|
+| `title`                   | Title of the coachmark                                       | `String`            | `required`          |
+| `titleAttributted`        | Title attributted text of the coachmark                      | `NSAttributedString`| `nil`               |
+| `description`             | Description of the coachmark                                 | `String`            | `required`          |
+| `descriptionAttributted`  | Description attributted text of the coachmark                | `NSAttributedString`| `nil`               |
+| `targetView`              | Relative view for coachmark's spotlight anchor               | `UIView`            | `nil`               |
+| `endTargetView`           | Relative view for coachmark's end spotlight anchor           | `UIView`            | `nil`               |
+| `btnOutlinedText`         | Change Text of Button Outlined                               | `String`            | `nil`               |
+| `btnFilledText`           | Change Text of Button Filled                                 | `String`            | `nil`               |
+| `isBtnOutlinedHide`       | Hide the Button Outlined                                     | `Bool`              | `false`             |
+| `isBtnFilledHide`         | Hide the Button Filled                                       | `Bool`              | `false`             |
+| `contentMargin`           | Horizontal Margin of coachmark to parent view (Left & Right) | `CGFloat`           | `24`                |
+| `offsetMargin`            | Horizontal Offset of coachmark to parent view (Left)         | `CGFloat`           | `-1`                |
+| `spotlightRadius`         | Corner radius of the spotlight                               | `CGFloat`           | `4`                 |
+| `spotlightPadding`        | Spotlight padding (top,left,bottom,right)                    | `CGFloat`           | `8`                 |
+| `spotlightPaddingLeft`    | Spotlight padding left                                       | `CGFloat`           | `nil`               |
+| `spotlightPaddingRight`   | Spotlight padding right                                      | `CGFloat`           | `nil`               |
+| `isTargetAList`           | Identify if the target is a list                             | `Bool`              | `false`             |
+| `isHideSpotlight`         | For showing the coachmark without spotlight                  | `Bool`              | `false`             |
 
 ## Installation
 To use the `EDTSCoachmark` component, please follow this step.
@@ -123,26 +115,6 @@ Call function inside main thread
         }
 ```
 
-### Usage Example Handling Dismiss
-```Example Handling Dismiss
-        func showCoachmark() {
-                let coachmark = EDTSCoachmark(frame: .zero)
-
-                coachmark.onDismiss = {
-                    print("Coachmark was dismissed")
-                }
-
-                coachmark.configureSteps(steps: [
-                    CoachmarkStepConfig(
-                        title: "Step 1",
-                        description: "The quick brown fox jumps over the lazy dog",
-                        targetView: vCard1
-                    )
-                ])
-
-                coachmark.show()
-        }
-```
-* * *
+---
 
 For further customization or to extend this component, you can ask UX Engineer or Inherit the `EDTSCoachmark` and override its methods or add additional functionality as required.

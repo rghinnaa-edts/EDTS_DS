@@ -88,4 +88,6 @@ For now, It's available only when you add the Button Stepper class file of swift
 - Default value of Variant is `Blue`
 - Default value of Type is `Stepper`
 
+---
+
 *For further customization, inherit `EDTSTooltip` and override its private layout methods, or contact the UX Engineering team.*

@@ -49,4 +49,6 @@ For now, It's available only when you add the Badge class file of swift and XIB 
   ...
 ```
 
+---
+
 *For further customization, inherit `EDTSTooltip` and override its private layout methods, or contact the UX Engineering team.*
