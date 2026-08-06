@@ -7,8 +7,8 @@
 
 import UIKit
 
-public var lastContentOffset: CGFloat = 0
-public var visibleCellsBeforeScroll: [IndexPath: CGPoint] = [:]
+private var lastContentOffset: CGFloat = 0
+private var visibleCellsBeforeScroll: [IndexPath: CGPoint] = [:]
 
 public func animateScale(_ collectionView: UICollectionView, _ scrollView: UIScrollView) {
     let isScrollingDown = scrollView.contentOffset.y > lastContentOffset

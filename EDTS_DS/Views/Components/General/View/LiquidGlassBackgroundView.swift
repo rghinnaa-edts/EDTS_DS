@@ -7,14 +7,7 @@
 
 import UIKit
 
-@IBDesignable
 public class LiquidGlassBackgroundView: UIView {
-    @IBInspectable public var cornerRadius: CGFloat = 8 {
-        didSet {
-            setupCornerRadius()
-        }
-    }
-    
     private var blurView: UIVisualEffectView
     private let gradientOverlay = CAGradientLayer()
     private let gradientBorder = CAGradientLayer()
@@ -49,8 +42,7 @@ public class LiquidGlassBackgroundView: UIView {
         backgroundColor = .clear
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.clipsToBounds = true
-        setupCornerRadius()
-        
+        blurView.layer.cornerRadius = 8
         addSubview(blurView)
         
         NSLayoutConstraint.activate([
@@ -67,11 +59,6 @@ public class LiquidGlassBackgroundView: UIView {
         }
         
         setupGradientStroke()
-    }
-    
-    private func setupCornerRadius() {
-        blurView.layer.cornerRadius = cornerRadius
-        setNeedsLayout()
     }
     
     override public func layoutSubviews() {
