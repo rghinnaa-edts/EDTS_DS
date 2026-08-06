@@ -365,8 +365,6 @@ public class EDTSChip: UIView {
             paddingLeading = 8
             paddingTrailing = 8
         }
-        
-        animateChip(isActive ? .active : .inactive, animated: false)
     }
     
     private func setupIcon() {
