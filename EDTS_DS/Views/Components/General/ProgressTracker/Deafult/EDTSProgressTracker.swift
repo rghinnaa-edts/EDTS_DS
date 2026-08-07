@@ -11,6 +11,7 @@ import UIKit
 public enum IntermittentAnimationType: String {
     case stretch = "stretch"
     case fixed = "fixed"
+    case doubleArc = "doublearc"
 }
 
 @IBDesignable
@@ -1613,6 +1614,8 @@ public class EDTSProgressTracker: UIView {
             animateStretchBarGrow()
         case .fixed:
             animateFixedBarGrow()
+        case .doubleArc:
+            break
         }
     }
     
