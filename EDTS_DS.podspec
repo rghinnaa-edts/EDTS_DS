@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "EDTS_DS"
-  spec.version      = "0.1.5"
+  spec.version      = "0.1.6"
   spec.summary      = "UI Components and Animation"
   spec.description  = "UI Components and Animation of EDTS Apps"
 
@@ -74,7 +74,7 @@ Pod::Spec.new do |spec|
 
   general_components = %w[
     Card Checkbox Chip
-    Loading Ribbon Search Skeleton
+    Ribbon Search Skeleton
     StepPageNav Textfield Toggle Tooltip View
   ]
 
@@ -180,7 +180,7 @@ Pod::Spec.new do |spec|
   # Progress Tracker
   spec.subspec 'ProgressTracker' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/General/ProgressTracker/**/*.swift'
-    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/ProgressTracker/**/*.xib")
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/ProgressTracker/Default/**/*.xib")
     ss.dependency 'EDTS_DS/Color'
     ss.dependency 'EDTS_DS/Font'
     ss.dependency 'EDTS_DS/Assets'
