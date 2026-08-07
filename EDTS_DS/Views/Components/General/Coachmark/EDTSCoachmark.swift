@@ -568,8 +568,7 @@ public class EDTSCoachmark: UIView {
     private func setupIconConstraintsSingle() {
         guard let contentView = contentView else { return }
 
-        vIconBackground.isHidden = false
-        ivIcon.isHidden = true
+        isIconHide = true
 
         vIconBackground.constraints.filter { $0.firstAttribute == .width }.forEach { $0.isActive = false }
         contentView.constraints

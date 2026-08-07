@@ -341,7 +341,11 @@ public class EDTSToast: UIView {
     private func setupToastState() {
         switch resolvedToastState {
         case .info:
-            tempBgColor = bgColor ?? EDTSColor.grey60
+            if EDTSColor.theme == .poinku {
+                tempBgColor = bgColor ?? EDTSColor.grey70
+            } else {
+                tempBgColor = bgColor ?? EDTSColor.grey60
+            }
             
         case .danger:
             tempBgColor = bgColor ?? EDTSColor.errorStrong

@@ -637,14 +637,20 @@ public class EDTSButton: UIButton {
     private func setupButtonSize() {
         switch resolvedButtonSize {
         case .small:
+            if EDTSColor.theme == .poinku {
+                tempPaddingLeading = paddingLeading == defaultValue ? 8 : paddingLeading
+                tempPaddingTrailing = paddingTrailing == defaultValue ? 8 : paddingTrailing
+            } else {
+                tempPaddingLeading = paddingLeading == defaultValue ? 12 : paddingLeading
+                tempPaddingTrailing = paddingTrailing == defaultValue ? 12 : paddingTrailing
+            }
+            
             tempIconSize = iconSize == CGFloat.zero ? 16 : iconSize
             lblTitle.font = EDTSFont.Button.Small.font
             tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
             tempIconSpacing = iconSpacing == CGFloat.zero ? 8 : iconSpacing
             tempPaddingTop = paddingTop == defaultValue ? 6 : paddingTop
             tempPaddingBottom = paddingBottom == defaultValue ? 6 : paddingBottom
-            tempPaddingLeading = paddingLeading == defaultValue ? 12 : paddingLeading
-            tempPaddingTrailing = paddingTrailing == defaultValue ? 12 : paddingTrailing
             
         case .medium:
             tempIconSize = iconSize == CGFloat.zero ? 16 : iconSize
@@ -657,9 +663,14 @@ public class EDTSButton: UIButton {
             tempPaddingTrailing = paddingTrailing == defaultValue ? 12 : paddingTrailing
             
         case .large:
+            if EDTSColor.theme == .poinku {
+                tempCornerRadius = cornerRadius == defaultValue ? 8 : cornerRadius
+            } else {
+                tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
+            }
+            
             tempIconSize = iconSize == CGFloat.zero ? 24 : iconSize
             lblTitle.font = EDTSFont.Button.Large.font
-            tempCornerRadius = cornerRadius == defaultValue ? 4 : cornerRadius
             tempIconSpacing = iconSpacing == CGFloat.zero ? 8 : iconSpacing
             tempPaddingTop = paddingTop == defaultValue ? 8 : paddingTop
             tempPaddingBottom = paddingBottom == defaultValue ? 8 : paddingBottom
@@ -691,11 +702,17 @@ public class EDTSButton: UIButton {
     private func setupButtonPrimary(_ state: BtnState) {
         switch state {
         case .default:
+            if EDTSColor.theme == .poinku {
+                tempBgColor = bgColor ?? EDTSColor.blue30
+                tempBorderColor = borderColor ?? EDTSColor.blue30
+            } else {
+                tempBgColor = bgColor ?? EDTSColor.blueDefault
+                tempBorderColor = borderColor ?? EDTSColor.blueDefault
+            }
+            
             tempIconTintColorLeading = iconTintColorLeading ?? EDTSColor.white
             tempLabelColor = labelColor ?? EDTSColor.white
             tempIconTintColorTrailing = iconTintColorTrailing ?? EDTSColor.white
-            tempBgColor = bgColor ?? EDTSColor.blueDefault
-            tempBorderColor = borderColor ?? EDTSColor.blueDefault
             tempBorderWidth = borderWidth == .zero ? 0 : borderWidth
             layer.shadowColor = shadowColor?.cgColor
 
@@ -718,11 +735,17 @@ public class EDTSButton: UIButton {
             layer.shadowColor = shadowDangerColor?.cgColor ?? shadowColor?.cgColor
 
         case .disabled:
+            if EDTSColor.theme == .poinku {
+                tempBgColor = bgDisabledColor ?? EDTSColor.grey30
+                tempBorderColor = borderDisabledColor ?? EDTSColor.grey30
+            } else {
+                tempBgColor = bgDisabledColor ?? EDTSColor.disabled
+                tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
+            }
+            
             tempIconTintColorLeading = iconDisabledTintColorLeading ?? EDTSColor.white
             tempLabelColor = labelDisabledColor ?? EDTSColor.white
             tempIconTintColorTrailing = iconDisabledTintColorTrailing ?? EDTSColor.white
-            tempBgColor = bgDisabledColor ?? EDTSColor.disabled
-            tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == .zero ? 0 : borderWidth
             layer.shadowColor = shadowDisabledColor?.cgColor ?? shadowColor?.cgColor
             isUserInteractionEnabled = false
@@ -734,11 +757,19 @@ public class EDTSButton: UIButton {
     private func setupButtonSecondary(_ state: BtnState) {
         switch state {
         case .default:
-            tempIconTintColorLeading = iconTintColorLeading ?? EDTSColor.blueDefault
-            tempLabelColor = labelColor ?? EDTSColor.blueDefault
-            tempIconTintColorTrailing = iconTintColorTrailing ?? EDTSColor.blueDefault
+            if EDTSColor.theme == .poinku {
+                tempIconTintColorLeading = iconTintColorLeading ?? EDTSColor.blue30
+                tempLabelColor = labelColor ?? EDTSColor.blue30
+                tempIconTintColorTrailing = iconTintColorTrailing ?? EDTSColor.blue30
+                tempBorderColor = borderColor ?? EDTSColor.blue30
+            } else {
+                tempIconTintColorLeading = iconTintColorLeading ?? EDTSColor.blueDefault
+                tempLabelColor = labelColor ?? EDTSColor.blueDefault
+                tempIconTintColorTrailing = iconTintColorTrailing ?? EDTSColor.blueDefault
+                tempBorderColor = borderColor ?? EDTSColor.blueDefault
+            }
+            
             tempBgColor = bgColor ?? EDTSColor.white
-            tempBorderColor = borderColor ?? EDTSColor.blueDefault
             tempBorderWidth = borderWidth == .zero ? 1 : borderWidth
             layer.shadowColor = shadowColor?.cgColor
 
@@ -761,11 +792,19 @@ public class EDTSButton: UIButton {
             layer.shadowColor = shadowDangerColor?.cgColor ?? shadowColor?.cgColor
 
         case .disabled:
-            tempIconTintColorLeading = iconDisabledTintColorLeading ?? EDTSColor.disabled
-            tempLabelColor = labelDisabledColor ?? EDTSColor.disabled
-            tempIconTintColorTrailing = iconDisabledTintColorTrailing ?? EDTSColor.disabled
+            if EDTSColor.theme == .poinku {
+                tempIconTintColorLeading = iconDisabledTintColorLeading ?? EDTSColor.grey30
+                tempLabelColor = labelDisabledColor ?? EDTSColor.grey30
+                tempIconTintColorTrailing = iconDisabledTintColorTrailing ?? EDTSColor.grey30
+                tempBorderColor = borderDisabledColor ?? EDTSColor.grey30
+            } else {
+                tempIconTintColorLeading = iconDisabledTintColorLeading ?? EDTSColor.disabled
+                tempLabelColor = labelDisabledColor ?? EDTSColor.disabled
+                tempIconTintColorTrailing = iconDisabledTintColorTrailing ?? EDTSColor.disabled
+                tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
+            }
+            
             tempBgColor = bgDisabledColor ?? EDTSColor.white
-            tempBorderColor = borderDisabledColor ?? EDTSColor.disabled
             tempBorderWidth = borderWidth == .zero ? 1 : borderWidth
             layer.shadowColor = shadowDisabledColor?.cgColor ?? shadowColor?.cgColor
             isUserInteractionEnabled = false

@@ -51,7 +51,7 @@ public class EDTSRadioButtonCell: UICollectionViewCell {
         radioButtonItem?.delegate = delegate
     }
     
-    static func instantiateForSizing() -> EDTSRadioButtonCell {
+    public static func instantiateForSizing() -> EDTSRadioButtonCell {
         let nib = UINib(nibName: "EDTSRadioButtonCell", bundle: Bundle(for: EDTSRadioButtonCell.self))
         return nib.instantiate(withOwner: nil, options: nil).first as! EDTSRadioButtonCell
     }
