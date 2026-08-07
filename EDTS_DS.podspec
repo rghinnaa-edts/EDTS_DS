@@ -1,12 +1,12 @@
 Pod::Spec.new do |spec|
   spec.name         = "EDTS_DS"
-  spec.version      = "0.1.4"
+  spec.version      = "0.1.5"
   spec.summary      = "UI Components and Animation"
   spec.description  = "UI Components and Animation of EDTS Apps"
 
   spec.homepage     = "https://github.com/rghinnaa-edts/EDTS_DS"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
-  spec.author       = { "Rizka Ghinna" => "rizka.ghinna@sg-dsa.com" }
+  spec.author       = { "Rizka Ghinna" => "rizka.ghinna@sg-dsa.com", "Yovita Handayiani" => "yovita.handayiani@sg-dsa.com" }
 
   spec.platform     = :ios, "13.0"
   spec.swift_version = "5.0"
