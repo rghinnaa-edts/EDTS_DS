@@ -364,6 +364,30 @@ public class EDTSProgressTracker: UIView {
         }
     }
     
+    @IBInspectable public var trackShadowOpacity: Float = Float.zero {
+        didSet {
+            trackView.layer.shadowOpacity = trackShadowOpacity
+        }
+    }
+    
+    @IBInspectable public var trackShadowRadius: CGFloat = CGFloat.zero {
+        didSet {
+            trackView.layer.shadowRadius = trackShadowRadius
+        }
+    }
+    
+    @IBInspectable public var trackShadowOffset: CGSize = CGSize.zero {
+        didSet {
+            trackView.layer.shadowOffset = trackShadowOffset
+        }
+    }
+    
+    @IBInspectable public var trackShadowColor: UIColor?{
+        didSet {
+            trackView.layer.shadowColor = trackShadowColor?.cgColor
+        }
+    }
+    
     @IBInspectable public var isHasIndicator: Bool = false {
         didSet {
             setupIndicator()
