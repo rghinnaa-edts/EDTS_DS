@@ -8,8 +8,6 @@ import UIKit
 
 @IBDesignable
 public class InnerShadow: UIView {
-    private let innerShadow = InsetShadowView()
-    
     @IBInspectable public var cornerRadius: CGFloat = 0 {
         didSet {
             innerShadow.cornerRadius = cornerRadius
@@ -41,6 +39,12 @@ public class InnerShadow: UIView {
         }
     }
     
+    public var maskPath: CGPath? {
+        didSet { setNeedsLayout() }
+    }
+    
+    private let innerShadow = InsetShadowView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -54,14 +58,16 @@ public class InnerShadow: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        layer.mask = {
-            let mask = CAShapeLayer()
+        let mask = CAShapeLayer()
+        if let maskPath {
+            mask.path = maskPath
+        } else {
             mask.path = UIBezierPath(
                 roundedRect: bounds,
                 cornerRadius: cornerRadius
             ).cgPath
-            return mask
-        }()
+        }
+        layer.mask = mask
     }
     
     private func setup() {

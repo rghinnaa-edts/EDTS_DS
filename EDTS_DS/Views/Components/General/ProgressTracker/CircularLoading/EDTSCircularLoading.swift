@@ -38,6 +38,30 @@ public class EDTSCircularLoading: UIView {
         }
     }
     
+    @IBInspectable public var trackFillTintColor: UIColor? {
+        didSet {
+            setupFillColor()
+        }
+    }
+    
+    @IBInspectable public var trackFillTintColorStart: UIColor? {
+        didSet {
+            setupFillColor()
+        }
+    }
+    
+    @IBInspectable public var trackFillTintColorEnd: UIColor? {
+        didSet {
+            setupFillColor()
+        }
+    }
+    
+    @IBInspectable public var trackFillColorOrientation: String? {
+        didSet {
+            setupFillColor()
+        }
+    }
+    
     @IBInspectable public var trackSize: CGFloat = 50.0 {
         didSet {
             invalidateIntrinsicContentSize()
@@ -51,31 +75,6 @@ public class EDTSCircularLoading: UIView {
         }
     }
     
-    @IBInspectable public var trackPaddingTop: CGFloat = -1.0 {
-        didSet {
-            updateGeometry()
-        }
-    }
-    
-    @IBInspectable public var trackPaddingBottom: CGFloat = -1.0 {
-        didSet {
-            updateGeometry()
-        }
-    }
-    
-    @IBInspectable public var trackPaddingLeading: CGFloat = -1.0 {
-        didSet {
-            updateGeometry()
-        }
-    }
-    
-    @IBInspectable public var trackPaddingTrailing: CGFloat = -1.0 {
-        didSet {
-            updateGeometry()
-        }
-    }
-    
-    // MARK: - Track Color Inspectables
     @IBInspectable public var trackTintColor: UIColor? {
         didSet {
             setupTrackColor()
@@ -100,27 +99,15 @@ public class EDTSCircularLoading: UIView {
         }
     }
     
-    @IBInspectable public var trackFillTintColor: UIColor? {
+    @IBInspectable public var trackPaddingTop: CGFloat = 0.0 {
         didSet {
-            setupFillColor()
+            updateGeometry()
         }
     }
-    
-    @IBInspectable public var trackFillTintColorStart: UIColor? {
+
+    @IBInspectable public var trackPaddingBottom: CGFloat = 0.0 {
         didSet {
-            setupFillColor()
-        }
-    }
-    
-    @IBInspectable public var trackFillTintColorEnd: UIColor? {
-        didSet {
-            setupFillColor()
-        }
-    }
-    
-    @IBInspectable public var trackFillColorOrientation: String? {
-        didSet {
-            setupFillColor()
+            updateGeometry()
         }
     }
     
@@ -228,7 +215,13 @@ public class EDTSCircularLoading: UIView {
     private let rotationLayer = CALayer()
     private let doubleArcInnerLayer = CAShapeLayer()
     private let doubleArcInnerRotationLayer = CALayer()
-    
+    private let doubleArcInnerMaskShape = CAShapeLayer()
+    private var doubleArcInnerGradientLayer: CAGradientLayer?
+    private var isDoubleArcActive: Bool = false
+
+    private var activeDoubleArcLayer: CAShapeLayer {
+        doubleArcInnerGradientLayer != nil ? doubleArcInnerMaskShape : doubleArcInnerLayer
+    }
     private let innerShadowView = InnerShadow()
     
     private var activeFillLayer: CAShapeLayer {
@@ -250,7 +243,7 @@ public class EDTSCircularLoading: UIView {
         }
     }
     
-    // MARK: - Init
+    // MARK: - Initializers
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -263,21 +256,25 @@ public class EDTSCircularLoading: UIView {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
+        
         updateGeometry()
+    }
+
+    private func buildShadowMask() -> CAShapeLayer {
+        let mask = CAShapeLayer()
+        mask.frame = bounds
+        mask.path = trackLayer.path
+        mask.fillColor = UIColor.clear.cgColor
+        mask.strokeColor = UIColor.black.cgColor
+        mask.lineWidth = resolvedThickness
+        return mask
     }
     
     public override var intrinsicContentSize: CGSize {
-        let top = max(trackPaddingTop, 0)
-        let bottom = max(trackPaddingBottom, 0)
-        let leading = max(trackPaddingLeading, 0)
-        let trailing = max(trackPaddingTrailing, 0)
-        
-        return CGSize(
-            width: trackSize + leading + trailing,
-            height: trackSize + top + bottom
-        )
+        return CGSize(width: trackSize, height: trackSize)
     }
     
+    // MARK: - Setup & Styling
     private func setupUI() {
         backgroundColor = .clear
         
@@ -303,6 +300,9 @@ public class EDTSCircularLoading: UIView {
         
         doubleArcInnerLayer.fillColor = UIColor.clear.cgColor
         doubleArcInnerLayer.strokeEnd = 0
+        doubleArcInnerMaskShape.fillColor = UIColor.clear.cgColor
+        doubleArcInnerMaskShape.strokeColor = UIColor.black.cgColor
+        doubleArcInnerMaskShape.strokeEnd = 0
         doubleArcInnerLayer.isHidden = true
         doubleArcInnerRotationLayer.addSublayer(doubleArcInnerLayer)
         
@@ -310,6 +310,7 @@ public class EDTSCircularLoading: UIView {
         innerShadowView.isHidden = true
         innerShadowView.backgroundColor = .clear
         addSubview(innerShadowView)
+        layer.insertSublayer(innerShadowView.layer, above: trackLayer)
         
         setupTrackColor()
         setupFillColor()
@@ -319,19 +320,9 @@ public class EDTSCircularLoading: UIView {
     private func updateLineCap(force cap: CAShapeLayerLineCap? = nil) {
         let lineCap = cap ?? resolvedLineCap
         
-        [
-            trackLayer,
-            trackMaskShape,
-            fillLayer,
-            fillMaskShape,
-            doubleArcInnerLayer
-        ].forEach {
+        [trackLayer, trackMaskShape, fillLayer, fillMaskShape, doubleArcInnerLayer, doubleArcInnerMaskShape].forEach {
             $0.lineCap = lineCap
         }
-    }
-    
-    private func setTrackSize(_ size: CGFloat) {
-        self.trackSize = size
     }
     
     private func updateTrackShadow() {
@@ -342,16 +333,22 @@ public class EDTSCircularLoading: UIView {
         targetLayer.shadowOffset = trackShadowOffset
         targetLayer.shadowColor = (trackShadowColor ?? UIColor.black).cgColor
         
-        targetLayer.shadowPath = trackLayer.path
+        targetLayer.shadowPath = strokedTrackShadowPath()
+    }
+
+    private func strokedTrackShadowPath() -> CGPath? {
+        guard let centerlinePath = trackLayer.path else { return nil }
+        
+        return centerlinePath.copy(
+            strokingWithWidth: resolvedThickness,
+            lineCap: resolvedLineCap.asCGLineCap,
+            lineJoin: .round,
+            miterLimit: 0
+        )
     }
     
     private var ringRect: CGRect {
-        let insetTop = trackPaddingTop >= 0 ? trackPaddingTop : 0
-        let insetBottom = trackPaddingBottom >= 0 ? trackPaddingBottom : 0
-        let insetLeading = trackPaddingLeading >= 0 ? trackPaddingLeading : 0
-        let insetTrailing = trackPaddingTrailing >= 0 ? trackPaddingTrailing : 0
-        
-        let insetBounds = bounds.inset(by: UIEdgeInsets(top: insetTop, left: insetLeading, bottom: insetBottom, right: insetTrailing))
+        let insetBounds = bounds.inset(by: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
         
         let available = min(insetBounds.width, insetBounds.height)
         let targetOuterDiameter: CGFloat = (trackSize > 0) ? min(trackSize, available) : available
@@ -385,11 +382,33 @@ public class EDTSCircularLoading: UIView {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         
-        [trackLayer, trackMaskShape, fillLayer, fillMaskShape].forEach {
+        let outerEdge = radius + thickness / 2
+        let innerEdge = radius - thickness / 2
+        let fillOuterEdge = outerEdge - trackPaddingTop
+        let fillInnerEdge = innerEdge + trackPaddingBottom
+        let fillThickness = max(fillOuterEdge - fillInnerEdge, 0)
+        let fillRadius = (fillOuterEdge + fillInnerEdge) / 2
+
+        let fillPath = UIBezierPath(
+            arcCenter: center,
+            radius: fillRadius,
+            startAngle: -CGFloat.pi / 2,
+            endAngle: -CGFloat.pi / 2 + 2 * CGFloat.pi,
+            clockwise: true
+        ).cgPath
+
+        [trackLayer, trackMaskShape].forEach {
             $0.frame = bounds
             $0.path = path
             $0.lineWidth = thickness
         }
+
+        [fillLayer, fillMaskShape].forEach {
+            $0.frame = bounds
+            $0.path = fillPath
+            $0.lineWidth = fillThickness
+        }
+        
         rotationLayer.frame = bounds
         rotationLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
         rotationLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -410,9 +429,12 @@ public class EDTSCircularLoading: UIView {
             
             CATransaction.begin()
             CATransaction.setDisableActions(true)
-            doubleArcInnerLayer.frame = bounds
-            doubleArcInnerLayer.path = doubleArcPath
-            doubleArcInnerLayer.lineWidth = thickness
+            [doubleArcInnerLayer, doubleArcInnerMaskShape].forEach {
+                $0.frame = bounds
+                $0.path = doubleArcPath
+                $0.lineWidth = fillThickness
+            }
+            doubleArcInnerGradientLayer?.frame = bounds
             doubleArcInnerRotationLayer.frame = bounds
             doubleArcInnerRotationLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
             doubleArcInnerRotationLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -422,13 +444,8 @@ public class EDTSCircularLoading: UIView {
         innerShadowView.frame = bounds
         innerShadowView.cornerRadius = rect.width / 2
         
-        let shadowMask = CAShapeLayer()
-        shadowMask.frame = bounds
-        shadowMask.path = path
-        shadowMask.fillColor = UIColor.clear.cgColor
-        shadowMask.strokeColor = UIColor.black.cgColor
-        shadowMask.lineWidth = thickness
-        innerShadowView.layer.mask = shadowMask
+        innerShadowView.frame = bounds
+        innerShadowView.maskPath = path
         
         updateTrackShadow()
     }
@@ -445,18 +462,42 @@ public class EDTSCircularLoading: UIView {
         )
     }
     
+    private func updateDoubleArcVisibility() {
+        if doubleArcInnerGradientLayer != nil {
+            doubleArcInnerLayer.isHidden = true
+            doubleArcInnerGradientLayer?.isHidden = !isDoubleArcActive
+        } else {
+            doubleArcInnerLayer.isHidden = !isDoubleArcActive
+        }
+    }
+    
     private func setupFillColor() {
+        let start = trackFillTintColorStart
+        let end = trackFillTintColorEnd
+        let solid = trackFillTintColor ?? .systemBlue
+        let orientation = trackFillColorOrientation
+        
         applyRingGradient(
-            start: trackFillTintColorStart,
-            end: trackFillTintColorEnd,
-            solid: trackFillTintColor ?? .systemBlue,
-            orientation: trackFillColorOrientation,
+            start: start,
+            end: end,
+            solid: solid,
+            orientation: orientation,
             solidLayer: fillLayer,
             maskShape: fillMaskShape,
             gradientLayer: &fillGradientLayer
         )
         
-        doubleArcInnerLayer.strokeColor = (trackFillTintColor ?? .systemBlue).cgColor
+        applyRingGradient(
+            start: start,
+            end: end,
+            solid: solid,
+            orientation: orientation,
+            solidLayer: doubleArcInnerLayer,
+            maskShape: doubleArcInnerMaskShape,
+            gradientLayer: &doubleArcInnerGradientLayer
+        )
+        
+        updateDoubleArcVisibility()
     }
     
     private func applyRingGradient(
@@ -497,6 +538,12 @@ public class EDTSCircularLoading: UIView {
             case .vertical:
                 gradient.startPoint = CGPoint(x: 0.5, y: 0)
                 gradient.endPoint = CGPoint(x: 0.5, y: 1)
+            case .slash:
+                gradient.startPoint = CGPoint(x: 1, y: 0)
+                gradient.endPoint = CGPoint(x: 0, y: 1)
+            case .backslash:
+                gradient.startPoint = CGPoint(x: 0, y: 0)
+                gradient.endPoint = CGPoint(x: 1, y: 1)
             }
             
             gradient.mask = maskShape
@@ -515,6 +562,7 @@ public class EDTSCircularLoading: UIView {
         setFill(to: ratio, animated: animated)
     }
     
+    // MARK: - Animation
     private func setFill(to ratio: CGFloat, animated: Bool) {
         guard !isIntermittentState else { return }
         
@@ -557,7 +605,10 @@ public class EDTSCircularLoading: UIView {
         animation.fillMode = .forwards
         animation.isRemovedOnCompletion = false
         
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
         active.strokeEnd = ratio
+        CATransaction.commit()
         
         if ratio == 0 {
             CATransaction.begin()
@@ -621,12 +672,15 @@ public class EDTSCircularLoading: UIView {
         activeFillLayer.removeAnimation(forKey: "intermittentSweep")
         activeFillLayer.removeAnimation(forKey: "strokeEndAnimation")
         
-        doubleArcInnerLayer.isHidden = true
-        
+        isDoubleArcActive = false
+        updateDoubleArcVisibility()
+
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         doubleArcInnerLayer.strokeStart = 0
         doubleArcInnerLayer.strokeEnd = 0
+        doubleArcInnerMaskShape.strokeStart = 0
+        doubleArcInnerMaskShape.strokeEnd = 0
         CATransaction.commit()
         
         setTrackHidden(false)
@@ -683,12 +737,27 @@ public class EDTSCircularLoading: UIView {
         CATransaction.commit()
         addRotationAnimation(duration: intermittentDoubleArcRotationDuration, clockwise: true, on: rotationLayer)
         
-        doubleArcInnerLayer.isHidden = false
+        isDoubleArcActive = true
+        updateDoubleArcVisibility()
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         doubleArcInnerLayer.strokeStart = 0
         doubleArcInnerLayer.strokeEnd = doubleArcSweepFraction
+        doubleArcInnerMaskShape.strokeStart = 0
+        doubleArcInnerMaskShape.strokeEnd = doubleArcSweepFraction
         CATransaction.commit()
+        
         addRotationAnimation(duration: intermittentDoubleArcRotationDuration, clockwise: false, on: doubleArcInnerRotationLayer)
+    }
+}
+
+private extension CAShapeLayerLineCap {
+    var asCGLineCap: CGLineCap {
+        switch self {
+        case .butt: return .butt
+        case .square: return .square
+        case .round: return .round
+        default: return .round
+        }
     }
 }

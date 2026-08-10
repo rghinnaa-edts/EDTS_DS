@@ -683,6 +683,10 @@ public class EDTSProgressTracker: UIView {
             case .vertical:
                 layer?.startPoint = CGPoint(x: 0.5, y: 0)
                 layer?.endPoint   = CGPoint(x: 0.5, y: 1)
+            case .slash:
+                break
+            case .backslash:
+                break
             }
             
             view.backgroundColor = .clear

@@ -329,6 +329,10 @@ public class EDTSButtonIcon: UIButton {
             case .vertical:
                 gradientLayer?.startPoint = CGPoint(x: 0.5, y: 0)
                 gradientLayer?.endPoint   = CGPoint(x: 0.5, y: 1)
+            case .slash:
+                break
+            case .backslash:
+                break
             }
             
             backgroundColor = .clear
