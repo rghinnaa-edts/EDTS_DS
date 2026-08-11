@@ -4,6 +4,7 @@
 //
 //  Created by Yovita Handayiani on 29/06/26.
 //
+
 import UIKit
 
 @IBDesignable
@@ -39,10 +40,6 @@ public class InnerShadow: UIView {
         }
     }
     
-    public var maskPath: CGPath? {
-        didSet { setNeedsLayout() }
-    }
-    
     private let innerShadow = InsetShadowView()
     
     override init(frame: CGRect) {
@@ -58,16 +55,14 @@ public class InnerShadow: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
         
-        let mask = CAShapeLayer()
-        if let maskPath {
-            mask.path = maskPath
-        } else {
+        layer.mask = {
+            let mask = CAShapeLayer()
             mask.path = UIBezierPath(
                 roundedRect: bounds,
                 cornerRadius: cornerRadius
             ).cgPath
-        }
-        layer.mask = mask
+            return mask
+        }()
     }
     
     private func setup() {
