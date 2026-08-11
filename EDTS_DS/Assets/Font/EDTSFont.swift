@@ -23,7 +23,7 @@ public struct EDTSFont {
         
         public static func regular(size: CGFloat, lineHeight: CGFloat) -> FontStyle {
             FontStyle(
-                font: UIFont(name: BaseFont.regular.rawValue, size: size)!,
+                font: UIFont(name: BaseFont.regular.rawValue, size: size) ?? .systemFont(ofSize: size),
                 lineHeight: lineHeight,
                 fontSize: size
             )
@@ -31,7 +31,7 @@ public struct EDTSFont {
         
         public static func medium(size: CGFloat, lineHeight: CGFloat) -> FontStyle {
             FontStyle(
-                font: UIFont(name: BaseFont.medium.rawValue, size: size) ?? .systemFont(ofSize: size, weight: .semibold),
+                font: UIFont(name: BaseFont.medium.rawValue, size: size) ?? .systemFont(ofSize: size, weight: .medium),
                 lineHeight: lineHeight,
                 fontSize: size
             )
@@ -47,7 +47,7 @@ public struct EDTSFont {
         
         public static func bold(size: CGFloat, lineHeight: CGFloat) -> FontStyle {
             FontStyle(
-                font: UIFont(name: BaseFont.bold.rawValue, size: size) ?? .systemFont(ofSize: size, weight: .semibold),
+                font: UIFont(name: BaseFont.bold.rawValue, size: size) ?? .systemFont(ofSize: size, weight: .bold),
                 lineHeight: lineHeight,
                 fontSize: size
             )
