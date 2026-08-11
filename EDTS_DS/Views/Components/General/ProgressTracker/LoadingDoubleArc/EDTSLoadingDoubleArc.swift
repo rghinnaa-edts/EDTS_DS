@@ -56,7 +56,14 @@ public class EDTSLoadingDoubleArc: UIView {
     private var startAngleInner: CGFloat = 180
     private var isRunning: Bool = false
     private var displayLink: CADisplayLink?
-    
+
+    /// CADisplayLink retains its target, so target it at a weak proxy instead of `self`.
+    private class WeakDisplayLink {
+        weak var target: EDTSLoadingDoubleArc?
+        init(_ target: EDTSLoadingDoubleArc) { self.target = target }
+        @objc func tick() { target?.handleAnimation() }
+    }
+
     override public init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -71,7 +78,8 @@ public class EDTSLoadingDoubleArc: UIView {
         layer.addSublayer(paint)
         paint.strokeColor = progressColor.cgColor
         paint.lineWidth = progressThickness
-        startAnimation()
+        // Animation starts in didMoveToWindow — a view with no window has nothing to animate,
+        // and starting here would leave a live display link if it is never added to a hierarchy.
     }
     
     override public var intrinsicContentSize: CGSize {
@@ -116,9 +124,9 @@ public class EDTSLoadingDoubleArc: UIView {
     
     private func startAnimation() {
         stopAnimation()
-        displayLink = CADisplayLink(target: self, selector: #selector(handleAnimation))
+        displayLink = CADisplayLink(target: WeakDisplayLink(self), selector: #selector(WeakDisplayLink.tick))
         displayLink?.preferredFramesPerSecond = 60
-        displayLink?.add(to: .current, forMode: .common)
+        displayLink?.add(to: .main, forMode: .common)
         isRunning = true
     }
     

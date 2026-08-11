@@ -132,7 +132,9 @@ public class EDTSSearchField: UISearchBar {
             }
         }
         
-        animationTimer = Timer.scheduledTimer(timeInterval: speed, target: self, selector: #selector(updatePlaceholder), userInfo: nil, repeats: true)
+        animationTimer = Timer.scheduledTimer(withTimeInterval: speed, repeats: true) { [weak self] _ in
+            self?.updatePlaceholder()
+        }
     }
     
     public func stopPlaceholderAnimation() {
@@ -164,12 +166,11 @@ public class EDTSSearchField: UISearchBar {
                 }
                 
                 self.animationTimer = Timer.scheduledTimer(
-                    timeInterval: self.animationSpeed,
-                    target: self,
-                    selector: #selector(self.updatePlaceholder),
-                    userInfo: nil,
+                    withTimeInterval: self.animationSpeed,
                     repeats: true
-                )
+                ) { [weak self] _ in
+                    self?.updatePlaceholder()
+                }
             }
             return
         }

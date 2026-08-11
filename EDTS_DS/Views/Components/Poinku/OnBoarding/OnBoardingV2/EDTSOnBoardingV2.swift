@@ -29,7 +29,14 @@ public class EDTSOnBoardingV2: UIView {
     private var animationStartOffset: CGFloat = 0
     private var animationEndOffset: CGFloat = 0
     private var displayLink: CADisplayLink?
-    
+
+    /// CADisplayLink retains its target, so target it at a weak proxy instead of `self`.
+    private class WeakDisplayLink {
+        weak var target: EDTSOnBoardingV2?
+        init(_ target: EDTSOnBoardingV2) { self.target = target }
+        @objc func tick() { target?.updateScroll() }
+    }
+
     public var mode: OnBoardingMode = .withBackgroundMode {
         didSet {
             setupOnBoardingMode()
@@ -319,8 +326,9 @@ public class EDTSOnBoardingV2: UIView {
         
         let startOffset = collectionView2.contentOffset.x
         
-        displayLink = CADisplayLink(target: self, selector: #selector(updateScroll))
-        displayLink?.add(to: .current, forMode: .common)
+        stopDisplayLink()
+        displayLink = CADisplayLink(target: WeakDisplayLink(self), selector: #selector(WeakDisplayLink.tick))
+        displayLink?.add(to: .main, forMode: .common)
         
         animationStartTime = CACurrentMediaTime()
         animationDuration = 0.5
