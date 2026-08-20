@@ -64,7 +64,7 @@ loading.intermittentAnimationType = "stretch" // or "fixed", "doubleArc"
 | `trackTintColor` | `UIColor?` | `EDTSColor.grey20` | Solid track color, used when no gradient start/end is set |
 | `trackTintColorStart` | `UIColor?` | `nil` | Gradient start color for the track; setting either start or end switches the track to a gradient |
 | `trackTintColorEnd` | `UIColor?` | `nil` | Gradient end color for the track; setting either start or end switches the track to a gradient |
-| `trackColorOrientation` | `String?` | `"horizontal"` | Gradient direction: `"horizontal"`, `"vertical"`, `"slash"`, or `"backslash"` |
+| `trackColorOrientation` | `String?` | `"horizontal"` | Gradient direction (case-insensitive): `"horizontal"`, `"vertical"`, `"diagonalup"`, or `"diagonaldown"` |
 
 ### Fill Color Properties
 
@@ -73,7 +73,9 @@ loading.intermittentAnimationType = "stretch" // or "fixed", "doubleArc"
 | `trackFillTintColor` | `UIColor?` | `nil` | Solid fill color, used when no gradient start/end is set |
 | `trackFillTintColorStart` | `UIColor?` | `nil` | Gradient start color for the fill; setting either start or end switches the fill to a gradient |
 | `trackFillTintColorEnd` | `UIColor?` | `nil` | Gradient end color for the fill; setting either start or end switches the fill to a gradient |
-| `trackFillColorOrientation` | `String?` | `"horizontal"` | Gradient direction for the fill: `"horizontal"`, `"vertical"`, `"slash"`, or `"backslash"` |
+| `trackFillColorOrientation` | `String?` | `"horizontal"` | Gradient direction for the fill (case-insensitive): `"horizontal"`, `"vertical"`, `"diagonalup"`, or `"diagonaldown"` |
+
+> **Note:** `"diagonalUp"` produces a gradient rising left-to-right (like `/`); `"diagonalDown"` produces a gradient falling left-to-right (like `\`). Unrecognized orientation strings fall back to `"horizontal"`.
 
 ### Track Shadow Properties
 

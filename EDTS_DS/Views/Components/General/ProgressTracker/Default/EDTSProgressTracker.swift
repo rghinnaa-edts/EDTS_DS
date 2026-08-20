@@ -612,47 +612,10 @@ public class EDTSProgressTracker: UIView {
             innerShadowViewContainer.isHidden = true
         }
         
-        //Default Fill Gradient BgColor
-        let gradient = CAGradientLayer()
-        fillView.layer.insertSublayer(gradient, at: 0)
-        fillGradientLayer = gradient
-        fillGradientLayer?.frame = fillView.bounds
-        fillGradientLayer?.cornerRadius = fullTrackView.layer.cornerRadius
-        fillGradientLayer?.colors = [
-            EDTSColor.skyblueLeading.cgColor,
-            EDTSColor.skyblueTrailing.cgColor
-        ]
-        fillGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
-        fillGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
-        fillView.backgroundColor = .clear
-        
-        //Default Indicator Gradient BgColor
-        let gradient1 = CAGradientLayer()
-        indicatorView.layer.insertSublayer(gradient1, at: 0)
-        indicatorGradientLayer = gradient1
-        indicatorGradientLayer?.frame = fillView.bounds
-        indicatorGradientLayer?.cornerRadius = indicatorView.layer.cornerRadius
-        indicatorGradientLayer?.colors = [
-            EDTSColor.skyblueLeading.cgColor,
-            EDTSColor.skyblueTrailing.cgColor
-        ]
-        indicatorGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
-        indicatorGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
-        indicatorView.backgroundColor = .clear
-        
-        //Default Badge Gradient BgColor
-        let gradient2 = CAGradientLayer()
-        badgeView.layer.insertSublayer(gradient2, at: 0)
-        badgeGradientLayer = gradient2
-        badgeGradientLayer?.frame = fillView.bounds
-        badgeGradientLayer?.cornerRadius = badgeView.layer.cornerRadius
-        badgeGradientLayer?.colors = [
-            EDTSColor.skyblueLeading.cgColor,
-            EDTSColor.skyblueTrailing.cgColor
-        ]
-        badgeGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
-        badgeGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
-        badgeView.backgroundColor = .clear
+        //Default Gradient BGColor
+        setupDefaultFillGradientBGColor()
+        setupDefaultIndicatorGradientBGColor()
+        setupDefaultBadgeGradientBGColor()
         
         //Default Indicator Styling
         indicatorSize = 8
@@ -669,6 +632,51 @@ public class EDTSProgressTracker: UIView {
         
         //Default Limit Value
         limitValue = maxValue
+    }
+    
+    private func setupDefaultFillGradientBGColor(){
+        let gradient = CAGradientLayer()
+        fillView.layer.insertSublayer(gradient, at: 0)
+        fillGradientLayer = gradient
+        fillGradientLayer?.frame = fillView.bounds
+        fillGradientLayer?.cornerRadius = fullTrackView.layer.cornerRadius
+        fillGradientLayer?.colors = [
+            EDTSColor.skyblueLeading.cgColor,
+            EDTSColor.skyblueTrailing.cgColor
+        ]
+        fillGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
+        fillGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
+        fillView.backgroundColor = .clear
+    }
+    
+    private func setupDefaultIndicatorGradientBGColor(){
+        let gradient1 = CAGradientLayer()
+        indicatorView.layer.insertSublayer(gradient1, at: 0)
+        indicatorGradientLayer = gradient1
+        indicatorGradientLayer?.frame = fillView.bounds
+        indicatorGradientLayer?.cornerRadius = indicatorView.layer.cornerRadius
+        indicatorGradientLayer?.colors = [
+            EDTSColor.skyblueLeading.cgColor,
+            EDTSColor.skyblueTrailing.cgColor
+        ]
+        indicatorGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
+        indicatorGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
+        indicatorView.backgroundColor = .clear
+    }
+    
+    private func setupDefaultBadgeGradientBGColor(){
+        let gradient2 = CAGradientLayer()
+        badgeView.layer.insertSublayer(gradient2, at: 0)
+        badgeGradientLayer = gradient2
+        badgeGradientLayer?.frame = fillView.bounds
+        badgeGradientLayer?.cornerRadius = badgeView.layer.cornerRadius
+        badgeGradientLayer?.colors = [
+            EDTSColor.skyblueLeading.cgColor,
+            EDTSColor.skyblueTrailing.cgColor
+        ]
+        badgeGradientLayer?.startPoint = CGPoint(x: 0, y: 0.5)
+        badgeGradientLayer?.endPoint   = CGPoint(x: 1, y: 0.5)
+        badgeView.backgroundColor = .clear
     }
     
     // MARK: - Setup Fill
@@ -707,9 +715,9 @@ public class EDTSProgressTracker: UIView {
             case .vertical:
                 layer?.startPoint = CGPoint(x: 0.5, y: 0)
                 layer?.endPoint   = CGPoint(x: 0.5, y: 1)
-            case .slash:
+            case .diagonalUp:
                 break
-            case .backslash:
+            case .diagonalDown:
                 break
             }
             

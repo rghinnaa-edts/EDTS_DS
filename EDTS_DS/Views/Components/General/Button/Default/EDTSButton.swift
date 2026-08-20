@@ -485,9 +485,9 @@ public class EDTSButton: UIButton {
             case .vertical:
                 gradientLayer?.startPoint = CGPoint(x: 0.5, y: 0)
                 gradientLayer?.endPoint   = CGPoint(x: 0.5, y: 1)
-            case .slash:
+            case .diagonalUp:
                 break
-            case .backslash:
+            case .diagonalDown:
                 break
             }
             
