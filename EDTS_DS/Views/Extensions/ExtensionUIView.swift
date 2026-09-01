@@ -10,6 +10,8 @@ import UIKit
 public enum Orientation: String {
     case horizontal = "horizontal"
     case vertical = "vertical"
+    case diagonalUp = "diagonalup"
+    case diagonalDown = "diagonaldown"
 }
 
 extension UIView {
@@ -35,6 +37,10 @@ extension UIView {
         case .vertical:
             gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
             gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
+        case .diagonalUp:
+            break
+        case .diagonalDown:
+            break
         }
         
         if cornerRadius > 0 {
