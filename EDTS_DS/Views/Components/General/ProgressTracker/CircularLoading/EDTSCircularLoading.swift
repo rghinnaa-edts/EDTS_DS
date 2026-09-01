@@ -13,7 +13,7 @@ public class EDTSCircularLoading: UIView {
     @IBInspectable public var value: CGFloat {
         get { _value }
         set {
-            let clamped = min(newValue, maxValue)
+            let clamped = min(max(newValue, 0), maxValue)
             _value = clamped
             calculateValue()
         }
@@ -337,6 +337,7 @@ public class EDTSCircularLoading: UIView {
             orientation: trackColorOrientation,
             solidLayer: trackLayer,
             maskShape: trackMaskShape,
+            insertAbove: trackLayer,
             gradientLayer: &trackGradientLayer
         )
     }
@@ -389,7 +390,7 @@ public class EDTSCircularLoading: UIView {
         fillGradient.startPoint = CGPoint(x: 0, y: 0.5)
         fillGradient.endPoint = CGPoint(x: 1, y: 0.5)
         fillGradient.mask = fillMaskShape
-        rotationLayer.insertSublayer(fillGradient, above: fillLayer)
+        layer.insertSublayer(fillGradient, above: rotationLayer)
         fillGradientLayer = fillGradient
         
         let doubleArcGradient = CAGradientLayer()
@@ -400,10 +401,7 @@ public class EDTSCircularLoading: UIView {
         doubleArcGradient.startPoint = CGPoint(x: 0, y: 0.5)
         doubleArcGradient.endPoint = CGPoint(x: 1, y: 0.5)
         doubleArcGradient.mask = doubleArcInnerMaskShape
-        doubleArcInnerRotationLayer.insertSublayer(
-            doubleArcGradient,
-            above: doubleArcInnerLayer
-        )
+        layer.insertSublayer(doubleArcGradient, above: doubleArcInnerRotationLayer)
         doubleArcInnerGradientLayer = doubleArcGradient
     }
     
@@ -420,6 +418,7 @@ public class EDTSCircularLoading: UIView {
             orientation: orientation,
             solidLayer: fillLayer,
             maskShape: fillMaskShape,
+            insertAbove: rotationLayer,
             gradientLayer: &fillGradientLayer
         )
         
@@ -430,6 +429,7 @@ public class EDTSCircularLoading: UIView {
             orientation: orientation,
             solidLayer: doubleArcInnerLayer,
             maskShape: doubleArcInnerMaskShape,
+            insertAbove: doubleArcInnerRotationLayer,
             gradientLayer: &doubleArcInnerGradientLayer
         )
         
@@ -462,16 +462,17 @@ public class EDTSCircularLoading: UIView {
         orientation: String?,
         solidLayer: CAShapeLayer,
         maskShape: CAShapeLayer,
+        insertAbove anchorLayer: CALayer,
         gradientLayer: inout CAGradientLayer?
     ) {
-        guard let superlayer = solidLayer.superlayer else { return }
+        guard let superlayer = anchorLayer.superlayer else { return }
         
         if start != nil || end != nil {
             solidLayer.isHidden = true
             
             let gradient = gradientLayer ?? CAGradientLayer()
             if gradientLayer == nil {
-                superlayer.insertSublayer(gradient, above: solidLayer)
+                superlayer.insertSublayer(gradient, above: anchorLayer)
                 gradientLayer = gradient
             }
             
@@ -799,6 +800,7 @@ public class EDTSCircularLoading: UIView {
         CATransaction.commit()
         
         if value == 0 {
+            CATransaction.begin()
             CATransaction.setCompletionBlock { [weak self, weak layer] in
                 guard let self, self.value == 0 else { return }
                 layer?.lineCap = .butt
@@ -826,11 +828,11 @@ public class EDTSCircularLoading: UIView {
         switch resolvedIntermittentAnimationType {
         case .stretch:
             setupTrackVisibility(false)
-            animateIntermittentRotation(duration: intermittentStretchRotationDuration, on: rotationLayer)
+            animateIntermittentRotation(duration: intermittentStretchRotationDuration, on: [rotationLayer, fillMaskShape])
             animateStretch()
         case .fixed:
             setupTrackVisibility(false)
-            animateIntermittentRotation(duration: intermittentFixedRotationDuration, on: rotationLayer)
+            animateIntermittentRotation(duration: intermittentFixedRotationDuration, on: [rotationLayer, fillMaskShape])
             animateFixed()
         case .doubleArc:
             setupTrackVisibility(true)
@@ -846,6 +848,10 @@ public class EDTSCircularLoading: UIView {
     private func stopIntermittentAnimation() {
         rotationLayer.removeAnimation(forKey: "intermittentRotation")
         doubleArcInnerRotationLayer.removeAnimation(forKey: "intermittentRotation")
+        fillMaskShape.removeAnimation(forKey: "intermittentRotation")
+        doubleArcInnerMaskShape.removeAnimation(forKey: "intermittentRotation")
+        fillMaskShape.transform = CATransform3DIdentity
+        doubleArcInnerMaskShape.transform = CATransform3DIdentity
         activeFillLayer.removeAnimation(forKey: "intermittentSweep")
         activeFillLayer.removeAnimation(forKey: "strokeEndAnimation")
         
@@ -866,14 +872,14 @@ public class EDTSCircularLoading: UIView {
         calculateValue(animated: false)
     }
     
-    private func animateIntermittentRotation(duration: CFTimeInterval, clockwise: Bool = true, on targetLayer: CALayer) {
+    private func animateIntermittentRotation(duration: CFTimeInterval, clockwise: Bool = true, on targetLayers: [CALayer]) {
         let rotation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotation.fromValue = 0
         rotation.toValue = clockwise ? CGFloat.pi * 2 : -CGFloat.pi * 2
         rotation.duration = duration
         rotation.repeatCount = .infinity
         rotation.isRemovedOnCompletion = false
-        targetLayer.add(rotation, forKey: "intermittentRotation")
+        targetLayers.forEach { $0.add(rotation, forKey: "intermittentRotation") }
     }
     
     private func animateStretch() {
@@ -917,7 +923,7 @@ public class EDTSCircularLoading: UIView {
         activeFillLayer.strokeStart = 0
         activeFillLayer.strokeEnd = doubleArcSweepFraction
         CATransaction.commit()
-        animateIntermittentRotation(duration: intermittentDoubleArcRotationDuration, clockwise: true, on: rotationLayer)
+        animateIntermittentRotation(duration: intermittentDoubleArcRotationDuration, clockwise: true, on: [rotationLayer, fillMaskShape])
         
         isDoubleArcActive = true
         setupDoubleArcVisibility()
@@ -929,6 +935,6 @@ public class EDTSCircularLoading: UIView {
         doubleArcInnerMaskShape.strokeEnd = doubleArcSweepFraction
         CATransaction.commit()
         
-        animateIntermittentRotation(duration: intermittentDoubleArcRotationDuration, clockwise: false, on: doubleArcInnerRotationLayer)
+        animateIntermittentRotation(duration: intermittentDoubleArcRotationDuration, clockwise: false, on: [doubleArcInnerRotationLayer, doubleArcInnerMaskShape])
     }
 }
