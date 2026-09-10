@@ -4,12 +4,11 @@
 //
 //  Created by Yovita Handayiani on 29/06/26.
 //
+
 import UIKit
 
 @IBDesignable
 public class InnerShadow: UIView {
-    private let innerShadow = InsetShadowView()
-    
     @IBInspectable public var cornerRadius: CGFloat = 0 {
         didSet {
             innerShadow.cornerRadius = cornerRadius
@@ -40,6 +39,8 @@ public class InnerShadow: UIView {
             innerShadow.shadowOffset = shadowOffset
         }
     }
+    
+    private let innerShadow = InsetShadowView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

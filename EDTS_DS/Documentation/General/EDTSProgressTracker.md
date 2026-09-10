@@ -117,6 +117,15 @@ progressTracker.value = 45
 | `trackInnerShadowOffset` | `CGSize` | `.zero` | Inner shadow offset for the track |
 | `trackInnerShadowColor` | `UIColor?` | `black` | Inner shadow color for the track |
 
+### Track Shadow Properties
+
+| Property Name | Type | Default | Description |
+| -------------- | ---- | ------- | ----------- |
+| `trackShadowOpacity` | `Float` | `0.0` | Outer shadow opacity for the track view's layer |
+| `trackShadowRadius` | `CGFloat` | `0.0` | Outer shadow blur radius for the track view's layer |
+| `trackShadowOffset` | `CGSize` | `.zero` | Outer shadow offset for the track view's layer |
+| `trackShadowColor` | `UIColor?` | `nil` | Outer shadow color for the track view's layer |
+
 ### Indicator Properties
 
 | Property Name | Type | Default | Description |
