@@ -47,6 +47,8 @@ public class EDTSButtonStepper: UIView {
         didSet {
             lblQty.text = "\(textQuantity)"
             lblNumber.text = "\(textQuantity)"
+            
+            updateMinusColor()
         }
     }
     
@@ -138,6 +140,13 @@ public class EDTSButtonStepper: UIView {
     @IBInspectable public var isDisabled: Bool = false {
         didSet {
             setupStepperUI()
+        }
+    }
+  
+    @IBInspectable public var isPlusDisabled: Bool = false {
+        didSet {
+            updatePlusBackgroundColor()
+            updatePlusColor()
         }
     }
   
@@ -352,7 +361,7 @@ public class EDTSButtonStepper: UIView {
     }
     
     private func updatePlusBackgroundColor() {
-        if isDisabled {
+        if isDisabled || isPlusDisabled {
             plusBgColor = EDTSColor.disabled
         } else if let custom = btnPlusBackgroundColor {
             plusBgColor = custom
@@ -360,10 +369,11 @@ public class EDTSButtonStepper: UIView {
             plusBgColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.blue50
         }
         btnPlus.backgroundColor = plusBgColor
+        btnPlus.isEnabled = !(isDisabled || isPlusDisabled)
     }
     
     private func updatePlusColor() {
-        if isDisabled {
+        if isDisabled || isPlusDisabled {
             plusColor = EDTSColor.white
         } else if let custom = btnPlusColor {
             plusColor = custom
@@ -534,6 +544,8 @@ public class EDTSButtonStepper: UIView {
     }
     
     @IBAction func btnPlus(_ sender: Any) {
+        guard !isDisabled, !isPlusDisabled else { return }
+        
         let qty = Int(lblQty.text ?? "") ?? 0
         textQuantity = qty + qtyMultipe
         lblQty.text = "\(textQuantity)"
