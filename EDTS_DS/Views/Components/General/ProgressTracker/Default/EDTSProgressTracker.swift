@@ -1557,6 +1557,17 @@ public class EDTSProgressTracker: UIView {
                     self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
                     
                     if finished {
+                        if shouldShowIndicatorAtMax {
+                            let trailingPad = self.trackPaddingTrailing >= 0 ? self.trackPaddingTrailing : 0
+                            self.indicatorTrailingConstraint.constant = -trailingPad
+                            self.isIndicatorVisible = true
+                            
+                            UIView.performWithoutAnimation {
+                                self.layoutIfNeeded()
+                            }
+                            
+                            self.animateScaleUpIndicator()
+                        }
                         completion?()
                     }
                 }

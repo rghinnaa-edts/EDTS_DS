@@ -46,6 +46,7 @@ public class EDTSButtonStepper: UIView {
     @IBInspectable public var textQuantity: Int = 0 {
         didSet {
             lblQty.text = "\(textQuantity)"
+            lblNumber.text = "\(textQuantity)"
         }
     }
     
@@ -141,11 +142,20 @@ public class EDTSButtonStepper: UIView {
     }
   
     public weak var delegate: EDTSButtonStepperDelegate?
-        
+     
+    public var isStepperExpanded: Bool { isExpanded }
+    public var onExpansionChanged: ((Bool) -> Void)?
+    
     private var quantity: Int = 0
     private var qtyMultipe: Int = 1
     private var defaultFloatValue: CGFloat = -1.0
-    private var isExpanded: Bool = false
+    private var isExpanded: Bool = false {
+        didSet {
+            guard oldValue != isExpanded else { return }
+            onExpansionChanged?(isExpanded)
+        }
+    }
+    
     private var isAnimating: Bool = false
     private var collapsedWidth: CGFloat = 0
     private var expandedWidth: CGFloat = 0
@@ -484,12 +494,17 @@ public class EDTSButtonStepper: UIView {
     }
     
     //MARK: - Action
+    public func collapse() {
+        guard stepperType == StepperType.collapsible.rawValue, isExpanded else { return }
+        hideStepperAnimation()
+        delegate?.didSelectButtonCollapsible(show: false)
+    }
     
     @objc private func btnShowTapped() {
         if stepperType == StepperType.collapsible.rawValue {
             if !isExpanded {
                 showStepperAnimation()
-                textQuantity = 1
+                if textQuantity == 0 { textQuantity = 1 }
                 lblQty.text = "\(textQuantity)"
                 delegate?.didSelectButtonCollapsible(show: true)
                 updateMinusColor()
