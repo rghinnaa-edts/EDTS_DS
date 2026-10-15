@@ -11,7 +11,7 @@ public class EDTSSkeleton: UIView {
     private let gradientLayer = CAGradientLayer()
     private let shimmerAnimation: CABasicAnimation
     
-    @IBInspectable var cornerRadius: CGFloat = 8.0 {
+    @IBInspectable public var cornerRadius: CGFloat = 8.0 {
         didSet {
             updateCornerRadius()
         }
