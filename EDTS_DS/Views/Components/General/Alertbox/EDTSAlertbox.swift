@@ -41,8 +41,6 @@ public class EDTSAlertbox: UIView {
     @IBOutlet weak var btnActionTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionHeightConstant: NSLayoutConstraint!
     
-    // Constraints toggled when `isBtnAtRightSide` changes.
-    // Kept strong so they are not released while deactivated.
     @IBOutlet var btnActionTopConstraint: NSLayoutConstraint!
     @IBOutlet var btnActionCenterYConstraint: NSLayoutConstraint!
     @IBOutlet var lblTrailingToBtnConstraint: NSLayoutConstraint!
