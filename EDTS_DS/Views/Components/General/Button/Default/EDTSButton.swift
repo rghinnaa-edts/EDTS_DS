@@ -223,7 +223,7 @@ public class EDTSButton: UIButton {
     
     @IBInspectable public var iconSpacing: CGFloat = CGFloat.zero{
         didSet {
-            hStackContainer.spacing = iconSpacing
+            setupButtonSize()
         }
     }
     
@@ -334,6 +334,8 @@ public class EDTSButton: UIButton {
     private let ivTrailingIcon = UIImageView()
     private let lblTitle = UILabel()
     private let hStackContainer = UIStackView()
+    private let vSpacerLeading = UIView()
+    private let vSpacerTrailing = UIView()
     private let defaultValue : CGFloat = -1.0
     
     private var topConstraint: NSLayoutConstraint?
@@ -425,13 +427,25 @@ public class EDTSButton: UIButton {
         
         lblTitle.text = "Button"
         lblTitle.textAlignment = .center
+        
+        [vSpacerLeading, vSpacerTrailing].forEach {
+            $0.backgroundColor = .clear
+            $0.isUserInteractionEnabled = false
+            $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        }
+        
         hStackContainer.axis = .horizontal
         hStackContainer.alignment = .center
         hStackContainer.spacing = 8
+        hStackContainer.addArrangedSubview(vSpacerLeading)
         hStackContainer.addArrangedSubview(ivLeadingIcon)
         hStackContainer.addArrangedSubview(lblTitle)
         hStackContainer.addArrangedSubview(ivTrailingIcon)
+        hStackContainer.addArrangedSubview(vSpacerTrailing)
         addSubview(hStackContainer)
+        
+        vSpacerLeading.widthAnchor.constraint(equalTo: vSpacerTrailing.widthAnchor).isActive = true
         hStackContainer.isUserInteractionEnabled = false
         
         initConstraint()
@@ -457,6 +471,15 @@ public class EDTSButton: UIButton {
             ivTrailingIcon.isHidden = true
             ivTrailingIcon.image = nil
         }
+        
+        updateStackSpacing()
+    }
+    
+    private func updateStackSpacing() {
+        hStackContainer.spacing = tempIconSpacing
+        hStackContainer.setCustomSpacing(0, after: vSpacerLeading)
+        hStackContainer.setCustomSpacing(0, after: ivTrailingIcon)
+        hStackContainer.setCustomSpacing(ivTrailingIcon.isHidden ? 0 : tempIconSpacing, after: lblTitle)
     }
     
     private func setupBackground() {
@@ -684,7 +707,7 @@ public class EDTSButton: UIButton {
         
         setupIconConstraint()
         setupConstraint()
-        hStackContainer.spacing = tempIconSpacing
+        updateStackSpacing()
         layer.cornerRadius = tempCornerRadius
         setupFont()
     }
