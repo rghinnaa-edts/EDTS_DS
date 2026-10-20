@@ -1708,6 +1708,12 @@ public class EDTSProgressTracker: UIView {
                 self.fillView.alpha = 1
                 self.fillView.layer.removeAllAnimations()
                 
+                self.indicatorView.layer.removeAllAnimations()
+                self.indicatorView.isHidden = true
+                self.indicatorView.transform = .identity
+                self.isIndicatorVisible = false
+                self.indicatorTrailingConstraint.constant = -(self.indicatorSize / 2)
+                
                 self.fillWidthConstraint.constant = 0
                 self.fillGradientLayer?.frame = CGRect(
                     x: 0, y: 0, width: 0,
