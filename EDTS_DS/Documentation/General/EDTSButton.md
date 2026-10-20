@@ -113,6 +113,7 @@ button.addTarget(self, action: #selector(handleButtonTap), for: .touchUpInside)
 | `iconDisabledTintColorTrailing` | `UIColor?` | `Type-dependent` | Trailing icon tint color for disabled state |
 | `iconSize` | `CGFloat` | `Size-dependent` | Size for both leading and trailing icons |
 | `iconSpacing` | `CGFloat` | `Size-dependent` | Spacing between icon and title elements |
+| `iconAlignment` | `String?` | `"centered"` | Icon layout: `centered` (icons beside label), `horizontal` (icons at the edges, label centered), `vertical` (icon, label, icon stacked) |
 
 ### Background Properties
 

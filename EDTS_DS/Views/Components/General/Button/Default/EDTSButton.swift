@@ -26,6 +26,12 @@ public enum BtnSize: String {
     case large = "large"
 }
 
+public enum BtnIconAlignment: String {
+    case horizontal = "horizontal"
+    case vertical = "vertical"
+    case centered = "centered"
+}
+
 @IBDesignable
 public class EDTSButton: UIButton {
     // MARK: - Inspectables
@@ -233,6 +239,13 @@ public class EDTSButton: UIButton {
         }
     }
     
+    @IBInspectable public var iconAlignment: String? {
+        didSet {
+            setupIcon()
+            invalidateIntrinsicContentSize()
+        }
+    }
+    
     @IBInspectable public var borderWidth: CGFloat = CGFloat.zero{
         didSet{
             setupButtonType()
@@ -368,6 +381,14 @@ public class EDTSButton: UIButton {
     private var tempPaddingTrailing: CGFloat = -1.0
     private var tempResolvedButtonState: BtnState? = nil
     
+    private var showsIconBalance = false
+    
+    private var resolvedIconAlignment: BtnIconAlignment {
+        guard let alignment = iconAlignment else { return .centered }
+        let normalized = alignment.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        return BtnIconAlignment(rawValue: normalized) ?? .centered
+    }
+    
     private var resolvedButtonSize: BtnSize {
         guard let size = btnSize else { return .large }
         let normalized = size.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -398,6 +419,7 @@ public class EDTSButton: UIButton {
     }
     
     override public func layoutSubviews() {
+        updateIconBalance()
         super.layoutSubviews()
         gradientLayer?.frame = bounds
         gradientLayer?.cornerRadius = tempCornerRadius
@@ -433,6 +455,8 @@ public class EDTSButton: UIButton {
             $0.isUserInteractionEnabled = false
             $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
             $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            $0.setContentHuggingPriority(.defaultLow, for: .vertical)
+            $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         }
         
         hStackContainer.axis = .horizontal
@@ -446,6 +470,7 @@ public class EDTSButton: UIButton {
         addSubview(hStackContainer)
         
         vSpacerLeading.widthAnchor.constraint(equalTo: vSpacerTrailing.widthAnchor).isActive = true
+        vSpacerLeading.heightAnchor.constraint(equalTo: vSpacerTrailing.heightAnchor).isActive = true
         hStackContainer.isUserInteractionEnabled = false
         
         initConstraint()
@@ -455,21 +480,52 @@ public class EDTSButton: UIButton {
         setupPressGesture()
     }
     
+    private func updateIconBalance() {
+        guard resolvedIconAlignment == .horizontal,
+              (iconLeading == nil) != (iconTrailing == nil) else {
+            if showsIconBalance {
+                showsIconBalance = false
+                setupIcon()
+            }
+            return
+        }
+        
+        let extra = tempIconSize + tempIconSpacing
+        let fitWidth = hStackContainer.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width
+        let naturalWidth = fitWidth - (showsIconBalance ? extra : 0) + tempPaddingLeading + tempPaddingTrailing
+        let shouldShow = bounds.width >= naturalWidth + extra
+        
+        if shouldShow != showsIconBalance {
+            showsIconBalance = shouldShow
+            setupIcon()
+        }
+    }
+    
     private func setupIcon() {
+        let alignment = resolvedIconAlignment
+        
+        hStackContainer.axis = alignment == .vertical ? .vertical : .horizontal
+        
+        let hideSpacers = alignment == .horizontal
+        vSpacerLeading.isHidden = hideSpacers
+        vSpacerTrailing.isHidden = hideSpacers
+        
+        let balance = alignment == .horizontal && showsIconBalance
+        
         if let icon = iconLeading {
             ivLeadingIcon.isHidden = false
             ivLeadingIcon.image = icon.withRenderingMode(.alwaysTemplate)
         } else {
-            ivLeadingIcon.isHidden = true
             ivLeadingIcon.image = nil
+            ivLeadingIcon.isHidden = !(balance && iconTrailing != nil)
         }
         
         if let icon = iconTrailing {
             ivTrailingIcon.isHidden = false
             ivTrailingIcon.image = icon.withRenderingMode(.alwaysTemplate)
         } else {
-            ivTrailingIcon.isHidden = true
             ivTrailingIcon.image = nil
+            ivTrailingIcon.isHidden = !(balance && iconLeading != nil)
         }
         
         updateStackSpacing()
