@@ -198,12 +198,14 @@ public class EDTSSignifier: UIView {
     }
     
     // MARK: - Public Function
+    
     public func showSignifier(to view: UIView) {
         self.targetView = view
 
         translatesAutoresizingMaskIntoConstraints = false
+        isUserInteractionEnabled = false
+        layer.zPosition = 1000
         view.addSubview(self)
-        view.bringSubviewToFront(self)
 
         let top = topAnchor.constraint(equalTo: view.topAnchor, constant: -topOffset)
         let trailing = trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: trailingOffset)

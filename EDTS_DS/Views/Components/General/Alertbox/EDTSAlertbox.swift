@@ -271,8 +271,25 @@ public class EDTSAlertbox: UIView {
     }
     
     // MARK: - Intrinsic Size
+    
+    private var lastLayoutWidth: CGFloat = 0
+    
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if abs(bounds.width - lastLayoutWidth) > 0.5 {
+            lastLayoutWidth = bounds.width
+            invalidateIntrinsicContentSize()
+        }
+    }
  
     override public var intrinsicContentSize: CGSize {
+        guard containerView != nil else { return super.intrinsicContentSize }
+        
+        if bounds.width > 0 {
+            return CGSize(width: bounds.width, height: fittingHeightAlertbox(for: bounds.width))
+        }
+        
         containerView.setNeedsLayout()
         containerView.layoutIfNeeded()
         return containerView.systemLayoutSizeFitting(
@@ -280,6 +297,41 @@ public class EDTSAlertbox: UIView {
             withHorizontalFittingPriority: .fittingSizeLevel,
             verticalFittingPriority: .fittingSizeLevel
         )
+    }
+    
+    private var rightLayoutBottomPadding: CGFloat {
+        paddingBottom != -1.0 ? padBottom : padTop
+    }
+    
+    public func fittingHeightAlertbox(for width: CGFloat) -> CGFloat {
+        guard containerView != nil else { return 0 }
+        
+        let fitted = containerView.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
+        
+        guard isBtnAtRightSide, !isBtnHide else { return ceil(fitted) }
+        
+        let iconWidth = ivIconWidthConstraint?.constant ?? iconSize
+        let iconHeight = ivIconHeightConstraint?.constant ?? iconSize
+        let iconGap = ivIconLeadingConstraint != nil ? 8 : CGFloat(8)
+        let buttonGap = lblTrailingToBtnConstraint?.constant ?? 12
+        let button = btnAction.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        
+        let labelWidth = max(width - padLeading - iconWidth - iconGap - buttonGap - button.width - padTrailing, 0)
+        let textHeight = lblTitle.sizeThatFits(
+            CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
+        ).height
+        
+        let content = if isBtnAtRightSide {
+            max(textHeight, iconHeight)
+        } else {
+            max(textHeight, iconHeight, button.height)
+        }
+        
+        return ceil(padTop + content + rightLayoutBottomPadding)
     }
  
     // MARK: - Init
@@ -513,21 +565,29 @@ public class EDTSAlertbox: UIView {
         let isRightLayout = isBtnAtRightSide && !isBtnHide
         
         if isRightLayout {
+            btnActionTopConstraint?.constant = 0
+            btnActionBottomConstraint?.constant = 0
+            
             ivCloseLeadingConstraint?.isActive = false
             btnActionLeadingConstraint?.isActive = false
             btnActionTopConstraint?.isActive = false
             btnActionBottomConstraint?.isActive = false
             btnActionHeightConstant?.isActive = false
             ivIconTopConstraint?.isActive = false
-            lblTopConstraint?.isActive = false
+            lblCenterYConstraint?.isActive = false
+            
+            lblTopConstraint?.constant = padTop
+            lblTopConstraint?.isActive = true
+            lblBottomConstraint?.constant = rightLayoutBottomPadding
+            lblBottomConstraint?.isActive = true
             
             lblTrailingToBtnConstraint?.isActive = true
             btnActionCenterYConstraint?.isActive = true
             ivIconCenterYConstraint?.isActive = true
-            lblCenterYConstraint?.isActive = true
-            lblBottomConstraint?.constant = padBottom
-            lblBottomConstraint?.isActive = true
             btnActionTrailingConstraint?.constant = padTrailing
+            
+            lblTitle.setContentCompressionResistancePriority(.required, for: .vertical)
+            lblTitle.setContentHuggingPriority(.defaultLow, for: .vertical)
             
             ivClose.isHidden = true
             btnAction.setContentHuggingPriority(.required, for: .horizontal)
@@ -549,6 +609,9 @@ public class EDTSAlertbox: UIView {
             btnActionHeightConstant?.isActive = true
             lblBottomConstraint?.constant = 8
             lblBottomConstraint?.isActive = isBtnHide
+            
+            lblTitle.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+            lblTitle.setContentHuggingPriority(UILayoutPriority(999), for: .vertical)
             
             ivClose.isHidden = false
             btnAction.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -706,4 +769,3 @@ public protocol EDTSAlertboxDelegate: AnyObject {
     func didTapCloseAlertbox(_ alertbox: EDTSAlertbox)
     func didTapButtonAlertbox(_ alertbox: EDTSAlertbox)
 }
-
