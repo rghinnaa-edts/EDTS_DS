@@ -176,18 +176,18 @@ public class EDTSButtonStepper: UIView {
     private var expandedWidth: CGFloat = 0
     private var widthConstraint: NSLayoutConstraint?
     
-    private var btnTextQtyColor: UIColor? = UIColor.white
-    private var btnBackground: UIColor? = UIColor.white
+    private var btnTextQtyColor: UIColor? = EDTSColor.white
+    private var btnBackground: UIColor? = EDTSColor.white
     private var btnBorderWidth: CGFloat = 0.0
     private var btnBorderSingleWidth: CGFloat = 0.0
-    private var btnBorderColor: UIColor? = UIColor.white
-    private var minusBgColor: UIColor? = UIColor.white
-    private var minusColor: UIColor? = UIColor.white
-    private var plusBgColor: UIColor? = UIColor.white
-    private var plusColor: UIColor? = UIColor.white
-    private var singleBgColor: UIColor? = UIColor.white
-    private var iconColor: UIColor? = UIColor.white
-    private var numberColor: UIColor? = UIColor.white
+    private var btnBorderColor: UIColor? = EDTSColor.white
+    private var minusBgColor: UIColor? = EDTSColor.white
+    private var minusColor: UIColor? = EDTSColor.white
+    private var plusBgColor: UIColor? = EDTSColor.white
+    private var plusColor: UIColor? = EDTSColor.white
+    private var singleBgColor: UIColor? = EDTSColor.white
+    private var iconColor: UIColor? = EDTSColor.white
+    private var numberColor: UIColor? = EDTSColor.white
     
     private var containerBackgroundWidthConstraint: NSLayoutConstraint?
     private var vStepperWidthConstraint: NSLayoutConstraint?
@@ -257,6 +257,12 @@ public class EDTSButtonStepper: UIView {
         btnMinus.setTitle("", for: .normal)
         btnPlus.setTitle("", for: .normal)
         
+        btnMinus.setTitle("", for: .normal)
+        btnPlus.setTitle("", for: .normal)
+
+        setButtonImage("ic_minus", on: btnMinus)
+        setButtonImage("ic_plus", on: btnPlus)
+        
         btnSingle.layer.cornerRadius = (btnSingle.frame.height - 32) / 2
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(btnShowTapped))
@@ -264,6 +270,27 @@ public class EDTSButtonStepper: UIView {
         btnSingle.isUserInteractionEnabled = true
     }
     
+    private func setButtonImage(_ name: String, on button: UIButton) {
+        let image = UIImage(named: name, in: .edtsDS, compatibleWith: nil)?
+            .withRenderingMode(.alwaysTemplate)
+
+        if #available(iOS 15.0, *), var config = button.configuration {
+            config.image = image
+            button.configuration = config
+        } else {
+            button.setImage(image, for: .normal)
+        }
+    }
+    
+    private func setForeground(_ color: UIColor?, on button: UIButton) {
+        button.tintColor = EDTSColor.blue60
+
+        if #available(iOS 15.0, *), var config = button.configuration {
+            config.baseForegroundColor = color
+            button.configuration = config
+        }
+    }
+
     private func setupBackgroundRadius() {
         containerBackground.layer.cornerRadius = containerView.frame.height / 2
         
@@ -370,7 +397,7 @@ public class EDTSButtonStepper: UIView {
         } else {
             minusColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.grey60
         }
-        btnMinus.tintColor = minusColor
+        setForeground(minusColor, on: btnMinus)
     }
     
     private func updatePlusBackgroundColor() {
@@ -382,7 +409,7 @@ public class EDTSButtonStepper: UIView {
             plusBgColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.blue50
         }
         btnPlus.backgroundColor = plusBgColor
-        btnPlus.isEnabled = !(isDisabled || isPlusDisabled)
+        btnPlus.isUserInteractionEnabled = !(isDisabled || isPlusDisabled)
     }
     
     private func updatePlusColor() {
@@ -393,7 +420,7 @@ public class EDTSButtonStepper: UIView {
         } else {
             plusColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.blue50 : EDTSColor.white
         }
-        btnPlus.tintColor = plusColor
+        setForeground(plusColor, on: btnPlus)
     }
     
     private func updateIconBackgroundColor() {
