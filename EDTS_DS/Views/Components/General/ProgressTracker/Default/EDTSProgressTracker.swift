@@ -811,11 +811,11 @@ public class EDTSProgressTracker: UIView {
         let displayLaps = lapCount + (
             (value > 0 && value.truncatingRemainder(dividingBy: maxValue) == 0) ? 1 : 0
         )
-        let isComplete = displayLaps >= 1
+        let isComplete = displayLaps > 0
         
         fullTrackView.isHidden = !isComplete
         
-        let shouldShowBadge = isComplete && isHasBadge && limitValue > maxValue
+        let shouldShowBadge = isHasBadge && isComplete
         badgeView.isHidden = !shouldShowBadge
         lblBadge.isHidden = !shouldShowBadge
         
@@ -1036,7 +1036,7 @@ public class EDTSProgressTracker: UIView {
         let trackWidth = trackView.frame.width
         guard trackWidth > 0 else { return }
         
-        let minWidth: CGFloat = isHasIndicator ? indicatorSize + 1 : 0
+        let minWidth: CGFloat = isHasIndicator ? (indicatorSize/2) + 1 : 0
         let fillLeadingOffset = leadingFillViewConstraint?.constant ?? 0
         let fillTrailingPad = trackPaddingTrailing >= 0 ? trackPaddingTrailing : 0
         let maxWidth: CGFloat = trackWidth - fillLeadingOffset - fillTrailingPad
@@ -1061,7 +1061,8 @@ public class EDTSProgressTracker: UIView {
         
         let cappedValue = min(targetValue, limitValue)
         
-        let jumpRatio = (cappedValue - lastProcessedValue) / maxValue
+        let previousValue = lastProcessedValue
+        let jumpRatio = (cappedValue - previousValue) / maxValue
         let isSpam = compressed || jumpRatio > 2
         lastProcessedValue = cappedValue
         
@@ -1075,7 +1076,7 @@ public class EDTSProgressTracker: UIView {
         let trackWidth = trackView.frame.width
         guard trackWidth > 0 else { return }
         
-        let minWidth: CGFloat = isHasIndicator ? indicatorSize + 1 : 0
+        let minWidth: CGFloat = isHasIndicator ? (indicatorSize/2) + 1 : 0
         let fillLeadingOffset = leadingFillViewConstraint?.constant ?? 0
         let fillTrailingPad = trackPaddingTrailing >= 0 ? trackPaddingTrailing : 0
         let maxWidth: CGFloat = trackWidth - fillLeadingOffset - fillTrailingPad
@@ -1087,6 +1088,19 @@ public class EDTSProgressTracker: UIView {
         
         lapCount = newLapCount
         wasAtMaxValue = isAtMaxValue
+        
+        if cappedValue < previousValue {
+            enqueueDecrease(
+                from: previousValue,
+                to: cappedValue,
+                trackWidth: maxWidth,
+                minWidth: minWidth,
+                isSpam: compressed || abs(jumpRatio) > 2
+            )
+            if !isAnimating { dequeueAndRun() }
+            layoutIfNeeded()
+            return
+        }
         
         if isSpam && lapsToAnimate > 0 {
             enqueue {
@@ -1179,7 +1193,7 @@ public class EDTSProgressTracker: UIView {
                 self.setupBadgeSize()
             }
             
-            let shouldAnimateBadge = self.isHasBadge && self.limitValue > self.maxValue
+            let shouldAnimateBadge = self.isHasBadge
             
             if shouldAnimateBadge {
                 if isFirstLap {
@@ -1219,6 +1233,98 @@ public class EDTSProgressTracker: UIView {
             setupBadgeSize()
         }
         setupBadge()
+    }
+    
+    // MARK: - Decrease Animation
+    private func lapState(for v: CGFloat) -> (lap: Int, ratio: CGFloat) {
+        guard v > 0, maxValue > 0 else { return (1, 0) }
+        let full = Int(v / maxValue)
+        let rem = v.truncatingRemainder(dividingBy: maxValue)
+        return rem == 0 ? (full, 1) : (full + 1, rem / maxValue)
+    }
+
+    private func enqueueDecrease(from oldValue: CGFloat, to newValue: CGFloat, trackWidth: CGFloat, minWidth: CGFloat, isSpam: Bool) {
+        let old = lapState(for: oldValue)
+        let new = lapState(for: newValue)
+        let finalDisplayLaps = new.ratio == 1 ? new.lap : new.lap - 1
+        
+        if new.lap < old.lap {
+            let handoverLaps: [Int] = isSpam
+                ? [new.lap]
+                : Array(stride(from: old.lap - 1, through: new.lap, by: -1))
+            
+            for lap in handoverLaps {
+                enqueue {
+                    self.animateFillWidthToTargetValue(to: minWidth, showIndicatorAfter: false) {
+                        self.runLapHandoverAnimation(
+                            trackWidth: trackWidth,
+                            displayLaps: lap,
+                            completion: self.dequeueAndRun
+                        )
+                    }
+                }
+            }
+        }
+
+        if new.ratio < 1 {
+            let fillWidth = minWidth + (trackWidth - minWidth) * new.ratio
+            let targetWidth = min(max(fillWidth, minWidth), trackWidth)
+            enqueue {
+                self.runPartialLapAnimation(
+                    targetWidth: targetWidth,
+                    displayLaps: finalDisplayLaps,
+                    completion: self.dequeueAndRun
+                )
+            }
+        }
+    }
+
+    private func runLapHandoverAnimation(trackWidth: CGFloat, displayLaps: Int, completion: @escaping () -> Void) {
+        UIView.performWithoutAnimation {
+            self.fullTrackView.isHidden = false
+            self.fullTrackView.alpha = 1
+            self.fillWidthConstraint.constant = trackWidth
+            self.fillGradientLayer?.frame = CGRect(x: 0, y: 0, width: trackWidth, height: self.fillView.frame.height)
+            self.fillView.isHidden = false
+            self.fillView.alpha = 0
+            self.layoutIfNeeded()
+        }
+        
+        if badgeLabelAttributed == nil && badgeLabel == nil {
+            lblBadge.text = "x\(displayLaps)"
+            setupBadgeSize()
+        }
+        
+        UIView.animate(
+            withDuration: fadeAnimationDuration,
+            delay: 0,
+            options: [.curveEaseInOut],
+            animations: {
+                self.fillView.alpha = 1
+            },
+            completion: { _ in
+                self.fillGradientLayer?.frame = self.fillView.bounds
+                self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
+                
+                self.badgeView.isHidden = !self.isHasBadge
+                self.lblBadge.isHidden = !self.isHasBadge
+                if self.isHasBadge {
+                    self.animatePulseBadge()
+                }
+                
+                if self.isHasIndicator {
+                    let trailingPad = self.trackPaddingTrailing >= 0 ? self.trackPaddingTrailing : 0
+                    self.indicatorTrailingConstraint.constant = -trailingPad
+                    self.isIndicatorVisible = true
+                    UIView.performWithoutAnimation { self.layoutIfNeeded() }
+                    self.animateScaleUpIndicator()
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    completion()
+                }
+            }
+        )
     }
     
     private func intermittentMaxWidth() -> CGFloat {
@@ -1364,6 +1470,7 @@ public class EDTSProgressTracker: UIView {
             indicatorView.isHidden = true
             indicatorView.transform = .identity
             isIndicatorVisible = false
+            indicatorTrailingConstraint.constant = -(indicatorSize / 2)
         }
         
         fillWidthConstraint?.constant = targetWidth
@@ -1394,7 +1501,7 @@ public class EDTSProgressTracker: UIView {
                         self.animateScaleUpBadge()
                     }
                     
-                    if self.isHasIndicator && !self.isHasBadge {
+                    if self.isHasIndicator {
                         let trailingPad = self.trackPaddingTrailing >= 0 ? self.trackPaddingTrailing : 0
                         self.indicatorTrailingConstraint.constant = -trailingPad
                         self.isIndicatorVisible = true
@@ -1405,14 +1512,17 @@ public class EDTSProgressTracker: UIView {
                         
                         self.animateScaleUpIndicator()
                     }
+                } else if self.isHasIndicator {
+                    self.animateScaleUpIndicator()
                 }
             }
         )
     }
     
-    private func animateFillWidthToTargetValue(to targetWidth: CGFloat, completion: (() -> Void)? = nil) {
+    private func animateFillWidthToTargetValue(to targetWidth: CGFloat, showIndicatorAfter: Bool = true, completion: (() -> Void)? = nil) {
         if isHasIndicator && isIndicatorVisible {
             animateScaleDownIndicator {
+                self.indicatorTrailingConstraint.constant = -(self.indicatorSize / 2)
                 self.fillWidthConstraint?.constant = targetWidth
                 self.invalidateIntrinsicContentSize()
                 
@@ -1435,7 +1545,7 @@ public class EDTSProgressTracker: UIView {
                         self.fillGradientLayer?.frame = self.fillView.bounds
                         self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
                         guard self.indicatorAnimationID == animID else { return }
-                        if self.isHasIndicator && !self.fillView.isHidden {
+                        if self.isHasIndicator && !self.fillView.isHidden && showIndicatorAfter {
                             self.animateScaleUpIndicator()
                         }
                         completion?()
@@ -1447,6 +1557,7 @@ public class EDTSProgressTracker: UIView {
             indicatorView.isHidden = true
             indicatorView.transform = .identity
             isIndicatorVisible = false
+            indicatorTrailingConstraint.constant = -(indicatorSize / 2)
             
             fillWidthConstraint?.constant = targetWidth
             invalidateIntrinsicContentSize()
@@ -1472,7 +1583,7 @@ public class EDTSProgressTracker: UIView {
                     self.fillGradientLayer?.frame = self.fillView.bounds
                     self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
                     guard self.indicatorAnimationID == animID else { return }
-                    if self.isHasIndicator && !self.fillView.isHidden {
+                    if self.isHasIndicator && !self.fillView.isHidden && showIndicatorAfter {
                         self.animateScaleUpIndicator()
                     }
                     completion?()
@@ -1482,7 +1593,7 @@ public class EDTSProgressTracker: UIView {
     }
     
     private func animateFillWidthToMaxValue(trackWidth: CGFloat, completion: (() -> Void)? = nil) {
-        let shouldShowIndicatorAtMax = isHasIndicator && !isHasBadge
+        let shouldShowIndicatorAtMax = isHasIndicator
         
         if isHasIndicator && isIndicatorVisible {
             animateScaleDownIndicator {
@@ -1557,6 +1668,17 @@ public class EDTSProgressTracker: UIView {
                     self.fillGradientLayer?.cornerRadius = self.fullTrackView.layer.cornerRadius
                     
                     if finished {
+                        if shouldShowIndicatorAtMax {
+                            let trailingPad = self.trackPaddingTrailing >= 0 ? self.trackPaddingTrailing : 0
+                            self.indicatorTrailingConstraint.constant = -trailingPad
+                            self.isIndicatorVisible = true
+                            
+                            UIView.performWithoutAnimation {
+                                self.layoutIfNeeded()
+                            }
+                            
+                            self.animateScaleUpIndicator()
+                        }
                         completion?()
                     }
                 }
@@ -1585,6 +1707,12 @@ public class EDTSProgressTracker: UIView {
                 self.fillView.isHidden = true
                 self.fillView.alpha = 1
                 self.fillView.layer.removeAllAnimations()
+                
+                self.indicatorView.layer.removeAllAnimations()
+                self.indicatorView.isHidden = true
+                self.indicatorView.transform = .identity
+                self.isIndicatorVisible = false
+                self.indicatorTrailingConstraint.constant = -(self.indicatorSize / 2)
                 
                 self.fillWidthConstraint.constant = 0
                 self.fillGradientLayer?.frame = CGRect(

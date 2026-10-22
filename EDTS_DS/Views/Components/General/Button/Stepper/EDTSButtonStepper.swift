@@ -45,7 +45,16 @@ public class EDTSButtonStepper: UIView {
     
     @IBInspectable public var textQuantity: Int = 0 {
         didSet {
-            lblQty.text = "\(textQuantity)"
+            var direction: RollDirection?
+            if shouldAnimateQuantity, textQuantity != oldValue {
+                direction = textQuantity > oldValue ? .up : .down
+            }
+            shouldAnimateQuantity = false
+
+            roll(lblQty, to: "\(textQuantity)", direction: direction)
+            roll(lblNumber, to: "\(textQuantity)", direction: direction)
+
+            updateMinusColor()
         }
     }
     
@@ -140,32 +149,52 @@ public class EDTSButtonStepper: UIView {
         }
     }
   
+    @IBInspectable public var isPlusDisabled: Bool = false {
+        didSet {
+            updatePlusBackgroundColor()
+            updatePlusColor()
+        }
+    }
+  
     public weak var delegate: EDTSButtonStepperDelegate?
-        
+     
+    public var isStepperExpanded: Bool { isExpanded }
+    public var onExpansionChanged: ((Bool) -> Void)?
+    
     private var quantity: Int = 0
     private var qtyMultipe: Int = 1
     private var defaultFloatValue: CGFloat = -1.0
-    private var isExpanded: Bool = false
+    private var isExpanded: Bool = false {
+        didSet {
+            guard oldValue != isExpanded else { return }
+            onExpansionChanged?(isExpanded)
+        }
+    }
+    
     private var isAnimating: Bool = false
     private var collapsedWidth: CGFloat = 0
     private var expandedWidth: CGFloat = 0
     private var widthConstraint: NSLayoutConstraint?
     
-    private var btnTextQtyColor: UIColor? = UIColor.white
-    private var btnBackground: UIColor? = UIColor.white
+    private var btnTextQtyColor: UIColor? = EDTSColor.white
+    private var btnBackground: UIColor? = EDTSColor.white
     private var btnBorderWidth: CGFloat = 0.0
     private var btnBorderSingleWidth: CGFloat = 0.0
-    private var btnBorderColor: UIColor? = UIColor.white
-    private var minusBgColor: UIColor? = UIColor.white
-    private var minusColor: UIColor? = UIColor.white
-    private var plusBgColor: UIColor? = UIColor.white
-    private var plusColor: UIColor? = UIColor.white
-    private var singleBgColor: UIColor? = UIColor.white
-    private var iconColor: UIColor? = UIColor.white
-    private var numberColor: UIColor? = UIColor.white
+    private var btnBorderColor: UIColor? = EDTSColor.white
+    private var minusBgColor: UIColor? = EDTSColor.white
+    private var minusColor: UIColor? = EDTSColor.white
+    private var plusBgColor: UIColor? = EDTSColor.white
+    private var plusColor: UIColor? = EDTSColor.white
+    private var singleBgColor: UIColor? = EDTSColor.white
+    private var iconColor: UIColor? = EDTSColor.white
+    private var numberColor: UIColor? = EDTSColor.white
     
     private var containerBackgroundWidthConstraint: NSLayoutConstraint?
     private var vStepperWidthConstraint: NSLayoutConstraint?
+
+    private enum RollDirection { case up, down }
+    private var shouldAnimateQuantity = false
+    private let rollClipTag = 9917
     
     //MARK: Initializers
     
@@ -220,10 +249,19 @@ public class EDTSButtonStepper: UIView {
     }
     
     private func setupButton() {
+        lblQty.layer.masksToBounds = true
+        lblNumber.layer.masksToBounds = true
+        
         lblQty.text = "\(quantity)"
     
         btnMinus.setTitle("", for: .normal)
         btnPlus.setTitle("", for: .normal)
+        
+        btnMinus.setTitle("", for: .normal)
+        btnPlus.setTitle("", for: .normal)
+
+        setButtonImage("ic_minus", on: btnMinus)
+        setButtonImage("ic_plus", on: btnPlus)
         
         btnSingle.layer.cornerRadius = (btnSingle.frame.height - 32) / 2
         
@@ -232,6 +270,27 @@ public class EDTSButtonStepper: UIView {
         btnSingle.isUserInteractionEnabled = true
     }
     
+    private func setButtonImage(_ name: String, on button: UIButton) {
+        let image = UIImage(named: name, in: .edtsDS, compatibleWith: nil)?
+            .withRenderingMode(.alwaysTemplate)
+
+        if #available(iOS 15.0, *), var config = button.configuration {
+            config.image = image
+            button.configuration = config
+        } else {
+            button.setImage(image, for: .normal)
+        }
+    }
+    
+    private func setForeground(_ color: UIColor?, on button: UIButton) {
+        button.tintColor = EDTSColor.blue60
+
+        if #available(iOS 15.0, *), var config = button.configuration {
+            config.baseForegroundColor = color
+            button.configuration = config
+        }
+    }
+
     private func setupBackgroundRadius() {
         containerBackground.layer.cornerRadius = containerView.frame.height / 2
         
@@ -338,11 +397,11 @@ public class EDTSButtonStepper: UIView {
         } else {
             minusColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.grey60
         }
-        btnMinus.tintColor = minusColor
+        setForeground(minusColor, on: btnMinus)
     }
     
     private func updatePlusBackgroundColor() {
-        if isDisabled {
+        if isDisabled || isPlusDisabled {
             plusBgColor = EDTSColor.disabled
         } else if let custom = btnPlusBackgroundColor {
             plusBgColor = custom
@@ -350,17 +409,18 @@ public class EDTSButtonStepper: UIView {
             plusBgColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.white : EDTSColor.blue50
         }
         btnPlus.backgroundColor = plusBgColor
+        btnPlus.isUserInteractionEnabled = !(isDisabled || isPlusDisabled)
     }
     
     private func updatePlusColor() {
-        if isDisabled {
+        if isDisabled || isPlusDisabled {
             plusColor = EDTSColor.white
         } else if let custom = btnPlusColor {
             plusColor = custom
         } else {
             plusColor = stepperVariant == StepperVariant.blue.rawValue ? EDTSColor.blue50 : EDTSColor.white
         }
-        btnPlus.tintColor = plusColor
+        setForeground(plusColor, on: btnPlus)
     }
     
     private func updateIconBackgroundColor() {
@@ -483,13 +543,70 @@ public class EDTSButtonStepper: UIView {
         }
     }
     
+    private func roll(_ label: UILabel, to text: String, direction: RollDirection?) {
+        label.superview?.viewWithTag(rollClipTag)?.removeFromSuperview()
+        label.alpha = 1
+
+        guard let direction,
+              let host = label.superview,
+              label.window != nil,
+              !label.isHidden,
+              label.bounds.height > 0,
+              text != label.text,
+              !UIAccessibility.isReduceMotionEnabled
+        else {
+            label.text = text
+            return
+        }
+
+        let oldSnapshot = label.snapshotView(afterScreenUpdates: false)
+        label.text = text
+        let newSnapshot = label.snapshotView(afterScreenUpdates: true)
+        guard let oldSnapshot, let newSnapshot else { return }
+
+        let slotHeight = min(label.font.lineHeight.rounded(.up) + 2, label.bounds.height)
+        let inset = (label.bounds.height - slotHeight) / 2
+
+        let clip = UIView(frame: CGRect(x: label.frame.minX,
+                                        y: label.frame.minY + inset,
+                                        width: label.frame.width,
+                                        height: slotHeight))
+        clip.tag = rollClipTag
+        clip.clipsToBounds = true
+        clip.isUserInteractionEnabled = false
+        host.addSubview(clip)
+
+        for snapshot in [oldSnapshot, newSnapshot] {
+            snapshot.frame = CGRect(x: 0, y: -inset, width: label.bounds.width, height: label.bounds.height)
+            clip.addSubview(snapshot)
+        }
+
+        let sign: CGFloat = direction == .up ? 1 : -1
+        newSnapshot.transform = CGAffineTransform(translationX: 0, y: sign * slotHeight)
+        label.alpha = 0
+
+        UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseOut], animations: {
+            oldSnapshot.transform = CGAffineTransform(translationX: 0, y: -sign * slotHeight)
+            newSnapshot.transform = .identity
+        }, completion: { _ in
+            guard clip.superview != nil else { return }
+            clip.removeFromSuperview()
+            label.alpha = 1
+        })
+    }
+    
     //MARK: - Action
+    public func collapse() {
+        guard stepperType == StepperType.collapsible.rawValue, isExpanded else { return }
+        hideStepperAnimation()
+        delegate?.didSelectButtonCollapsible(show: false)
+    }
     
     @objc private func btnShowTapped() {
         if stepperType == StepperType.collapsible.rawValue {
             if !isExpanded {
                 showStepperAnimation()
-                textQuantity = 1
+                if textQuantity == 0 { textQuantity = 1 }
                 lblQty.text = "\(textQuantity)"
                 delegate?.didSelectButtonCollapsible(show: true)
                 updateMinusColor()
@@ -503,6 +620,7 @@ public class EDTSButtonStepper: UIView {
     @IBAction func btnMinus(_ sender: Any) {
         let qty = Int(lblQty.text ?? "") ?? 0
         if qty > 0 {
+            shouldAnimateQuantity = true
             textQuantity = qty - qtyMultipe
             lblQty.text = "\(textQuantity)"
             
@@ -519,7 +637,10 @@ public class EDTSButtonStepper: UIView {
     }
     
     @IBAction func btnPlus(_ sender: Any) {
+        guard !isDisabled, !isPlusDisabled else { return }
+        
         let qty = Int(lblQty.text ?? "") ?? 0
+        shouldAnimateQuantity = true
         textQuantity = qty + qtyMultipe
         lblQty.text = "\(textQuantity)"
         updateMinusColor()

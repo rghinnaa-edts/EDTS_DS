@@ -16,9 +16,6 @@ public class StraggeredCollectionLayout: UICollectionViewLayout {
     // MARK: - Properties
     public weak var delegate: StraggeredCollectionLayoutDelegate?
     
-    private var numberOfColumns: Int = 2
-    private var cellPadding: CGFloat = 6
-    
     private var cache: [UICollectionViewLayoutAttributes] = []
     private var contentHeight: CGFloat = 0
     
@@ -32,10 +29,20 @@ public class StraggeredCollectionLayout: UICollectionViewLayout {
         return CGSize(width: contentWidth, height: contentHeight)
     }
     
+    private var numberOfColumns: Int = 2
+    private var cellPadding: CGFloat = 6
+    private var horizontalSpacing: CGFloat?
+    private var verticalSpacing: CGFloat?
+    
     // MARK: - Configuration
-    public func configure(numberOfColumns: Int = 2, cellPadding: CGFloat = 6) {
+    public func configure(numberOfColumns: Int = 2,
+                          cellPadding: CGFloat = 6,
+                          horizontalSpacing: CGFloat? = nil,
+                          verticalSpacing: CGFloat? = nil) {
         self.numberOfColumns = numberOfColumns
         self.cellPadding = cellPadding
+        self.horizontalSpacing = horizontalSpacing
+        self.verticalSpacing = verticalSpacing
     }
     
     // MARK: - Layout Calculation
@@ -45,45 +52,41 @@ public class StraggeredCollectionLayout: UICollectionViewLayout {
         cache.removeAll()
         contentHeight = 0
         
-        let columnWidth = contentWidth / CGFloat(numberOfColumns)
+        let inset = cellPadding
+        let hGap = horizontalSpacing ?? cellPadding * 2
+        let vGap = verticalSpacing ?? cellPadding * 2
+        let columnCount = CGFloat(numberOfColumns)
+        
+        let columnWidth = (contentWidth - inset * 2 - hGap * (columnCount - 1)) / columnCount
         
         var xOffset: [CGFloat] = []
         for column in 0..<numberOfColumns {
-            xOffset.append(CGFloat(column) * columnWidth)
+            xOffset.append(inset + CGFloat(column) * (columnWidth + hGap))
         }
         
-        var yOffset: [CGFloat] = .init(repeating: 0, count: numberOfColumns)
-        
+        var yOffset: [CGFloat] = .init(repeating: inset, count: numberOfColumns)
         var column = 0
         
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
             
-            let itemWidth = columnWidth - (cellPadding * 2)
-            
             let itemHeight = delegate?.collectionView(
                 collectionView,
                 heightForItemAt: indexPath,
-                width: itemWidth
+                width: columnWidth
             ) ?? 300
             
-            let height = cellPadding + itemHeight + cellPadding
-            
-            let frame = CGRect(
-                x: xOffset[column],
-                y: yOffset[column],
-                width: columnWidth,
-                height: height
-            )
-            
-            let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+            let frame = CGRect(x: xOffset[column],
+                               y: yOffset[column],
+                               width: columnWidth,
+                               height: itemHeight)
             
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-            attributes.frame = insetFrame
+            attributes.frame = frame
             cache.append(attributes)
             
-            contentHeight = max(contentHeight, frame.maxY)
-            yOffset[column] = yOffset[column] + height
+            contentHeight = max(contentHeight, frame.maxY + inset)
+            yOffset[column] = frame.maxY + vGap
             
             column = yOffset.firstIndex(of: yOffset.min() ?? 0) ?? 0
         }

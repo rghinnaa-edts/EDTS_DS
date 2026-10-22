@@ -148,7 +148,7 @@ open class KlikIDMColor: NSObject {
     //MARK: Orange
     
     public class var orange10: UIColor {
-        return UIColor(red: 238.0/255.0, green: 199.0/255.0, blue: 135.0/255.0, alpha: 1.0)
+        return UIColor(red: 255.0/255.0, green: 240.0/255.0, blue: 230.0/255.0, alpha: 1.0)
     }
     
     public class var orange20: UIColor {

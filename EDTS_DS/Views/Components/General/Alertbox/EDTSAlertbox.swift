@@ -41,8 +41,15 @@ public class EDTSAlertbox: UIView {
     @IBOutlet weak var btnActionTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnActionHeightConstant: NSLayoutConstraint!
     
-    // MARK: - Inspectables
+    @IBOutlet var btnActionTopConstraint: NSLayoutConstraint!
+    @IBOutlet var btnActionCenterYConstraint: NSLayoutConstraint!
+    @IBOutlet var lblTrailingToBtnConstraint: NSLayoutConstraint!
+    @IBOutlet var ivCloseLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var ivIconCenterYConstraint: NSLayoutConstraint!
+    @IBOutlet var lblCenterYConstraint: NSLayoutConstraint!
     
+    // MARK: - Inspectables
+        
     @IBInspectable public var state: String = EDTSAlertboxState.default.rawValue {
         didSet {
             setupState()
@@ -100,6 +107,7 @@ public class EDTSAlertbox: UIView {
             
             ivIcon.image = ivIcon.image?.withRenderingMode(.alwaysTemplate)
             ivIcon.tintColor = iconTintColor
+            setupButtonStyle()
         }
     }
     
@@ -124,6 +132,7 @@ public class EDTSAlertbox: UIView {
     @IBInspectable public var btnLabel: String? {
         didSet {
             btnAction.label = btnLabel
+            setupButtonStyle()
         }
     }
     
@@ -161,21 +170,21 @@ public class EDTSAlertbox: UIView {
             setupPadding()
         }
     }
-
+ 
     @IBInspectable public var paddingBottom: CGFloat = -1.0 {
         didSet {
             padBottom = paddingBottom
             setupButtonVisibility()
         }
     }
-
+ 
     @IBInspectable public var paddingLeading: CGFloat = -1.0 {
         didSet {
             padLeading = paddingLeading
             setupPadding()
         }
     }
-
+ 
     @IBInspectable public var paddingTrailing: CGFloat = -1.0 {
         didSet {
             padTrailing = paddingTrailing
@@ -219,6 +228,12 @@ public class EDTSAlertbox: UIView {
         }
     }
     
+    @IBInspectable public var isBtnAtRightSide: Bool = false {
+        didSet {
+            setupButtonVisibility()
+        }
+    }
+    
     @IBInspectable public var isRibbonStyle: Bool = false {
         didSet {
             setupRibbonStyle()
@@ -246,6 +261,7 @@ public class EDTSAlertbox: UIView {
     private var padBottom: CGFloat = 0.0
     private var padLeading: CGFloat = 0.0
     private var padTrailing: CGFloat = 0.0
+    private var isRightButtonStyleApplied: Bool = false
     
     // MARK: - Public Function
     
@@ -255,8 +271,25 @@ public class EDTSAlertbox: UIView {
     }
     
     // MARK: - Intrinsic Size
-
+    
+    private var lastLayoutWidth: CGFloat = 0
+    
+    override public func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if abs(bounds.width - lastLayoutWidth) > 0.5 {
+            lastLayoutWidth = bounds.width
+            invalidateIntrinsicContentSize()
+        }
+    }
+ 
     override public var intrinsicContentSize: CGSize {
+        guard containerView != nil else { return super.intrinsicContentSize }
+        
+        if bounds.width > 0 {
+            return CGSize(width: bounds.width, height: fittingHeightAlertbox(for: bounds.width))
+        }
+        
         containerView.setNeedsLayout()
         containerView.layoutIfNeeded()
         return containerView.systemLayoutSizeFitting(
@@ -265,21 +298,56 @@ public class EDTSAlertbox: UIView {
             verticalFittingPriority: .fittingSizeLevel
         )
     }
-
+    
+    private var rightLayoutBottomPadding: CGFloat {
+        paddingBottom != -1.0 ? padBottom : padTop
+    }
+    
+    public func fittingHeightAlertbox(for width: CGFloat) -> CGFloat {
+        guard containerView != nil else { return 0 }
+        
+        let fitted = containerView.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
+        
+        guard isBtnAtRightSide, !isBtnHide else { return ceil(fitted) }
+        
+        let iconWidth = ivIconWidthConstraint?.constant ?? iconSize
+        let iconHeight = ivIconHeightConstraint?.constant ?? iconSize
+        let iconGap = ivIconLeadingConstraint != nil ? 8 : CGFloat(8)
+        let buttonGap = lblTrailingToBtnConstraint?.constant ?? 12
+        let button = btnAction.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        
+        let labelWidth = max(width - padLeading - iconWidth - iconGap - buttonGap - button.width - padTrailing, 0)
+        let textHeight = lblTitle.sizeThatFits(
+            CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
+        ).height
+        
+        let content = if isBtnAtRightSide {
+            max(textHeight, iconHeight)
+        } else {
+            max(textHeight, iconHeight, button.height)
+        }
+        
+        return ceil(padTop + content + rightLayoutBottomPadding)
+    }
+ 
     // MARK: - Init
-
+ 
     override public init(frame: CGRect) {
         super.init(frame: frame)
         
         setupNib()
     }
-
+ 
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
         
         setupNib()
     }
-
+ 
     private func setupNib() {
         let bundle = Bundle(for: type(of: self))
         if let nib = bundle.loadNibNamed("EDTSAlertbox", owner: self, options: nil),
@@ -344,7 +412,7 @@ public class EDTSAlertbox: UIView {
     }
     
     // MARK: - State Helpers
-
+ 
     private func themed<T>(`default`: T, info: T, success: T, error: T, warning: T) -> T {
         switch currentState {
         case .default: return `default`
@@ -472,23 +540,132 @@ public class EDTSAlertbox: UIView {
     
     private func setupButtonVisibility() {
         if isRibbonStyle && !isBtnHide { return }
-
+ 
         var padding: CGFloat = EDTSColor.theme == EDTSColorTheme.klikIDM ? 4 : 0
-
+ 
         if paddingBottom != -1.0 && isBtnHide {
             padding = paddingBottom
         }
-
+ 
         btnAction.isHidden = isBtnHide
         btnAction.label = isBtnHide ? "" : btnLabel
-
+ 
         btnActionHeightConstant?.constant = isBtnHide ? 0 : btnAction.intrinsicContentSize.height
-
+ 
         lblBottomConstraint?.isActive = isBtnHide
         btnActionBottomConstraint?.constant = isBtnHide ? padding : padBottom
-
+ 
+        setupButtonPosition()
+ 
         layoutIfNeeded()
         invalidateIntrinsicContentSize()
+    }
+    
+    private func setupButtonPosition() {
+        let isRightLayout = isBtnAtRightSide && !isBtnHide
+        
+        if isRightLayout {
+            btnActionTopConstraint?.constant = 0
+            btnActionBottomConstraint?.constant = 0
+            
+            ivCloseLeadingConstraint?.isActive = false
+            btnActionLeadingConstraint?.isActive = false
+            btnActionTopConstraint?.isActive = false
+            btnActionBottomConstraint?.isActive = false
+            btnActionHeightConstant?.isActive = false
+            ivIconTopConstraint?.isActive = false
+            lblCenterYConstraint?.isActive = false
+            
+            lblTopConstraint?.constant = padTop
+            lblTopConstraint?.isActive = true
+            lblBottomConstraint?.constant = rightLayoutBottomPadding
+            lblBottomConstraint?.isActive = true
+            
+            lblTrailingToBtnConstraint?.isActive = true
+            btnActionCenterYConstraint?.isActive = true
+            ivIconCenterYConstraint?.isActive = true
+            btnActionTrailingConstraint?.constant = padTrailing
+            
+            lblTitle.setContentCompressionResistancePriority(.required, for: .vertical)
+            lblTitle.setContentHuggingPriority(.defaultLow, for: .vertical)
+            
+            ivClose.isHidden = true
+            btnAction.setContentHuggingPriority(.required, for: .horizontal)
+            btnAction.setContentCompressionResistancePriority(.required, for: .horizontal)
+            
+            setupButtonStyle()
+        } else {
+            lblTrailingToBtnConstraint?.isActive = false
+            btnActionCenterYConstraint?.isActive = false
+            ivIconCenterYConstraint?.isActive = false
+            lblCenterYConstraint?.isActive = false
+            
+            ivIconTopConstraint?.isActive = true
+            lblTopConstraint?.isActive = true
+            ivCloseLeadingConstraint?.isActive = true
+            btnActionLeadingConstraint?.isActive = true
+            btnActionTopConstraint?.isActive = true
+            btnActionBottomConstraint?.isActive = true
+            btnActionHeightConstant?.isActive = true
+            lblBottomConstraint?.constant = 8
+            lblBottomConstraint?.isActive = isBtnHide
+            
+            lblTitle.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+            lblTitle.setContentHuggingPriority(UILayoutPriority(999), for: .vertical)
+            
+            ivClose.isHidden = false
+            btnAction.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            btnAction.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            
+            resetButtonStyle()
+        }
+    }
+    
+    private func setupButtonStyle() {
+        guard btnAction != nil, isBtnAtRightSide, !isBtnHide else { return }
+        
+        let color = alertIconColor ?? EDTSColor.grey50
+        isRightButtonStyleApplied = true
+        
+        btnAction.bgColor = .clear
+        btnAction.bgFocusColor = .clear
+        btnAction.borderFocusColor = .clear
+        
+        btnAction.iconTrailing = UIImage(named: "ic_chevron_right", in: .edtsDS, compatibleWith: nil)
+        
+        if state == EDTSAlertboxState.default.rawValue {
+            btnAction.labelColor = EDTSColor.blue50
+            btnAction.labelFocusColor = EDTSColor.blue50
+            btnAction.iconTintColorTrailing = EDTSColor.blue50
+            btnAction.iconFocusTintColorTrailing = EDTSColor.blue50
+        } else {
+            btnAction.labelColor = color
+            btnAction.labelFocusColor = color
+            btnAction.iconTintColorTrailing = color
+            btnAction.iconFocusTintColorTrailing = color
+        }
+        
+        btnAction.paddingTop = 0
+        btnAction.paddingBottom = 0
+        btnAction.paddingLeading = 0
+        btnAction.paddingTrailing = 0
+        
+        btnAction.iconSpacing = 4
+        btnAction.btnSize = "small"
+    }
+    
+    private func resetButtonStyle() {
+        guard isRightButtonStyleApplied, btnAction != nil else { return }
+        isRightButtonStyleApplied = false
+        
+        btnAction.bgColor = nil
+        btnAction.bgFocusColor = nil
+        btnAction.borderFocusColor = nil
+        btnAction.labelColor = nil
+        btnAction.labelFocusColor = nil
+        btnAction.iconTrailing = nil
+        btnAction.iconTintColorTrailing = nil
+        btnAction.iconFocusTintColorTrailing = nil
     }
     
     private func setupPadding() {
@@ -576,7 +753,7 @@ public class EDTSAlertbox: UIView {
     }
     
     // MARK: - Action
-
+ 
     @objc private func handleCloseTap() {
         delegate?.didTapCloseAlertbox(self)
         dismissWithAnimation()
@@ -586,7 +763,7 @@ public class EDTSAlertbox: UIView {
         delegate?.didTapButtonAlertbox(self)
     }
 }
-
+ 
 @MainActor
 public protocol EDTSAlertboxDelegate: AnyObject {
     func didTapCloseAlertbox(_ alertbox: EDTSAlertbox)

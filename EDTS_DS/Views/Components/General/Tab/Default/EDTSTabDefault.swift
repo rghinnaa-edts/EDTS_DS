@@ -138,6 +138,45 @@ public class EDTSTabDefault: UIView {
         scrollToItem(at: firstIndexPath, animated: false)
     }
     
+    public func selectTab(at index: Int, animated: Bool = true, notifyDelegate: Bool = false) {
+        guard data.indices.contains(index), index != previousSelectedIndex else { return }
+        
+        let indexPath = IndexPath(item: index, section: 0)
+        let isMovingRight = index > previousSelectedIndex
+        let isUsingTabDefaultCell = collectionView.cellForItem(at: indexPath) is EDTSTabDefaultCell
+        
+        if isUsingTabDefaultCell {
+            if let cellOld = collectionView.cellForItem(at: IndexPath(item: previousSelectedIndex, section: 0)) as? EDTSTabDefaultCell {
+                cellOld.isSelectedAfterItem = isMovingRight
+                cellOld.isSelectedState = false
+            }
+            
+            if let cellNew = collectionView.cellForItem(at: indexPath) as? EDTSTabDefaultCell {
+                cellNew.isSelectedAfterItem = isMovingRight
+                cellNew.isSelectedState = true
+            }
+            
+            for i in data.indices where i != index && i != previousSelectedIndex {
+                if let cell = collectionView.cellForItem(at: IndexPath(item: i, section: 0)) as? EDTSTabDefaultCell {
+                    cell.isSelectedState = false
+                }
+            }
+        } else {
+            deselectAllCells()
+            selectCell(at: indexPath)
+        }
+        
+        let selectedData = data[index]
+        currentlySelectedId = selectedData.id
+        previousSelectedIndex = index
+        
+        scrollToItem(at: indexPath, animated: animated)
+        
+        if notifyDelegate {
+            delegate?.didSelectTabDefault(at: index, withId: selectedData.id, cellIdentifier: cellIdentifier)
+        }
+    }
+    
     //MARK: - Private Functions
     
     private func setupNib() {
@@ -364,39 +403,7 @@ extension EDTSTabDefault: UICollectionViewDataSource, UICollectionViewDelegate, 
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        guard indexPath.item != previousSelectedIndex else { return }
-        
-        let isMovingRight = indexPath.item > previousSelectedIndex
-        let isUsingTabDefaultCell = collectionView.cellForItem(at: indexPath) is EDTSTabDefaultCell
-        
-        if isUsingTabDefaultCell {
-            if let cellOld = collectionView.cellForItem(at: IndexPath(item: previousSelectedIndex, section: 0)) as? EDTSTabDefaultCell {
-                cellOld.isSelectedAfterItem = isMovingRight
-                cellOld.isSelectedState = false
-            }
-            
-            if let cellNew = collectionView.cellForItem(at: indexPath) as? EDTSTabDefaultCell {
-                cellNew.isSelectedAfterItem = isMovingRight
-                cellNew.isSelectedState = true
-            }
-            
-            for index in data.indices where index != indexPath.item && index != previousSelectedIndex {
-                let cellIndexPath = IndexPath(item: index, section: 0)
-                if let cell = collectionView.cellForItem(at: cellIndexPath) as? EDTSTabDefaultCell {
-                    cell.isSelectedState = false
-                }
-            }
-        } else {
-            deselectAllCells()
-            selectCell(at: indexPath)
-        }
-        
-        let selectedData = data[indexPath.item]
-        currentlySelectedId = selectedData.id
-        previousSelectedIndex = indexPath.item
-        
-        scrollToItem(at: indexPath, animated: true)
-        delegate?.didSelectTabDefault(at: indexPath.item, withId: selectedData.id, cellIdentifier: cellIdentifier)
+        selectTab(at: indexPath.item, animated: true, notifyDelegate: true)
     }
     
     public func collectionView(
