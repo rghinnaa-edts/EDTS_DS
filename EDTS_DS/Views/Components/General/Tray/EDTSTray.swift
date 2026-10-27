@@ -13,7 +13,6 @@ public enum TrayHeightMode {
     case custom(CGFloat)
 }
 
-/// Bottom tray that works on iOS 13+ (UISheetPresentationController needs iOS 15).
 public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
 
     // MARK: - Public properties
@@ -33,8 +32,6 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
 
     public var canDismiss: () -> Bool = { true }
     public var onDismissAttempt: (() -> Void)?
-    public var onOverlayTap: (() -> Void)?
-    public var onDragSheet: ((CGFloat) -> Void)?
 
     // MARK: - Private properties
     private static let dragAreaHeight: CGFloat = 56
@@ -76,7 +73,7 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
     public override var frameOfPresentedViewInContainerView: CGRect {
         guard let container = containerView else { return .zero }
 
-        let maxAllowed = container.bounds.height
+        let maxAllowed = container.bounds.height - container.safeAreaInsets.top
         let height: CGFloat
 
         switch heightMode {
@@ -174,8 +171,6 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
 
     // MARK: - Dismiss gestures
     @objc private func dimmingTapped() {
-        onOverlayTap?()
-
         guard canDismiss() else {
             onDismissAttempt?()
             return
@@ -193,7 +188,6 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
             let t = CGAffineTransform(translationX: 0, y: translation)
             presented.transform = t
             shadowView.transform = t
-            onDragSheet?(translation)
 
         case .ended, .cancelled:
             let velocity = gesture.velocity(in: container).y
@@ -208,13 +202,11 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
 
             guard shouldDismiss else {
                 reset()
-                onDragSheet?(0)
                 return
             }
 
             guard canDismiss() else {
                 reset()
-                onDragSheet?(0)
                 onDismissAttempt?()
                 return
             }
