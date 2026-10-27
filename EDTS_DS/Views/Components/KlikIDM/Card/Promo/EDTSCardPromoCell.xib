@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSCardPromoCell" customModule="EDTS_DS" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionProduct" destination="AWH-xG-mIn" id="DGJ-6c-NbH"/>
+                <outlet property="containerView" destination="zik-bp-LdZ" id="vBd-2R-h1H"/>
+                <outlet property="infoBox" destination="zg6-Cd-WGB" id="ULS-ZJ-eTG"/>
+                <outlet property="ivBanner" destination="xDJ-SV-vTV" id="6oy-CL-VlZ"/>
+                <outlet property="lblTitle" destination="Rbc-1O-h6c" id="FVC-br-mtl"/>
+            </connections>
+        </placeholder>
+        <view contentMode="scaleToFill" id="zik-bp-LdZ">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="456"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paragon Fair" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rbc-1O-h6c">
+                    <rect key="frame" x="12" y="12" width="369" height="24"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <color key="textColor" name="klik_grey70"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xDJ-SV-vTV">
+                    <rect key="frame" x="12" y="48" width="369" height="132.33333333333334"/>
+                    <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="xDJ-SV-vTV" secondAttribute="height" multiplier="312:112" id="UCo-bQ-Uw2"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="AWH-xG-mIn">
+                    <rect key="frame" x="0.0" y="192.33333333333334" width="393" height="120.00000000000003"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="120" id="rtm-a1-Huy"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="12" minimumInteritemSpacing="12" id="W21-zA-0lJ">
+                        <size key="itemSize" width="300" height="120"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="369" placeholderIntrinsicHeight="48" translatesAutoresizingMaskIntoConstraints="NO" id="zg6-Cd-WGB" customClass="EDTSAlertbox" customModule="EDTS_DS" customModuleProvider="target">
+                    <rect key="frame" x="12" y="324.33333333333331" width="369" height="119.66666666666669"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="AWH-xG-mIn" firstAttribute="leading" secondItem="zik-bp-LdZ" secondAttribute="leading" id="7KJ-fI-hG9"/>
+                <constraint firstAttribute="trailing" secondItem="AWH-xG-mIn" secondAttribute="trailing" id="DMR-4r-Fyq"/>
+                <constraint firstAttribute="bottom" secondItem="zg6-Cd-WGB" secondAttribute="bottom" constant="12" id="F9V-ba-AJm"/>
+                <constraint firstItem="Rbc-1O-h6c" firstAttribute="leading" secondItem="zik-bp-LdZ" secondAttribute="leading" constant="12" id="GOV-31-mUt"/>
+                <constraint firstItem="AWH-xG-mIn" firstAttribute="top" secondItem="xDJ-SV-vTV" secondAttribute="bottom" constant="12" id="ZVf-Ea-Hod"/>
+                <constraint firstItem="zg6-Cd-WGB" firstAttribute="top" secondItem="AWH-xG-mIn" secondAttribute="bottom" constant="12" id="cM5-Su-tun"/>
+                <constraint firstAttribute="trailing" secondItem="xDJ-SV-vTV" secondAttribute="trailing" constant="12" id="daK-J1-tSY"/>
+                <constraint firstAttribute="trailing" secondItem="zg6-Cd-WGB" secondAttribute="trailing" constant="12" id="huK-tU-IIf"/>
+                <constraint firstAttribute="trailing" secondItem="Rbc-1O-h6c" secondAttribute="trailing" constant="12" id="jHA-hH-AIh"/>
+                <constraint firstItem="xDJ-SV-vTV" firstAttribute="width" secondItem="xDJ-SV-vTV" secondAttribute="height" multiplier="312:112" id="kfw-qx-GsB"/>
+                <constraint firstItem="zg6-Cd-WGB" firstAttribute="leading" secondItem="zik-bp-LdZ" secondAttribute="leading" constant="12" id="mZ4-HG-Xdn"/>
+                <constraint firstItem="Rbc-1O-h6c" firstAttribute="top" secondItem="zik-bp-LdZ" secondAttribute="top" constant="12" id="mhW-kY-uQC"/>
+                <constraint firstItem="xDJ-SV-vTV" firstAttribute="top" secondItem="Rbc-1O-h6c" secondAttribute="bottom" constant="12" id="nQ0-5d-47l"/>
+                <constraint firstItem="xDJ-SV-vTV" firstAttribute="leading" secondItem="zik-bp-LdZ" secondAttribute="leading" constant="12" id="wX4-h4-PNl"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="1251.145038167939" y="-31.690140845070424"/>
+        </view>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+    <resources>
+        <namedColor name="klik_grey70">
+            <color red="0.082352941176470587" green="0.094117647058823528" blue="0.13725490196078433" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
