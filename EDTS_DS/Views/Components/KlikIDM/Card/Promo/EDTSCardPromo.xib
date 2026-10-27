@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EDTSCardPromo" customModule="EDTS_DS" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionPromo" destination="cpr-Cv-002" id="cpr-Ou-101"/>
+                <outlet property="containerView" destination="cpr-Rt-001" id="YQq-ny-pv1"/>
+                <outlet property="tabHeight" destination="cpr-Th-005" id="cpr-Ou-103"/>
+                <outlet property="vTab" destination="cpr-Tb-003" id="cpr-Ou-102"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="cpr-Rt-001">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="cpr-Cv-002">
+                    <rect key="frame" x="0.0" y="49" width="393" height="803"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="12" minimumInteritemSpacing="0.0" id="cpr-Fl-004">
+                        <size key="itemSize" width="369" height="380"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="12" minY="12" maxX="12" maxY="12"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpr-Tb-003" customClass="EDTSTabDefault" customModule="EDTS_DS" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="48"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="cpr-Th-005"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qex-DE-Z3g">
+                    <rect key="frame" x="0.0" y="48" width="393" height="1"/>
+                    <color key="backgroundColor" name="klik_grey30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="OZb-vN-qQh"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="cpr-Sa-099"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="cpr-Sa-099" firstAttribute="trailing" secondItem="Qex-DE-Z3g" secondAttribute="trailing" id="FBa-Lb-j89"/>
+                <constraint firstItem="Qex-DE-Z3g" firstAttribute="leading" secondItem="cpr-Sa-099" secondAttribute="leading" id="Fy3-nx-YXh"/>
+                <constraint firstItem="Qex-DE-Z3g" firstAttribute="top" secondItem="cpr-Tb-003" secondAttribute="bottom" id="biO-Tv-wAs"/>
+                <constraint firstItem="cpr-Tb-003" firstAttribute="top" secondItem="cpr-Rt-001" secondAttribute="top" id="cpr-C01"/>
+                <constraint firstItem="cpr-Tb-003" firstAttribute="leading" secondItem="cpr-Rt-001" secondAttribute="leading" id="cpr-C02"/>
+                <constraint firstAttribute="trailing" secondItem="cpr-Tb-003" secondAttribute="trailing" id="cpr-C03"/>
+                <constraint firstItem="cpr-Cv-002" firstAttribute="top" secondItem="Qex-DE-Z3g" secondAttribute="bottom" id="cpr-C04"/>
+                <constraint firstItem="cpr-Cv-002" firstAttribute="leading" secondItem="cpr-Rt-001" secondAttribute="leading" id="cpr-C05"/>
+                <constraint firstAttribute="trailing" secondItem="cpr-Cv-002" secondAttribute="trailing" id="cpr-C06"/>
+                <constraint firstAttribute="bottom" secondItem="cpr-Cv-002" secondAttribute="bottom" id="cpr-C07"/>
+            </constraints>
+            <point key="canvasLocation" x="538" y="-48"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="klik_grey30">
+            <color red="0.86274509803921573" green="0.87058823529411766" blue="0.8901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

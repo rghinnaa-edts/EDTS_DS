@@ -253,7 +253,7 @@ Pod::Spec.new do |spec|
   spec.subspec 'Klik' do |klik|
 
   # Card Coupon Offered
-  klik.subspec 'CouponOffered' do |ss|
+  klik.subspec 'CardCouponOffered' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/CouponOffered/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/CouponOffered/**/*.xib")
     ss.dependency 'EDTS_DS/Color'
@@ -267,7 +267,7 @@ Pod::Spec.new do |spec|
   end
 
   # Card My Coupon
-  klik.subspec 'MyCoupon' do |ss|
+  klik.subspec 'CardMyCoupon' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/MyCoupon/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/MyCoupon/**/*.xib")
     ss.dependency 'EDTS_DS/Color'
@@ -280,7 +280,7 @@ Pod::Spec.new do |spec|
   end
 
   # Card Product
-  klik.subspec 'Product' do |ss|
+  klik.subspec 'CardProduct' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/Product/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/Product/**/*.xib")
     ss.dependency 'EDTS_DS/Color'
@@ -291,8 +291,23 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/ButtonStepper'
   end
 
+  # Card Promo
+  klik.subspec 'CardPromo' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/Promo/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/Promo/**/*.xib")
+    ss.dependency 'EDTS_DS/Color'
+    ss.dependency 'EDTS_DS/Font'
+    ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
+    ss.dependency 'EDTS_DS/Alertbox'
+    ss.dependency 'EDTS_DS/Badge'
+    ss.dependency 'EDTS_DS/ButtonStepper'
+    ss.dependency 'EDTS_DS/Tab'
+    ss.dependency 'EDTS_DS/Skeleton'
+  end
+
   # Card Shopping Type
-  klik.subspec 'ShoppingType' do |ss|
+  klik.subspec 'CardShoppingType' do |ss|
     ss.source_files = 'EDTS_DS/Views/Components/KlikIDM/Card/ShoppingType/**/*.swift'
     set_resources_if_present.call(ss, "EDTS_DS/Views/Components/KlikIDM/Card/ShoppingType/**/*.xib")
     ss.dependency 'EDTS_DS/Color'
