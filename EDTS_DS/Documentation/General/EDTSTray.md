@@ -4,7 +4,11 @@
 
 ## Preview
 
-| **Tray** | *(add preview)* |
+| Feature / Variation | Preview |
+| -------------------- | ------- |
+| **Full Screen Tray** | ![Full Screen Tray](https://res.cloudinary.com/dacnnk5j4/image/upload/w_250,c_scale,q_auto,f_auto/v1793094402/full_yi1iba.gif) |
+| **Wrap Content Tray** | ![Wrap Content Tray](https://res.cloudinary.com/dacnnk5j4/image/upload/w_250,c_scale,q_auto,f_auto/v1793094405/custom_gbsy4j.gif) |
+| **Custom Height Tray** | ![Custom Height Tray](https://res.cloudinary.com/dacnnk5j4/image/upload/w_250,c_scale,q_auto,f_auto/v1793094406/wrap_o5upsz.gif) |
 
 ## Basic Usage
 

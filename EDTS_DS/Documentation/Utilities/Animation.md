@@ -19,7 +19,7 @@ This document covers the collection of animation helpers used across `EDTS_DS` f
 ## Preview
 | Feature / Variation | Preview |
 | -------------------- | ------- |
-| **Card Selected Animation** | ![Card Selected Animation](w_200,c_scale,q_auto,f_auto/) |
+| **Card Selected Animation** | ![Card Selected Animation](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1793094259/card_selected_animation_l8fpad.gif) |
 | **Gradient Border** | ![Gradient Border](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784874442/gradient_border_n6tevb.gif) |
 | **Neon Pulse** | ![Neon Pulse](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784874441/neon_pulse_b9fn46.gif) |
 | **Floating Animation** | ![Floating Animation](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784874441/floating_wf4itq.gif) |
