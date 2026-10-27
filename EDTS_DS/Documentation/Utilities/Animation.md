@@ -7,6 +7,7 @@ This document covers the collection of animation helpers used across `EDTS_DS` f
 - [UIView Extensions](#uiview-extensions)
   - [startAnimationGradientBorder / stopAnimationGradientBorder](#startanimationgradientborder--stopanimationgradientborder)
   - [startAnimationNeonPulse / stopAnimationNeonPulse](#startanimationneonpulse--stopanimationneonpulse)
+  - [cardSelectedAnimation](#cardselectedanimation)
 - [AnimationHelper](#animationhelper)
   - [animateFloating](#animatefloating)
 - [Scroll Animations](#scroll-animations)
@@ -18,6 +19,7 @@ This document covers the collection of animation helpers used across `EDTS_DS` f
 ## Preview
 | Feature / Variation | Preview |
 | -------------------- | ------- |
+| **Card Selected Animation** | ![Card Selected Animation](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1793094259/card_selected_animation_l8fpad.gif) |
 | **Gradient Border** | ![Gradient Border](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784874442/gradient_border_n6tevb.gif) |
 | **Neon Pulse** | ![Neon Pulse](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784874441/neon_pulse_b9fn46.gif) |
 | **Floating Animation** | ![Floating Animation](https://res.cloudinary.com/dacnnk5j4/image/upload/w_200,c_scale,q_auto,f_auto/v1784874441/floating_wf4itq.gif) |
@@ -83,6 +85,62 @@ notificationDot.startAnimationNeonPulse(color: EDTSColor.errorStrong.cgColor, du
 // Stop pulsing, e.g. once the notification is read
 notificationDot.stopAnimationNeonPulse()
 ```
+
+---
+
+### cardSelectedAnimation
+
+Animates a card-style view between selected and unselected states: the border color transitions, and a colored corner triangle with an icon slides in from (or out to) the top-leading corner.
+
+```swift
+func cardSelectedAnimation(
+    isSelected: Bool,
+    tintColor: UIColor = EDTSColor.blue50,
+    unselectedBorderColor: UIColor = EDTSColor.grey30,
+    icon: UIImage? = UIImage(named: "ic_check"),
+    iconTintColor: UIColor = EDTSColor.white,
+    iconSize: CGFloat = 16,
+    triangleSize: CGFloat = 32,
+    durationAnimation: TimeInterval = 0.25,
+    animated: Bool = true
+)
+```
+
+| Parameter | Type | Default | Description |
+| --------- | ---- | ------- | ----------- |
+| `isSelected` | `Bool` | — | `true` shows the selected state; `false` shows the unselected state |
+| `tintColor` | `UIColor` | `EDTSColor.blue50` | Border color when selected, and fill color of the corner triangle |
+| `unselectedBorderColor` | `UIColor` | `EDTSColor.grey30` | Border color when unselected |
+| `icon` | `UIImage?` | `UIImage(named: "ic_check")` | Icon shown inside the triangle. If `nil` or not found, falls back to the `ic_check` asset in the EDTS_DS bundle. Always rendered as a template image |
+| `iconTintColor` | `UIColor` | `EDTSColor.white` | Tint color of the icon |
+| `iconSize` | `CGFloat` | `16` | Width and height of the icon |
+| `triangleSize` | `CGFloat` | `32` | Width and height of the corner triangle |
+| `durationAnimation` | `TimeInterval` | `0.25` | Duration (seconds) of the whole animation — the border color change and the triangle show/hide run in parallel and all use this value |
+| `animated` | `Bool` | `true` | `false` applies the state immediately without animation |
+
+**Example:**
+```swift
+// Select
+cardView.cardSelectedAnimation(isSelected: true)
+
+// Deselect
+cardView.cardSelectedAnimation(isSelected: false)
+
+// Custom colors and a slower 3-second animation
+cardView.cardSelectedAnimation(
+    isSelected: true,
+    tintColor: EDTSColor.blue50,
+    iconTintColor: .white,
+    durationAnimation: 3
+)
+```
+
+**Behavior notes:**
+- Sets `layer.masksToBounds = true`, and sets `layer.borderWidth` to `1` if it is currently `0`
+- The triangle is created lazily the first time the view is selected and reused afterwards (found through `accessibilityIdentifier` `"cardSelectedAnimation.triangle"`). It is pinned to the top-leading corner with Auto Layout and has user interaction disabled
+- Calling with `isSelected: false` before the triangle has ever been created only updates the border and returns
+- Selecting fades the triangle in (`curveEaseOut`) while sliding from `(-triangleSize, -triangleSize)` to its place; deselecting does the reverse (`curveEaseIn`) and hides the triangle on completion, but only if the border color is still `unselectedBorderColor` (so a re-selection during the animation is not hidden)
+- `tintColor`, `icon`, and `iconTintColor` are re-applied on every call, but `triangleSize` and `iconSize` are only used when the triangle is first created — changing them on later calls has no effect on the existing triangle
 
 ---
 

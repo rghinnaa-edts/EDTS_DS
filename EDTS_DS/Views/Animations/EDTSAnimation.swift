@@ -131,4 +131,112 @@ extension UIView {
         self.layer.shadowRadius = 0
         self.layer.shadowOffset = CGSize(width: 0, height: 0)
     }
+    
+    //MARK: Card Selected Animation
+    private static let cardTriangleID = "cardSelectedAnimation.triangle"
+
+    public func cardSelectedAnimation(
+        isSelected: Bool,
+        tintColor: UIColor = EDTSColor.blue50,
+        unselectedBorderColor: UIColor = EDTSColor.grey30,
+        icon: UIImage? = UIImage(named: "ic_check"),
+        iconTintColor: UIColor = EDTSColor.white,
+        iconSize: CGFloat = 16,
+        triangleSize: CGFloat = 32,
+        durationAnimation: TimeInterval = 0.25,
+        animated: Bool = true
+    ) {
+        // MARK: Border
+        layer.masksToBounds = true
+        if layer.borderWidth == 0 { layer.borderWidth = 1 }
+
+        let newBorder = (isSelected ? tintColor : unselectedBorderColor).cgColor
+        if animated {
+            let anim = CABasicAnimation(keyPath: "borderColor")
+            anim.fromValue = layer.borderColor
+            anim.toValue = newBorder
+            anim.duration = durationAnimation
+            layer.add(anim, forKey: "cardBorderColor")
+        }
+        layer.borderColor = newBorder
+
+        // MARK: Triangle
+        var triangle = subviews.first { $0.accessibilityIdentifier == UIView.cardTriangleID }
+        if triangle == nil {
+            guard isSelected else { return }
+
+            let t = UIView()
+            t.accessibilityIdentifier = UIView.cardTriangleID
+            t.backgroundColor = .clear
+            t.isUserInteractionEnabled = false
+            t.translatesAutoresizingMaskIntoConstraints = false
+
+            let shape = CAShapeLayer()
+            let path = UIBezierPath()
+            path.move(to: .zero)
+            path.addLine(to: CGPoint(x: triangleSize, y: 0))
+            path.addLine(to: CGPoint(x: 0, y: triangleSize))
+            path.close()
+            shape.frame = CGRect(x: 0, y: 0, width: triangleSize, height: triangleSize)
+            shape.path = path.cgPath
+            t.layer.addSublayer(shape)
+
+            let iconView = UIImageView()
+            iconView.contentMode = .scaleAspectFit
+            iconView.frame = CGRect(x: 0, y: 0, width: iconSize, height: iconSize)
+            iconView.center = CGPoint(x: triangleSize / 3, y: triangleSize / 3)
+            t.addSubview(iconView)
+
+            addSubview(t)
+            NSLayoutConstraint.activate([
+                t.topAnchor.constraint(equalTo: topAnchor),
+                t.leadingAnchor.constraint(equalTo: leadingAnchor),
+                t.widthAnchor.constraint(equalToConstant: triangleSize),
+                t.heightAnchor.constraint(equalToConstant: triangleSize)
+            ])
+            t.isHidden = true
+            triangle = t
+        }
+        guard let triangle = triangle else { return }
+
+        (triangle.layer.sublayers?.first as? CAShapeLayer)?.fillColor = tintColor.cgColor
+        if let iconView = triangle.subviews.first as? UIImageView {
+            let resolvedIcon = icon ?? UIImage(named: "ic_check", in: .edtsDS, compatibleWith: nil)
+            iconView.image = resolvedIcon?.withRenderingMode(.alwaysTemplate)
+            iconView.tintColor = iconTintColor
+        }
+
+        // MARK: Show / hide animation
+        let offscreen = CGAffineTransform(translationX: -triangleSize, y: -triangleSize)
+        triangle.layer.removeAllAnimations()
+
+        if isSelected {
+            triangle.isHidden = false
+            if animated {
+                triangle.alpha = 0
+                triangle.transform = offscreen
+                UIView.animate(withDuration: durationAnimation, delay: 0, options: .curveEaseOut) {
+                    triangle.alpha = 1
+                    triangle.transform = .identity
+                }
+            } else {
+                triangle.alpha = 1
+                triangle.transform = .identity
+            }
+        } else if animated {
+            UIView.animate(withDuration: durationAnimation, delay: 0, options: .curveEaseIn, animations: {
+                triangle.alpha = 0
+                triangle.transform = offscreen
+            }, completion: { _ in
+                if self.layer.borderColor == unselectedBorderColor.cgColor {
+                    triangle.isHidden = true
+                }
+            })
+        } else {
+            triangle.isHidden = true
+            triangle.alpha = 1
+            triangle.transform = .identity
+        }
+    }
+
 }

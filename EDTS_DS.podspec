@@ -246,6 +246,16 @@ Pod::Spec.new do |spec|
     ss.dependency 'EDTS_DS/ButtonIcon'
   end
 
+  # Tray
+  spec.subspec 'Tray' do |ss|
+    ss.source_files = 'EDTS_DS/Views/Components/General/Tray/**/*.swift'
+    set_resources_if_present.call(ss, "EDTS_DS/Views/Components/General/Tray/**/*.xib")
+    ss.dependency 'EDTS_DS/Color'
+    ss.dependency 'EDTS_DS/Font'
+    ss.dependency 'EDTS_DS/Assets'
+    ss.dependency 'EDTS_DS/Extensions'
+  end
+
   # ──────────────────────────────────────────────────────────
   # KlikIDM brand-specific components (nested subspecs)
   # ──────────────────────────────────────────────────────────
