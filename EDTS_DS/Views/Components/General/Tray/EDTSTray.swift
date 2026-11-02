@@ -146,9 +146,12 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
         pan.delegate = self
         presented.addGestureRecognizer(pan)
 
+        shadowView.transform = CGAffineTransform(translationX: 0, y: frameOfPresentedViewInContainerView.height)
+        shadowView.alpha = 1
+
         let show = {
             self.dimmingView.alpha = 1
-            self.shadowView.alpha = 1
+            self.shadowView.transform = .identity
         }
         if let coordinator = presentedViewController.transitionCoordinator {
             coordinator.animate(alongsideTransition: { _ in show() })
@@ -160,7 +163,7 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
     public override func dismissalTransitionWillBegin() {
         let hide = {
             self.dimmingView.alpha = 0
-            self.shadowView.alpha = 0
+            self.shadowView.transform = CGAffineTransform(translationX: 0, y: self.shadowView.bounds.height)
         }
         if let coordinator = presentedViewController.transitionCoordinator {
             coordinator.animate(alongsideTransition: { _ in hide() })
@@ -170,12 +173,30 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
     }
 
     // MARK: - Dismiss gestures
+    private func dismissOffscreen() {
+        guard let presented = presentedView else { return }
+
+        dimmingView.isUserInteractionEnabled = false
+        let offscreen = CGAffineTransform(translationX: 0, y: presented.bounds.height)
+
+        UIView.animate(withDuration: 0.2, animations: {
+            presented.transform = offscreen
+            self.shadowView.transform = offscreen
+            self.dimmingView.alpha = 0
+        }, completion: { _ in
+            self.presentedViewController.dismiss(animated: false) {
+                presented.transform = .identity
+                self.shadowView.transform = .identity
+            }
+        })
+    }
+    
     @objc private func dimmingTapped() {
         guard canDismiss() else {
             onDismissAttempt?()
             return
         }
-        presentedViewController.dismiss(animated: true)
+        dismissOffscreen()
     }
 
     @objc private func handlePan(_ gesture: UIPanGestureRecognizer) {
@@ -211,18 +232,7 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
                 return
             }
 
-            let offscreen = CGAffineTransform(translationX: 0, y: presented.bounds.height)
-            UIView.animate(withDuration: 0.2, animations: {
-                presented.transform = offscreen
-                self.shadowView.transform = offscreen
-                self.dimmingView.alpha = 0
-                self.shadowView.alpha = 0
-            }, completion: { _ in
-                self.presentedViewController.dismiss(animated: false) {
-                    presented.transform = .identity
-                    self.shadowView.transform = .identity
-                }
-            })
+            dismissOffscreen()
 
         default:
             break
@@ -233,5 +243,46 @@ public class EDTSTray: UIPresentationController, UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         guard let presented = presentedView else { return false }
         return touch.location(in: presented).y <= Self.dragAreaHeight
+    }
+}
+
+public class EDTSTrayTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
+
+    private let configure: (EDTSTray) -> Void
+
+    public init(configure: @escaping (EDTSTray) -> Void = { _ in }) {
+        self.configure = configure
+    }
+
+    public convenience init(heightMode: TrayHeightMode) {
+        self.init { $0.heightMode = heightMode }
+    }
+
+    public func presentationController(forPresented presented: UIViewController,
+                                       presenting: UIViewController?,
+                                       source: UIViewController) -> UIPresentationController? {
+        let tray = EDTSTray(presentedViewController: presented, presenting: presenting)
+        configure(tray)
+        return tray
+    }
+}
+
+private var trayDelegateKey: UInt8 = 0
+
+public extension UIViewController {
+    func presentTray(_ content: UIViewController,
+                     heightMode: TrayHeightMode = .wrapContent,
+                     configure: ((EDTSTray) -> Void)? = nil,
+                     animated: Bool = true,
+                     completion: (() -> Void)? = nil) {
+        let delegate = EDTSTrayTransitioningDelegate { tray in
+            tray.heightMode = heightMode
+            configure?(tray)
+        }
+        
+        objc_setAssociatedObject(content, &trayDelegateKey, delegate, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        content.modalPresentationStyle = .custom
+        content.transitioningDelegate = delegate
+        present(content, animated: animated, completion: completion)
     }
 }

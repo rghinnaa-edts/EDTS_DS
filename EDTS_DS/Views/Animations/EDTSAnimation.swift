@@ -133,9 +133,9 @@ extension UIView {
     }
     
     //MARK: Card Selected Animation
-    private static let cardTriangleID = "cardSelectedAnimation.triangle"
+    private static let cardTriangleID = "animateCardSelected.triangle"
 
-    public func cardSelectedAnimation(
+    public func animateCardSelected(
         isSelected: Bool,
         tintColor: UIColor = EDTSColor.blue50,
         unselectedBorderColor: UIColor = EDTSColor.grey30,
