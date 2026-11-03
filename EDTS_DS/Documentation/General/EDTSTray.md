@@ -2,6 +2,8 @@
 
 `EDTSTray` is a bottom tray built as a `UIPresentationController` subclass that works on iOS 13+ (`UISheetPresentationController` requires iOS 15). It supports three height modes (`fullScreen`, `wrapContent`, `custom`), an optional drag handle, an optional dimmed overlay (with a shadow fallback when the overlay is off), swipe-down and tap-outside dismissal, and a dismiss guard for blocking or intercepting dismissal.
 
+---
+
 ## Preview
 
 | Feature / Variation | Preview |
@@ -9,6 +11,26 @@
 | **Full Screen Tray** | ![Full Screen Tray](https://res.cloudinary.com/dacnnk5j4/image/upload/w_250,c_scale,q_auto,f_auto/v1793094402/full_yi1iba.gif) |
 | **Wrap Content Tray** | ![Wrap Content Tray](https://res.cloudinary.com/dacnnk5j4/image/upload/w_250,c_scale,q_auto,f_auto/v1793094406/wrap_o5upsz.gif) |
 | **Custom Height Tray** | ![Custom Height Tray](https://res.cloudinary.com/dacnnk5j4/image/upload/w_250,c_scale,q_auto,f_auto/v1793094405/custom_gbsy4j.gif) |
+
+---
+
+## Installation
+
+Add to your `Podfile`:
+
+```ruby
+pod 'EDTS_DS/Tray'
+```
+
+Then import it wherever you use the component:
+
+```swift
+import EDTS_DS
+```
+
+This relies on the design token types already available in the pod (`EDTSColor`).
+
+---
 
 ## Basic Usage
 
@@ -113,6 +135,7 @@ public enum TrayHeightMode {
 
 > The maximum allowed height is the container height minus the container's top safe area inset.
 
+---
 
 ## Properties Reference
 
@@ -156,6 +179,8 @@ The shadow is only rendered when the overlay is **not** visible (`isHasOverlay =
 | `canDismiss` | `() -> Bool` | `{ true }` | Dismiss guard. Return `false` to prevent dismissal via tap-outside or swipe-down |
 | `onDismissAttempt` | `(() -> Void)?` | `nil` | Called when a dismissal was attempted but blocked by `canDismiss` |
 
+---
+
 ## Drag Handle Specification
 
 | Aspect | Value |
@@ -168,6 +193,8 @@ The shadow is only rendered when the overlay is **not** visible (`isHasOverlay =
 
 > The `56pt` drag area is always active for swipe-down, even when `isHasDragHandle` is `false`.
 
+---
+
 ## Dismiss Behavior
 
 | Gesture | Behavior |
@@ -178,6 +205,8 @@ The shadow is only rendered when the overlay is **not** visible (`isHasOverlay =
 | **Below threshold** | The tray springs back to its original position. `canDismiss` and `onDismissAttempt` are not called |
 | **Blocked by `canDismiss`** | Checked only after the threshold is passed. The tray springs back to its original position and `onDismissAttempt` is called |
 
+---
+
 ## Animation Details
 
 | Animation Type | Duration | Description |
@@ -186,6 +215,8 @@ The shadow is only rendered when the overlay is **not** visible (`isHasOverlay =
 | `Dismissal` | Matches the dismissal transition | The overlay fades out. The shadow slides down together with the tray |
 | `Drag Dismiss` | `200ms` | Slides the tray (and shadow) off-screen and fades out the overlay when a swipe passes the dismiss threshold |
 | `Drag Reset` | `250ms` | Returns the tray (and shadow) to its original position when a swipe does not dismiss |
+
+---
 
 ## Notes
 
