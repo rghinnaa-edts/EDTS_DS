@@ -7,10 +7,10 @@
 
 import UIKit
 
-class EDTSCardPromoProductCell: UICollectionViewCell {
+public class EDTSCardPromoProductCell: UICollectionViewCell {
 
-    static let identifier = "EDTSCardPromoProductCell"
-
+    // MARK: - Outlets
+    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var ivCheck: UIImageView!
     @IBOutlet weak var ivProduct: UIImageView!
@@ -18,9 +18,14 @@ class EDTSCardPromoProductCell: UICollectionViewCell {
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var discount: EDTSBadge!
     @IBOutlet weak var lblRealPrice: UILabel!
+    
+    // MARK: - Public Variables
 
-    static let itemWidth: CGFloat = 216
+    public static let identifier = "EDTSCardPromoProductCell"
+    public static let itemWidth: CGFloat = 216
 
+    // MARK: - Private Variables
+    
     private static let cornerRadius: CGFloat = 6
     private static let borderWidth: CGFloat = 1
     private static let checkSize: CGFloat = 32
@@ -45,11 +50,11 @@ class EDTSCardPromoProductCell: UICollectionViewCell {
         setupNib()
     }
 
-    override var isSelected: Bool {
+    public override var isSelected: Bool {
         didSet { updateSelectionState() }
     }
 
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         ivProduct.image = nil
         contentView.applyGrayscale(false)
@@ -58,7 +63,7 @@ class EDTSCardPromoProductCell: UICollectionViewCell {
 
     // MARK: - Configure
 
-    func configure(
+    public func configure(
         isAvailable: Bool,
         image: UIImage,
         title: String,

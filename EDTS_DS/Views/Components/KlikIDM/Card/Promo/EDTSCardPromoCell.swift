@@ -7,18 +7,23 @@
 
 import UIKit
 
-// MARK: - Cell
-
 public class EDTSCardPromoCell: UICollectionViewCell {
 
-    public static let identifier = "EDTSCardPromoCell"
-
+    // MARK: - Outlets
+    
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var ivBanner: UIImageView!
     @IBOutlet weak var collectionProduct: UICollectionView!
     @IBOutlet weak var infoBox: EDTSAlertbox!
 
+    // MARK: - Public Variable
+
+    public static let identifier = "EDTSCardPromoCell"
+    public private(set) var products: [EDTSCardPromoProductModel] = []
+    public var onProductsChanged: (([EDTSCardPromoProductModel]) -> Void)?
+    public var onTap: (() -> Void)?
+    
     // MARK: - Private Variable
 
     private static let cornerRadius: CGFloat = 8
@@ -27,12 +32,6 @@ public class EDTSCardPromoCell: UICollectionViewCell {
     private static let minProductListHeight: CGFloat = 80
     private var arePromoProductsAvailable = true
     private var productItemHeight: CGFloat = EDTSCardPromoCell.minProductListHeight
-
-    // MARK: - Public Variable
-
-    public private(set) var products: [EDTSCardPromoProductModel] = []
-    public var onProductsChanged: (([EDTSCardPromoProductModel]) -> Void)?
-    public var onTap: (() -> Void)?
 
     // MARK: - Dynamic height
 
@@ -209,8 +208,6 @@ public class EDTSCardPromoCell: UICollectionViewCell {
             containerView.translatesAutoresizingMaskIntoConstraints = false
             containerView.backgroundColor = .clear
 
-            // Add to contentView and pin on all sides so the card's width/height
-            // come from the cell, not from a stale frame.
             contentView.addSubview(containerView)
             NSLayoutConstraint.activate([
                 containerView.topAnchor.constraint(equalTo: contentView.topAnchor),

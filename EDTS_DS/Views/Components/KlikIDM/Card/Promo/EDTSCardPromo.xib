@@ -13,7 +13,7 @@
             <connections>
                 <outlet property="collectionPromo" destination="cpr-Cv-002" id="cpr-Ou-101"/>
                 <outlet property="containerView" destination="cpr-Rt-001" id="YQq-ny-pv1"/>
-                <outlet property="tabHeight" destination="cpr-Th-005" id="cpr-Ou-103"/>
+                <outlet property="tabHeightConstraint" destination="cpr-Th-005" id="3LX-xX-AN3"/>
                 <outlet property="vTab" destination="cpr-Tb-003" id="cpr-Ou-102"/>
             </connections>
         </placeholder>

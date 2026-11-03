@@ -14,7 +14,7 @@ public class EDTSCardPromo: UIView {
     @IBOutlet var containerView: UIView!
     @IBOutlet weak var vTab: EDTSTabDefault!
     @IBOutlet weak var collectionPromo: UICollectionView!
-    @IBOutlet weak var tabHeight: NSLayoutConstraint!
+    @IBOutlet weak var tabHeightConstraint: NSLayoutConstraint!
 
     //MARK: - Inspectable
 
@@ -27,7 +27,7 @@ public class EDTSCardPromo: UIView {
         didSet { applyTabVisibility() }
     }
 
-    @IBInspectable public var tabHeightWhenVisible: CGFloat = 48 {
+    @IBInspectable public var tabHeight: CGFloat = 48 {
         didSet { applyTabVisibility() }
     }
 
@@ -36,9 +36,8 @@ public class EDTSCardPromo: UIView {
     public static let identifier = "EDTSCardPromo"
     public weak var delegate: EDTSCardPromoDelegate?
     public private(set) var cards: [EDTSCardPromoModel] = []
-    public private(set) var isLoading = false
+    public private(set) var isSkeleton = false
     public var skeletonCardCount = 3
-    public var collectionView: UICollectionView { collectionPromo }
 
     // MARK: - Private Variable
 
@@ -46,6 +45,7 @@ public class EDTSCardPromo: UIView {
     private static let estimatedCardHeight: CGFloat = 380
     private static let tabCellIdentifier = "EDTSTabDefaultCell"
     private static let promoActivationOffset: CGFloat = 24
+    private var collectionView: UICollectionView { collectionPromo }
     private var activeCardIndex = 0
     private var isConfiguring = false
     private var cardHeightCache: [Int: CGFloat] = [:]
@@ -65,7 +65,7 @@ public class EDTSCardPromo: UIView {
         cardHeightCache.removeAll()
         activeCardIndex = 0
 
-        vTab.alpha = isLoading ? 0 : 1
+        vTab.alpha = isSkeleton ? 0 : 1
         vTab.data = cards.map { EDTSTabDefaultModel(id: $0.id, title: $0.title) }
         vTab.setDynamicWidth(enabled: true)
         vTab.layoutIfNeeded()
@@ -84,8 +84,8 @@ public class EDTSCardPromo: UIView {
     }
 
     public func setLoading(_ loading: Bool) {
-        guard isLoading != loading else { return }
-        isLoading = loading
+        guard isSkeleton != loading else { return }
+        isSkeleton = loading
 
         vTab.alpha = loading ? 0 : 1
         vTab.isUserInteractionEnabled = !loading
@@ -108,7 +108,7 @@ public class EDTSCardPromo: UIView {
     }
 
     public func scrollToCard(at index: Int, animated: Bool = true) {
-        guard !isLoading else { return }
+        guard !isSkeleton else { return }
 
         collectionPromo.layoutIfNeeded()
         guard cards.indices.contains(index),
@@ -154,7 +154,7 @@ public class EDTSCardPromo: UIView {
             containerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
             addSubview(containerView)
 
-            tabHeightWhenVisible = tabHeight.constant
+            tabHeight = tabHeightConstraint.constant
 
             setupTab()
             setupCollectionView()
@@ -163,10 +163,10 @@ public class EDTSCardPromo: UIView {
     }
 
     private func applyTabVisibility() {
-        guard vTab != nil, tabHeight != nil else { return }
+        guard vTab != nil, tabHeightConstraint != nil else { return }
 
         vTab.isHidden = isTabHidden
-        tabHeight.constant = isTabHidden ? 0 : tabHeightWhenVisible
+        tabHeightConstraint.constant = isTabHidden ? 0 : tabHeight
     }
 
     private func setupTab() {
@@ -257,14 +257,14 @@ public class EDTSCardPromo: UIView {
 extension EDTSCardPromo: UICollectionViewDataSource {
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        isLoading ? skeletonCardCount : cards.count
+        isSkeleton ? skeletonCardCount : cards.count
     }
 
     public func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        if isLoading {
+        if isSkeleton {
             return collectionView.dequeueReusableCell(
                 withReuseIdentifier: EDTSCardPromoSkeletonCell.identifier,
                 for: indexPath
@@ -327,7 +327,7 @@ extension EDTSCardPromo: UICollectionViewDelegateFlowLayout {
     ) -> CGSize {
         let width = cardWidth
 
-        if isLoading || !cards.indices.contains(indexPath.item) {
+        if isSkeleton || !cards.indices.contains(indexPath.item) {
             return CGSize(width: width, height: Self.estimatedCardHeight)
         }
 
@@ -342,14 +342,14 @@ extension EDTSCardPromo: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        guard !isLoading, cards.indices.contains(indexPath.item) else { return }
+        guard !isSkeleton, cards.indices.contains(indexPath.item) else { return }
         delegate?.cardPromo(self, didSelectCardAt: indexPath.item)
     }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard scrollView === collectionPromo else { return }
 
-        if isLoading {
+        if isSkeleton {
             let top = -scrollView.adjustedContentInset.top
             if scrollView.contentOffset.y != top { scrollView.contentOffset.y = top }
             return
@@ -365,7 +365,7 @@ extension EDTSCardPromo: UICollectionViewDelegateFlowLayout {
 extension EDTSCardPromo: EDTSTabDefaultDelegate {
 
     public func didSelectTabDefault(at index: Int, withId id: String, cellIdentifier: String) {
-        guard !isConfiguring, !isLoading else { return }
+        guard !isConfiguring, !isSkeleton else { return }
 
         guard cards.indices.contains(index),
               collectionPromo.numberOfItems(inSection: 0) > index else { return }

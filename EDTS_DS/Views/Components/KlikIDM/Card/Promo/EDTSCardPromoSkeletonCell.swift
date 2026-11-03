@@ -7,10 +7,16 @@
 
 import UIKit
 
-class EDTSCardPromoSkeletonCell: UICollectionViewCell {
+public class EDTSCardPromoSkeletonCell: UICollectionViewCell {
 
-    static let identifier = "EDTSCardPromoSkeletonCell"
+    // MARK: - Public Variables
 
+    public static let identifier = "EDTSCardPromoSkeletonCell"
+    public static let height: CGFloat =
+        padding * 2 + spacing * 3 + titleHeight + bannerHeight + productHeight + infoboxHeight
+
+    // MARK: - Private Variables
+    
     private static let cornerRadius: CGFloat = 12
     private static let padding: CGFloat = 12
     private static let spacing: CGFloat = 12
@@ -20,16 +26,15 @@ class EDTSCardPromoSkeletonCell: UICollectionViewCell {
     private static let productHeight: CGFloat = 80
     private static let productSpacing: CGFloat = 8
     private static let infoboxHeight: CGFloat = 40
-
-    static let height: CGFloat =
-        padding * 2 + spacing * 3 + titleHeight + bannerHeight + productHeight + infoboxHeight
-
+    
     private let skeletonTitle = EDTSSkeleton()
     private let skeletonBanner = EDTSSkeleton()
     private let skeletonProduct1 = EDTSSkeleton()
     private let skeletonProduct2 = EDTSSkeleton()
     private let skeletonInfobox = EDTSSkeleton()
 
+    // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -40,18 +45,20 @@ class EDTSCardPromoSkeletonCell: UICollectionViewCell {
         setupUI()
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: Self.cornerRadius).cgPath
     }
 
-    override func preferredLayoutAttributesFitting(
+    public override func preferredLayoutAttributesFitting(
         _ layoutAttributes: UICollectionViewLayoutAttributes
     ) -> UICollectionViewLayoutAttributes {
         let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
         attributes.size = CGSize(width: layoutAttributes.size.width, height: Self.height)
         return attributes
     }
+    
+    // MARK: - Setup
 
     private func setupUI() {
         setupCardAppearance()
