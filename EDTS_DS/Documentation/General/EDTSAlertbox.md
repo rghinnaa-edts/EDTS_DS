@@ -1,15 +1,16 @@
 # EDTSAlertbox
 
-The `EDTSAlertbox` component is a flexible, context-aware notification banner built for UIKit. It supports five contextual states, theme-aware typography and layout (including structural overrides for the `klikIDM` and `poinku` brands), an embedded action button, and a ribbon presentation mode.
+The `EDTSAlertbox` component is a flexible, context-aware notification banner built for UIKit. It supports five contextual states, theme-aware typography and layout, an embedded action button that can sit below the text or on the right side, and a ribbon presentation mode.
 
 ## Features
 
 - Five built-in states: `default`, `success`, `error`, `warning`, `info`
 - Automatic typography and layout adaptation based on the active `EDTSColorTheme` (`klikIDM`, `poinku`, and others)
 - Configurable inline primary action button via `EDTSButton`
-- `isRibbonStyle` presentation mode — flat, edge-to-edge strip with solid state fill
+- Action button position: below the text (default) or on the right side (`isBtnAtRightSide`)
+- `isRibbonStyle` presentation mode: flat, edge-to-edge strip with solid state fill
 - `IBDesignable` / `IBInspectable` support for Interface Builder assembly
-- Proper `intrinsicContentSize` tracking for use inside `UIStackView`
+- Proper `intrinsicContentSize` tracking for use inside `UIStackView` and self-sizing cells
 
 ---
 
@@ -50,7 +51,13 @@ alertBox.label = "Your session is about to expire."
 alertBox.state = EDTSAlertboxState.warning.rawValue
 ```
 
-### With Action Button
+### Attributed Text
+
+```swift
+alertBox.labelAttributed = attributedMessage
+```
+
+### With Action Button (below the text)
 
 ```swift
 alertBox.label = "Transaction successfully processed."
@@ -61,6 +68,18 @@ alertBox.btnLabel = "View Details"
 alertBox.configureButton { button in
     button.addTarget(self, action: #selector(handleActionTap), for: .touchUpInside)
 }
+```
+
+You can also use the delegate (`didTapButtonAlertbox`) instead of adding a target.
+
+### With Action Button on the Right Side
+
+```swift
+alertBox.label = "Complete your profile to unlock all features."
+alertBox.state = EDTSAlertboxState.info.rawValue
+alertBox.isBtnHide = false
+alertBox.isBtnAtRightSide = true
+alertBox.btnLabel = "Complete"
 ```
 
 ### Ribbon Style
@@ -91,8 +110,8 @@ public enum EDTSAlertboxState: String {
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| `label` | `String?` | `nil` | Primary informational message displayed in the banner |
-| `labelAttributed` | `NSAttributedString?` | `nil` | Primary informational message displayed in the banner with attributed text |
+| `label` | `String?` | `nil` | Primary informational message displayed in the banner. Clears `labelAttributed` |
+| `labelAttributed` | `NSAttributedString?` | `nil` | Primary message as attributed text. Clears `label` |
 | `btnLabel` | `String?` | `nil` | Text rendered inside the embedded action button |
 | `icon` | `UIImage?` | `nil` | Custom image asset that replaces the default state icon |
 
@@ -111,7 +130,7 @@ public enum EDTSAlertboxState: String {
 | `state` | `String` | `"default"` | Active banner state string, mapped to `EDTSAlertboxState` |
 | `bgColor` | `UIColor?` | `nil` | Overrides the automatic state background color |
 | `labelColor` | `UIColor?` | `nil` | Overrides the automatic state text color |
-| `iconTintColor` | `UIColor?` | `nil` | Template tint applied to the leading icon. Also switches the image rendering mode to `.alwaysTemplate` |
+| `iconTintColor` | `UIColor?` | `nil` | Template tint applied to the leading icon. Also switches the image rendering mode to `.alwaysTemplate` and updates the right-side button color |
 | `iconSize` | `CGFloat` | `24.0` | Width and height of the leading icon in points |
 | `btnCloseTintColor` | `UIColor?` | `nil` | Tint color applied to the close button icon |
 | `btnCloseSize` | `CGFloat` | `16.0` | Width and height of the close button icon in points. No effect when `isBtnCloseHide` is `true` |
@@ -132,16 +151,17 @@ public enum EDTSAlertboxState: String {
 
 | Property | Type | Default | Description |
 |---|---|---|---|
-| `paddingTop` | `CGFloat` | `-1.0` | Top inset for icon, label, and close button. A value of `-1.0` means the theme default applies (`8pt` for poinku, `12pt` for all others) |
-| `paddingBottom` | `CGFloat` | `-1.0` | Bottom inset. Used as the action button's bottom constraint offset. A value of `-1.0` means the theme default applies |
-| `paddingLeading` | `CGFloat` | `-1.0` | Leading inset for icon and action button. A value of `-1.0` means the theme default applies |
-| `paddingTrailing` | `CGFloat` | `-1.0` | Trailing inset for close button and action button. A value of `-1.0` means the theme default applies |
+| `paddingTop` | `CGFloat` | `-1.0` | Top inset for icon, label, and close button. `-1.0` means the theme default applies (`8pt` for poinku, `12pt` for all others) |
+| `paddingBottom` | `CGFloat` | `-1.0` | Bottom inset. Used as the action button's bottom offset, and as the bottom inset of the right-side layout (falls back to the top padding when `-1.0`). `-1.0` means the theme default applies |
+| `paddingLeading` | `CGFloat` | `-1.0` | Leading inset for icon and action button. `-1.0` means the theme default applies |
+| `paddingTrailing` | `CGFloat` | `-1.0` | Trailing inset for close button and action button. `-1.0` means the theme default applies |
 
 ### Flags & Layout
 
 | Property | Type | Default | Description |
 |---|---|---|---|
 | `isBtnHide` | `Bool` | `false` | Hides the action button and collapses its layout space. Automatically forced to `true` on the `poinku` theme and in ribbon style |
+| `isBtnAtRightSide` | `Bool` | `false` | Places the action button on the right side of the banner. Only applies while `isBtnHide` is `false` |
 | `isBtnCloseHide` | `Bool` | `false` | Hides the close button and collapses its reserved width/height constraints |
 | `isRibbonStyle` | `Bool` | `false` | Enables flat full-width strip layout: removes border and corner radius, applies solid state fill, forces white text and icon, hides the close and action buttons |
 
@@ -152,6 +172,26 @@ public func configureButton(_ instance: (EDTSButton) -> Void)
 ```
 
 Provides direct access to the internal `EDTSButton` to attach targets, configure style, or set accessibility properties. The method guards against a nil button reference and is safe to call after the view has loaded.
+
+```swift
+public func fittingHeightAlertbox(for width: CGFloat) -> CGFloat
+```
+
+Returns the height the alertbox needs at the given width. Use it in a self-sizing list (for example `UICollectionView` or `UITableView` cells) to compute the height before the view is laid out. `intrinsicContentSize` already uses it once the view has a width.
+
+---
+
+## Right-Side Button Layout
+
+When `isBtnAtRightSide` is `true` and `isBtnHide` is `false`, the layout changes:
+
+- The label is pinned to the top and bottom padding, and the icon and the action button are vertically centered against it.
+- The close button is hidden.
+- The action button is restyled as a text link: transparent background, trailing chevron icon (`ic_chevron_right`), icon spacing `4`, size `small`, and all its inner paddings set to `0`.
+- Button label and chevron color: `blue50` for the `default` state, and the state color (`iconTintColor` if set) for the other states.
+- The height is `top padding + max(text height, icon height) + bottom padding`. The bottom padding comes from `paddingBottom` when it is set, otherwise from the top padding.
+
+When `isBtnAtRightSide` is switched back to `false`, the button style set above is reset to the standard `EDTSButton` appearance.
 
 ---
 
@@ -165,7 +205,7 @@ public protocol EDTSAlertboxDelegate: AnyObject {
 }
 ```
 
-Assign `alertBox.delegate` to receive close and action button tap callbacks. Tapping the close button also triggers a built-in dismiss animation (fade out + slight upward translation over `0.3s`, then collapses height to `0`).
+Assign `alertBox.delegate` to receive close and action button tap callbacks. Tapping the close button also triggers a built-in dismiss animation (fade out and slight upward translation over `0.3s`, then the height collapses to `0`).
 
 ---
 
@@ -185,10 +225,10 @@ Assign `alertBox.delegate` to receive close and action button tap callbacks. Tap
 |---|---|---|---|
 | Label color | Varies by state | Always `grey60` | Ignores state color; applies to all five states |
 | Font | `B3.Regular` | `P2.Regular` | Different type scale from other themes |
-| Icon — `error` state | `ic_attention` | `ic_error` | Different icon asset |
-| Icon — `warning` state | `ic_notice` | `ic_attention` | Different icon asset |
+| Icon, `error` state | `ic_attention` | `ic_error` | Different icon asset |
+| Icon, `warning` state | `ic_notice` | `ic_attention` | Different icon asset |
 | Bottom padding (button visible) | `0pt` | `0pt` | No difference |
-| Bottom padding (button hidden) | `0pt` | `4pt` | Extra spacing added when action button is not shown |
+| Bottom padding (button hidden) | `0pt` | `4pt` | Extra spacing added when the action button is not shown |
 
 ---
 
@@ -216,7 +256,22 @@ Assign `alertBox.delegate` to receive close and action button tap callbacks. Tap
 | `error` | `ic_attention` | `ic_error` |
 | `warning` | `ic_notice` | `ic_attention` |
 
-The close button always uses `ic_close` with a default tint of `grey50`.
+The close button always uses `ic_close` with a default tint of `grey50`. The right-side action button uses `ic_chevron_right`.
+
+---
+
+## Ribbon Style Behavior
+
+| Property | Value |
+|---|---|
+| Background | Solid state fill (see the Ribbon Fill column above) |
+| Text and icon color | `white` |
+| Border width / corner radius | `0` / `0` |
+| Close button | Hidden (size `0`) |
+| Action button | Hidden (`isBtnHide` is forced to `true`) |
+| Padding | top `8`, leading `8`, bottom `0`, trailing `0` |
+
+State changes are not re-applied while `isRibbonStyle` is `true`.
 
 ---
 
@@ -230,7 +285,7 @@ Triggered automatically when the user taps the close button.
 | Curve | `curveEaseInOut` | UIKit easing curve |
 | Alpha | `1.0` → `0.0` | Fade out |
 | Transform | `y: 0` → `y: -8pt` | Slight upward translation |
-| Height | Coll
+| Height | Collapses to `0` | A fixed height constraint is added at the start and set to `0` when the animation finishes |
 
 ---
 

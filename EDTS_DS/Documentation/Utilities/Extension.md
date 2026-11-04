@@ -1,6 +1,6 @@
 # EDTS_DS Extensions
 
-This document covers the utility extensions available on `UIView`, `Int`, and `String` within `EDTS_DS`. These are lightweight helpers for gradients, ripple effects, grayscale, coupon-shaped backgrounds, currency formatting, and strikethrough text — layered on top of standard UIKit/Foundation types rather than standalone components.
+This document covers the utility extensions available on `UIView`, `Int`, and `String` within `EDTS_DS`. These are lightweight helpers for ripple effects, grayscale, coupon-shaped backgrounds, selectable-card animation, currency formatting, and strikethrough text — layered on top of standard UIKit/Foundation types rather than standalone components.
 
 ## Table of Contents
 
@@ -210,7 +210,8 @@ iconButton.showRippleCircular()
 - Requires `superview` to exist — silently does nothing otherwise
 - The circle is centered on the view's `frame.midX`/`midY` and inserted into the superview's layer just below the view's own layer
 - Same `0.40s` expand + `0.10s` fade-in animation timing as `showRipple`
-- `hideRippleCircular()` snapshots the current presentation-layer path/opacity before removing in-flight animations, then fades out over `0.22s`
+- Multiple circular ripple layers can be active at once — `showRippleCircular` appends to an internal array, and `hideRippleCircular()` hides all of them
+- `hideRippleCircular()` waits for any remaining time in the `0.40s` expand animation, then snapshots the current presentation-layer path/opacity before removing in-flight animations, fades out over `0.22s`, and removes the layer on completion
 
 ---
 
