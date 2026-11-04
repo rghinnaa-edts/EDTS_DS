@@ -173,6 +173,10 @@ public class EDTSCoachmark: UIView {
     private var offsetMargin: CGFloat = 16
     private var contentMargin: CGFloat = 24
     private var arrowPosition: CoachmarkArrowPosition = .top
+    private var isSingle: Bool { coachmarkType == CoachmarkType.single.rawValue }
+    private var displayLink: CADisplayLink?
+    private var isSpotlightIntroDone = false
+    private var needsSpotlightSync = false
     
     private var vIconBackgroundWidthConstraint: NSLayoutConstraint?
     private var vIconBackgroundOriginalWidthConstraint: NSLayoutConstraint?
@@ -228,17 +232,20 @@ public class EDTSCoachmark: UIView {
 
         contentView?.alpha = 0
         triangleView?.alpha = 0
-
+        
         DispatchQueue.main.async {
+            self.startTrackingTarget()
             if animated {
                 UIView.animate(withDuration: 0.1) { self.alpha = 1 }
                 self.animateSpotlight {
+                    self.isSpotlightIntroDone = true
                     UIView.animate(withDuration: 0.2, animations: {
                         self.contentView?.alpha = 1
                         self.triangleView?.alpha = 1
                     }, completion: { _ in completion?() })
                 }
             } else {
+                self.isSpotlightIntroDone = true
                 self.alpha = 1
                 self.contentView?.alpha = 1
                 self.triangleView?.alpha = 1
@@ -248,6 +255,8 @@ public class EDTSCoachmark: UIView {
     }
 
     public func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
+        stopTrackingTarget()
+        
         guard animated else {
             removeFromSuperview()
             onDismiss?()
@@ -393,7 +402,7 @@ public class EDTSCoachmark: UIView {
     }
 
     private func setupDescription(_ config: CoachmarkStepConfig) {
-        if config.description == nil, let attributed = config.descriptionAttributted {
+        if config.description == nil, let attributed = config.descriptionAttributed {
             let mutable = NSMutableAttributedString(attributedString: attributed)
             let fullRange = NSRange(location: 0, length: mutable.length)
 
@@ -593,9 +602,15 @@ public class EDTSCoachmark: UIView {
             .filter { ($0.firstItem as? UIView) == vDivider && $0.firstAttribute == .top }
             .forEach { $0.isActive = false }
 
+        if vDividerOriginalHeightConstraint == nil {
+            vDividerOriginalHeightConstraint = vDivider.constraints.first { $0.firstAttribute == .height }
+        }
+        vDividerOriginalHeightConstraint?.isActive = false
+
         vDivider.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            vDivider.topAnchor.constraint(equalTo: vLabelContainer.bottomAnchor, constant: 0)
+            vDivider.topAnchor.constraint(equalTo: vLabelContainer.bottomAnchor, constant: 0),
+            vDivider.heightAnchor.constraint(equalToConstant: 0)
         ])
     }
     
@@ -633,21 +648,26 @@ public class EDTSCoachmark: UIView {
         var totalHeight: CGFloat = 16
         totalHeight += max(vIconBackground.isHidden ? 0 : vIconBackground.frame.height,
                            vLabelContainer.isHidden ? 0 : vLabelContainer.frame.height)
-        totalHeight += 16
 
-        if !isDividerHide {
-            totalHeight += vDivider.frame.height + 16
+        if isSingle {
+            totalHeight += btnFilledTopConstraint?.constant ?? 16
+            totalHeight += btnNext.frame.height
         } else {
-            totalHeight += 8
+            totalHeight += 16
+            if !isDividerHide {
+                totalHeight += vDivider.frame.height + 16
+            } else {
+                totalHeight += 8
+            }
+            let bottomHeight = [btnNext, btnSkip, lblTotalStep]
+                .compactMap { $0 }
+                .filter { !$0.isHidden }
+                .map { $0.frame.height }
+                .max() ?? 0
+            totalHeight += bottomHeight
         }
 
-        let bottomHeight = [btnNext, btnSkip, lblTotalStep]
-            .compactMap { $0 }
-            .filter { !$0.isHidden }
-            .map { $0.frame.height }
-            .max() ?? 0
-
-        totalHeight += bottomHeight + 16
+        totalHeight += 16
         totalHeight = max(totalHeight, 100)
 
         var frame = contentView.frame
@@ -884,6 +904,66 @@ public class EDTSCoachmark: UIView {
         updateTriangleForArrowPosition()
         bringSubviewToFront(triangleView)
     }
+    
+    // MARK: - Target tracking
+
+    private func startTrackingTarget() {
+        guard displayLink == nil else { return }
+        let link = CADisplayLink(target: self, selector: #selector(trackTargetFrame))
+        link.add(to: .main, forMode: .common)
+        displayLink = link
+    }
+
+    private func stopTrackingTarget() {
+        displayLink?.invalidate()
+        displayLink = nil
+    }
+
+    public override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if window == nil { stopTrackingTarget() }
+    }
+
+    private func liveFrame(of view: UIView, in window: UIWindow) -> CGRect {
+        let windowLayer = window.layer.presentation() ?? window.layer
+        guard let presentation = view.layer.presentation() else {
+            return view.convert(view.bounds, to: window)
+        }
+        return presentation.convert(presentation.bounds, to: windowLayer)
+    }
+
+    private func isClose(_ a: CGRect, _ b: CGRect) -> Bool {
+        abs(a.minX - b.minX) < 0.5 && abs(a.minY - b.minY) < 0.5 &&
+        abs(a.width - b.width) < 0.5 && abs(a.height - b.height) < 0.5
+    }
+
+    @objc private func trackTargetFrame() {
+        guard let window = window, let tv = targetView else { return }
+
+        let newFrame = liveFrame(of: tv, in: window)
+        let newEndFrame = endTargetView.map { liveFrame(of: $0, in: window) } ?? endTargetFrame
+
+        let changed = !isClose(newFrame, targetFrame) || !isClose(newEndFrame, endTargetFrame)
+        guard changed || (needsSpotlightSync && isSpotlightIntroDone) else { return }
+
+        targetFrame = newFrame
+        endTargetFrame = newEndFrame
+
+        if isSpotlightIntroDone, let spotlightLayer = spotlightLayer {
+            needsSpotlightSync = false
+            spotlightLayer.removeAllAnimations()
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+            spotlightLayer.path = spotlightPath(for: currentSpotlightRect()).cgPath
+            spotlightLayer.frame = bounds
+            CATransaction.commit()
+        } else {
+            needsSpotlightSync = true
+        }
+
+        updateContentViewPosition()
+        updateTrianglePosition()
+    }
 
     // MARK: - Animations
 
@@ -970,7 +1050,7 @@ public struct CoachmarkStepConfig {
     let title: String?
     let titleAttributted: NSAttributedString?
     let description: String?
-    let descriptionAttributted: NSAttributedString?
+    let descriptionAttributed: NSAttributedString?
     let targetView: UIView?
     let endTargetView: UIView?
     let btnOutlinedText: String?
@@ -991,17 +1071,17 @@ public struct CoachmarkStepConfig {
         title: String? = nil,
         titleAttributted: NSAttributedString? = nil,
         description: String? = nil,
-        descriptionAttributted: NSAttributedString? = nil,
+        descriptionAttributed: NSAttributedString? = nil,
         targetView: UIView? = nil,
         endTargetView: UIView? = nil,
-        btnOutlinedText: String? = nil, //"Tutup",
-        btnFilledText: String? = nil, //"Berikutnya",
+        btnOutlinedText: String? = nil,
+        btnFilledText: String? = nil,
         isBtnOutlinedHide: Bool? = nil,
         isBtnFilledHide: Bool? = nil,
-        contentMargin: CGFloat? = nil, //24,
-        offsetMargin: CGFloat? = nil, // -1,
-        spotlightRadius: CGFloat? = nil, // = 4,
-        spotlightPadding: CGFloat? = nil, // = 8,
+        contentMargin: CGFloat? = nil,
+        offsetMargin: CGFloat? = nil,
+        spotlightRadius: CGFloat? = nil,
+        spotlightPadding: CGFloat? = nil,
         spotlightPaddingLeft: CGFloat? = nil,
         spotlightPaddingRight: CGFloat? = nil,
         isTargetAList: Bool = false,
@@ -1011,7 +1091,7 @@ public struct CoachmarkStepConfig {
         self.title = title
         self.titleAttributted = titleAttributted
         self.description = description
-        self.descriptionAttributted = descriptionAttributted
+        self.descriptionAttributed = descriptionAttributed
         self.targetView = targetView
         self.endTargetView = endTargetView
         self.btnOutlinedText = btnOutlinedText
