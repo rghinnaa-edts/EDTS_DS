@@ -109,6 +109,7 @@ cardPromo.updateCards(newCards)
 | `cards` | Cards currently displayed | [EDTSCardPromoModel] | `[]` |
 | `isSkeleton` | Whether the skeleton state is shown (read only, use `setLoading`) | Bool | `false` |
 | `skeletonCardCount` | Number of skeleton cards shown while loading | Int | `3` |
+| `collectionView` | The underlying card list | UICollectionView | - |
 | `identifier` | Static reuse identifier of the component | String | `"EDTSCardPromo"` |
 
 ### Public Functions

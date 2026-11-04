@@ -12,7 +12,6 @@ public class EDTSCardPromoProductCell: UICollectionViewCell {
     // MARK: - Outlets
     
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var ivCheck: UIImageView!
     @IBOutlet weak var ivProduct: UIImageView!
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblPrice: UILabel!
@@ -147,12 +146,8 @@ public class EDTSCardPromoProductCell: UICollectionViewCell {
         setupTitle()
         setupPrice()
         setupBorder()
-        setupCheckBackground()
         setupBadge()
         updateSelectionState()
-
-        ivCheck.image = UIImage(named: "ic_check", in: .edtsDS, compatibleWith: nil)
-        ivCheck.tintColor = EDTSColor.white
     }
 
     private func setupBorder() {
@@ -183,30 +178,18 @@ public class EDTSCardPromoProductCell: UICollectionViewCell {
         discount.cornerRadius = 4
     }
 
-    private func setupCheckBackground() {
-        let size = Self.checkSize
-
-        let path = UIBezierPath()
-        path.move(to: .zero)
-        path.addLine(to: CGPoint(x: size, y: 0))
-        path.addLine(to: CGPoint(x: 0, y: size))
-        path.close()
-
-        checkBackgroundLayer.frame = CGRect(x: 0, y: 0, width: size, height: size)
-        checkBackgroundLayer.path = path.cgPath
-        checkBackgroundLayer.fillColor = EDTSColor.blue50.cgColor
-
-        let host = ivCheck.superview ?? containerView!
-        host.layer.insertSublayer(checkBackgroundLayer, below: ivCheck.layer)
-    }
-
     private func updateSelectionState() {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
-
-        containerView?.layer.borderColor = (isSelected ? EDTSColor.blue50 : EDTSColor.grey30).cgColor
-        checkBackgroundLayer.isHidden = !isSelected
-        ivCheck.isHidden = !isSelected
+        
+        containerView?.animateCardSelected(
+            isSelected: isSelected,
+            tintColor: EDTSColor.blue50,
+            unselectedBorderColor: EDTSColor.grey30,
+            icon: UIImage(named: "ic_check", in: .edtsDS, compatibleWith: nil),
+            iconTintColor: EDTSColor.white,
+            durationAnimation: 0.25,
+            animated: true)
 
         CATransaction.commit()
     }

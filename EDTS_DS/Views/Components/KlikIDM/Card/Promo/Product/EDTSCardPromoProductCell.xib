@@ -11,7 +11,6 @@
             <connections>
                 <outlet property="containerView" destination="Dks-MD-vbV" id="SmM-Iu-JtX"/>
                 <outlet property="discount" destination="CPG-18-bMu" id="4Do-as-vCg"/>
-                <outlet property="ivCheck" destination="yiw-hM-JGz" id="7d5-3T-6LG"/>
                 <outlet property="ivProduct" destination="cto-dU-Qq6" id="8Ec-fO-sVm"/>
                 <outlet property="lblPrice" destination="hfF-PO-cTB" id="ZlE-Wj-oqC"/>
                 <outlet property="lblRealPrice" destination="7Ge-Yk-xD5" id="Zfa-iE-Ck3"/>
@@ -66,22 +65,13 @@
                         </stackView>
                     </subviews>
                 </stackView>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yiw-hM-JGz">
-                    <rect key="frame" x="2" y="2" width="16" height="16"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="16" id="Wqv-aB-UF8"/>
-                        <constraint firstAttribute="width" constant="16" id="qSt-AA-UOb"/>
-                    </constraints>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="45E-Ij-sX1" firstAttribute="centerY" secondItem="Dks-MD-vbV" secondAttribute="centerY" id="2Nf-1l-NEf"/>
-                <constraint firstItem="yiw-hM-JGz" firstAttribute="leading" secondItem="Dks-MD-vbV" secondAttribute="leading" constant="2" id="FX6-tD-n2L"/>
                 <constraint firstItem="cto-dU-Qq6" firstAttribute="centerY" secondItem="Dks-MD-vbV" secondAttribute="centerY" id="OcK-1a-FOg"/>
                 <constraint firstAttribute="trailing" secondItem="45E-Ij-sX1" secondAttribute="trailing" constant="12" id="OvS-UM-Uem"/>
                 <constraint firstItem="45E-Ij-sX1" firstAttribute="leading" secondItem="cto-dU-Qq6" secondAttribute="trailing" constant="8" id="QSY-rc-BnI"/>
-                <constraint firstItem="yiw-hM-JGz" firstAttribute="top" secondItem="Dks-MD-vbV" secondAttribute="top" constant="2" id="S96-uf-71t"/>
                 <constraint firstItem="cto-dU-Qq6" firstAttribute="leading" secondItem="Dks-MD-vbV" secondAttribute="leading" constant="12" id="nK7-vf-S5D"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

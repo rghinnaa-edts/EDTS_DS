@@ -37,6 +37,7 @@ public class EDTSCardPromo: UIView {
     public weak var delegate: EDTSCardPromoDelegate?
     public private(set) var cards: [EDTSCardPromoModel] = []
     public private(set) var isSkeleton = false
+    public var collectionView: UICollectionView { collectionPromo }
     public var skeletonCardCount = 3
 
     // MARK: - Private Variable
@@ -45,7 +46,6 @@ public class EDTSCardPromo: UIView {
     private static let estimatedCardHeight: CGFloat = 380
     private static let tabCellIdentifier = "EDTSTabDefaultCell"
     private static let promoActivationOffset: CGFloat = 24
-    private var collectionView: UICollectionView { collectionPromo }
     private var activeCardIndex = 0
     private var isConfiguring = false
     private var cardHeightCache: [Int: CGFloat] = [:]
