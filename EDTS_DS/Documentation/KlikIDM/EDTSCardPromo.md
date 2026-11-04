@@ -209,4 +209,4 @@ All delegate methods are optional (default empty implementations are provided).
 
 ---
 
-*For further customization, inherit `EDTSCardPromo` or contact the UX Engineering team.*
+*For further customization, you can ask UX Engineer or inherit `EDTSCardPromo` and override its methods, or add additional functionality as required.*
