@@ -402,7 +402,7 @@ public class EDTSCoachmark: UIView {
     }
 
     private func setupDescription(_ config: CoachmarkStepConfig) {
-        if config.description == nil, let attributed = config.descriptionAttributted {
+        if config.description == nil, let attributed = config.descriptionAttributed {
             let mutable = NSMutableAttributedString(attributedString: attributed)
             let fullRange = NSRange(location: 0, length: mutable.length)
 
@@ -1050,7 +1050,7 @@ public struct CoachmarkStepConfig {
     let title: String?
     let titleAttributted: NSAttributedString?
     let description: String?
-    let descriptionAttributted: NSAttributedString?
+    let descriptionAttributed: NSAttributedString?
     let targetView: UIView?
     let endTargetView: UIView?
     let btnOutlinedText: String?
@@ -1071,7 +1071,7 @@ public struct CoachmarkStepConfig {
         title: String? = nil,
         titleAttributted: NSAttributedString? = nil,
         description: String? = nil,
-        descriptionAttributted: NSAttributedString? = nil,
+        descriptionAttributed: NSAttributedString? = nil,
         targetView: UIView? = nil,
         endTargetView: UIView? = nil,
         btnOutlinedText: String? = nil,
@@ -1091,7 +1091,7 @@ public struct CoachmarkStepConfig {
         self.title = title
         self.titleAttributted = titleAttributted
         self.description = description
-        self.descriptionAttributted = descriptionAttributted
+        self.descriptionAttributed = descriptionAttributed
         self.targetView = targetView
         self.endTargetView = endTargetView
         self.btnOutlinedText = btnOutlinedText
