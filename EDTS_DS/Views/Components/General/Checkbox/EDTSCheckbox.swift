@@ -449,7 +449,7 @@ public class EDTSCheckbox: UIView {
                 self.lblBody.textColor = EDTSColor.grey30
                 self.ivIconContainerView.backgroundColor = EDTSColor.grey20
                 self.ivIcon.tintColor = EDTSColor.grey40
-                self.ivIconContainerView.layer.borderColor = EDTSColor.grey40.cgColor
+                self.ivIconContainerView.layer.borderColor = EDTSColor.grey30.cgColor
             }
         }
     }
@@ -476,17 +476,17 @@ public class EDTSCheckbox: UIView {
                 
             case true:
                 if EDTSColor.theme == .poinku {
-                    self.lblTitle.textColor = self.titleColorInactive ?? EDTSColor.grey70
-                    self.lblBody.textColor = self.descColorInactive ?? EDTSColor.grey60
-                    self.ivIconContainerView.backgroundColor = self.boxBgColorInactive ?? EDTSColor.blue30
-                    self.ivIcon.tintColor = self.iconTintColorInactive ?? EDTSColor.white
-                    self.ivIconContainerView.layer.borderColor = self.borderColorInactive?.cgColor ?? EDTSColor.blue30.cgColor
+                    self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey70
+                    self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey60
+                    self.ivIconContainerView.backgroundColor = self.boxBgColorActive ?? EDTSColor.blue30
+                    self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
+                    self.ivIconContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? EDTSColor.blue30.cgColor
                 } else {
                     self.lblTitle.textColor = self.titleColorActive ?? EDTSColor.grey60
                     self.lblBody.textColor = self.descColorActive ?? EDTSColor.grey50
                     self.ivIconContainerView.backgroundColor = self.boxBgColorActive ?? EDTSColor.blue50
                     self.ivIcon.tintColor = self.iconTintColorActive ?? EDTSColor.white
-                    self.ivIconContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? UIColor.clear.cgColor
+                    self.ivIconContainerView.layer.borderColor = self.borderColorActive?.cgColor ?? EDTSColor.blue50.cgColor
                 }
             }
         }
