@@ -901,7 +901,7 @@ public class EDTSButton: UIButton {
         case .default:
             tempIconTintColorLeading = iconTintColorLeading ?? EDTSColor.greyText
             tempLabelColor = labelColor ?? EDTSColor.greyText
-            tempIconTintColorTrailing = iconTintColorLeading ?? EDTSColor.greyText
+            tempIconTintColorTrailing = iconTintColorTrailing ?? EDTSColor.greyText
             tempBgColor = bgColor ?? EDTSColor.white
             tempBorderColor = borderColor ?? EDTSColor.greyDefault
             tempBorderWidth = borderWidth == .zero ? 1 : borderWidth
